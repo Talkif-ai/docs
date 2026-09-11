@@ -2,8 +2,7 @@
 # Reference: https://buildwithfern.com/learn/docs/configuration/site-level-settings
 instances:
   - url: talkif.docs.buildwithfern.com
-    # TODO: switch DNS and uncomment once the Fern site replaces apps/docs
-    # custom-domain: docs.talkif.ai
+    custom-domain: docs.talkif.ai
     edit-this-page:
       github:
         owner: Talkif-ai
