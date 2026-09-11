@@ -60,3 +60,44 @@ actions:
         step: $request.limit
         results: $response.schedules
 
+  # ── Offset start fix ─────────────────────────────────────────────────────
+  # The Fern generators only honour `default` on plain integers; on int64 they
+  # fall back to a starting offset of 1, so auto-paging skips the first item.
+  # Offsets are int64 upstream; present them as int32 here so `default: 0` is
+  # used. TODO(backend-rs): make list offsets u32 and delete this block.
+
+  - target: $.paths["/api/v1/campaigns"].get.parameters[3].schema
+    update:
+      format: int32
+      default: 0
+      minimum: 0
+
+  - target: $.paths["/api/v1/campaigns/{campaignId}/contacts"].get.parameters[4].schema
+    update:
+      format: int32
+      default: 0
+      minimum: 0
+
+  - target: $.paths["/api/v1/contacts"].get.parameters[1].schema
+    update:
+      format: int32
+      default: 0
+      minimum: 0
+
+  - target: $.paths["/api/v1/contacts/{contactId}/calls"].get.parameters[2].schema
+    update:
+      format: int32
+      default: 0
+      minimum: 0
+
+  - target: $.paths["/api/v1/dnc"].get.parameters[1].schema
+    update:
+      format: int32
+      default: 0
+      minimum: 0
+
+  - target: $.paths["/api/v1/schedules"].get.parameters[2].schema
+    update:
+      format: int32
+      default: 0
+      minimum: 0
