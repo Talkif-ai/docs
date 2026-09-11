@@ -1,0 +1,32 @@
+name: Publish docs
+
+# Publishes docs.talkif.ai (Fern-hosted) from main. This is the ONLY thing that
+# deploys the site — there is no Fern-side automation on this repo.
+
+on:
+  push:
+    branches: [main]
+    paths: ["fern/**", ".github/workflows/publish-docs.yml"]
+  workflow_dispatch:
+
+concurrency:
+  group: publish-docs
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install -g fern-api
+      - name: fern check
+        working-directory: fern
+        run: fern check
+      - name: Publish
+        working-directory: fern
+        run: fern generate --docs --log-level info
+        env:
+          FERN_TOKEN: ${{ secrets.FERN_TOKEN }}
