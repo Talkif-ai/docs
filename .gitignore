@@ -1,3 +1,7 @@
 node_modules/
 .DS_Store
 fern/.preview/
+
+# local agent guidance, never published
+CLAUDE.md
+.claude/
