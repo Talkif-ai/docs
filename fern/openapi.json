@@ -11,6 +11,12 @@
     },
     "version": "1.0.0"
   },
+  "servers": [
+    {
+      "url": "https://api.talkif.ai",
+      "description": "Production"
+    }
+  ],
   "paths": {
     "/api/v1/billing/balance": {
       "get": {
@@ -105,7 +111,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -504,7 +511,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           }
         ],
@@ -682,13 +690,21 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Transaction history"
+            "description": "Transaction history",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedResponse"
+                }
+              }
+            }
           },
           "401": {
             "description": "Authentication required — token is missing, expired, or invalid",
@@ -1213,7 +1229,7 @@
           "Calls"
         ],
         "summary": "Get call recording URL",
-        "description": "GET /api/v1/calls/:callId/recording\n\nReturns a time-limited S3 presigned URL for recording playback.\nFrontend uses this URL to fetch audio directly from S3.\n\nRequires:\n- Recording service configured (RECORDING__S3_BUCKET env)\n- Call must have recording_status = 'ready'\n- Call must belong to the account",
+        "description": "Returns a time-limited presigned URL for recording playback. Fetch the\naudio directly from that URL.\n\nRequires the call to belong to the account and to have\n`recordingStatus = ready`; recording must be enabled for the account.",
         "operationId": "get_call_recording",
         "parameters": [
           {
@@ -1548,7 +1564,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           }
         ],
@@ -2211,7 +2228,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           }
         ],
@@ -3246,7 +3264,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -4064,7 +4083,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           }
         ],
@@ -4465,7 +4485,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -4927,7 +4948,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           }
         ],
@@ -5393,7 +5415,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           }
         ],
@@ -6799,7 +6822,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           }
         ],
@@ -7748,7 +7772,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           }
         ],
@@ -8413,7 +8438,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           }
         ],
@@ -9141,7 +9167,7 @@
       },
       "AgentDefinition": {
         "type": "object",
-        "description": "Agent node definition\n\nRepresents a conversational agent in the flow.\n\nThe entry agent (`main_agent`) carries the call's `systemPrompt`; every\nagent carries its own `agentPrompt`. The system prompt is global to the\ncall and persists across transitions, so non-entry agents must not set\none — see `validation.rs` for the enforcement and\n`catflow/src/catflow/config/flow_processor.py::build_node` for the\nruntime behaviour this mirrors.",
+        "description": "Agent node definition\n\nRepresents a conversational agent in the flow.\n\nThe entry agent (`main_agent`) carries the call's `systemPrompt`; every\nagent carries its own `agentPrompt`. The system prompt is global to the\ncall and persists across transitions, so non-entry agents must not set\none (validation rejects it).",
         "required": [
           "type",
           "name"
@@ -9152,7 +9178,7 @@
               "string",
               "null"
             ],
-            "description": "This agent's own instructions — THE canonical task field.\n\nIn force only while the flow sits on this agent. Static and dynamic\ncontent share this one field: text containing `{{handlebars}}` is\nresolved at call time, plain text passes through. There is no prompt\nnode, no edge, and no template indirection.\n\nThe `taskMessage` alias keeps pre-rename stored definitions\ndeserializable — see the note on `systemPrompt`.",
+            "description": "This agent's own instructions — THE canonical task field.\n\nIn force only while the flow sits on this agent. Static and dynamic\ncontent share this one field: text containing `{{handlebars}}` is\nresolved at call time, plain text passes through. There is no prompt\nnode, no edge, and no template indirection.\n\n`taskMessage` is accepted as a deprecated alias.",
             "example": "Remind the customer about their upcoming appointment."
           },
           "functions": {
@@ -9188,7 +9214,7 @@
               },
               {
                 "$ref": "#/components/schemas/PromptReference",
-                "description": "Legacy prompt wrapper (transitional shape, 2026-07).\n\nKept deserializable because pre-flatten stored definitions carry it;\nthe publish path falls back to `prompt.content` / `prompt.templateId`\nwhen `agentPrompt` is absent. Never emit it.\n\nCleanup checklist (when removing):\n  1. Confirm the flatten backfill\n     (`scripts/backfill_prompt_to_task_message.sql`) has run in every\n     environment and its verify queries report zero `prompt` keys.\n  2. Delete this field + `PromptReference`, the fallback in\n     `transformation.rs::definition_agent_to_pipecat`, and the prompt\n     branches in `validation.rs`.\n  3. Remove the frontend legacy read path (`definitionAdapter.ts`).\n  4. Drop the call-time `prompt_template_id` DB-fetch branch in\n     `template_resolver.rs::resolve_flow_with_db` (dead once compiled\n     definitions are materialized)."
+                "description": "Deprecated. Older definitions may still carry the prompt in this\nwrapper; new definitions put it inline in `agentPrompt`."
               }
             ]
           },
@@ -9197,7 +9223,7 @@
               "string",
               "null"
             ],
-            "description": "The call's system prompt — set on the entry agent only.\n\nGlobal to the call and persistent across agent transitions, so\nnon-entry agents leave this `None` and inherit it. Validation rejects\na `systemPrompt` on a non-entry agent.\n\nThe `roleMessage` alias keeps pre-rename stored definitions\ndeserializable; drop it once\n`scripts/backfill_prompt_names_to_catflow_contract.sql` reports zero\n`roleMessage` keys in every environment.",
+            "description": "The call's system prompt — set on the entry agent only.\n\nGlobal to the call and persistent across agent transitions, so\nnon-entry agents leave this `None` and inherit it. Validation rejects\na `systemPrompt` on a non-entry agent.\n\n`roleMessage` is accepted as a deprecated alias.",
             "example": "You are a friendly appointment reminder assistant."
           },
           "transitions": {
@@ -9215,7 +9241,7 @@
       },
       "AgentStatus": {
         "type": "string",
-        "description": "Agent status (AI layer - from Catflow NATS events)\n\nTracks the state of the AI bot processing the call.",
+        "description": "Status of the AI agent handling the call.",
         "enum": [
           "pending",
           "connecting",
@@ -9273,7 +9299,7 @@
             "items": {
               "$ref": "#/components/schemas/CallCostDetail"
             },
-            "description": "Individual calls with per-category breakdown for frontend drill-down\nOrdered by created_at DESC, limited to most recent calls in period"
+            "description": "Individual calls with per-category breakdown, for drill-down.\nOrdered by created_at DESC, limited to the most recent calls in the period."
           },
           "endDate": {
             "type": "string",
@@ -10194,7 +10220,7 @@
           },
           "agentStatus": {
             "$ref": "#/components/schemas/AgentStatus",
-            "description": "Agent layer status (Catflow/Bot)"
+            "description": "Status of the AI agent handling the call."
           },
           "botSpeechSecs": {
             "type": [
@@ -11653,7 +11679,7 @@
           },
           "icon": {
             "type": "string",
-            "description": "Icon hint for frontend rendering",
+            "description": "Icon hint for rendering this charge type.",
             "example": "phone"
           },
           "id": {
@@ -12710,7 +12736,7 @@
               "object",
               "null"
             ],
-            "description": "Visual layout data — raw JSON passthrough, frontend-owned. When present,\nit is stored as-is (preserving node positions); when omitted, a default\nlayout is auto-generated from the definition."
+            "description": "Visual builder layout (node positions, viewport). Opaque to the API.\nWhen present it is stored as-is; when omitted, a default layout is\ngenerated from the definition."
           },
           "maxCallDuration": {
             "oneOf": [
@@ -12719,7 +12745,7 @@
               },
               {
                 "$ref": "#/components/schemas/MaxCallDurationSettings",
-                "description": "Hard call-duration cap settings. Omit to leave at catflow's default (off)."
+                "description": "Hard call-duration cap. Omit to leave it OFF."
               }
             ]
           },
@@ -12743,7 +12769,7 @@
               },
               {
                 "$ref": "#/components/schemas/UserIdleSettings",
-                "description": "User-idle hangup settings. Omit to leave at catflow's default (idle ON)."
+                "description": "User-idle hangup settings. Omit to keep the default (ON)."
               }
             ]
           },
@@ -13158,7 +13184,7 @@
       },
       "EmotionOption": {
         "type": "object",
-        "description": "Emotion option for frontend display",
+        "description": "Selectable emotion for a TTS voice.",
         "required": [
           "value",
           "label"
@@ -13619,7 +13645,7 @@
       },
       "FlowDefinition": {
         "type": "object",
-        "description": "The canonical flow definition — single source of truth for flow logic.\n\nThis schema is the contract for API key users, the frontend adapter layer,\nand the backend validation + pipecat transformation pipeline.\n\nVisual nodes (LLM, TTS, STT, prompt, end_call) collapse into properties:\n- Service nodes -> `services.*`\n- Prompt nodes -> `agent.prompt`\n- Action nodes -> `agent.functions[]`\n- Edges are implicit — relationships expressed as data, not connections",
+        "description": "The canonical flow definition — single source of truth for flow logic,\nshared by the API and the visual builder.\n\nVisual nodes (LLM, TTS, STT, prompt, end_call) collapse into properties:\n- Service nodes -> `services.*`\n- Prompt nodes -> `agent.prompt`\n- Action nodes -> `agent.functions[]`\n- Edges are implicit — relationships expressed as data, not connections",
         "required": [
           "initialNode",
           "services",
@@ -13727,7 +13753,7 @@
               "object",
               "null"
             ],
-            "description": "Visual layout data (positions, viewport, UI state).\nBackend passes through untouched — frontend owns this entirely."
+            "description": "Visual builder layout (positions, viewport, UI state). Opaque to the\nAPI: stored and returned as-is."
           },
           "maxCallDuration": {
             "oneOf": [
@@ -13786,7 +13812,7 @@
               },
               {
                 "$ref": "#/components/schemas/UserIdleSettings",
-                "description": "User-idle hangup settings (null when unconfigured — catflow defaults idle ON)"
+                "description": "User-idle hangup settings, or null if never configured (default ON)."
               }
             ]
           },
@@ -14326,7 +14352,7 @@
       },
       "FunctionDefinition": {
         "type": "object",
-        "description": "Tool function definition\n\nRepresents the **interface** of a callable function available to an agent.\nDescribes WHAT the function does, not WHERE it executes.\n\nFunction types (validated — unknown types are rejected):\n- `\"builtin\"`: Platform-provided LLM-callable functions. Currently the only\n  valid name is `end_call` (others in the past — `tts_say`, `forward_call`\n  — were removed: `tts_say` is a pipecat *action* not a function and belongs\n  in `pre_actions` / `post_actions`; `forward_call` had no implementation).\n  Builtins ignore LLM-supplied args — `properties`/`required` are typically empty.\n- `\"http_request\"`: User-defined HTTP webhook functions. Requires `config.functionId`\n  referencing a `flow_functions` record. At publish time, the backend resolves\n  name/description/parameters from the DB. At runtime, the backend decrypts\n  headers and dispatches to the webhook executor pod via NATS.\n\nTransition functions (generated from `transitions[]`) are NOT stored here —\nthe backend generates them during pipecat transformation.",
+        "description": "Tool function definition\n\nRepresents the **interface** of a callable function available to an agent.\nDescribes WHAT the function does, not WHERE it executes.\n\nFunction types (unknown types are rejected):\n- `\"builtin\"`: platform-provided functions. The only valid name is\n  `end_call`. Builtins ignore LLM-supplied arguments, so\n  `properties`/`required` are typically empty.\n- `\"http_request\"`: user-defined HTTP webhook functions. Requires\n  `config.functionId` referencing a flow function; headers and secrets are\n  stored server-side and never returned by the API.\n\nTransition functions (generated from `transitions[]`) are not stored here.",
         "required": [
           "name",
           "description"
@@ -14354,7 +14380,7 @@
               "object",
               "null"
             ],
-            "description": "Per-parameter source bindings resolved from `flow_functions.param_bindings`\nat publish time. Used by the dispatcher to merge LLM args with\ncall-context and static values. Only populated for `http_request` functions.\n\nShape: `{ \"paramName\": { \"source\": \"llm|call_context|static\", ... } }`\n\nThis field flows through the publish pipeline into the `PipecatFunction`\nserved to catflow, then back to the dispatcher via the NATS reply payload\n(indirectly — the dispatcher re-fetches from DB). Kept here for audit /\nverification when reading the published flow definition."
+            "description": "Per-parameter source bindings, resolved at publish time from the\nreferenced flow function. Only populated for `http_request` functions.\n\nShape: `{ \"paramName\": { \"source\": \"llm|call_context|static\", ... } }`\n\nRead-only in the published definition; edit bindings on the flow function."
           },
           "properties": {
             "type": "object",
@@ -14843,7 +14869,7 @@
               "string",
               "null"
             ],
-            "description": "Reasoning/thinking effort level. Only accepted by models whose\n`llm_model_capabilities.supports_reasoning` is true, and only with a value\nlisted in that model's `reasoning_effort`. Anything else is stripped by\n`sanitize_params` before the flow reaches catflow — the provider would\notherwise 400 mid-call.",
+            "description": "Reasoning/thinking effort level. Only accepted by models that support\nreasoning, and only with a value that model lists as valid; anything\nelse is ignored.",
             "example": "medium"
           },
           "temperature": {
@@ -15339,7 +15365,7 @@
       },
       "MaxCallDurationSettings": {
         "type": "object",
-        "description": "Hard call-duration cap settings for a flow (API shape, camelCase).\n\nOmitting this block leaves the cap at catflow's default (OFF). Sending it is a\nfull replacement of the flow's cap config.",
+        "description": "Hard call-duration cap settings for a flow.\n\nOmitting this block leaves the cap OFF. Sending it fully replaces the\nflow's cap config.",
         "required": [
           "enabled"
         ],
@@ -15744,7 +15770,7 @@
       },
       "PromptReference": {
         "type": "object",
-        "description": "Legacy prompt wrapper (transitional shape, 2026-07).\n\nOnly exists so pre-flatten definitions still deserialize — see the\ncleanup checklist on `AgentDefinition::prompt`. The task now always\nlives inline in `AgentDefinition::agent_prompt`.",
+        "description": "Deprecated prompt wrapper, accepted for backwards compatibility. New\ndefinitions put the prompt inline in `AgentDefinition.agentPrompt`.",
         "properties": {
           "content": {
             "type": [
@@ -16183,7 +16209,7 @@
       },
       "RequestSchema": {
         "type": "object",
-        "description": "Structured HTTP request shape.\n\n`pathParams`, `queryParams`, and `body` are each JSON Schema objects.\nParam names MUST be unique across the three sub-schemas — the dispatcher\nuses the param name to decide which HTTP location it goes to.",
+        "description": "Structured HTTP request shape.\n\n`pathParams`, `queryParams`, and `body` are each JSON Schema objects.\nParameter names MUST be unique across the three — the name decides which\nHTTP location a value is sent in.",
         "required": [
           "method",
           "url"
@@ -17026,7 +17052,7 @@
       },
       "TranscriptMessageMetrics": {
         "type": "object",
-        "description": "Per-message latency and usage metrics from NATS events.\nCaptures the full timing breakdown for debugging and analytics.",
+        "description": "Per-message latency and usage metrics. Captures the timing breakdown for\ndebugging and analytics.",
         "properties": {
           "llmCompletionTokens": {
             "type": [
@@ -17088,7 +17114,7 @@
               "null"
             ],
             "format": "double",
-            "description": "Speech-to-text total processing time in milliseconds.\n\nLegacy read-only field. Populated only on calls recorded before catflow\nmoved to pipecat 1.8.0, which stopped emitting `ProcessingMetricsData`\nfor streaming STT (no discrete unit of work to time; the value was\neither meaningless or a duplicate of TTFB). New transcripts never carry\nit — the field stays so historical `metadata.transcript` entries still\ndeserialize and still render in call detail. Use `stt_ttfb_ms`\n(speech-end → final transcript) for STT latency.",
+            "description": "Speech-to-text total processing time in milliseconds.\n\nDeprecated, read-only. Only present on older calls; new transcripts\nnever carry it. Use `sttTtfbMs` (speech end → final transcript) for\nSTT latency.",
             "example": 250
           },
           "sttTtfbMs": {
@@ -17195,7 +17221,7 @@
       },
       "TransitionDefinition": {
         "type": "object",
-        "description": "Agent transition definition\n\nDefines a handoff from one agent to another, triggered by keywords\nin the conversation. Generates a tool function during pipecat transformation.",
+        "description": "Agent transition definition\n\nDefines a handoff from one agent to another, triggered by keywords\nin the conversation. Exposed to the LLM as a tool at runtime.",
         "required": [
           "targetAgentId"
         ],
@@ -17697,7 +17723,7 @@
               "object",
               "null"
             ],
-            "description": "Visual layout data — raw JSON passthrough, frontend-owned"
+            "description": "Visual builder layout. Opaque to the API; stored and returned as-is."
           },
           "maxCallDuration": {
             "oneOf": [
@@ -17959,7 +17985,7 @@
       },
       "UserIdleSettings": {
         "type": "object",
-        "description": "Request to create a new flow\n\nOnly name is required. Definition is optional — omit to create an empty\ndraft for the builder UI, or provide it to create a flow with initial content.\nUser-idle hangup settings for a flow (API shape, camelCase).\n\nSending this block is a full replacement of the flow's idle config. Omitting\nthe block on update leaves the existing config untouched; sending it with only\n`enabled` clears the other fields back to the bot's defaults. Omitting it on a\nflow that was never configured leaves idle hangup at catflow's default (ON).",
+        "description": "User-idle hangup settings for a flow.\n\nSending this block fully replaces the flow's idle config. Omitting it on\nupdate leaves the existing config untouched; sending it with only `enabled`\nresets the other fields to their defaults. A flow that was never configured\nhas idle hangup ON.",
         "required": [
           "enabled"
         ],
@@ -18041,7 +18067,7 @@
       },
       "VoiceDto": {
         "type": "object",
-        "description": "A voice entry returned to the frontend.",
+        "description": "A TTS voice.",
         "required": [
           "voiceId",
           "name",
@@ -18115,7 +18141,7 @@
       },
       "VoicesDto": {
         "type": "object",
-        "description": "Paginated voices response for frontend",
+        "description": "Paginated list of TTS voices.",
         "required": [
           "voices",
           "hasMore",
