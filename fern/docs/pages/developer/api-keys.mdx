@@ -1,0 +1,105 @@
+---
+title: API Keys
+description: Create and manage API keys for programmatic access to the Talkif API.
+---
+
+API keys provide programmatic access to the Talkif API without requiring a user session. Use them for server-to-server integrations, automation scripts, and third-party service connections.
+
+## Creating a key
+
+1. Navigate to **Settings → Account → API Keys**
+2. Click **Create API Key**
+3. Enter a name (e.g., "CRM Integration", "Campaign Automation")
+4. Select permission scopes (defaults to full access)
+5. Optionally set an expiration date and IP allowlist
+6. Click **Create**
+
+The full key is displayed **once** at creation time. Copy it immediately — it cannot be retrieved later. After creation, only the prefix (`tif_live_aBc...hijk`) is visible for identification.
+
+## Authentication
+
+Pass the API key as a Bearer token in the `Authorization` header. A key belongs
+to exactly one account, so you never send an account ID — every request is
+scoped to the key's account automatically:
+
+```bash
+curl -H "Authorization: Bearer tif_live_aBcDeFgH..." \
+  https://api.talkif.ai/api/v1/calls
+```
+
+## Scopes
+
+Each key has granular permission scopes that control which resources it can access and what actions it can perform.
+
+### Format
+
+| Pattern | Meaning |
+|---|---|
+| `*` | Full access to all resources |
+| `resource:read` | Read-only access to a resource |
+| `resource:write` | Write-only access to a resource |
+| `resource:*` | Full access to a resource |
+
+### Available resources
+
+| Resource | Description |
+|---|---|
+| `calls` | Initiate and manage voice calls |
+| `flows` | Create and manage conversation flows |
+| `contacts` | Manage contact records |
+| `phones` | Manage phone numbers |
+| `billing` | View balance, transactions, costs, invoices, and analytics (read-only) |
+| `analytics` | Access analytics and reporting |
+| `schedules` | Manage call schedules |
+| `campaigns` | Create and manage campaigns |
+| `dnc` | Manage do-not-call lists |
+| `templates` | Manage prompt templates |
+| `models` | View available AI models |
+| `flow_templates` | Access flow templates |
+
+### Examples
+
+- `["calls:read", "contacts:read"]` — read-only access to calls and contacts
+- `["calls:*", "flows:*", "contacts:read"]` — full call/flow management, read-only contacts
+- `["*"]` — full access (use with caution)
+
+## IP allowlist
+
+Restrict a key to specific IP addresses or CIDR ranges. Requests from other IPs are rejected with `403 Forbidden`.
+
+Configure IP allowlists when creating or editing a key in **Settings → Account → API Keys**. Pass CIDR notation (e.g., `192.168.1.0/24`, `10.0.0.1/32`). Leave empty to allow all IPs.
+
+## Expiration
+
+Keys can be created with an optional expiration date. After expiration, the key is automatically rejected. Expired keys remain visible in the dashboard for audit purposes but cannot be used.
+
+## Usage monitoring
+
+Each key tracks daily usage aggregates:
+
+- **Request count** — total API calls made
+- **Error count** — requests that returned 4xx/5xx responses
+- **Unique IPs** — approximate number of distinct source IPs
+
+View usage from the key detail page in **Settings → Account → API Keys → (key) → Usage**.
+
+## Error tracking
+
+Recent errors (up to 50) are recorded per key with:
+
+- HTTP status code and error code
+- Request path and method
+- Request ID for correlation
+- Timestamp
+
+Use this to debug integration issues without digging through server logs.
+
+## Revoking a key
+
+Revoked keys are immediately rejected on all subsequent requests. Revocation is permanent — revoked keys cannot be re-enabled. Create a new key if access is needed again.
+
+## Limits
+
+- Maximum **25 keys** per account
+- Key names must be 1–100 characters
+- At least one scope is required per key

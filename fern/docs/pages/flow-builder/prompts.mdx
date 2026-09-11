@@ -1,0 +1,186 @@
+---
+title: Prompt Library
+description: Create reusable, dynamic prompts with Handlebars template variables and AI-assisted generation.
+---
+
+The Prompt Library lets you write prompts once and reference them across multiple flows. Changes to a library prompt propagate to every flow that uses it.
+
+## Creating prompts
+
+Open the Prompt Library from the Flow Builder sidebar. Each prompt has:
+
+- **Name** — a descriptive identifier (e.g., "Support Agent System Prompt")
+- **Category** — optional grouping for organization
+- **Content** — the prompt text with optional Handlebars template variables
+
+## Template variables
+
+Prompts support **Handlebars syntax** for injecting dynamic data at runtime. Variables are replaced with real values when the call starts.
+
+```handlebars
+You are a support agent for {{account.name}}.
+The caller's name is {{default contact.name "there"}}.
+{{#ifExists contact.company}}They work at {{contact.company}}.{{/ifExists}}
+```
+
+### Contact variables
+
+| Variable | Type | Description |
+|---|---|---|
+| `contact.name` | string | Full name |
+| `contact.firstName` | string | First name (derived) |
+| `contact.lastName` | string | Last name (derived) |
+| `contact.primaryPhone` | string | Phone number |
+| `contact.email` | string | Email address |
+| `contact.company` | string | Company name |
+| `contact.occupation` | string | Job title |
+| `contact.notes` | string | Free text notes |
+| `contact.timezone` | string | Timezone (e.g., "America/New_York") |
+| `contact.language` | string | Language code (e.g., "en") |
+| `contact.interests` | array | Topics and hobbies |
+| `contact.personality` | array | Personality traits |
+| `contact.communicationStyle` | string | Communication style |
+| `contact.preferredTopics` | array | Preferred discussion topics |
+| `contact.tags` | array | Labels and tags |
+| `contact.address.street` | string | Street address |
+| `contact.address.city` | string | City |
+| `contact.address.state` | string | State/province |
+| `contact.address.postalCode` | string | ZIP/postal code |
+| `contact.address.country` | string | Country |
+| `contact.customFields` | object | Any custom fields you've defined |
+
+### Call variables
+
+| Variable | Type | Description |
+|---|---|---|
+| `call.id` | string | Call UUID |
+| `call.direction` | string | `inbound` or `outbound` |
+| `call.fromNumber` | string | Caller ID / source number |
+| `call.toNumber` | string | Destination number |
+
+### Account variables
+
+| Variable | Type | Description |
+|---|---|---|
+| `account.id` | string | Account UUID |
+| `account.name` | string | Account name |
+
+### System variables
+
+Always available, populated automatically.
+
+| Variable | Type | Description |
+|---|---|---|
+| `system.date` | string | Current date (YYYY-MM-DD) |
+| `system.time` | string | Current time (HH:MM:SS) |
+| `system.timezone` | string | Timezone (default: UTC) |
+| `system.timestamp` | string | Full ISO 8601 timestamp |
+
+## Helpers
+
+Helpers let you transform data, handle missing values, and add conditional logic inside your prompts.
+
+### default
+
+Returns a fallback value when the variable is empty or missing.
+
+```handlebars
+Hello {{default contact.name "there"}}, thanks for calling {{default account.name "us"}}.
+```
+
+### ifExists
+
+Block helper that renders content only when the value exists and is not empty.
+
+```handlebars
+{{#ifExists contact.email}}We'll send a confirmation to {{contact.email}}.{{else}}Can I get your email for a confirmation?{{/ifExists}}
+```
+
+### Comparisons
+
+Use inside `{{#if ...}}` blocks. All return true/false.
+
+| Helper | Description | Example |
+|---|---|---|
+| `eq` | Equal | `{{#if (eq call.direction "inbound")}}` |
+| `ne` | Not equal | `{{#if (ne contact.language "en")}}` |
+| `gt` | Greater than | `{{#if (gt call.duration 300)}}` |
+| `lt` | Less than | `{{#if (lt contact.tags.length 3)}}` |
+| `gte` | Greater or equal | `{{#if (gte account.plan "pro")}}` |
+| `lte` | Less or equal | `{{#if (lte retry_count 3)}}` |
+
+### Logic
+
+Combine conditions with boolean logic.
+
+```handlebars
+{{#if (and contact.email contact.company)}}
+I see you're at {{contact.company}} — I'll send details to {{contact.email}}.
+{{/if}}
+
+{{#if (or contact.notes contact.preferredTopics)}}
+I have some context about your preferences.
+{{/if}}
+
+{{#if (not contact.notes)}}
+I don't have any notes on file for you.
+{{/if}}
+```
+
+### String and array
+
+| Helper | Description | Example |
+|---|---|---|
+| `includes` | Check if array contains value or string contains substring | `{{#if (includes contact.tags "vip")}}VIP treatment{{/if}}` |
+| `match` | Regex test on a string | `{{#if (match contact.primaryPhone "^\\+1")}}US number{{/if}}` |
+| `replace` | Regex replace (global) | `{{replace contact.primaryPhone "[^0-9]" ""}}` |
+| `join` | Join array elements with separator | `{{join contact.interests ", "}}` |
+| `json` | Convert value to JSON string | `{{json contact.address}}` |
+
+### formatDate
+
+Format ISO 8601 date strings.
+
+```handlebars
+Today is {{formatDate system.date "long"}}.
+```
+
+| Format | Output |
+|---|---|
+| `"short"` | MM/DD/YYYY |
+| `"long"` | Month DD, YYYY |
+| `"time"` | HH:MM:SS |
+| `"datetime"` | YYYY-MM-DD HH:MM:SS |
+| *(default)* | YYYY-MM-DD |
+
+## Behavior
+
+- **Missing variables render as empty** — strict mode is off, so an undefined variable won't crash the call
+- **No HTML escaping** — output is plain text for voice, not web
+- **Truthiness** — empty strings, `"none"`, `"null"`, `"undefined"`, empty arrays, and empty objects are all treated as falsy
+
+## AI-assisted generation
+
+Click **Generate** to describe what you want in plain language. The AI creates a complete Handlebars template using your available variables.
+
+The generator knows about your contact fields, call context, and all available helpers. It produces prompts that are immediately usable — no placeholder text, no manual editing required.
+
+Multi-turn chat is supported. Refine the generated prompt by asking for changes in follow-up messages.
+
+## Using prompts in agent nodes
+
+When configuring an Agent node's system prompt or task prompt, you can either:
+
+1. **Write inline** — type the prompt directly in the agent node
+2. **Reference a library prompt** — select from the Prompt Library dropdown
+
+Library prompts appear with a link icon in the agent node, indicating the prompt is managed centrally.
+
+## Best practices
+
+- Use the library for prompts shared across multiple flows (e.g., company-wide tone guidelines)
+- Use inline prompts for flow-specific instructions that won't be reused
+- Use `default` for every contact field — not all contacts have complete data
+- Use `ifExists` blocks to conditionally include entire sections
+- Adapt behavior based on `call.direction` — inbound and outbound calls need different openings
+- Keep prompts focused on one objective per agent node

@@ -1,0 +1,53 @@
+---
+title: Schedules
+description: Set up recurring automated calls to individual contacts on a defined frequency.
+---
+
+Schedules let you automate recurring calls to a specific contact. Each schedule runs a flow against a contact at a defined frequency — once, daily, weekly, monthly, or on a custom cron expression.
+
+## Creating a schedule
+
+1. Navigate to **Call Center → Schedules → New Schedule**
+2. Configure:
+
+| Setting | Description |
+|---|---|
+| **Name** | Human-readable name for the schedule (required, 1-255 characters) |
+| **Contact** | The contact to call |
+| **Flow** | A published flow to drive the conversation |
+| **Phone number** | The Talkif number to call from |
+| **Provider** | VoIP provider to route calls through |
+| **Frequency** | How often the call repeats: Once, Daily, Weekly, Monthly, or Custom Cron |
+| **Scheduled time** | When the call should be placed |
+| **Timezone** | The timezone for the scheduled time |
+| **Retry on failure** | Whether to retry failed calls (default: off) |
+| **Retry delay** | Minutes between retries (default: 30, range: 1-1440) |
+| **Max retries** | Maximum retry attempts (default: 2, range: 0-10) |
+
+## Frequency options
+
+| Frequency | Behavior |
+|---|---|
+| **Once** | A single call at the scheduled time |
+| **Daily** | Repeats every day at the same time |
+| **Weekly** | Repeats on one or more selected days of the week |
+| **Monthly** | Repeats on the same date each month (day of month limited to 1–28) |
+| **Custom Cron** | Define a custom cron expression for advanced scheduling |
+
+## Execution limits
+
+Schedules can be constrained to prevent indefinite execution:
+
+- **Max runs** — stop after a specific number of calls
+- **End date** — stop after a specific date
+
+If both are set, the schedule stops at whichever limit is reached first.
+
+## Schedule statuses
+
+| Status | Description |
+|---|---|
+| **Active** | Schedule is running and will place calls on the next occurrence |
+| **Paused** | Schedule is temporarily stopped. Can be resumed. |
+| **Completed** | All scheduled runs have been executed, or the end date / max runs limit was reached |
+| **Canceled** | Schedule was permanently stopped |

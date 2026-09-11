@@ -1,0 +1,161 @@
+# OpenAPI overlay applied on top of openapi.json at docs + SDK build time.
+# Keeps docs/SDK-only concerns out of the backend-generated spec.
+# Spec: https://spec.openapis.org/overlay/v1.0.0.html
+overlay: 1.0.0
+info:
+  title: Talkif public API reference adjustments
+  version: 1.0.0
+actions:
+  # The backend spec ships without a servers block, so every example
+  # renders a relative path. Pin the public production host.
+  - target: $
+    update:
+      servers:
+        - url: https://api.talkif.ai
+          x-fern-server-name: Production
+
+  # ── SDK ergonomics ────────────────────────────────────────────────────────
+  # Offset pagination on the list endpoints that return { <items>[], meta }.
+  # step advances offset by the page size; enables auto-paging iterators.
+
+  - target: $.paths["/api/v1/campaigns"].get
+    update:
+      x-fern-pagination:
+        offset: $request.offset
+        step: $request.limit
+        results: $response.campaigns
+
+  - target: $.paths["/api/v1/campaigns/{campaignId}/contacts"].get
+    update:
+      x-fern-pagination:
+        offset: $request.offset
+        step: $request.limit
+        results: $response.contacts
+
+  - target: $.paths["/api/v1/contacts"].get
+    update:
+      x-fern-pagination:
+        offset: $request.offset
+        step: $request.limit
+        results: $response.contacts
+
+  - target: $.paths["/api/v1/contacts/{contactId}/calls"].get
+    update:
+      x-fern-pagination:
+        offset: $request.offset
+        step: $request.limit
+        results: $response.calls
+
+  - target: $.paths["/api/v1/dnc"].get
+    update:
+      x-fern-pagination:
+        offset: $request.offset
+        step: $request.limit
+        results: $response.entries
+
+  - target: $.paths["/api/v1/schedules"].get
+    update:
+      x-fern-pagination:
+        offset: $request.offset
+        step: $request.limit
+        results: $response.schedules
+
+  # ── Description hygiene ──────────────────────────────────────────────────
+  # TODO(backend): some upstream doc comments carry engineering notes (file
+  # paths, component names, migration TODOs). Fix the wording at the source and
+  # delete this block.
+  - target: $.components.schemas.AgentDefinition
+    update:
+      description: "Agent node definition. Represents a conversational agent in the flow.\n\nThe entry agent (`main_agent`) carries the call's `systemPrompt`; every agent carries its own `agentPrompt`. The system prompt is global to the call and persists across transitions, so non-entry agents must not set one (validation rejects it)."
+  - target: $.components.schemas.AgentDefinition.properties.systemPrompt
+    update:
+      description: "The call's system prompt \u2014 set on the entry agent only.\n\nGlobal to the call and persistent across agent transitions; non-entry agents omit it and inherit it. Validation rejects a `systemPrompt` on a non-entry agent. `roleMessage` is accepted as a deprecated alias."
+  - target: $.components.schemas.AgentDefinition.properties.prompt.oneOf[1]
+    update:
+      description: "Deprecated. Older definitions may still carry the prompt in this wrapper; new definitions put it inline in `agentPrompt`."
+  - target: $.components.schemas.PromptReference
+    update:
+      description: "Deprecated prompt wrapper, accepted for backwards compatibility. New definitions put the prompt inline in `AgentDefinition.agentPrompt`."
+  - target: $.components.schemas.AgentStatus
+    update:
+      description: "Status of the AI agent handling the call."
+  - target: $.components.schemas.CallResponse.properties.agentStatus
+    update:
+      description: "Status of the AI agent handling the call."
+  - target: $.components.schemas.FlowDefinition
+    update:
+      description: "The canonical flow definition \u2014 single source of truth for flow logic, shared by the API and the visual builder.\n\nVisual nodes (LLM, TTS, STT, prompt, end_call) collapse into properties:\n- Service nodes -> `services.*`\n- Prompt nodes -> `agent.prompt`\n- Action nodes -> `agent.functions[]`\n- Edges are implicit \u2014 relationships are expressed as data, not connections"
+  - target: $.components.schemas.FunctionDefinition
+    update:
+      description: "Tool function definition. Describes the **interface** of a function an agent can call \u2014 what it does, not where it executes.\n\nFunction types (unknown types are rejected):\n- `\"builtin\"`: platform-provided functions. The only valid name is `end_call`. Builtins ignore LLM-supplied arguments, so `properties`/`required` are typically empty.\n- `\"http_request\"`: user-defined HTTP webhook functions. Requires `config.functionId` referencing a flow function; headers and secrets are stored server-side and never returned by the API."
+  - target: $.components.schemas.FunctionDefinition.properties.paramBindings
+    update:
+      description: "Per-parameter source bindings, resolved at publish time from the referenced flow function. Only populated for `http_request` functions.\n\nShape: `{ \"paramName\": { \"source\": \"llm|call_context|static\", ... } }`\n\nRead-only in the published definition; edit bindings on the flow function."
+  - target: $.components.schemas.TransitionDefinition
+    update:
+      description: "Agent transition definition. Defines a handoff from one agent to another, triggered by keywords in the conversation. Exposed to the LLM as a tool at runtime."
+  - target: $.components.schemas.UserIdleSettings
+    update:
+      description: "User-idle hangup settings for a flow.\n\nSending this block fully replaces the flow's idle config. Omitting it on update leaves the existing config untouched; sending it with only `enabled` resets the other fields to their defaults. A flow that was never configured has idle hangup ON."
+  - target: $.components.schemas.MaxCallDurationSettings
+    update:
+      description: "Hard call-duration cap settings for a flow.\n\nOmitting this block leaves the cap OFF. Sending it fully replaces the flow's cap config."
+  - target: $.components.schemas.CreateFlowRequest.properties.maxCallDuration.oneOf[1]
+    update:
+      description: "Hard call-duration cap. Omit to leave it OFF."
+  - target: $.components.schemas.CreateFlowRequest.properties.userIdle.oneOf[1]
+    update:
+      description: "User-idle hangup settings. Omit to keep the default (ON)."
+  - target: $.components.schemas.FlowDetailResponse.properties.userIdle.oneOf[1]
+    update:
+      description: "User-idle hangup settings, or null if never configured (default ON)."
+  - target: $.components.schemas.TranscriptMessageMetrics
+    update:
+      description: "Per-message latency and usage metrics. Captures the timing breakdown for debugging and analytics."
+  - target: $.components.schemas.TranscriptMessageMetrics.properties.sttProcessingMs
+    update:
+      description: "Speech-to-text total processing time in milliseconds.\n\nDeprecated, read-only. Only present on older calls; new transcripts never carry it. Use `sttTtfbMs` (speech end \u2192 final transcript) for STT latency."
+  - target: $.components.schemas.LLMServiceDefinition.properties.reasoningEffort
+    update:
+      description: "Reasoning/thinking effort level. Only accepted by models that support reasoning, and only with a value that model lists as valid; anything else is ignored."
+  - target: $.components.schemas.RequestSchema
+    update:
+      description: "Structured HTTP request shape.\n\n`pathParams`, `queryParams`, and `body` are each JSON Schema objects. Parameter names MUST be unique across the three \u2014 the name decides which HTTP location a value is sent in."
+  - target: $.components.schemas.FlowTemplate.properties.definition
+    update:
+      description: "Flow definition the template instantiates."
+  - target: $.components.schemas.VoiceDto.properties.isLegacy
+    update:
+      description: "True for voices no longer recommended for new flows."
+  - target: $.components.schemas.AnalyticsCostBreakdownResponse.properties.calls.description
+    remove: true
+  - target: $.components.schemas.ChargeDetailResponse.properties.icon
+    update:
+      description: "Icon hint for rendering this charge type."
+  - target: $.components.schemas.CreateFlowRequest.properties.layout
+    update:
+      description: "Visual builder layout (node positions, viewport). Opaque to the API; stored and returned as-is."
+  - target: $.components.schemas.UpdateFlowRequest.properties.layout
+    update:
+      description: "Visual builder layout. Opaque to the API; stored and returned as-is."
+  - target: $.components.schemas.FlowDetailResponse.properties.layout
+    update:
+      description: "Visual builder layout, if the flow was edited in the builder."
+  - target: $.components.schemas.EmotionOption
+    update:
+      description: "Selectable emotion for a TTS voice."
+  - target: $.components.schemas.VoiceDto
+    update:
+      description: "A TTS voice."
+  - target: $.components.schemas.VoicesDto
+    update:
+      description: "Paginated list of TTS voices."
+  - target: $.paths["/api/v1/calls/{callId}/recording"].get
+    update:
+      description: "Returns a time-limited presigned URL for recording playback. Fetch the audio directly from that URL.\n\nRequires the call to belong to the account and to have `recordingStatus = ready`; recording must be enabled for the account."
+  - target: $.components.schemas.CreateWebRTCCallResponse.properties.botId
+    update:
+      example: bot-abc123
+  - target: $.components.schemas.WebRTCOfferResponse.properties.botId
+    update:
+      example: bot-abc123

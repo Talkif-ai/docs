@@ -1,0 +1,47 @@
+---
+title: Error Codes
+description: Complete reference of API error codes and field validation errors returned by the Talkif API.
+---
+
+All API errors follow a consistent response shape:
+
+```json
+{
+  "code": "insufficient_balance",
+  "status": 402,
+  "title": "Insufficient Balance",
+  "detail": "Account balance is too low for this operation — add funds to continue",
+  "requestId": "019ce738-dfc6-7740-9fc8-db47b7230650"
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `code` | `string` | Machine-readable error identifier — use this for programmatic handling |
+| `status` | `number` | HTTP status code |
+| `title` | `string` | Short human-readable summary |
+| `detail` | `string` | Detailed explanation of what went wrong |
+| `requestId` | `string` | Unique request ID for support and debugging |
+
+When a `validation_failed` error occurs, an additional `errors` array is included with per-field details:
+
+```json
+{
+  "code": "validation_failed",
+  "status": 400,
+  "title": "Validation Failed",
+  "detail": "One or more fields failed validation",
+  "requestId": "...",
+  "errors": [
+    {
+      "field": "email",
+      "code": "invalid_email_format",
+      "message": "Email format is invalid (must conform to RFC 5322)"
+    }
+  ]
+}
+```
+
+---
+
+<Markdown src="/docs/snippets/generated/error-codes.mdx" />

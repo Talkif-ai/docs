@@ -1,0 +1,35 @@
+---
+title: Notifications
+description: Configure notification preferences for billing, calls, usage, and security events.
+---
+
+Talkif delivers notifications in real-time via Server-Sent Events (SSE). Notifications appear instantly in the dashboard — no polling, no delays.
+
+## Notification categories
+
+| Category | Events |
+|---|---|
+| **Billing** | Low balance alerts, payment confirmations, auto-recharge notifications |
+| **Calls** | Call completion summaries, failed call alerts |
+| **Usage** | Usage threshold alerts |
+| **Security** | Login from new device, password changes, MFA changes |
+| **System** | Platform maintenance, feature updates |
+| **Organization** | Invitation received, member changes |
+
+## Managing notifications
+
+- **Mark as read / unread** — toggle notification read status
+- **Delete** — remove notifications you no longer need
+
+Notifications are accessible from the bell icon in the dashboard header.
+
+## Delivery channels
+
+| Channel | Description |
+|---|---|
+| **Email** | Notification sent to your email address |
+| **SMS** | Text message to your phone number |
+| **Webhook** | HTTP POST to a configured URL |
+| **Push** | Browser push notification |
+
+Configure which events trigger notifications and through which channels from **Settings → Notifications**.

@@ -1,0 +1,88 @@
+---
+title: Call Details
+description: Review transcripts, listen to recordings, and analyze cost breakdowns for every call.
+---
+
+Every call made through Talkif — inbound, outbound, test, or live — generates a detailed record accessible from the Call Center.
+
+## Transcript
+
+The full conversation transcript is available immediately after the call ends. Each message shows:
+
+- **Speaker** — whether the agent or the caller spoke
+- **Timestamp** — when in the call the message occurred
+- **Text** — the transcribed content
+
+Call history is searchable by contact name or phone number from the Call Center dashboard.
+
+## Recording
+
+Audio playback of the complete call. You can:
+
+- Play back the full recording from the call detail view
+- Download the audio file
+- Scrub to specific timestamps referenced in the transcript
+
+## Cost breakdown
+
+Each call includes a detailed cost breakdown showing exactly what you were charged and why.
+
+| Category | What it covers |
+|---|---|
+| **LLM** | Token consumption during the conversation |
+| **LLM Analysis** | Post-call AI analysis (separate from conversation LLM usage) |
+| **TTS** | Characters synthesized by the text-to-speech provider |
+| **STT** | Audio minutes transcribed by the speech-to-text provider |
+| **Telephony** | Per-minute phone line charges |
+| **Infrastructure** | Platform compute costs |
+| **Function Call** | External function/tool call execution during the call |
+| **Total** | Sum of all components |
+
+## Call metadata
+
+Additional data captured for each call:
+
+| Field | Description |
+|---|---|
+| **Call ID** | Unique identifier |
+| **Direction** | Inbound or outbound |
+| **Status** | Current lifecycle state — see [call statuses](/call-center/making-calls#call-statuses) |
+| **End Reason** | Why the call ended — see [end reasons](/call-center/making-calls#end-reasons) |
+| **Failure reason** | Failed calls carry a failure code plus a human-readable reason from the carrier |
+| **Duration** | Total call length |
+| **Phone numbers** | From and to numbers |
+| **Flow version** | Which published flow version handled the call |
+| **Contact** | Linked contact record (if available) |
+| **Campaign** | Associated campaign (if applicable) |
+| **Timestamps** | Start time, connect time, end time |
+
+## Performance metrics
+
+Each call also records conversation-quality metrics:
+
+| Metric | Description |
+|---|---|
+| **Time to first response** | Milliseconds until the agent's first response |
+| **Turn count** | Number of conversation turns |
+| **Interrupted turns** | Turns where the caller interrupted the agent |
+| **Function calls** | Count and total execution time of function/tool calls |
+| **Speech seconds** | Seconds of user speech and bot speech |
+| **Tokens** | Prompt and completion tokens consumed |
+| **TTS characters** | Characters synthesized |
+| **Wasted TTS characters** | Characters generated but never spoken due to interruptions |
+
+## Call insights
+
+If AI analysis is enabled, each call includes post-call insights:
+
+| Field | Description |
+|---|---|
+| **Summary** | AI-generated conversation summary |
+| **Sentiment** | Overall sentiment with confidence score |
+| **Intents** | Detected caller intents |
+| **Topics** | Topics discussed during the call |
+| **Action items** | Extracted action items with completion status |
+| **Outcome** | Call outcome classification with confidence and suggested next step |
+| **Caller info** | Extracted caller details (name, company, email, role) |
+
+Insights are generated automatically after the call ends when analysis is enabled on the flow.

@@ -1,0 +1,85 @@
+---
+title: Data Export
+description: Export a complete copy of your account data in machine-readable JSON format.
+---
+
+Navigate to **Settings → General → Data Export** to download your account data.
+
+## What's included
+
+The export covers 13 data categories:
+
+| Category | Description |
+|----------|-------------|
+| **Account** | Account metadata (name, slug, type, status) |
+| **Users** | User profiles (passwords and MFA secrets excluded) |
+| **Contacts** | Full contact records |
+| **Calls** | Call records with PII intact (scrubbed calls excluded) |
+| **Flows** | AI conversation flows |
+| **Phone numbers** | Numbers owned by your account |
+| **VoIP providers** | Provider configurations (credentials excluded) |
+| **Call schedules** | Recurring schedule definitions |
+| **Campaigns** | Bulk campaign records |
+| **Charges** | Billing history |
+| **Balance transactions** | Balance change history |
+| **Notifications** | Notification history |
+| **Cost line items** | Detailed cost breakdown per charge |
+
+The output is a single JSON file structured by category:
+
+```json
+{
+  "exportVersion": "1.0",
+  "accountId": "<your-account-id>",
+  "exportedAt": "2026-02-28T12:00:00Z",
+  "data": {
+    "account": [...],
+    "users": [...],
+    "contacts": [...],
+    "calls": [...]
+  }
+}
+```
+
+## How to request an export
+
+1. Go to **Settings → General → Data Export**
+2. Click **Request Export**
+3. Check your email for a confirmation link
+4. Click the link to start the export
+5. When processing completes, you'll receive an email with a download link
+
+<Info>
+  The confirmation link expires after 24 hours. If it expires, request a new export.
+</Info>
+
+## Download window
+
+Once the export is ready, the download link is valid for **24 hours**. After that, the file is permanently deleted. You can check the current status and download link at any time from the Data Export settings page.
+
+## Limits
+
+- **One active export at a time** — you cannot request a new export while one is pending, processing, or available for download
+- **24-hour cooldown** — after a completed export, you must wait 24 hours before requesting another
+
+## Export statuses
+
+| Status | Meaning |
+|--------|---------|
+| **Pending** | Export requested, awaiting email confirmation |
+| **Confirmed** | Email confirmed, queued for processing |
+| **Processing** | Background job collecting and packaging data |
+| **Completed** | Ready for download |
+| **Expired** | Download window (24h) has passed |
+| **Failed** | Something went wrong — request a new export |
+
+## Security
+
+- Exports require email confirmation before processing starts
+- Sensitive fields (passwords, MFA secrets, provider credentials) are automatically excluded
+- Download links are time-limited and unique to your account
+- Export files are encrypted at rest and deleted after the download window expires
+
+## GDPR data portability
+
+This feature fulfills the right to data portability under [GDPR Article 20](https://trust.talkif.ai/privacy). Your data is provided in a structured, machine-readable JSON format suitable for transfer to another service.

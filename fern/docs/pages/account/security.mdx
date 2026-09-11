@@ -1,0 +1,47 @@
+---
+title: Security
+description: Password management, multi-factor authentication, and session control.
+---
+
+Navigate to **Settings → Account → Security** to manage your security settings.
+
+## Password
+
+Change your password at any time. You must enter your current password to set a new one.
+
+## Multi-Factor Authentication (MFA)
+
+Add a second layer of security with TOTP-based authentication. Works with Google Authenticator, Authy, and any TOTP-compatible app.
+
+### Setup
+
+1. Click **Enable MFA**
+2. Scan the QR code with your authenticator app
+3. Enter the verification code from the app
+4. Save your **backup codes** — one-time use codes for recovery if you lose access to your authenticator
+
+Once enabled, MFA is required on every login.
+
+### Backup codes
+
+You receive **10 backup codes** during setup, each in `XXXX-XXXX` format. Each code can only be used once. Store them in a secure location — they are your recovery method if you lose your authenticator device.
+
+### Disable MFA
+
+To disable MFA, go to Security settings and enter your current password for confirmation.
+
+## Phone verification
+
+Phone verification confirms ownership of the phone number on your account. A 6-digit code is sent via SMS, valid for 10 minutes.
+
+Verification is required when:
+
+- Setting up your account phone number for the first time
+- Changing your phone number (see [Profile](/account/profile))
+
+If the code expires or you exceed the maximum attempts, request a new code.
+
+## Session management
+
+- **Log out** — end your current session
+- **Revoke all other sessions** — immediately terminate all sessions except your current one. Use this if you suspect unauthorized access.

@@ -1,0 +1,30 @@
+---
+title: Do Not Call
+description: Maintain a phone-number-based DNC list that automatically blocks outbound calls.
+---
+
+The DNC list is a separate, phone-number-based registry — not a flag on contact records. Any phone number on the DNC list is automatically blocked from outbound calls (both direct and campaign).
+
+## How it works
+
+DNC checks run before every outbound call attempt. If the destination number is on the list, the call is blocked with a `contact_on_dnc_list` error.
+
+## Managing entries
+
+| Action | Description |
+|---|---|
+| **Add** | Add a phone number with an optional reason (max 500 characters) |
+| **Remove** | Remove a phone number from the list |
+| **Check** | Check up to 100 numbers in a single request |
+| **Bulk import** | Import up to 10,000 numbers per request |
+
+## Source tracking
+
+Each DNC entry records how it was added:
+
+| Source | Description |
+|---|---|
+| **Manual** | Added manually via the dashboard |
+| **API** | Added programmatically via the API |
+| **Call opt-out** | Contact requested removal during a call |
+| **Bulk import** | Added via bulk import |

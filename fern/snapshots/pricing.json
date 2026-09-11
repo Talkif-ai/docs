@@ -1,0 +1,60 @@
+{
+  "telephony": [
+    {
+      "provider": "sip",
+      "model": null,
+      "rates": {
+        "perMinuteInbound": {
+          "microcents": 4000,
+          "display": "$0.0040"
+        },
+        "perMinuteOutbound": {
+          "microcents": 4000,
+          "display": "$0.0040"
+        }
+      }
+    },
+    {
+      "provider": "twilio",
+      "model": null,
+      "rates": {
+        "perMinuteInbound": {
+          "microcents": 8500,
+          "display": "$0.0085"
+        },
+        "perMinuteOutbound": {
+          "microcents": 14000,
+          "display": "$0.0140"
+        }
+      }
+    },
+    {
+      "provider": "whatsapp",
+      "model": null,
+      "rates": {
+        "perMinuteOutbound": {
+          "microcents": 0,
+          "display": "$0.0000"
+        },
+        "perMinuteInbound": {
+          "microcents": 0,
+          "display": "$0.0000"
+        }
+      }
+    }
+  ],
+  "phoneNumbers": {
+    "startingFrom": {
+      "microcents": 1150000,
+      "display": "$1.15"
+    },
+    "note": "Monthly cost varies by country and number type. Price shown is for US local numbers."
+  },
+  "recordingStorage": {
+    "perGbMonth": {
+      "microcents": 500000,
+      "display": "$0.5000"
+    },
+    "note": "Billed based on actual storage duration. Minimum 1 day charged."
+  }
+}

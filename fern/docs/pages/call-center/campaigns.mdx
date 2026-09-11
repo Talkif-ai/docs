@@ -1,0 +1,109 @@
+---
+title: Campaigns
+description: Run automated outbound call campaigns across contact lists with call windows and monitoring.
+---
+
+Campaigns automate outbound calling at scale. Assign a contact list, select a flow and phone number, configure call windows, and Talkif handles the rest.
+
+## Creating a campaign
+
+1. Navigate to **Call Center → Campaigns → New Campaign**
+2. Configure the campaign:
+
+| Setting | Description |
+|---|---|
+| **Name** | Descriptive campaign name |
+| **Flow** | A published flow to drive the conversations |
+| **Phone number** | The Talkif number to call from |
+| **Contacts** | Add individual contacts or entire contact lists |
+| **Max concurrent calls** | How many calls run simultaneously (1–50, default 5) |
+| **Provider** | VoIP provider to route calls through |
+| **Call windows** | Time ranges when calls can be placed, optionally scoped to a day of the week |
+| **Start at** | Scheduled start time (optional) |
+| **End at** | Auto-pause when this time is reached (optional) |
+| **Respect contact timezone** | Check each contact's timezone before calling (default: on) |
+
+3. Save and start the campaign
+
+## Campaign lifecycle
+
+Campaigns move through defined states:
+
+```
+Draft → Pending → Running ⇄ Paused
+                    ↓
+                 Draining → Paused / Completed / Canceled
+
+Paused / Completed / Canceled → Running (restart)
+```
+
+| State | Description |
+|---|---|
+| **Draft** | Campaign is being configured |
+| **Pending** | Start clicked, contacts being queued (transient) |
+| **Running** | Actively placing calls |
+| **Draining** | Finishing active calls, not starting new ones |
+| **Paused** | Temporarily stopped. Can be resumed. |
+| **Completed** | All contacts have been called or the campaign finished draining |
+| **Canceled** | Campaign was permanently stopped |
+
+### Transitions
+
+| Transition | Description |
+|---|---|
+| **Draft → Pending → Running** | Start the campaign (requires at least one contact); Pending is transient while contacts are queued |
+| **Running → Draining → Paused** | Pause: stops new calls, waits for active calls to finish |
+| **Running → Draining → Canceled** | Cancel with active calls: drains then cancels |
+| **Running → Canceled** | Cancel immediately when no active calls |
+| **Paused → Running** | Resume the campaign |
+| **Paused / Completed / Canceled → Running** | Restart: resets non-completed contacts and restarts |
+
+## Restarting a campaign
+
+A campaign can be restarted from **Paused**, **Completed**, or **Canceled** states. Restarting resets all non-completed contacts back to pending and puts the campaign back into Running state.
+
+## Contact statuses
+
+Each contact in a campaign has an individual status:
+
+| Status | Description |
+|---|---|
+| **Queued** | Contact is in the call queue or call is being initiated |
+| **Pending** | Contact has not yet entered the call pipeline |
+| **Calling** | Currently being called |
+| **Completed** | Call finished successfully |
+| **Failed** | Call encountered an error |
+| **No answer** | Contact didn't answer or the line was busy |
+| **Skipped** | Contact was skipped (e.g., DNC list, opt-out, or manual skip) |
+
+## Auto-pause
+
+Campaigns can automatically pause based on these rules:
+
+| Rule | Description |
+|---|---|
+| **Insufficient balance** | Account credits drop below the threshold needed to continue calling |
+| **System limit** | Platform concurrency or rate limits reached |
+| **Provider error** | Telephony provider issue |
+| **Manual** | Manually paused by a user |
+
+Auto-pause prevents runaway costs and protects call quality. When triggered, the campaign moves to Paused and you receive a notification.
+
+## Call windows
+
+Campaigns have their own call windows. Windows are stored in UTC — the dashboard converts from your local timezone. Each window can optionally be scoped to a day of the week; a window with no day applies every day. The end time must be after the start time, and windows can't wrap past midnight. Calls are only placed during the configured windows, ensuring compliance with calling regulations and improving answer rates.
+
+## Monitoring
+
+The campaign dashboard shows real-time metrics:
+
+- Total contacts vs. contacted vs. remaining
+- Not called — contacts never dialed because the campaign ended
+- Completion percentage
+- Current active concurrent calls
+- Per-contact results and statuses
+- Cost accumulation
+- Success rate
+- Average cost per call
+
+Click into any individual contact to see their call details, transcript, and outcome.

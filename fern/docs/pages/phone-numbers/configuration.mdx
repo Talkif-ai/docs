@@ -1,0 +1,51 @@
+---
+title: Configuration
+description: Assign flows to phone numbers, set friendly names, and manage number settings.
+---
+
+## Friendly name
+
+Set a descriptive name for each number to identify it easily across the platform (e.g., "Sales Inbound", "Support Line").
+
+## Capabilities
+
+Each number displays its supported capabilities:
+
+- **Voice** — can make and receive voice calls
+- **SMS** — can send and receive text messages
+- **MMS** — can send and receive multimedia messages
+- **WhatsApp** — a WhatsApp Business Calling endpoint (see [WhatsApp](/phone-numbers/whatsapp))
+
+## Channel type
+
+Every number has a channel type:
+
+| Channel | Identity | Outbound calls |
+|---|---|---|
+| `pstn` | The E.164 phone number | Yes, if the number has the Voice capability |
+| `whatsapp` | Meta Phone Number ID | No — WhatsApp numbers are receive-only |
+
+The API exposes this as `channelType` alongside `canInitiateCalls`. WhatsApp numbers register without the Voice capability, so `canInitiateCalls` is always `false` for them. The same E.164 number can exist in your account as both a PSTN line and a WhatsApp number.
+
+## Assigning a flow
+
+Link a published flow to a phone number so it handles all incoming calls.
+
+1. Open the number's configuration
+2. Select a flow from the dropdown (shows all published flows)
+3. Save
+
+All inbound calls to this number will now be handled by the selected flow.
+
+## Unassigning a flow
+
+Remove the flow assignment to stop handling calls on that number. Inbound calls to an unassigned number will not be answered.
+
+## Number status
+
+Track a number's current status from the phone numbers list:
+
+- **Active** — number is provisioned and operational
+- **Pending** — number is being provisioned. For WhatsApp numbers, Pending means Meta has not yet reported the number as verified with calling enabled; the number is promoted to Active automatically when Meta's status webhooks confirm it (see [WhatsApp — number status](/phone-numbers/whatsapp#number-status))
+- **Suspended** — number is temporarily disabled
+- **Released** — number has been released and is no longer available

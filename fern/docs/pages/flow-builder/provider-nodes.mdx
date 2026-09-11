@@ -1,0 +1,225 @@
+---
+title: Provider Nodes
+description: Configure LLM, Text-to-Speech, and Speech-to-Text providers for your flow.
+---
+
+Provider nodes supply AI services to your flow. Every flow requires one LLM provider, one TTS provider, and one STT provider.
+
+## LLM Providers
+
+The LLM powers conversational intelligence — understanding caller intent, generating responses, and evaluating transitions.
+
+### OpenAI
+
+<Markdown src="/docs/snippets/generated/models-llm-openai.mdx" />
+
+### Google Gemini
+
+<Markdown src="/docs/snippets/generated/models-llm-google.mdx" />
+
+### Anthropic
+
+<Markdown src="/docs/snippets/generated/models-llm-anthropic.mdx" />
+
+### Grok (xAI)
+
+<Markdown src="/docs/snippets/generated/models-llm-grok.mdx" />
+
+### Azure OpenAI
+
+For organizations using Azure-hosted OpenAI models. Requires your Azure endpoint URL.
+
+| Setting | Description |
+|---|---|
+| **Endpoint** | Your Azure OpenAI endpoint URL (required) |
+| **Model** | Deployed model name |
+| **Temperature** | 0.0-2.0 |
+
+### LLM configuration
+
+| Setting | Description |
+|---|---|
+| **Model** | Select the specific model |
+| **Temperature** | Response randomness. Range: 0–2. Lower = more deterministic. Not supported by every model — see below. |
+| **Max tokens** | Maximum tokens per response |
+| **Priority tier** | 2x pricing for faster inference and higher availability |
+
+#### Temperature support
+
+Some models reject a custom `temperature` and use reasoning defaults instead. When a restricted model is selected, `temperature` is stripped from the flow definition before it reaches the bot and the UI — setting a value has no effect.
+
+The restriction is driven by model metadata, not a hardcoded list. Currently restricted: `gpt-5`, `gpt-5-mini`, `gpt-5.1-chat-latest`, `gpt-5.2-chat-latest`, and `claude-opus-4-8`.
+
+The model's `llmCapabilities.temperature` field in the provider list response indicates support. The model table above renders this capability inline when `showCapabilities` is set.
+
+## TTS Providers
+
+The TTS provider converts agent text responses into spoken audio.
+
+### ElevenLabs
+
+<Markdown src="/docs/snippets/generated/models-tts-elevenlabs.mdx" />
+
+#### ElevenLabs settings
+
+| Setting | Range | Description |
+|---|---|---|
+| **Voice** | — | Select from premade, cloned, generated, or professional voices |
+| **Stability** | 0.0–1.0 | Voice consistency. Higher = more stable, lower = more expressive. |
+| **Similarity** | 0.0–1.0 | How closely output matches the original voice sample |
+| **Style** | 0.0–1.0 | Style variation. |
+| **Speaker boost** | on/off | Enhances clarity and presence. |
+| **Speed** | 0.7–1.2 | Playback speed. |
+
+### Cartesia
+
+<Markdown src="/docs/snippets/generated/models-tts-cartesia.mdx" />
+
+#### Cartesia settings
+
+| Setting | Range | Description |
+|---|---|---|
+| **Voice** | — | Select from voice library. Supports masculine, feminine, and gender-neutral. |
+| **Emotion** | 54 options | `sonic-3` only. See emotion list below. |
+| **Speed** | 0.6–1.5 | Playback speed. Default: 1.0. |
+| **Volume** | 0.5–2.0 | Output volume. Default: 1.0. |
+
+#### Supported emotions (sonic-3)
+
+**Positive** — Neutral, Happy, Excited, Enthusiastic, Elated, Euphoric, Triumphant, Amazed, Surprised, Flirtatious, Curious, Content, Peaceful, Serene, Calm, Grateful, Affectionate, Trust, Sympathetic, Anticipation, Mysterious, Proud, Confident
+
+**Negative** — Angry, Mad, Outraged, Frustrated, Agitated, Threatened, Disgusted, Contempt, Envious, Sarcastic, Ironic, Sad, Dejected, Melancholic, Disappointed, Hurt, Guilty, Bored, Tired, Rejected, Nostalgic, Wistful, Apologetic, Hesitant, Insecure, Confused, Resigned, Anxious, Panicked, Alarmed, Scared
+
+**Other** — Distant, Skeptical, Contemplative, Determined
+
+### Google TTS
+
+<Markdown src="/docs/snippets/generated/models-tts-google.mdx" />
+
+Gemini TTS models (`gemini-2.5-flash-tts` for low latency, `gemini-2.5-pro-tts` for highest quality). 30 named voices, 23 languages.
+
+#### Google TTS settings
+
+| Setting | Description |
+|---|---|
+| **Voice** | Named Gemini voice (e.g., Kore) |
+| **Language** | Output language |
+| **Style prompt** | Natural-language instruction that steers delivery style |
+
+### xAI TTS
+
+<Markdown src="/docs/snippets/generated/models-tts-xai.mdx" />
+
+Streaming synthesis with word-level timestamps. 5 voices, 20 languages.
+
+#### xAI TTS settings
+
+| Setting | Range | Description |
+|---|---|---|
+| **Voice** | — | xAI voice. Default: `eve`. |
+| **Language** | — | Output language. Default: `en`. |
+| **Speed** | 0.7–1.5 | Playback speed. |
+
+### Rime
+
+<Markdown src="/docs/snippets/generated/models-tts-rime.mdx" />
+
+`mistv2` for low-latency streaming (300+ voices, English/Spanish), `arcana` for premium expressiveness (English/Spanish/French/German).
+
+#### Rime settings
+
+| Setting | Description |
+|---|---|
+| **Voice** | Rime voice. Default: `cove`. |
+| **Language** | Output language. Default: `en`. |
+
+## STT Providers
+
+The STT provider transcribes caller speech into text for the LLM.
+
+### Deepgram
+
+<Markdown src="/docs/snippets/generated/models-stt-deepgram.mdx" />
+
+#### Deepgram settings
+
+| Setting | Description |
+|---|---|
+| **Language** | Transcription language |
+| **Keywords** | Boost recognition of specific words or phrases |
+
+### Cartesia
+
+<Markdown src="/docs/snippets/generated/models-stt-cartesia.mdx" />
+
+#### Cartesia STT settings
+
+| Setting | Description |
+|---|---|
+| **Language** | Transcription language |
+| **Model** | STT model to use |
+
+### Soniox
+
+<Markdown src="/docs/snippets/generated/models-stt-soniox.mdx" />
+
+#### Soniox settings
+
+| Setting | Description |
+|---|---|
+| **Language** | Transcription language |
+| **Model** | STT model to use |
+
+### ElevenLabs STT
+
+<Markdown src="/docs/snippets/generated/models-stt-elevenlabs.mdx" />
+
+#### ElevenLabs STT settings
+
+| Setting | Description |
+|---|---|
+| **Language** | Transcription language |
+| **Model** | Scribe v2 model |
+
+### Google STT
+
+Streaming recognition with `chirp_3` (best accuracy, 100+ languages), `chirp_2`, or `latest_long` (long-form conversation model).
+
+#### Google STT settings
+
+| Setting | Description |
+|---|---|
+| **Language hints** | One or more expected languages to bias recognition |
+| **Location** | Google Cloud recognition location. Default: `global`. |
+
+### xAI STT
+
+<Markdown src="/docs/snippets/generated/models-stt-xai.mdx" />
+
+`grok-stt` — real-time streaming with word-level timestamps and telephony support across 25 languages.
+
+#### xAI STT settings
+
+| Setting | Description |
+|---|---|
+| **Language** | Transcription language, or auto-detect |
+| **Diarization** | Label speech per speaker |
+
+### Amazon Transcribe
+
+<Markdown src="/docs/snippets/generated/models-stt-aws.mdx" />
+
+Streaming recognition with word-level timestamps and telephony (8 kHz) support across 30+ languages.
+
+#### Amazon Transcribe settings
+
+| Setting | Description |
+|---|---|
+| **Language** | Transcription language |
+| **Region** | AWS region for the streaming endpoint |
+
+## Telephony
+
+Transport layer for connecting calls.
+
+<Markdown src="/docs/snippets/generated/pricing-telephony.mdx" />

@@ -1,0 +1,1210 @@
+{
+  "errorCodes": [
+    {
+      "code": "invalid_credentials",
+      "status": 401,
+      "title": "Invalid Credentials",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "The email and password combination does not match any account. Double-check your credentials or use the forgot password flow."
+    },
+    {
+      "code": "email_already_exists",
+      "status": 409,
+      "title": "Email Already Exists",
+      "category": "conflict",
+      "categoryTitle": "Conflicts",
+      "description": "An account with this email address already exists. Try logging in instead, or use a different email to register."
+    },
+    {
+      "code": "phone_already_exists",
+      "status": 409,
+      "title": "Phone Already Exists",
+      "category": "conflict",
+      "categoryTitle": "Conflicts",
+      "description": "An account with this phone number already exists. Try logging in instead, or use a different number."
+    },
+    {
+      "code": "contact_phone_already_exists",
+      "status": 409,
+      "title": "Contact Phone Already Exists",
+      "category": "conflict",
+      "categoryTitle": "Conflicts",
+      "description": "A contact with this phone number already exists on this account. Open the existing contact instead, or use a different number."
+    },
+    {
+      "code": "account_suspended",
+      "status": 403,
+      "title": "Account Suspended",
+      "category": "authorization",
+      "categoryTitle": "Authorization",
+      "description": "This account has been suspended by an administrator. Contact support to resolve the suspension."
+    },
+    {
+      "code": "account_access_denied",
+      "status": 403,
+      "title": "Account Access Denied",
+      "category": "authorization",
+      "categoryTitle": "Authorization",
+      "description": "You do not have permission to access this account. Verify the account ID or request access from the account owner."
+    },
+    {
+      "code": "token_expired",
+      "status": 401,
+      "title": "Token Expired",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "Your access token has expired. Use your refresh token to obtain a new access token, or log in again."
+    },
+    {
+      "code": "token_invalid",
+      "status": 401,
+      "title": "Token Invalid",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "The provided token could not be validated. Clear your stored tokens and log in again."
+    },
+    {
+      "code": "token_missing",
+      "status": 401,
+      "title": "Token Missing",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "This endpoint requires authentication. Include a valid Bearer token in the Authorization header."
+    },
+    {
+      "code": "account_header_missing",
+      "status": 400,
+      "title": "Account Header Missing",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "Account-scoped requests authenticated with JWT require the X-Account-Id header. Use GET /accounts to list accessible accounts, or include the header from the frontend client state."
+    },
+    {
+      "code": "refresh_token_invalid",
+      "status": 401,
+      "title": "Refresh Token Invalid",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "The refresh token is invalid, has been revoked, or has expired. Log in again to obtain new tokens."
+    },
+    {
+      "code": "email_already_verified",
+      "status": 400,
+      "title": "Email Already Verified",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "This email address has already been verified. No further action is needed."
+    },
+    {
+      "code": "email_verification_code_invalid",
+      "status": 400,
+      "title": "Email Verification Code Invalid",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "The email verification code is incorrect. Check the code and try again, or request a new one."
+    },
+    {
+      "code": "email_verification_code_expired",
+      "status": 400,
+      "title": "Email Verification Code Expired",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "The email verification code has expired (codes are valid for 15 minutes). Request a new verification code."
+    },
+    {
+      "code": "email_verification_code_used",
+      "status": 400,
+      "title": "Email Verification Code Used",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "This email verification code has already been used. Request a new code if you need to verify again."
+    },
+    {
+      "code": "email_service_unavailable",
+      "status": 503,
+      "title": "Email Service Unavailable",
+      "category": "server",
+      "categoryTitle": "Server",
+      "description": "The email delivery service is temporarily unavailable. Retry your request in a few moments."
+    },
+    {
+      "code": "phone_already_verified",
+      "status": 400,
+      "title": "Phone Already Verified",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "This phone number has already been verified. No further action is needed."
+    },
+    {
+      "code": "phone_verification_code_invalid",
+      "status": 400,
+      "title": "Phone Verification Code Invalid",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "The phone verification code is incorrect. Check the code and try again, or request a new one."
+    },
+    {
+      "code": "phone_verification_code_expired",
+      "status": 400,
+      "title": "Phone Verification Code Expired",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "The phone verification code has expired (codes are valid for 10 minutes). Request a new verification code."
+    },
+    {
+      "code": "phone_verification_code_used",
+      "status": 400,
+      "title": "Phone Verification Code Used",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "This phone verification code has already been used. Request a new code if you need to verify again."
+    },
+    {
+      "code": "phone_number_missing",
+      "status": 400,
+      "title": "Phone Number Missing",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "No phone number is associated with this account. Add a phone number before attempting verification."
+    },
+    {
+      "code": "sms_service_unavailable",
+      "status": 503,
+      "title": "SMS Service Unavailable",
+      "category": "server",
+      "categoryTitle": "Server",
+      "description": "The SMS delivery service is temporarily unavailable. Retry your request in a few moments."
+    },
+    {
+      "code": "mfa_already_enabled",
+      "status": 400,
+      "title": "MFA Already Enabled",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "Multi-factor authentication is already enabled on this account. No further setup is needed."
+    },
+    {
+      "code": "mfa_not_enabled",
+      "status": 400,
+      "title": "MFA Not Enabled",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "Multi-factor authentication is not enabled on this account. Call the MFA setup endpoint first."
+    },
+    {
+      "code": "mfa_not_setup",
+      "status": 400,
+      "title": "MFA Not Setup",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "MFA setup has not been initiated. Call the MFA setup endpoint to receive a TOTP secret before verifying."
+    },
+    {
+      "code": "mfa_code_invalid",
+      "status": 400,
+      "title": "MFA Code Invalid",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "The MFA code is incorrect or has expired. Enter the current code from your authenticator app."
+    },
+    {
+      "code": "password_reset_token_invalid",
+      "status": 400,
+      "title": "Password Reset Token Invalid",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "The password reset token is invalid or corrupted. Request a new password reset email."
+    },
+    {
+      "code": "password_reset_token_expired",
+      "status": 400,
+      "title": "Password Reset Token Expired",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "The password reset token has expired (tokens are valid for 1 hour). Request a new password reset email."
+    },
+    {
+      "code": "password_reset_token_used",
+      "status": 400,
+      "title": "Password Reset Token Used",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "This password reset token has already been used. Request a new password reset email if needed."
+    },
+    {
+      "code": "password_current_incorrect",
+      "status": 400,
+      "title": "Current Password Incorrect",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "The current password you provided is incorrect. Try again with the correct password."
+    },
+    {
+      "code": "password_same_as_current",
+      "status": 400,
+      "title": "Password Same As Current",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "Your new password must be different from your current password. Choose a different password."
+    },
+    {
+      "code": "invalid_o_auth_state",
+      "status": 400,
+      "title": "Invalid OAuth State",
+      "category": "oauth",
+      "categoryTitle": "OAuth",
+      "description": "The OAuth state parameter is invalid, expired, or missing. Restart the OAuth flow from the beginning."
+    },
+    {
+      "code": "o_auth_provider_error",
+      "status": 502,
+      "title": "OAuth Provider Error",
+      "category": "oauth",
+      "categoryTitle": "OAuth",
+      "description": "The OAuth provider (e.g., Google) returned an error during authentication. Try again, or check the provider's status page."
+    },
+    {
+      "code": "o_auth_already_linked",
+      "status": 409,
+      "title": "OAuth Already Linked",
+      "category": "oauth",
+      "categoryTitle": "OAuth",
+      "description": "This OAuth account is already linked to a different user. Unlink it from the other account first, or use a different OAuth account."
+    },
+    {
+      "code": "provider_already_connected",
+      "status": 409,
+      "title": "Provider Already Connected",
+      "category": "oauth",
+      "categoryTitle": "OAuth",
+      "description": "You already have this OAuth provider connected. Unlink the existing connection before linking a new one."
+    },
+    {
+      "code": "o_auth_not_linked",
+      "status": 404,
+      "title": "OAuth Not Linked",
+      "category": "oauth",
+      "categoryTitle": "OAuth",
+      "description": "No OAuth connection exists for this provider on your account. Link the provider first before attempting to unlink."
+    },
+    {
+      "code": "cannot_unlink_only_auth",
+      "status": 400,
+      "title": "Cannot Unlink Only Auth Method",
+      "category": "oauth",
+      "categoryTitle": "OAuth",
+      "description": "This is your only authentication method. Set a password or link another OAuth provider before unlinking this one."
+    },
+    {
+      "code": "validation_failed",
+      "status": 400,
+      "title": "Validation Failed",
+      "category": "validation",
+      "categoryTitle": "Validation",
+      "description": "One or more request fields failed validation. Check the errors array in the response for field-specific details."
+    },
+    {
+      "code": "bad_request",
+      "status": 400,
+      "title": "Bad Request",
+      "category": "validation",
+      "categoryTitle": "Validation",
+      "description": "The request is malformed or contains invalid parameters. Check the request body and query parameters."
+    },
+    {
+      "code": "invalid_json",
+      "status": 400,
+      "title": "Invalid JSON",
+      "category": "validation",
+      "categoryTitle": "Validation",
+      "description": "The request body is not valid JSON. Ensure the body is properly formatted and the Content-Type header is application/json."
+    },
+    {
+      "code": "resource_not_found",
+      "status": 404,
+      "title": "Resource Not Found",
+      "category": "not_found",
+      "categoryTitle": "Not Found",
+      "description": "The requested resource does not exist or has been deleted. Verify the resource ID."
+    },
+    {
+      "code": "not_found",
+      "status": 404,
+      "title": "Not Found",
+      "category": "not_found",
+      "categoryTitle": "Not Found",
+      "description": "The requested resource does not exist or has been deleted. Verify the resource ID."
+    },
+    {
+      "code": "forbidden",
+      "status": 403,
+      "title": "Forbidden",
+      "category": "authorization",
+      "categoryTitle": "Authorization",
+      "description": "You do not have permission to perform this action. Contact the account owner for access."
+    },
+    {
+      "code": "insufficient_permissions",
+      "status": 403,
+      "title": "Insufficient Permissions",
+      "category": "authorization",
+      "categoryTitle": "Authorization",
+      "description": "Your role does not have sufficient permissions for this action. Contact your organization owner or admin."
+    },
+    {
+      "code": "conflict",
+      "status": 409,
+      "title": "Conflict",
+      "category": "conflict",
+      "categoryTitle": "Conflicts",
+      "description": "The request conflicts with the current state of the resource. Fetch the latest state and retry."
+    },
+    {
+      "code": "resource_already_exists",
+      "status": 409,
+      "title": "Resource Already Exists",
+      "category": "conflict",
+      "categoryTitle": "Conflicts",
+      "description": "A resource with these properties already exists. Use a different identifier or update the existing resource."
+    },
+    {
+      "code": "insufficient_balance",
+      "status": 402,
+      "title": "Insufficient Balance",
+      "category": "payment",
+      "categoryTitle": "Payment",
+      "description": "Your account balance is too low for this operation. Add funds from the billing page to continue."
+    },
+    {
+      "code": "payment_required",
+      "status": 402,
+      "title": "Payment Required",
+      "category": "payment",
+      "categoryTitle": "Payment",
+      "description": "This feature requires payment. Add a payment method and ensure your account has sufficient balance."
+    },
+    {
+      "code": "subscription_required",
+      "status": 402,
+      "title": "Subscription Required",
+      "category": "payment",
+      "categoryTitle": "Payment",
+      "description": "An active subscription is required for this feature. Upgrade your plan to access it."
+    },
+    {
+      "code": "feature_not_available",
+      "status": 402,
+      "title": "Feature Not Available",
+      "category": "payment",
+      "categoryTitle": "Payment",
+      "description": "This feature is not included in your current plan. Upgrade to a higher tier to access it."
+    },
+    {
+      "code": "payment_failed",
+      "status": 402,
+      "title": "Payment Failed",
+      "category": "payment",
+      "categoryTitle": "Payment",
+      "description": "The payment charge failed (card declined, insufficient funds, or payment processor error). Try a different payment method."
+    },
+    {
+      "code": "business_rule_violation",
+      "status": 422,
+      "title": "Business Rule Violation",
+      "category": "business_rules",
+      "categoryTitle": "Business Rules",
+      "description": "The request violates a business rule. Check the error detail for specifics."
+    },
+    {
+      "code": "invalid_state_transition",
+      "status": 422,
+      "title": "Invalid State Transition",
+      "category": "business_rules",
+      "categoryTitle": "Business Rules",
+      "description": "This state transition is not allowed from the resource's current state. Check the resource status before retrying."
+    },
+    {
+      "code": "unprocessable_entity",
+      "status": 422,
+      "title": "Unprocessable Entity",
+      "category": "business_rules",
+      "categoryTitle": "Business Rules",
+      "description": "The request is well-formed but cannot be processed. Check the error detail for the specific reason."
+    },
+    {
+      "code": "rate_limit_exceeded",
+      "status": 429,
+      "title": "Rate Limit Exceeded",
+      "category": "rate_limiting",
+      "categoryTitle": "Rate Limiting",
+      "description": "Too many requests. Wait for the duration specified in meta.retryAfterSecs before retrying."
+    },
+    {
+      "code": "queue_full",
+      "status": 429,
+      "title": "Queue Full",
+      "category": "rate_limiting",
+      "categoryTitle": "Rate Limiting",
+      "description": "The call queue has reached maximum capacity. Wait for active calls to complete before queuing more."
+    },
+    {
+      "code": "assistant_quota_exceeded",
+      "status": 429,
+      "title": "Assistant Quota Exceeded",
+      "category": "rate_limiting",
+      "categoryTitle": "Rate Limiting",
+      "description": "Your assistant usage allowance for this period is exhausted. It resets at meta.resetsAt; topping up your balance also earns extra assistant allowance."
+    },
+    {
+      "code": "user_phone_not_verified",
+      "status": 403,
+      "title": "Phone Verification Required",
+      "category": "promotions",
+      "categoryTitle": "Other",
+      "description": "Your phone number must be verified before claiming this promotion. Verify your phone in profile settings first."
+    },
+    {
+      "code": "payment_method_required",
+      "status": 403,
+      "title": "Payment Method Required",
+      "category": "promotions",
+      "categoryTitle": "Other",
+      "description": "A payment method on file is required before claiming this promotion. Add a card in billing settings first."
+    },
+    {
+      "code": "trial_already_claimed",
+      "status": 409,
+      "title": "Trial Already Claimed",
+      "category": "promotions",
+      "categoryTitle": "Other",
+      "description": "The trial credit has already been claimed for this user. It can only be claimed once."
+    },
+    {
+      "code": "promotion_not_eligible",
+      "status": 409,
+      "title": "Promotion Not Eligible",
+      "category": "promotions",
+      "categoryTitle": "Other",
+      "description": "This promotion cannot be claimed with the provided details. Contact support if you believe this is an error."
+    },
+    {
+      "code": "coupon_not_found",
+      "status": 404,
+      "title": "Coupon Not Found",
+      "category": "promotions",
+      "categoryTitle": "Other",
+      "description": "No coupon exists with this code. Check the code for typos."
+    },
+    {
+      "code": "coupon_not_redeemable",
+      "status": 410,
+      "title": "Coupon Not Redeemable",
+      "category": "promotions",
+      "categoryTitle": "Other",
+      "description": "This coupon is no longer redeemable — it is inactive, outside its redemption window, or fully redeemed."
+    },
+    {
+      "code": "coupon_already_redeemed",
+      "status": 409,
+      "title": "Coupon Already Redeemed",
+      "category": "promotions",
+      "categoryTitle": "Other",
+      "description": "You have already redeemed this coupon. Each coupon can be redeemed once per user."
+    },
+    {
+      "code": "phone_number_not_active",
+      "status": 400,
+      "title": "Phone Number Not Active",
+      "category": "calls",
+      "categoryTitle": "Calls",
+      "description": "This phone number is not in active status. Activate the phone number from your dashboard before using it for calls."
+    },
+    {
+      "code": "phone_number_not_verified",
+      "status": 400,
+      "title": "Phone Number Not Verified",
+      "category": "calls",
+      "categoryTitle": "Calls",
+      "description": "This phone number must be verified before making outbound calls. Complete the verification process first."
+    },
+    {
+      "code": "phone_number_cannot_initiate_calls",
+      "status": 400,
+      "title": "Phone Number Cannot Initiate Calls",
+      "category": "calls",
+      "categoryTitle": "Calls",
+      "description": "This phone number can only receive calls. WhatsApp numbers do not support outbound calling yet — choose a phone number with outbound call capability."
+    },
+    {
+      "code": "flow_not_published",
+      "status": 400,
+      "title": "Flow Not Published",
+      "category": "calls",
+      "categoryTitle": "Calls",
+      "description": "The flow must be published before it can be used for calls. Publish the flow from the flow editor."
+    },
+    {
+      "code": "provider_call_rejected",
+      "status": 400,
+      "title": "Provider Call Rejected",
+      "category": "calls",
+      "categoryTitle": "Calls",
+      "description": "The telephony provider rejected the call to this number. The destination may not be enabled for outbound calling from this account."
+    },
+    {
+      "code": "concurrent_call_limit_exceeded",
+      "status": 422,
+      "title": "Concurrent Call Limit Exceeded",
+      "category": "calls",
+      "categoryTitle": "Calls",
+      "description": "You have reached the maximum number of simultaneous active calls for your account. Wait for active calls to end or upgrade your plan."
+    },
+    {
+      "code": "daily_call_limit_exceeded",
+      "status": 422,
+      "title": "Daily Call Limit Exceeded",
+      "category": "calls",
+      "categoryTitle": "Calls",
+      "description": "Your daily call quota has been exhausted. The limit resets at midnight UTC, or upgrade your plan for higher limits."
+    },
+    {
+      "code": "contact_on_dnc_list",
+      "status": 422,
+      "title": "Contact On DNC List",
+      "category": "calls",
+      "categoryTitle": "Calls",
+      "description": "This phone number is on your account's Do Not Call list. Remove it from the DNC list before calling, or skip this contact."
+    },
+    {
+      "code": "outside_callable_hours",
+      "status": 422,
+      "title": "Outside Callable Hours",
+      "category": "calls",
+      "categoryTitle": "Calls",
+      "description": "This call was blocked because the recipient's local time is outside legal calling hours (8 AM–9 PM). Schedule the call for an appropriate time."
+    },
+    {
+      "code": "call_already_completed",
+      "status": 422,
+      "title": "Call Already Completed",
+      "category": "calls",
+      "categoryTitle": "Calls",
+      "description": "This call has already ended and cannot be modified. Fetch the call details to see the final status."
+    },
+    {
+      "code": "phone_provider_not_active",
+      "status": 400,
+      "title": "Phone Provider Not Active",
+      "category": "phones",
+      "categoryTitle": "Phone Numbers",
+      "description": "The phone provider is not in active status. Activate the provider before using its phone numbers."
+    },
+    {
+      "code": "phone_number_already_connected",
+      "status": 400,
+      "title": "Phone Number Already Connected",
+      "category": "phones",
+      "categoryTitle": "Phone Numbers",
+      "description": "This phone number is already connected to a flow. Disconnect it from the current flow before connecting to a new one."
+    },
+    {
+      "code": "phone_number_not_connected",
+      "status": 400,
+      "title": "Phone Number Not Connected",
+      "category": "phones",
+      "categoryTitle": "Phone Numbers",
+      "description": "This phone number is not connected to any flow. Connect it to a flow to enable inbound call handling."
+    },
+    {
+      "code": "provider_must_be_sip",
+      "status": 400,
+      "title": "Provider Must Be SIP",
+      "category": "phones",
+      "categoryTitle": "Phone Numbers",
+      "description": "This operation is only available for SIP-type providers. Verify the provider type before proceeding."
+    },
+    {
+      "code": "verification_only_for_sip",
+      "status": 400,
+      "title": "Verification Only For SIP",
+      "category": "phones",
+      "categoryTitle": "Phone Numbers",
+      "description": "Caller ID verification is only supported for SIP phone numbers. System Twilio numbers are verified automatically."
+    },
+    {
+      "code": "phone_verification_not_started",
+      "status": 400,
+      "title": "Phone Verification Not Started",
+      "category": "phones",
+      "categoryTitle": "Phone Numbers",
+      "description": "No caller ID verification is in progress for this number. Start a new verification before checking the status."
+    },
+    {
+      "code": "twilio_credentials_required",
+      "status": 400,
+      "title": "Twilio Credentials Required",
+      "category": "phones",
+      "categoryTitle": "Phone Numbers",
+      "description": "Twilio account credentials (Account SID and Auth Token) are required for this provider type. Provide them in the request."
+    },
+    {
+      "code": "byoc_only",
+      "status": 400,
+      "title": "BYOC Only",
+      "category": "phones",
+      "categoryTitle": "Phone Numbers",
+      "description": "This operation is only available for BYOC (Bring Your Own Carrier) providers. It does not apply to system Twilio numbers."
+    },
+    {
+      "code": "phone_already_registered",
+      "status": 409,
+      "title": "Phone Already Registered",
+      "category": "phones",
+      "categoryTitle": "Phone Numbers",
+      "description": "This phone number is already registered in the system. Use a different number or check existing phone numbers."
+    },
+    {
+      "code": "cannot_delete_system_provider",
+      "status": 422,
+      "title": "Cannot Delete System Provider",
+      "category": "phones",
+      "categoryTitle": "Phone Numbers",
+      "description": "System-managed providers cannot be deleted. Only user-created SIP and BYOC providers can be removed."
+    },
+    {
+      "code": "flow_name_already_exists",
+      "status": 409,
+      "title": "Flow Name Already Exists",
+      "category": "flows",
+      "categoryTitle": "Flows",
+      "description": "A flow with this name already exists in your account. Choose a different name."
+    },
+    {
+      "code": "flow_structure_invalid",
+      "status": 400,
+      "title": "Flow Structure Invalid",
+      "category": "flows",
+      "categoryTitle": "Flows",
+      "description": "The flow definition contains structural errors. Check the errors array in the response for specific node and edge issues."
+    },
+    {
+      "code": "flow_has_connected_phones",
+      "status": 400,
+      "title": "Flow Has Connected Phones",
+      "category": "flows",
+      "categoryTitle": "Flows",
+      "description": "This flow cannot be deleted because phone numbers are still connected to it. Disconnect all phone numbers first."
+    },
+    {
+      "code": "flow_version_invalid",
+      "status": 400,
+      "title": "Flow Version Invalid",
+      "category": "flows",
+      "categoryTitle": "Flows",
+      "description": "The flow version format is invalid. Use semantic versioning format (e.g., 1.0.0)."
+    },
+    {
+      "code": "flow_version_conflict",
+      "status": 409,
+      "title": "Flow Version Conflict",
+      "category": "flows",
+      "categoryTitle": "Flows",
+      "description": "The flow has been modified since you last loaded it. Fetch the latest version and try again."
+    },
+    {
+      "code": "flow_function_name_exists",
+      "status": 409,
+      "title": "Flow Function Name Already Exists",
+      "category": "flows",
+      "categoryTitle": "Flows",
+      "description": "A flow function with this name already exists in your account. Choose a different name."
+    },
+    {
+      "code": "flow_function_not_found",
+      "status": 404,
+      "title": "Flow Function Not Found",
+      "category": "flows",
+      "categoryTitle": "Flows",
+      "description": "No flow function was found with this ID. Verify the function ID or list functions to find the correct one."
+    },
+    {
+      "code": "flow_generation_failed",
+      "status": 502,
+      "title": "Flow Generation Failed",
+      "category": "flows",
+      "categoryTitle": "Flows",
+      "description": "The AI could not produce a valid flow from this description. Rephrase the request with a clearer goal, or build the flow manually in the editor."
+    },
+    {
+      "code": "payment_method_card_only",
+      "status": 400,
+      "title": "Payment Method Card Only",
+      "category": "payment",
+      "categoryTitle": "Payment",
+      "description": "Only card payment methods are currently supported. Add a credit or debit card to proceed."
+    },
+    {
+      "code": "template_variable_resolution_failed",
+      "status": 400,
+      "title": "Template Variable Resolution Failed",
+      "category": "templates",
+      "categoryTitle": "Templates",
+      "description": "One or more template variables could not be resolved. Ensure all required variables are provided in the request."
+    },
+    {
+      "code": "phone_number_in_use",
+      "status": 409,
+      "title": "Phone Number In Use",
+      "category": "phones",
+      "categoryTitle": "Phone Numbers",
+      "description": "This phone number is already in use by another user. Use a different phone number."
+    },
+    {
+      "code": "mfa_token_invalid",
+      "status": 400,
+      "title": "MFA Token Invalid",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "The MFA token is invalid or has expired. Log in again and complete the MFA challenge."
+    },
+    {
+      "code": "invalid_id_format",
+      "status": 400,
+      "title": "Invalid ID Format",
+      "category": "validation",
+      "categoryTitle": "Validation",
+      "description": "The provided ID is not a valid UUID. Use the format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx."
+    },
+    {
+      "code": "verification_code_invalid",
+      "status": 400,
+      "title": "Verification Code Invalid",
+      "category": "validation",
+      "categoryTitle": "Validation",
+      "description": "The verification code is incorrect. Check the code and try again, or request a new one."
+    },
+    {
+      "code": "cannot_delete_has_dependencies",
+      "status": 409,
+      "title": "Cannot Delete Has Dependencies",
+      "category": "conflict",
+      "categoryTitle": "Conflicts",
+      "description": "This resource has dependent resources that must be removed first. Check which resources reference it before deleting."
+    },
+    {
+      "code": "schedule_not_found",
+      "status": 404,
+      "title": "Schedule Not Found",
+      "category": "not_found",
+      "categoryTitle": "Not Found",
+      "description": "No call schedule was found with this ID. Verify the schedule ID or list schedules to find the correct one."
+    },
+    {
+      "code": "schedule_already_paused",
+      "status": 422,
+      "title": "Schedule Already Paused",
+      "category": "scheduling",
+      "categoryTitle": "Scheduling",
+      "description": "This schedule is already paused. No action is needed, or resume it before pausing again."
+    },
+    {
+      "code": "schedule_not_paused",
+      "status": 422,
+      "title": "Schedule Not Paused",
+      "category": "scheduling",
+      "categoryTitle": "Scheduling",
+      "description": "This schedule is not paused and cannot be resumed. Only paused schedules can be resumed."
+    },
+    {
+      "code": "invalid_cron_expression",
+      "status": 400,
+      "title": "Invalid Cron Expression",
+      "category": "scheduling",
+      "categoryTitle": "Scheduling",
+      "description": "The cron expression is malformed. Use standard 5-field cron syntax (minute hour day month weekday)."
+    },
+    {
+      "code": "invalid_timezone",
+      "status": 400,
+      "title": "Invalid Timezone",
+      "category": "scheduling",
+      "categoryTitle": "Scheduling",
+      "description": "The timezone identifier is not recognized. Use a valid IANA timezone (e.g., America/New_York, Europe/Istanbul)."
+    },
+    {
+      "code": "campaign_not_found",
+      "status": 404,
+      "title": "Campaign Not Found",
+      "category": "not_found",
+      "categoryTitle": "Not Found",
+      "description": "No campaign was found with this ID. Verify the campaign ID or list campaigns to find the correct one."
+    },
+    {
+      "code": "campaign_not_draft",
+      "status": 422,
+      "title": "Campaign Not In Draft State",
+      "category": "scheduling",
+      "categoryTitle": "Scheduling",
+      "description": "This campaign is not in draft state and cannot be modified. Only draft campaigns can be edited."
+    },
+    {
+      "code": "campaign_no_contacts",
+      "status": 422,
+      "title": "Campaign Has No Contacts",
+      "category": "scheduling",
+      "categoryTitle": "Scheduling",
+      "description": "This campaign has no contacts to call. Add contacts before starting the campaign."
+    },
+    {
+      "code": "legal_acceptance_required",
+      "status": 400,
+      "title": "Legal Acceptance Required",
+      "category": "validation",
+      "categoryTitle": "Validation",
+      "description": "You must accept the required legal documents (Terms of Service, Privacy Policy) before proceeding."
+    },
+    {
+      "code": "invitation_not_found",
+      "status": 404,
+      "title": "Invitation Not Found",
+      "category": "not_found",
+      "categoryTitle": "Not Found",
+      "description": "The invitation does not exist or has already been accepted, declined, or revoked."
+    },
+    {
+      "code": "invitation_not_pending",
+      "status": 422,
+      "title": "Invitation Not Pending",
+      "category": "organizations",
+      "categoryTitle": "Organizations",
+      "description": "This invitation has already been accepted, declined, or revoked. It can no longer be acted upon."
+    },
+    {
+      "code": "invitation_expired",
+      "status": 410,
+      "title": "Invitation Expired",
+      "category": "organizations",
+      "categoryTitle": "Organizations",
+      "description": "This invitation has expired and is no longer valid. Ask the organization admin to send a new invitation."
+    },
+    {
+      "code": "not_invitation_recipient",
+      "status": 403,
+      "title": "Not Invitation Recipient",
+      "category": "authorization",
+      "categoryTitle": "Authorization",
+      "description": "This invitation was sent to a different user. Only the intended recipient can accept or decline it."
+    },
+    {
+      "code": "organization_suspended",
+      "status": 422,
+      "title": "Organization Suspended",
+      "category": "organizations",
+      "categoryTitle": "Organizations",
+      "description": "This organization is suspended and cannot accept new members. Contact the organization owner."
+    },
+    {
+      "code": "already_organization_member",
+      "status": 409,
+      "title": "Already Organization Member",
+      "category": "organizations",
+      "categoryTitle": "Organizations",
+      "description": "This user is already a member of the organization. No invitation is needed."
+    },
+    {
+      "code": "api_key_invalid",
+      "status": 401,
+      "title": "API Key Invalid",
+      "category": "api_keys",
+      "categoryTitle": "API Keys",
+      "description": "The API key is not recognized or has been deleted. Create a new API key from your dashboard."
+    },
+    {
+      "code": "api_key_expired",
+      "status": 401,
+      "title": "API Key Expired",
+      "category": "api_keys",
+      "categoryTitle": "API Keys",
+      "description": "This API key has passed its expiration date. Create a new API key to restore access."
+    },
+    {
+      "code": "api_key_revoked",
+      "status": 401,
+      "title": "API Key Revoked",
+      "category": "api_keys",
+      "categoryTitle": "API Keys",
+      "description": "This API key has been revoked and can no longer be used. Create a new API key if needed."
+    },
+    {
+      "code": "api_key_not_allowed",
+      "status": 403,
+      "title": "API Key Not Allowed",
+      "category": "api_keys",
+      "categoryTitle": "API Keys",
+      "description": "API key authentication is not permitted on this endpoint. Use a JWT Bearer token instead."
+    },
+    {
+      "code": "api_key_insufficient_scope",
+      "status": 403,
+      "title": "API Key Insufficient Scope",
+      "category": "api_keys",
+      "categoryTitle": "API Keys",
+      "description": "This API key does not have the required scope for this operation. Create a new key with the appropriate scopes, or use a JWT."
+    },
+    {
+      "code": "api_key_ip_restricted",
+      "status": 403,
+      "title": "API Key IP Restricted",
+      "category": "api_keys",
+      "categoryTitle": "API Keys",
+      "description": "The request IP address is not in this API key's allowed IP list. Update the key's IP restrictions or use a different key."
+    },
+    {
+      "code": "api_key_limit_reached",
+      "status": 422,
+      "title": "API Key Limit Reached",
+      "category": "api_keys",
+      "categoryTitle": "API Keys",
+      "description": "You have reached the maximum number of API keys for this account. Delete unused keys before creating new ones."
+    },
+    {
+      "code": "internal_error",
+      "status": 500,
+      "title": "Internal Server Error",
+      "category": "server",
+      "categoryTitle": "Server",
+      "description": "An unexpected server error occurred. If this persists, contact support with the requestId from this response."
+    },
+    {
+      "code": "service_error",
+      "status": 502,
+      "title": "Service Error",
+      "category": "server",
+      "categoryTitle": "Server",
+      "description": "An external service dependency encountered an error. Retry your request in a few moments."
+    },
+    {
+      "code": "service_unavailable",
+      "status": 503,
+      "title": "Service Unavailable",
+      "category": "server",
+      "categoryTitle": "Server",
+      "description": "The service is temporarily unavailable. Retry your request in a few moments."
+    },
+    {
+      "code": "no_bots_available",
+      "status": 503,
+      "title": "No Bots Available",
+      "category": "server",
+      "categoryTitle": "Server",
+      "description": "No healthy bots are currently available in the target region to handle this call. Retry shortly while the bot pool scales up."
+    },
+    {
+      "code": "region_saturated",
+      "status": 503,
+      "title": "Region Saturated",
+      "category": "server",
+      "categoryTitle": "Server",
+      "description": "The target region is at capacity (bot pool plus queue is full). Retry in a moment, or contact support if this persists."
+    },
+    {
+      "code": "recording_not_available",
+      "status": 400,
+      "title": "Recording Not Available",
+      "category": "server",
+      "categoryTitle": "Server",
+      "description": "No recording is available for this call. The call may not have been recorded, or the recording has been deleted."
+    },
+    {
+      "code": "recording_service_not_configured",
+      "status": 503,
+      "title": "Recording Service Not Configured",
+      "category": "server",
+      "categoryTitle": "Server",
+      "description": "Recording storage is not configured on this deployment. Contact your administrator to enable recording."
+    },
+    {
+      "code": "meta_not_configured",
+      "status": 503,
+      "title": "Meta Integration Not Configured",
+      "category": "integrations",
+      "categoryTitle": "Integrations",
+      "description": "The Meta (Facebook) integration is not configured on this deployment. Contact your administrator to enable it."
+    },
+    {
+      "code": "meta_page_already_connected",
+      "status": 409,
+      "title": "Page Already Connected",
+      "category": "integrations",
+      "categoryTitle": "Integrations",
+      "description": "This Facebook page is already connected to an account. Disconnect the existing integration first, or pick a different page."
+    },
+    {
+      "code": "meta_form_already_mapped",
+      "status": 409,
+      "title": "Form Already Mapped",
+      "category": "integrations",
+      "categoryTitle": "Integrations",
+      "description": "This lead form already has a mapping on the integration. Update or delete the existing mapping instead."
+    },
+    {
+      "code": "meta_api_error",
+      "status": 502,
+      "title": "Meta API Error",
+      "category": "integrations",
+      "categoryTitle": "Integrations",
+      "description": "Meta's API rejected the request. Check the integration status and re-connect if the page tokens have expired."
+    },
+    {
+      "code": "meta_lead_unrecoverable",
+      "status": 422,
+      "title": "Meta Lead Unrecoverable",
+      "category": "integrations",
+      "categoryTitle": "Integrations",
+      "description": "This lead can't be retried. It was submitted without a valid phone number, so re-fetching it from Meta won't help."
+    },
+    {
+      "code": "unauthorized",
+      "status": 401,
+      "title": "Unauthorized",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "This endpoint requires authentication. Include a valid Bearer token or API key in your request."
+    }
+  ],
+  "fieldErrorCodes": [
+    {
+      "code": "invalid_email_format",
+      "description": "Email format is invalid (must conform to RFC 5322)"
+    },
+    {
+      "code": "invalid_phone_format",
+      "description": "Phone number format is invalid"
+    },
+    {
+      "code": "phone_not_e164",
+      "description": "Phone number must be in E.164 format (e.g., +14155552671)"
+    },
+    {
+      "code": "password_too_short",
+      "description": "Password must be at least 8 characters"
+    },
+    {
+      "code": "password_too_weak",
+      "description": "Password does not meet complexity requirements"
+    },
+    {
+      "code": "required",
+      "description": "This field is required but was not provided"
+    },
+    {
+      "code": "too_long",
+      "description": "Value exceeds the maximum allowed length"
+    },
+    {
+      "code": "too_short",
+      "description": "Value is below the minimum required length"
+    },
+    {
+      "code": "invalid_format",
+      "description": "Value format is invalid for this field"
+    },
+    {
+      "code": "mfa_code_invalid_format",
+      "description": "MFA code must be exactly 6 digits"
+    },
+    {
+      "code": "version_invalid_format",
+      "description": "Version must follow semantic versioning format (X.Y.Z)"
+    },
+    {
+      "code": "below_minimum",
+      "description": "Value is below the minimum allowed threshold"
+    },
+    {
+      "code": "above_maximum",
+      "description": "Value exceeds the maximum allowed threshold"
+    },
+    {
+      "code": "out_of_range",
+      "description": "Value is outside the valid range"
+    },
+    {
+      "code": "already_exists",
+      "description": "A resource with this value already exists (uniqueness constraint)"
+    },
+    {
+      "code": "already_in_use",
+      "description": "This value is already in use by another resource"
+    },
+    {
+      "code": "missing_main_agent",
+      "description": "Flow must contain exactly one main_agent node"
+    },
+    {
+      "code": "multiple_main_agents",
+      "description": "Flow contains multiple main_agent nodes (only one is allowed)"
+    },
+    {
+      "code": "missing_llm_service",
+      "description": "Flow is missing a required LLM service node"
+    },
+    {
+      "code": "missing_tts_service",
+      "description": "Flow is missing a required TTS service node"
+    },
+    {
+      "code": "missing_stt_service",
+      "description": "Flow is missing a required STT service node"
+    },
+    {
+      "code": "unknown_node_type",
+      "description": "Node type is not recognized"
+    },
+    {
+      "code": "invalid_edge_reference",
+      "description": "Edge references a node that does not exist in the flow"
+    },
+    {
+      "code": "invalid_initial_node",
+      "description": "The specified initial node does not exist in the flow"
+    },
+    {
+      "code": "circular_dependency",
+      "description": "Flow contains a circular dependency between nodes"
+    },
+    {
+      "code": "missing_tts_voice_id",
+      "description": "TTS node is missing the required voice ID"
+    },
+    {
+      "code": "missing_model",
+      "description": "Node is missing the required model field"
+    },
+    {
+      "code": "nodes_required",
+      "description": "At least one node is required in the flow definition"
+    },
+    {
+      "code": "edges_required",
+      "description": "Edges array is required in the flow definition"
+    },
+    {
+      "code": "invalid_language_code",
+      "description": "Language code is not recognized or not supported"
+    },
+    {
+      "code": "missing_stt_language",
+      "description": "STT node is missing the required language setting"
+    },
+    {
+      "code": "invalid_model_id",
+      "description": "Model ID does not exist or is disabled for this provider"
+    },
+    {
+      "code": "must_be_gte",
+      "description": "Value must be greater than or equal to the referenced field's value"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+---
+title: Flow Builder
+description: Design AI voice conversations visually with a drag-and-drop node editor.
+---
+
+The Flow Builder is Talkif's visual conversation designer. You build voice agent logic by placing nodes on a canvas, connecting them, and configuring each node's behavior — no code required for most use cases.
+
+## What you can build
+
+- **Customer support agents** — route callers to the right topic, collect information, resolve issues
+- **Sales agents** — run outbound campaigns with structured pitches and objection handling
+- **Appointment bookers** — check availability, schedule meetings, send confirmations
+- **Survey bots** — conduct phone surveys, collect and score responses
+
+## Key capabilities
+
+| Capability | Description |
+|---|---|
+| **Visual node editor** | Drag-and-drop canvas with Agent, Provider, and Action nodes |
+| **Real-time testing** | Make test calls directly from the editor before going live |
+| **Version control** | Every publish creates an immutable snapshot. Roll back anytime. |
+| **Template library** | Start from pre-built templates for common use cases |
+| **Prompt library** | Write prompts once, reuse across multiple flows |
+
+## How it works
+
+1. **Add nodes** — place Agent nodes for conversation handling, Provider nodes for AI services, and Action nodes for side effects
+2. **Connect nodes** — draw edges to define how data and conversation flow between nodes
+3. **Configure** — set prompts, select models, define transitions between agents
+4. **Test** — run test calls to validate behavior
+5. **Publish** — lock the flow and assign it to phone numbers
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Concepts" href="/flow-builder/concepts">
+    Understand nodes, edges, and the flow lifecycle
+  </Card>
+  <Card title="Agent Nodes" href="/flow-builder/agent-nodes">
+    Configure conversation handlers and transitions
+  </Card>
+  <Card title="Provider Nodes" href="/flow-builder/provider-nodes">
+    Set up LLM, TTS, and STT services
+  </Card>
+  <Card title="Action Nodes" href="/flow-builder/action-nodes">
+    End-call behavior, builtin functions, and pre/post agent actions
+  </Card>
+  <Card title="Call Lifetime" href="/flow-builder/call-lifetime">
+    Re-engage silent callers and cap maximum call length
+  </Card>
+</CardGroup>

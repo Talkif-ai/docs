@@ -1,0 +1,4612 @@
+{
+  "tts": [
+    {
+      "provider": "cartesia",
+      "displayName": "Cartesia",
+      "models": [
+        {
+          "modelId": "sonic-turbo",
+          "name": "Sonic Turbo",
+          "description": "All the power of Sonic with half the latency (as low as 40ms). Best for real-time conversational AI.",
+          "languages": [
+            {
+              "code": "zh",
+              "name": "Chinese",
+              "nativeName": "中文"
+            },
+            {
+              "code": "nl",
+              "name": "Dutch",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "ko",
+              "name": "Korean",
+              "nativeName": "한국어"
+            },
+            {
+              "code": "pl",
+              "name": "Polish",
+              "nativeName": "Polski"
+            },
+            {
+              "code": "pt",
+              "name": "Portuguese",
+              "nativeName": "Português"
+            },
+            {
+              "code": "ru",
+              "name": "Russian",
+              "nativeName": "Русский"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            },
+            {
+              "code": "sv",
+              "name": "Swedish",
+              "nativeName": "Svenska"
+            },
+            {
+              "code": "tr",
+              "name": "Turkish",
+              "nativeName": "Türkçe"
+            }
+          ],
+          "capabilities": {
+            "style": false,
+            "speakerBoost": false,
+            "voiceConversion": false,
+            "streaming": true,
+            "emotion": false,
+            "speedControl": false,
+            "volumeControl": false
+          },
+          "pricing": {
+            "ratePer1kCharsMicrocents": 37375,
+            "ratePer1kCharsDisplay": "$0.0374"
+          }
+        },
+        {
+          "modelId": "sonic-2",
+          "name": "Sonic 2",
+          "description": "Ultra-realistic speech with accurate transcript following, minimal hallucinations, and excellent voice cloning.",
+          "languages": [
+            {
+              "code": "zh",
+              "name": "Chinese",
+              "nativeName": "中文"
+            },
+            {
+              "code": "nl",
+              "name": "Dutch",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "ko",
+              "name": "Korean",
+              "nativeName": "한국어"
+            },
+            {
+              "code": "pl",
+              "name": "Polish",
+              "nativeName": "Polski"
+            },
+            {
+              "code": "pt",
+              "name": "Portuguese",
+              "nativeName": "Português"
+            },
+            {
+              "code": "ru",
+              "name": "Russian",
+              "nativeName": "Русский"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            },
+            {
+              "code": "sv",
+              "name": "Swedish",
+              "nativeName": "Svenska"
+            },
+            {
+              "code": "tr",
+              "name": "Turkish",
+              "nativeName": "Türkçe"
+            }
+          ],
+          "capabilities": {
+            "style": false,
+            "speakerBoost": false,
+            "voiceConversion": false,
+            "streaming": true,
+            "emotion": false,
+            "speedControl": false,
+            "volumeControl": false
+          },
+          "pricing": {
+            "ratePer1kCharsMicrocents": 37375,
+            "ratePer1kCharsDisplay": "$0.0374"
+          }
+        },
+        {
+          "modelId": "sonic-3",
+          "name": "Sonic 3",
+          "description": "Latest streaming TTS with emotion, laughter, speed, volume controls. 42 languages supported.",
+          "languages": [
+            {
+              "code": "ar",
+              "name": "Arabic",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "bn",
+              "name": "Bengali",
+              "nativeName": "বাংলা"
+            },
+            {
+              "code": "bg",
+              "name": "Bulgarian",
+              "nativeName": "Български"
+            },
+            {
+              "code": "zh",
+              "name": "Chinese",
+              "nativeName": "中文"
+            },
+            {
+              "code": "hr",
+              "name": "Croatian",
+              "nativeName": "Hrvatski"
+            },
+            {
+              "code": "cs",
+              "name": "Czech",
+              "nativeName": "Čeština"
+            },
+            {
+              "code": "da",
+              "name": "Danish",
+              "nativeName": "Dansk"
+            },
+            {
+              "code": "nl",
+              "name": "Dutch",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "fi",
+              "name": "Finnish",
+              "nativeName": "Suomi"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "ka",
+              "name": "Georgian",
+              "nativeName": "ქართული"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "el",
+              "name": "Greek",
+              "nativeName": "Ελληνικά"
+            },
+            {
+              "code": "gu",
+              "name": "Gujarati",
+              "nativeName": "ગુજરાતી"
+            },
+            {
+              "code": "he",
+              "name": "Hebrew",
+              "nativeName": "עברית"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "hu",
+              "name": "Hungarian",
+              "nativeName": "Magyar"
+            },
+            {
+              "code": "id",
+              "name": "Indonesian",
+              "nativeName": "Bahasa Indonesia"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "kn",
+              "name": "Kannada",
+              "nativeName": "ಕನ್ನಡ"
+            },
+            {
+              "code": "ko",
+              "name": "Korean",
+              "nativeName": "한국어"
+            },
+            {
+              "code": "ms",
+              "name": "Malay",
+              "nativeName": "Bahasa Melayu"
+            },
+            {
+              "code": "ml",
+              "name": "Malayalam",
+              "nativeName": "മലയാളം"
+            },
+            {
+              "code": "mr",
+              "name": "Marathi",
+              "nativeName": "मराठी"
+            },
+            {
+              "code": "no",
+              "name": "Norwegian",
+              "nativeName": "Norsk"
+            },
+            {
+              "code": "pl",
+              "name": "Polish",
+              "nativeName": "Polski"
+            },
+            {
+              "code": "pt",
+              "name": "Portuguese",
+              "nativeName": "Português"
+            },
+            {
+              "code": "pa",
+              "name": "Punjabi",
+              "nativeName": "ਪੰਜਾਬੀ"
+            },
+            {
+              "code": "ro",
+              "name": "Romanian",
+              "nativeName": "Română"
+            },
+            {
+              "code": "ru",
+              "name": "Russian",
+              "nativeName": "Русский"
+            },
+            {
+              "code": "sk",
+              "name": "Slovak",
+              "nativeName": "Slovenčina"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            },
+            {
+              "code": "sv",
+              "name": "Swedish",
+              "nativeName": "Svenska"
+            },
+            {
+              "code": "tl",
+              "name": "Tagalog",
+              "nativeName": "Tagalog"
+            },
+            {
+              "code": "ta",
+              "name": "Tamil",
+              "nativeName": "தமிழ்"
+            },
+            {
+              "code": "te",
+              "name": "Telugu",
+              "nativeName": "తెలుగు"
+            },
+            {
+              "code": "th",
+              "name": "Thai",
+              "nativeName": "ไทย"
+            },
+            {
+              "code": "tr",
+              "name": "Turkish",
+              "nativeName": "Türkçe"
+            },
+            {
+              "code": "uk",
+              "name": "Ukrainian",
+              "nativeName": "Українська"
+            },
+            {
+              "code": "vi",
+              "name": "Vietnamese",
+              "nativeName": "Tiếng Việt"
+            }
+          ],
+          "capabilities": {
+            "style": false,
+            "speakerBoost": false,
+            "voiceConversion": false,
+            "streaming": true,
+            "emotion": false,
+            "speedControl": false,
+            "volumeControl": false
+          },
+          "pricing": {
+            "ratePer1kCharsMicrocents": 37375,
+            "ratePer1kCharsDisplay": "$0.0374"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "elevenlabs",
+      "displayName": "ElevenLabs",
+      "models": [
+        {
+          "modelId": "eleven_flash_v2_5",
+          "name": "Flash v2.5",
+          "description": "Our ultra low latency model in 32 languages. Ideal for conversational use cases.",
+          "languages": [
+            {
+              "code": "ar",
+              "name": "Arabic",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "bg",
+              "name": "Bulgarian",
+              "nativeName": "Български"
+            },
+            {
+              "code": "zh",
+              "name": "Chinese",
+              "nativeName": "中文"
+            },
+            {
+              "code": "hr",
+              "name": "Croatian",
+              "nativeName": "Hrvatski"
+            },
+            {
+              "code": "cs",
+              "name": "Czech",
+              "nativeName": "Čeština"
+            },
+            {
+              "code": "da",
+              "name": "Danish",
+              "nativeName": "Dansk"
+            },
+            {
+              "code": "nl",
+              "name": "Dutch",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "fil",
+              "name": "Filipino",
+              "nativeName": "Filipino"
+            },
+            {
+              "code": "fi",
+              "name": "Finnish",
+              "nativeName": "Suomi"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "el",
+              "name": "Greek",
+              "nativeName": "Ελληνικά"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "hu",
+              "name": "Hungarian",
+              "nativeName": "Magyar"
+            },
+            {
+              "code": "id",
+              "name": "Indonesian",
+              "nativeName": "Bahasa Indonesia"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "ko",
+              "name": "Korean",
+              "nativeName": "한국어"
+            },
+            {
+              "code": "ms",
+              "name": "Malay",
+              "nativeName": "Bahasa Melayu"
+            },
+            {
+              "code": "no",
+              "name": "Norwegian",
+              "nativeName": "Norsk"
+            },
+            {
+              "code": "pl",
+              "name": "Polish",
+              "nativeName": "Polski"
+            },
+            {
+              "code": "pt",
+              "name": "Portuguese",
+              "nativeName": "Português"
+            },
+            {
+              "code": "ro",
+              "name": "Romanian",
+              "nativeName": "Română"
+            },
+            {
+              "code": "ru",
+              "name": "Russian",
+              "nativeName": "Русский"
+            },
+            {
+              "code": "sk",
+              "name": "Slovak",
+              "nativeName": "Slovenčina"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            },
+            {
+              "code": "sv",
+              "name": "Swedish",
+              "nativeName": "Svenska"
+            },
+            {
+              "code": "ta",
+              "name": "Tamil",
+              "nativeName": "தமிழ்"
+            },
+            {
+              "code": "tr",
+              "name": "Turkish",
+              "nativeName": "Türkçe"
+            },
+            {
+              "code": "uk",
+              "name": "Ukrainian",
+              "nativeName": "Українська"
+            },
+            {
+              "code": "vi",
+              "name": "Vietnamese",
+              "nativeName": "Tiếng Việt"
+            }
+          ],
+          "capabilities": {
+            "style": false,
+            "speakerBoost": false,
+            "voiceConversion": false,
+            "streaming": true,
+            "emotion": false,
+            "speedControl": false,
+            "volumeControl": false
+          },
+          "pricing": {
+            "ratePer1kCharsMicrocents": 50000,
+            "ratePer1kCharsDisplay": "$0.0500"
+          }
+        },
+        {
+          "modelId": "eleven_v3_conversational",
+          "name": "Conversational v3",
+          "description": "Our most expressive realtime speech synthesis model (~280ms), in 70+ languages. Best for natural conversational delivery.",
+          "languages": [
+            {
+              "code": "af",
+              "name": "Afrikaans",
+              "nativeName": "Afrikaans"
+            },
+            {
+              "code": "ar",
+              "name": "Arabic",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "hy",
+              "name": "Armenian",
+              "nativeName": "Հայdelays"
+            },
+            {
+              "code": "as",
+              "name": "Assamese",
+              "nativeName": "অসমীয়া"
+            },
+            {
+              "code": "az",
+              "name": "Azerbaijani",
+              "nativeName": "Azərbaycan"
+            },
+            {
+              "code": "be",
+              "name": "Belarusian",
+              "nativeName": "Беларуская"
+            },
+            {
+              "code": "bn",
+              "name": "Bengali",
+              "nativeName": "বাংলা"
+            },
+            {
+              "code": "bs",
+              "name": "Bosnian",
+              "nativeName": "Bosanski"
+            },
+            {
+              "code": "bg",
+              "name": "Bulgarian",
+              "nativeName": "Български"
+            },
+            {
+              "code": "ca",
+              "name": "Catalan",
+              "nativeName": "Català"
+            },
+            {
+              "code": "ceb",
+              "name": "Cebuano",
+              "nativeName": "Cebuano"
+            },
+            {
+              "code": "ny",
+              "name": "Chichewa",
+              "nativeName": "Chichewa"
+            },
+            {
+              "code": "zh",
+              "name": "Chinese",
+              "nativeName": "中文"
+            },
+            {
+              "code": "hr",
+              "name": "Croatian",
+              "nativeName": "Hrvatski"
+            },
+            {
+              "code": "cs",
+              "name": "Czech",
+              "nativeName": "Čeština"
+            },
+            {
+              "code": "da",
+              "name": "Danish",
+              "nativeName": "Dansk"
+            },
+            {
+              "code": "nl",
+              "name": "Dutch",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "et",
+              "name": "Estonian",
+              "nativeName": "Eesti"
+            },
+            {
+              "code": "fil",
+              "name": "Filipino",
+              "nativeName": "Filipino"
+            },
+            {
+              "code": "fi",
+              "name": "Finnish",
+              "nativeName": "Suomi"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "gl",
+              "name": "Galician",
+              "nativeName": "Galego"
+            },
+            {
+              "code": "ka",
+              "name": "Georgian",
+              "nativeName": "ქართული"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "el",
+              "name": "Greek",
+              "nativeName": "Ελληνικά"
+            },
+            {
+              "code": "gu",
+              "name": "Gujarati",
+              "nativeName": "ગુજરાતી"
+            },
+            {
+              "code": "ha",
+              "name": "Hausa",
+              "nativeName": "Hausa"
+            },
+            {
+              "code": "he",
+              "name": "Hebrew",
+              "nativeName": "עברית"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "hu",
+              "name": "Hungarian",
+              "nativeName": "Magyar"
+            },
+            {
+              "code": "is",
+              "name": "Icelandic",
+              "nativeName": "Íslenska"
+            },
+            {
+              "code": "id",
+              "name": "Indonesian",
+              "nativeName": "Bahasa Indonesia"
+            },
+            {
+              "code": "ga",
+              "name": "Irish",
+              "nativeName": "Gaeilge"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "jv",
+              "name": "Javanese",
+              "nativeName": "Basa Jawa"
+            },
+            {
+              "code": "kn",
+              "name": "Kannada",
+              "nativeName": "ಕನ್ನಡ"
+            },
+            {
+              "code": "kk",
+              "name": "Kazakh",
+              "nativeName": "Қазақша"
+            },
+            {
+              "code": "ko",
+              "name": "Korean",
+              "nativeName": "한국어"
+            },
+            {
+              "code": "ky",
+              "name": "Kyrgyz",
+              "nativeName": "Kyrgyz"
+            },
+            {
+              "code": "lv",
+              "name": "Latvian",
+              "nativeName": "Latviešu"
+            },
+            {
+              "code": "ln",
+              "name": "Lingala",
+              "nativeName": "Lingála"
+            },
+            {
+              "code": "lt",
+              "name": "Lithuanian",
+              "nativeName": "Lietuvių"
+            },
+            {
+              "code": "lb",
+              "name": "Luxembourgish",
+              "nativeName": "Lëtzebuergesch"
+            },
+            {
+              "code": "mk",
+              "name": "Macedonian",
+              "nativeName": "Македонски"
+            },
+            {
+              "code": "ms",
+              "name": "Malay",
+              "nativeName": "Bahasa Melayu"
+            },
+            {
+              "code": "ml",
+              "name": "Malayalam",
+              "nativeName": "മലയാളം"
+            },
+            {
+              "code": "mr",
+              "name": "Marathi",
+              "nativeName": "मराठी"
+            },
+            {
+              "code": "ne",
+              "name": "Nepali",
+              "nativeName": "नेपाली"
+            },
+            {
+              "code": "no",
+              "name": "Norwegian",
+              "nativeName": "Norsk"
+            },
+            {
+              "code": "ps",
+              "name": "Pashto",
+              "nativeName": "پښتو"
+            },
+            {
+              "code": "fa",
+              "name": "Persian",
+              "nativeName": "فارسی"
+            },
+            {
+              "code": "pl",
+              "name": "Polish",
+              "nativeName": "Polski"
+            },
+            {
+              "code": "pt",
+              "name": "Portuguese",
+              "nativeName": "Português"
+            },
+            {
+              "code": "pa",
+              "name": "Punjabi",
+              "nativeName": "ਪੰਜਾਬੀ"
+            },
+            {
+              "code": "ro",
+              "name": "Romanian",
+              "nativeName": "Română"
+            },
+            {
+              "code": "ru",
+              "name": "Russian",
+              "nativeName": "Русский"
+            },
+            {
+              "code": "sr",
+              "name": "Serbian",
+              "nativeName": "Српски"
+            },
+            {
+              "code": "sd",
+              "name": "Sindhi",
+              "nativeName": "سنڌي"
+            },
+            {
+              "code": "sk",
+              "name": "Slovak",
+              "nativeName": "Slovenčina"
+            },
+            {
+              "code": "sl",
+              "name": "Slovenian",
+              "nativeName": "Slovenščina"
+            },
+            {
+              "code": "so",
+              "name": "Somali",
+              "nativeName": "Soomaali"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            },
+            {
+              "code": "sw",
+              "name": "Swahili",
+              "nativeName": "Kiswahili"
+            },
+            {
+              "code": "sv",
+              "name": "Swedish",
+              "nativeName": "Svenska"
+            },
+            {
+              "code": "ta",
+              "name": "Tamil",
+              "nativeName": "தமிழ்"
+            },
+            {
+              "code": "te",
+              "name": "Telugu",
+              "nativeName": "తెలుగు"
+            },
+            {
+              "code": "th",
+              "name": "Thai",
+              "nativeName": "ไทย"
+            },
+            {
+              "code": "tr",
+              "name": "Turkish",
+              "nativeName": "Türkçe"
+            },
+            {
+              "code": "uk",
+              "name": "Ukrainian",
+              "nativeName": "Українська"
+            },
+            {
+              "code": "ur",
+              "name": "Urdu",
+              "nativeName": "اردو"
+            },
+            {
+              "code": "vi",
+              "name": "Vietnamese",
+              "nativeName": "Tiếng Việt"
+            },
+            {
+              "code": "cy",
+              "name": "Welsh",
+              "nativeName": "Cymraeg"
+            }
+          ],
+          "capabilities": {
+            "style": true,
+            "speakerBoost": true,
+            "voiceConversion": false,
+            "streaming": true,
+            "emotion": false,
+            "speedControl": false,
+            "volumeControl": false
+          },
+          "pricing": {
+            "ratePer1kCharsMicrocents": 50000,
+            "ratePer1kCharsDisplay": "$0.0500"
+          }
+        },
+        {
+          "modelId": "eleven_turbo_v2_5",
+          "name": "Turbo v2.5",
+          "description": "Our high quality, low latency model in 32 languages. Best for developer use cases where speed matters.",
+          "languages": [
+            {
+              "code": "ar",
+              "name": "Arabic",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "bg",
+              "name": "Bulgarian",
+              "nativeName": "Български"
+            },
+            {
+              "code": "zh",
+              "name": "Chinese",
+              "nativeName": "中文"
+            },
+            {
+              "code": "hr",
+              "name": "Croatian",
+              "nativeName": "Hrvatski"
+            },
+            {
+              "code": "cs",
+              "name": "Czech",
+              "nativeName": "Čeština"
+            },
+            {
+              "code": "da",
+              "name": "Danish",
+              "nativeName": "Dansk"
+            },
+            {
+              "code": "nl",
+              "name": "Dutch",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "fil",
+              "name": "Filipino",
+              "nativeName": "Filipino"
+            },
+            {
+              "code": "fi",
+              "name": "Finnish",
+              "nativeName": "Suomi"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "el",
+              "name": "Greek",
+              "nativeName": "Ελληνικά"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "hu",
+              "name": "Hungarian",
+              "nativeName": "Magyar"
+            },
+            {
+              "code": "id",
+              "name": "Indonesian",
+              "nativeName": "Bahasa Indonesia"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "ko",
+              "name": "Korean",
+              "nativeName": "한국어"
+            },
+            {
+              "code": "ms",
+              "name": "Malay",
+              "nativeName": "Bahasa Melayu"
+            },
+            {
+              "code": "no",
+              "name": "Norwegian",
+              "nativeName": "Norsk"
+            },
+            {
+              "code": "pl",
+              "name": "Polish",
+              "nativeName": "Polski"
+            },
+            {
+              "code": "pt",
+              "name": "Portuguese",
+              "nativeName": "Português"
+            },
+            {
+              "code": "ro",
+              "name": "Romanian",
+              "nativeName": "Română"
+            },
+            {
+              "code": "ru",
+              "name": "Russian",
+              "nativeName": "Русский"
+            },
+            {
+              "code": "sk",
+              "name": "Slovak",
+              "nativeName": "Slovenčina"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            },
+            {
+              "code": "sv",
+              "name": "Swedish",
+              "nativeName": "Svenska"
+            },
+            {
+              "code": "ta",
+              "name": "Tamil",
+              "nativeName": "தமிழ்"
+            },
+            {
+              "code": "tr",
+              "name": "Turkish",
+              "nativeName": "Türkçe"
+            },
+            {
+              "code": "uk",
+              "name": "Ukrainian",
+              "nativeName": "Українська"
+            },
+            {
+              "code": "vi",
+              "name": "Vietnamese",
+              "nativeName": "Tiếng Việt"
+            }
+          ],
+          "capabilities": {
+            "style": false,
+            "speakerBoost": false,
+            "voiceConversion": false,
+            "streaming": true,
+            "emotion": false,
+            "speedControl": false,
+            "volumeControl": false
+          },
+          "pricing": {
+            "ratePer1kCharsMicrocents": 50000,
+            "ratePer1kCharsDisplay": "$0.0500"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "google",
+      "displayName": "Google",
+      "models": [
+        {
+          "modelId": "gemini-2.5-flash-tts",
+          "name": "Gemini 2.5 Flash TTS",
+          "description": "Low-latency Gemini TTS with natural, promptable voice control. 30 named voices, 23 languages.",
+          "languages": [
+            {
+              "code": "ar",
+              "name": "Arabic",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "bn",
+              "name": "Bengali",
+              "nativeName": "বাংলা"
+            },
+            {
+              "code": "nl",
+              "name": "Dutch",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "id",
+              "name": "Indonesian",
+              "nativeName": "Bahasa Indonesia"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "ko",
+              "name": "Korean",
+              "nativeName": "한국어"
+            },
+            {
+              "code": "mr",
+              "name": "Marathi",
+              "nativeName": "मराठी"
+            },
+            {
+              "code": "pl",
+              "name": "Polish",
+              "nativeName": "Polski"
+            },
+            {
+              "code": "pt",
+              "name": "Portuguese",
+              "nativeName": "Português"
+            },
+            {
+              "code": "ro",
+              "name": "Romanian",
+              "nativeName": "Română"
+            },
+            {
+              "code": "ru",
+              "name": "Russian",
+              "nativeName": "Русский"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            },
+            {
+              "code": "ta",
+              "name": "Tamil",
+              "nativeName": "தமிழ்"
+            },
+            {
+              "code": "te",
+              "name": "Telugu",
+              "nativeName": "తెలుగు"
+            },
+            {
+              "code": "th",
+              "name": "Thai",
+              "nativeName": "ไทย"
+            },
+            {
+              "code": "tr",
+              "name": "Turkish",
+              "nativeName": "Türkçe"
+            },
+            {
+              "code": "uk",
+              "name": "Ukrainian",
+              "nativeName": "Українська"
+            },
+            {
+              "code": "vi",
+              "name": "Vietnamese",
+              "nativeName": "Tiếng Việt"
+            }
+          ],
+          "capabilities": {
+            "style": false,
+            "speakerBoost": false,
+            "voiceConversion": false,
+            "streaming": true,
+            "emotion": false,
+            "speedControl": false,
+            "volumeControl": false
+          },
+          "pricing": {
+            "ratePer1kCharsMicrocents": 17000,
+            "ratePer1kCharsDisplay": "$0.0170"
+          }
+        },
+        {
+          "modelId": "gemini-2.5-pro-tts",
+          "name": "Gemini 2.5 Pro TTS",
+          "description": "Highest-quality Gemini TTS for expressive, style-prompted speech. 30 named voices, 23 languages.",
+          "languages": [
+            {
+              "code": "ar",
+              "name": "Arabic",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "bn",
+              "name": "Bengali",
+              "nativeName": "বাংলা"
+            },
+            {
+              "code": "nl",
+              "name": "Dutch",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "id",
+              "name": "Indonesian",
+              "nativeName": "Bahasa Indonesia"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "ko",
+              "name": "Korean",
+              "nativeName": "한국어"
+            },
+            {
+              "code": "mr",
+              "name": "Marathi",
+              "nativeName": "मराठी"
+            },
+            {
+              "code": "pl",
+              "name": "Polish",
+              "nativeName": "Polski"
+            },
+            {
+              "code": "pt",
+              "name": "Portuguese",
+              "nativeName": "Português"
+            },
+            {
+              "code": "ro",
+              "name": "Romanian",
+              "nativeName": "Română"
+            },
+            {
+              "code": "ru",
+              "name": "Russian",
+              "nativeName": "Русский"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            },
+            {
+              "code": "ta",
+              "name": "Tamil",
+              "nativeName": "தமிழ்"
+            },
+            {
+              "code": "te",
+              "name": "Telugu",
+              "nativeName": "తెలుగు"
+            },
+            {
+              "code": "th",
+              "name": "Thai",
+              "nativeName": "ไทย"
+            },
+            {
+              "code": "tr",
+              "name": "Turkish",
+              "nativeName": "Türkçe"
+            },
+            {
+              "code": "uk",
+              "name": "Ukrainian",
+              "nativeName": "Українська"
+            },
+            {
+              "code": "vi",
+              "name": "Vietnamese",
+              "nativeName": "Tiếng Việt"
+            }
+          ],
+          "capabilities": {
+            "style": false,
+            "speakerBoost": false,
+            "voiceConversion": false,
+            "streaming": true,
+            "emotion": false,
+            "speedControl": false,
+            "volumeControl": false
+          },
+          "pricing": {
+            "ratePer1kCharsMicrocents": 34000,
+            "ratePer1kCharsDisplay": "$0.0340"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "rime",
+      "displayName": "Rime",
+      "models": [
+        {
+          "modelId": "mistv2",
+          "name": "Rime Mist v2",
+          "description": "Rime's low-latency streaming TTS, purpose-built for real-time voice agents and telephony. WebSocket synthesis emits word-level timestamps. 300+ voices.",
+          "languages": [
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            }
+          ],
+          "capabilities": {
+            "style": false,
+            "speakerBoost": false,
+            "voiceConversion": false,
+            "streaming": true,
+            "emotion": false,
+            "speedControl": false,
+            "volumeControl": false
+          },
+          "pricing": {
+            "ratePer1kCharsMicrocents": 30000,
+            "ratePer1kCharsDisplay": "$0.0300"
+          }
+        },
+        {
+          "modelId": "arcana",
+          "name": "Rime Arcana",
+          "description": "Rime's premium, ultra-expressive conversational model with natural prosody and English/Spanish/French/German voices. Higher latency than Mist v2; best when expressiveness matters more than speed.",
+          "languages": [
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            }
+          ],
+          "capabilities": {
+            "style": false,
+            "speakerBoost": false,
+            "voiceConversion": false,
+            "streaming": true,
+            "emotion": false,
+            "speedControl": false,
+            "volumeControl": false
+          },
+          "pricing": {
+            "ratePer1kCharsMicrocents": 40000,
+            "ratePer1kCharsDisplay": "$0.0400"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "xai",
+      "displayName": "xAI",
+      "models": [
+        {
+          "modelId": "grok-tts",
+          "name": "Grok TTS",
+          "description": "Expressive low-latency text-to-speech in 5 voices across 20 languages. Streaming synthesis emits word-level timestamps and supports telephony (µ-law 8 kHz) output. Ideal for real-time voice agents.",
+          "languages": [
+            {
+              "code": "ar",
+              "name": "Arabic",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "zh",
+              "name": "Chinese",
+              "nativeName": "中文"
+            },
+            {
+              "code": "da",
+              "name": "Danish",
+              "nativeName": "Dansk"
+            },
+            {
+              "code": "nl",
+              "name": "Dutch",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "fi",
+              "name": "Finnish",
+              "nativeName": "Suomi"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "ko",
+              "name": "Korean",
+              "nativeName": "한국어"
+            },
+            {
+              "code": "no",
+              "name": "Norwegian",
+              "nativeName": "Norsk"
+            },
+            {
+              "code": "pl",
+              "name": "Polish",
+              "nativeName": "Polski"
+            },
+            {
+              "code": "pt",
+              "name": "Portuguese",
+              "nativeName": "Português"
+            },
+            {
+              "code": "ru",
+              "name": "Russian",
+              "nativeName": "Русский"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            },
+            {
+              "code": "sv",
+              "name": "Swedish",
+              "nativeName": "Svenska"
+            },
+            {
+              "code": "tr",
+              "name": "Turkish",
+              "nativeName": "Türkçe"
+            },
+            {
+              "code": "uk",
+              "name": "Ukrainian",
+              "nativeName": "Українська"
+            }
+          ],
+          "capabilities": {
+            "style": false,
+            "speakerBoost": false,
+            "voiceConversion": false,
+            "streaming": true,
+            "emotion": false,
+            "speedControl": true,
+            "volumeControl": false
+          },
+          "pricing": {
+            "ratePer1kCharsMicrocents": 15000,
+            "ratePer1kCharsDisplay": "$0.0150"
+          }
+        }
+      ]
+    }
+  ],
+  "stt": [
+    {
+      "provider": "aws",
+      "displayName": "AWS",
+      "models": [
+        {
+          "modelId": "transcribe",
+          "name": "Amazon Transcribe",
+          "description": "Amazon Transcribe streaming speech-to-text — real-time recognition with word-level timestamps and telephony (8 kHz) support across 30+ languages.",
+          "languages": [
+            {
+              "code": "ar",
+              "name": "Arabic",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "zh",
+              "name": "Chinese",
+              "nativeName": "中文"
+            },
+            {
+              "code": "da",
+              "name": "Danish",
+              "nativeName": "Dansk"
+            },
+            {
+              "code": "nl",
+              "name": "Dutch",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "fi",
+              "name": "Finnish",
+              "nativeName": "Suomi"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "he",
+              "name": "Hebrew",
+              "nativeName": "עברית"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "id",
+              "name": "Indonesian",
+              "nativeName": "Bahasa Indonesia"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "ko",
+              "name": "Korean",
+              "nativeName": "한국어"
+            },
+            {
+              "code": "no",
+              "name": "Norwegian",
+              "nativeName": "Norsk"
+            },
+            {
+              "code": "pl",
+              "name": "Polish",
+              "nativeName": "Polski"
+            },
+            {
+              "code": "pt",
+              "name": "Portuguese",
+              "nativeName": "Português"
+            },
+            {
+              "code": "ru",
+              "name": "Russian",
+              "nativeName": "Русский"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            },
+            {
+              "code": "sv",
+              "name": "Swedish",
+              "nativeName": "Svenska"
+            },
+            {
+              "code": "th",
+              "name": "Thai",
+              "nativeName": "ไทย"
+            },
+            {
+              "code": "tr",
+              "name": "Turkish",
+              "nativeName": "Türkçe"
+            },
+            {
+              "code": "vi",
+              "name": "Vietnamese",
+              "nativeName": "Tiếng Việt"
+            }
+          ],
+          "capabilities": {
+            "streaming": true,
+            "diarization": false,
+            "telephony": true,
+            "noiseHandling": false,
+            "multilingual": true
+          },
+          "pricing": {
+            "ratePerMinuteMicrocents": 24000,
+            "ratePerMinuteDisplay": "$0.0240"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "cartesia",
+      "displayName": "Cartesia",
+      "models": [
+        {
+          "modelId": "ink-whisper",
+          "name": "Ink Whisper",
+          "description": "Fastest, most affordable streaming STT optimized for real-time voice agents. Handles background noise, telephony artifacts, accents, and domain-specific terminology.",
+          "languages": [
+            {
+              "code": "af",
+              "name": "Afrikaans",
+              "nativeName": "Afrikaans"
+            },
+            {
+              "code": "sq",
+              "name": "Albanian",
+              "nativeName": "Albanian"
+            },
+            {
+              "code": "am",
+              "name": "Amharic",
+              "nativeName": "አማርኛ"
+            },
+            {
+              "code": "ar",
+              "name": "Arabic",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "hy",
+              "name": "Armenian",
+              "nativeName": "Հայdelays"
+            },
+            {
+              "code": "as",
+              "name": "Assamese",
+              "nativeName": "অসমীয়া"
+            },
+            {
+              "code": "az",
+              "name": "Azerbaijani",
+              "nativeName": "Azərbaycan"
+            },
+            {
+              "code": "ba",
+              "name": "Bashkir",
+              "nativeName": "Bashkir"
+            },
+            {
+              "code": "eu",
+              "name": "Basque",
+              "nativeName": "Basque"
+            },
+            {
+              "code": "be",
+              "name": "Belarusian",
+              "nativeName": "Беларуская"
+            },
+            {
+              "code": "bn",
+              "name": "Bengali",
+              "nativeName": "বাংলা"
+            },
+            {
+              "code": "bs",
+              "name": "Bosnian",
+              "nativeName": "Bosanski"
+            },
+            {
+              "code": "br",
+              "name": "Breton",
+              "nativeName": "Breton"
+            },
+            {
+              "code": "bg",
+              "name": "Bulgarian",
+              "nativeName": "Български"
+            },
+            {
+              "code": "my",
+              "name": "Burmese",
+              "nativeName": "Burmese"
+            },
+            {
+              "code": "yue",
+              "name": "Cantonese",
+              "nativeName": "粵語"
+            },
+            {
+              "code": "ca",
+              "name": "Catalan",
+              "nativeName": "Català"
+            },
+            {
+              "code": "zh",
+              "name": "Chinese",
+              "nativeName": "中文"
+            },
+            {
+              "code": "hr",
+              "name": "Croatian",
+              "nativeName": "Hrvatski"
+            },
+            {
+              "code": "cs",
+              "name": "Czech",
+              "nativeName": "Čeština"
+            },
+            {
+              "code": "da",
+              "name": "Danish",
+              "nativeName": "Dansk"
+            },
+            {
+              "code": "nl",
+              "name": "Dutch",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "et",
+              "name": "Estonian",
+              "nativeName": "Eesti"
+            },
+            {
+              "code": "fo",
+              "name": "Faroese",
+              "nativeName": "Faroese"
+            },
+            {
+              "code": "fi",
+              "name": "Finnish",
+              "nativeName": "Suomi"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "gl",
+              "name": "Galician",
+              "nativeName": "Galego"
+            },
+            {
+              "code": "ka",
+              "name": "Georgian",
+              "nativeName": "ქართული"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "el",
+              "name": "Greek",
+              "nativeName": "Ελληνικά"
+            },
+            {
+              "code": "gu",
+              "name": "Gujarati",
+              "nativeName": "ગુજરાતી"
+            },
+            {
+              "code": "ht",
+              "name": "Haitian Creole",
+              "nativeName": "Haitian Creole"
+            },
+            {
+              "code": "ha",
+              "name": "Hausa",
+              "nativeName": "Hausa"
+            },
+            {
+              "code": "haw",
+              "name": "Hawaiian",
+              "nativeName": "Hawaiian"
+            },
+            {
+              "code": "he",
+              "name": "Hebrew",
+              "nativeName": "עברית"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "hu",
+              "name": "Hungarian",
+              "nativeName": "Magyar"
+            },
+            {
+              "code": "is",
+              "name": "Icelandic",
+              "nativeName": "Íslenska"
+            },
+            {
+              "code": "id",
+              "name": "Indonesian",
+              "nativeName": "Bahasa Indonesia"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "jw",
+              "name": "Javanese",
+              "nativeName": "Basa Jawa"
+            },
+            {
+              "code": "kn",
+              "name": "Kannada",
+              "nativeName": "ಕನ್ನಡ"
+            },
+            {
+              "code": "kk",
+              "name": "Kazakh",
+              "nativeName": "Қазақша"
+            },
+            {
+              "code": "km",
+              "name": "Khmer",
+              "nativeName": "Khmer"
+            },
+            {
+              "code": "ko",
+              "name": "Korean",
+              "nativeName": "한국어"
+            },
+            {
+              "code": "lo",
+              "name": "Lao",
+              "nativeName": "Lao"
+            },
+            {
+              "code": "la",
+              "name": "Latin",
+              "nativeName": "Latin"
+            },
+            {
+              "code": "lv",
+              "name": "Latvian",
+              "nativeName": "Latviešu"
+            },
+            {
+              "code": "ln",
+              "name": "Lingala",
+              "nativeName": "Lingála"
+            },
+            {
+              "code": "lt",
+              "name": "Lithuanian",
+              "nativeName": "Lietuvių"
+            },
+            {
+              "code": "lb",
+              "name": "Luxembourgish",
+              "nativeName": "Lëtzebuergesch"
+            },
+            {
+              "code": "mk",
+              "name": "Macedonian",
+              "nativeName": "Македонски"
+            },
+            {
+              "code": "mg",
+              "name": "Malagasy",
+              "nativeName": "Malagasy"
+            },
+            {
+              "code": "ms",
+              "name": "Malay",
+              "nativeName": "Bahasa Melayu"
+            },
+            {
+              "code": "ml",
+              "name": "Malayalam",
+              "nativeName": "മലയാളം"
+            },
+            {
+              "code": "mt",
+              "name": "Maltese",
+              "nativeName": "Maltese"
+            },
+            {
+              "code": "mi",
+              "name": "Maori",
+              "nativeName": "Maori"
+            },
+            {
+              "code": "mr",
+              "name": "Marathi",
+              "nativeName": "मराठी"
+            },
+            {
+              "code": "mn",
+              "name": "Mongolian",
+              "nativeName": "Mongolian"
+            },
+            {
+              "code": "ne",
+              "name": "Nepali",
+              "nativeName": "नेपाली"
+            },
+            {
+              "code": "nn",
+              "name": "Norwegian",
+              "nativeName": "Norsk"
+            },
+            {
+              "code": "oc",
+              "name": "Occitan",
+              "nativeName": "Occitan"
+            },
+            {
+              "code": "ps",
+              "name": "Pashto",
+              "nativeName": "پښتو"
+            },
+            {
+              "code": "fa",
+              "name": "Persian",
+              "nativeName": "فارسی"
+            },
+            {
+              "code": "pl",
+              "name": "Polish",
+              "nativeName": "Polski"
+            },
+            {
+              "code": "pt",
+              "name": "Portuguese",
+              "nativeName": "Português"
+            },
+            {
+              "code": "pa",
+              "name": "Punjabi",
+              "nativeName": "ਪੰਜਾਬੀ"
+            },
+            {
+              "code": "ro",
+              "name": "Romanian",
+              "nativeName": "Română"
+            },
+            {
+              "code": "ru",
+              "name": "Russian",
+              "nativeName": "Русский"
+            },
+            {
+              "code": "sa",
+              "name": "Sanskrit",
+              "nativeName": "Sanskrit"
+            },
+            {
+              "code": "sr",
+              "name": "Serbian",
+              "nativeName": "Српски"
+            },
+            {
+              "code": "sn",
+              "name": "Shona",
+              "nativeName": "Shona"
+            },
+            {
+              "code": "sd",
+              "name": "Sindhi",
+              "nativeName": "سنڌي"
+            },
+            {
+              "code": "si",
+              "name": "Sinhala",
+              "nativeName": "Sinhala"
+            },
+            {
+              "code": "sk",
+              "name": "Slovak",
+              "nativeName": "Slovenčina"
+            },
+            {
+              "code": "sl",
+              "name": "Slovenian",
+              "nativeName": "Slovenščina"
+            },
+            {
+              "code": "so",
+              "name": "Somali",
+              "nativeName": "Soomaali"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            },
+            {
+              "code": "su",
+              "name": "Sundanese",
+              "nativeName": "Sundanese"
+            },
+            {
+              "code": "sw",
+              "name": "Swahili",
+              "nativeName": "Kiswahili"
+            },
+            {
+              "code": "sv",
+              "name": "Swedish",
+              "nativeName": "Svenska"
+            },
+            {
+              "code": "tl",
+              "name": "Tagalog",
+              "nativeName": "Tagalog"
+            },
+            {
+              "code": "tg",
+              "name": "Tajik",
+              "nativeName": "Tajik"
+            },
+            {
+              "code": "ta",
+              "name": "Tamil",
+              "nativeName": "தமிழ்"
+            },
+            {
+              "code": "tt",
+              "name": "Tatar",
+              "nativeName": "Tatar"
+            },
+            {
+              "code": "te",
+              "name": "Telugu",
+              "nativeName": "తెలుగు"
+            },
+            {
+              "code": "th",
+              "name": "Thai",
+              "nativeName": "ไทย"
+            },
+            {
+              "code": "bo",
+              "name": "Tibetan",
+              "nativeName": "Tibetan"
+            },
+            {
+              "code": "tr",
+              "name": "Turkish",
+              "nativeName": "Türkçe"
+            },
+            {
+              "code": "tk",
+              "name": "Turkmen",
+              "nativeName": "Turkmen"
+            },
+            {
+              "code": "uk",
+              "name": "Ukrainian",
+              "nativeName": "Українська"
+            },
+            {
+              "code": "ur",
+              "name": "Urdu",
+              "nativeName": "اردو"
+            },
+            {
+              "code": "uz",
+              "name": "Uzbek",
+              "nativeName": "Uzbek"
+            },
+            {
+              "code": "vi",
+              "name": "Vietnamese",
+              "nativeName": "Tiếng Việt"
+            },
+            {
+              "code": "cy",
+              "name": "Welsh",
+              "nativeName": "Cymraeg"
+            },
+            {
+              "code": "yi",
+              "name": "Yiddish",
+              "nativeName": "Yiddish"
+            },
+            {
+              "code": "yo",
+              "name": "Yoruba",
+              "nativeName": "Yoruba"
+            }
+          ],
+          "capabilities": {
+            "streaming": true,
+            "diarization": false,
+            "telephony": true,
+            "noiseHandling": true,
+            "multilingual": false
+          },
+          "pricing": {
+            "ratePerMinuteMicrocents": 2167,
+            "ratePerMinuteDisplay": "$0.0022"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "deepgram",
+      "displayName": "Deepgram",
+      "models": [
+        {
+          "modelId": "nova-3-general",
+          "name": "Nova 3",
+          "description": "Deepgram's most powerful speech-to-text model. Best accuracy across 70+ languages with real-time streaming.",
+          "languages": [
+            {
+              "code": "ar",
+              "name": "Arabic",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "ar-DZ",
+              "name": "Arabic (Algeria)",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "ar-TD",
+              "name": "Arabic (Chad)",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "ar-EG",
+              "name": "Arabic (Egypt)",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "ar-IR",
+              "name": "Arabic (Iran)",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "ar-IQ",
+              "name": "Arabic (Iraq)",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "ar-JO",
+              "name": "Arabic (Jordan)",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "ar-KW",
+              "name": "Arabic (Kuwait)",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "ar-LB",
+              "name": "Arabic (Lebanon)",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "ar-MA",
+              "name": "Arabic (Morocco)",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "ar-PS",
+              "name": "Arabic (Palestine)",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "ar-QA",
+              "name": "Arabic (Qatar)",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "ar-SA",
+              "name": "Arabic (Saudi Arabia)",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "ar-SD",
+              "name": "Arabic (Sudan)",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "ar-SY",
+              "name": "Arabic (Syria)",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "ar-TN",
+              "name": "Arabic (Tunisia)",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "ar-AE",
+              "name": "Arabic (United Arab Emirates)",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "be",
+              "name": "Belarusian",
+              "nativeName": "Беларуская"
+            },
+            {
+              "code": "bn",
+              "name": "Bengali",
+              "nativeName": "বাংলা"
+            },
+            {
+              "code": "bs",
+              "name": "Bosnian",
+              "nativeName": "Bosanski"
+            },
+            {
+              "code": "bg",
+              "name": "Bulgarian",
+              "nativeName": "Български"
+            },
+            {
+              "code": "ca",
+              "name": "Catalan",
+              "nativeName": "Català"
+            },
+            {
+              "code": "hr",
+              "name": "Croatian",
+              "nativeName": "Hrvatski"
+            },
+            {
+              "code": "cs",
+              "name": "Czech",
+              "nativeName": "Čeština"
+            },
+            {
+              "code": "da-DK",
+              "name": "Danish",
+              "nativeName": "Dansk"
+            },
+            {
+              "code": "nl",
+              "name": "Dutch",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "nl-BE",
+              "name": "Dutch (Belgium)",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-AU",
+              "name": "English (Australia)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-IN",
+              "name": "English (India)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-NZ",
+              "name": "English (New Zealand)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-GB",
+              "name": "English (United Kingdom)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-US",
+              "name": "English (United States)",
+              "nativeName": "English"
+            },
+            {
+              "code": "et",
+              "name": "Estonian",
+              "nativeName": "Eesti"
+            },
+            {
+              "code": "fi",
+              "name": "Finnish",
+              "nativeName": "Suomi"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "fr-CA",
+              "name": "French (Canada)",
+              "nativeName": "Français"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "de-CH",
+              "name": "German (Switzerland)",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "el",
+              "name": "Greek",
+              "nativeName": "Ελληνικά"
+            },
+            {
+              "code": "he",
+              "name": "Hebrew",
+              "nativeName": "עברית"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "hu",
+              "name": "Hungarian",
+              "nativeName": "Magyar"
+            },
+            {
+              "code": "id",
+              "name": "Indonesian",
+              "nativeName": "Bahasa Indonesia"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "kn",
+              "name": "Kannada",
+              "nativeName": "ಕನ್ನಡ"
+            },
+            {
+              "code": "ko-KR",
+              "name": "Korean",
+              "nativeName": "한국어"
+            },
+            {
+              "code": "lv",
+              "name": "Latvian",
+              "nativeName": "Latviešu"
+            },
+            {
+              "code": "lt",
+              "name": "Lithuanian",
+              "nativeName": "Lietuvių"
+            },
+            {
+              "code": "mk",
+              "name": "Macedonian",
+              "nativeName": "Македонски"
+            },
+            {
+              "code": "ms",
+              "name": "Malay",
+              "nativeName": "Bahasa Melayu"
+            },
+            {
+              "code": "mr",
+              "name": "Marathi",
+              "nativeName": "मराठी"
+            },
+            {
+              "code": "no",
+              "name": "Norwegian",
+              "nativeName": "Norsk"
+            },
+            {
+              "code": "fa",
+              "name": "Persian",
+              "nativeName": "فارسی"
+            },
+            {
+              "code": "pl",
+              "name": "Polish",
+              "nativeName": "Polski"
+            },
+            {
+              "code": "pt-PT",
+              "name": "Portuguese",
+              "nativeName": "Português"
+            },
+            {
+              "code": "pt-BR",
+              "name": "Portuguese (Brazil)",
+              "nativeName": "Português"
+            },
+            {
+              "code": "ro",
+              "name": "Romanian",
+              "nativeName": "Română"
+            },
+            {
+              "code": "ru",
+              "name": "Russian",
+              "nativeName": "Русский"
+            },
+            {
+              "code": "sr",
+              "name": "Serbian",
+              "nativeName": "Српски"
+            },
+            {
+              "code": "sk",
+              "name": "Slovak",
+              "nativeName": "Slovenčina"
+            },
+            {
+              "code": "sl",
+              "name": "Slovenian",
+              "nativeName": "Slovenščina"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            },
+            {
+              "code": "es-419",
+              "name": "Spanish (Latin America)",
+              "nativeName": "Español"
+            },
+            {
+              "code": "sv-SE",
+              "name": "Swedish",
+              "nativeName": "Svenska"
+            },
+            {
+              "code": "tl",
+              "name": "Tagalog",
+              "nativeName": "Tagalog"
+            },
+            {
+              "code": "ta",
+              "name": "Tamil",
+              "nativeName": "தமிழ்"
+            },
+            {
+              "code": "te",
+              "name": "Telugu",
+              "nativeName": "తెలుగు"
+            },
+            {
+              "code": "tr",
+              "name": "Turkish",
+              "nativeName": "Türkçe"
+            },
+            {
+              "code": "uk",
+              "name": "Ukrainian",
+              "nativeName": "Українська"
+            },
+            {
+              "code": "ur",
+              "name": "Urdu",
+              "nativeName": "اردو"
+            },
+            {
+              "code": "vi",
+              "name": "Vietnamese",
+              "nativeName": "Tiếng Việt"
+            },
+            {
+              "code": "multi",
+              "name": "multi",
+              "nativeName": "multi"
+            }
+          ],
+          "capabilities": {
+            "streaming": true,
+            "diarization": false,
+            "telephony": false,
+            "noiseHandling": false,
+            "multilingual": false
+          },
+          "pricing": {
+            "ratePerMinuteMicrocents": 9200,
+            "ratePerMinuteDisplay": "$0.0092"
+          }
+        },
+        {
+          "modelId": "nova-3-medical",
+          "name": "Nova 3 Medical",
+          "description": "Nova 3 optimized for medical terminology and healthcare conversations.",
+          "languages": [
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-AU",
+              "name": "English (Australia)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-CA",
+              "name": "English (Canada)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-IN",
+              "name": "English (India)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-IE",
+              "name": "English (Ireland)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-NZ",
+              "name": "English (New Zealand)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-GB",
+              "name": "English (United Kingdom)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-US",
+              "name": "English (United States)",
+              "nativeName": "English"
+            }
+          ],
+          "capabilities": {
+            "streaming": true,
+            "diarization": false,
+            "telephony": false,
+            "noiseHandling": false,
+            "multilingual": false
+          },
+          "pricing": {
+            "ratePerMinuteMicrocents": 7700,
+            "ratePerMinuteDisplay": "$0.0077"
+          }
+        },
+        {
+          "modelId": "nova-2-general",
+          "name": "Nova 2",
+          "description": "High accuracy speech recognition across 40+ languages. Good balance of speed and accuracy.",
+          "languages": [
+            {
+              "code": "bg",
+              "name": "Bulgarian",
+              "nativeName": "Български"
+            },
+            {
+              "code": "ca",
+              "name": "Catalan",
+              "nativeName": "Català"
+            },
+            {
+              "code": "zh",
+              "name": "Chinese",
+              "nativeName": "中文"
+            },
+            {
+              "code": "zh-CN",
+              "name": "Chinese (China)",
+              "nativeName": "中文"
+            },
+            {
+              "code": "zh-HK",
+              "name": "Chinese (Hong Kong)",
+              "nativeName": "中文"
+            },
+            {
+              "code": "zh-Hans",
+              "name": "Chinese (Simplified)",
+              "nativeName": "中文"
+            },
+            {
+              "code": "zh-TW",
+              "name": "Chinese (Taiwan)",
+              "nativeName": "中文"
+            },
+            {
+              "code": "zh-Hant",
+              "name": "Chinese (Traditional)",
+              "nativeName": "中文"
+            },
+            {
+              "code": "cs",
+              "name": "Czech",
+              "nativeName": "Čeština"
+            },
+            {
+              "code": "da-DK",
+              "name": "Danish",
+              "nativeName": "Dansk"
+            },
+            {
+              "code": "nl",
+              "name": "Dutch",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "nl-BE",
+              "name": "Dutch (Belgium)",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-AU",
+              "name": "English (Australia)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-IN",
+              "name": "English (India)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-NZ",
+              "name": "English (New Zealand)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-GB",
+              "name": "English (United Kingdom)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-US",
+              "name": "English (United States)",
+              "nativeName": "English"
+            },
+            {
+              "code": "et",
+              "name": "Estonian",
+              "nativeName": "Eesti"
+            },
+            {
+              "code": "fi",
+              "name": "Finnish",
+              "nativeName": "Suomi"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "fr-CA",
+              "name": "French (Canada)",
+              "nativeName": "Français"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "de-CH",
+              "name": "German (Switzerland)",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "el",
+              "name": "Greek",
+              "nativeName": "Ελληνικά"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "hu",
+              "name": "Hungarian",
+              "nativeName": "Magyar"
+            },
+            {
+              "code": "id",
+              "name": "Indonesian",
+              "nativeName": "Bahasa Indonesia"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "ko-KR",
+              "name": "Korean",
+              "nativeName": "한국어"
+            },
+            {
+              "code": "lv",
+              "name": "Latvian",
+              "nativeName": "Latviešu"
+            },
+            {
+              "code": "lt",
+              "name": "Lithuanian",
+              "nativeName": "Lietuvių"
+            },
+            {
+              "code": "ms",
+              "name": "Malay",
+              "nativeName": "Bahasa Melayu"
+            },
+            {
+              "code": "no",
+              "name": "Norwegian",
+              "nativeName": "Norsk"
+            },
+            {
+              "code": "pl",
+              "name": "Polish",
+              "nativeName": "Polski"
+            },
+            {
+              "code": "pt-PT",
+              "name": "Portuguese",
+              "nativeName": "Português"
+            },
+            {
+              "code": "pt-BR",
+              "name": "Portuguese (Brazil)",
+              "nativeName": "Português"
+            },
+            {
+              "code": "ro",
+              "name": "Romanian",
+              "nativeName": "Română"
+            },
+            {
+              "code": "ru",
+              "name": "Russian",
+              "nativeName": "Русский"
+            },
+            {
+              "code": "sk",
+              "name": "Slovak",
+              "nativeName": "Slovenčina"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            },
+            {
+              "code": "es-419",
+              "name": "Spanish (Latin America)",
+              "nativeName": "Español"
+            },
+            {
+              "code": "sv-SE",
+              "name": "Swedish",
+              "nativeName": "Svenska"
+            },
+            {
+              "code": "th-TH",
+              "name": "Thai",
+              "nativeName": "ไทย"
+            },
+            {
+              "code": "tr",
+              "name": "Turkish",
+              "nativeName": "Türkçe"
+            },
+            {
+              "code": "uk",
+              "name": "Ukrainian",
+              "nativeName": "Українська"
+            },
+            {
+              "code": "vi",
+              "name": "Vietnamese",
+              "nativeName": "Tiếng Việt"
+            }
+          ],
+          "capabilities": {
+            "streaming": true,
+            "diarization": false,
+            "telephony": false,
+            "noiseHandling": false,
+            "multilingual": false
+          },
+          "pricing": {
+            "ratePerMinuteMicrocents": 5800,
+            "ratePerMinuteDisplay": "$0.0058"
+          }
+        },
+        {
+          "modelId": "nova-2-conversationalai",
+          "name": "Nova 2 Conversational AI",
+          "description": "Optimized for conversational AI applications. Low latency for voice assistants and chatbots.",
+          "languages": [
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-AU",
+              "name": "English (Australia)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-IN",
+              "name": "English (India)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-NZ",
+              "name": "English (New Zealand)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-GB",
+              "name": "English (United Kingdom)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-US",
+              "name": "English (United States)",
+              "nativeName": "English"
+            }
+          ],
+          "capabilities": {
+            "streaming": true,
+            "diarization": false,
+            "telephony": false,
+            "noiseHandling": false,
+            "multilingual": false
+          },
+          "pricing": {
+            "ratePerMinuteMicrocents": 5800,
+            "ratePerMinuteDisplay": "$0.0058"
+          }
+        },
+        {
+          "modelId": "nova-2-phonecall",
+          "name": "Nova 2 Phone Call",
+          "description": "Optimized for phone call audio. Handles telephony-quality audio with background noise.",
+          "languages": [
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-AU",
+              "name": "English (Australia)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-IN",
+              "name": "English (India)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-NZ",
+              "name": "English (New Zealand)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-GB",
+              "name": "English (United Kingdom)",
+              "nativeName": "English"
+            },
+            {
+              "code": "en-US",
+              "name": "English (United States)",
+              "nativeName": "English"
+            }
+          ],
+          "capabilities": {
+            "streaming": true,
+            "diarization": false,
+            "telephony": true,
+            "noiseHandling": false,
+            "multilingual": false
+          },
+          "pricing": {
+            "ratePerMinuteMicrocents": 5800,
+            "ratePerMinuteDisplay": "$0.0058"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "elevenlabs",
+      "displayName": "ElevenLabs",
+      "models": [
+        {
+          "modelId": "scribe_v2_realtime",
+          "name": "Scribe v2 Realtime",
+          "description": "Fastest and most accurate live speech recognition. 150ms latency, 90+ languages, automatic language detection.",
+          "languages": [
+            {
+              "code": "af",
+              "name": "Afrikaans",
+              "nativeName": "Afrikaans"
+            },
+            {
+              "code": "ar",
+              "name": "Arabic",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "hy",
+              "name": "Armenian",
+              "nativeName": "Հայdelays"
+            },
+            {
+              "code": "as",
+              "name": "Assamese",
+              "nativeName": "অসমীয়া"
+            },
+            {
+              "code": "az",
+              "name": "Azerbaijani",
+              "nativeName": "Azərbaycan"
+            },
+            {
+              "code": "be",
+              "name": "Belarusian",
+              "nativeName": "Беларуская"
+            },
+            {
+              "code": "bn",
+              "name": "Bengali",
+              "nativeName": "বাংলা"
+            },
+            {
+              "code": "bs",
+              "name": "Bosnian",
+              "nativeName": "Bosanski"
+            },
+            {
+              "code": "bg",
+              "name": "Bulgarian",
+              "nativeName": "Български"
+            },
+            {
+              "code": "ca",
+              "name": "Catalan",
+              "nativeName": "Català"
+            },
+            {
+              "code": "ceb",
+              "name": "Cebuano",
+              "nativeName": "Cebuano"
+            },
+            {
+              "code": "ny",
+              "name": "Chichewa",
+              "nativeName": "Chichewa"
+            },
+            {
+              "code": "zh",
+              "name": "Chinese",
+              "nativeName": "中文"
+            },
+            {
+              "code": "hr",
+              "name": "Croatian",
+              "nativeName": "Hrvatski"
+            },
+            {
+              "code": "cs",
+              "name": "Czech",
+              "nativeName": "Čeština"
+            },
+            {
+              "code": "da",
+              "name": "Danish",
+              "nativeName": "Dansk"
+            },
+            {
+              "code": "nl",
+              "name": "Dutch",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "et",
+              "name": "Estonian",
+              "nativeName": "Eesti"
+            },
+            {
+              "code": "fil",
+              "name": "Filipino",
+              "nativeName": "Filipino"
+            },
+            {
+              "code": "fi",
+              "name": "Finnish",
+              "nativeName": "Suomi"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "gl",
+              "name": "Galician",
+              "nativeName": "Galego"
+            },
+            {
+              "code": "ka",
+              "name": "Georgian",
+              "nativeName": "ქართული"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "el",
+              "name": "Greek",
+              "nativeName": "Ελληνικά"
+            },
+            {
+              "code": "gu",
+              "name": "Gujarati",
+              "nativeName": "ગુજરાતી"
+            },
+            {
+              "code": "ha",
+              "name": "Hausa",
+              "nativeName": "Hausa"
+            },
+            {
+              "code": "he",
+              "name": "Hebrew",
+              "nativeName": "עברית"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "hu",
+              "name": "Hungarian",
+              "nativeName": "Magyar"
+            },
+            {
+              "code": "is",
+              "name": "Icelandic",
+              "nativeName": "Íslenska"
+            },
+            {
+              "code": "id",
+              "name": "Indonesian",
+              "nativeName": "Bahasa Indonesia"
+            },
+            {
+              "code": "ga",
+              "name": "Irish",
+              "nativeName": "Gaeilge"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "jv",
+              "name": "Javanese",
+              "nativeName": "Basa Jawa"
+            },
+            {
+              "code": "kn",
+              "name": "Kannada",
+              "nativeName": "ಕನ್ನಡ"
+            },
+            {
+              "code": "kk",
+              "name": "Kazakh",
+              "nativeName": "Қазақша"
+            },
+            {
+              "code": "ko",
+              "name": "Korean",
+              "nativeName": "한국어"
+            },
+            {
+              "code": "ky",
+              "name": "Kyrgyz",
+              "nativeName": "Kyrgyz"
+            },
+            {
+              "code": "lv",
+              "name": "Latvian",
+              "nativeName": "Latviešu"
+            },
+            {
+              "code": "ln",
+              "name": "Lingala",
+              "nativeName": "Lingála"
+            },
+            {
+              "code": "lt",
+              "name": "Lithuanian",
+              "nativeName": "Lietuvių"
+            },
+            {
+              "code": "lb",
+              "name": "Luxembourgish",
+              "nativeName": "Lëtzebuergesch"
+            },
+            {
+              "code": "mk",
+              "name": "Macedonian",
+              "nativeName": "Македонски"
+            },
+            {
+              "code": "ms",
+              "name": "Malay",
+              "nativeName": "Bahasa Melayu"
+            },
+            {
+              "code": "ml",
+              "name": "Malayalam",
+              "nativeName": "മലയാളം"
+            },
+            {
+              "code": "mr",
+              "name": "Marathi",
+              "nativeName": "मराठी"
+            },
+            {
+              "code": "ne",
+              "name": "Nepali",
+              "nativeName": "नेपाली"
+            },
+            {
+              "code": "no",
+              "name": "Norwegian",
+              "nativeName": "Norsk"
+            },
+            {
+              "code": "ps",
+              "name": "Pashto",
+              "nativeName": "پښتو"
+            },
+            {
+              "code": "fa",
+              "name": "Persian",
+              "nativeName": "فارسی"
+            },
+            {
+              "code": "pl",
+              "name": "Polish",
+              "nativeName": "Polski"
+            },
+            {
+              "code": "pt",
+              "name": "Portuguese",
+              "nativeName": "Português"
+            },
+            {
+              "code": "pa",
+              "name": "Punjabi",
+              "nativeName": "ਪੰਜਾਬੀ"
+            },
+            {
+              "code": "ro",
+              "name": "Romanian",
+              "nativeName": "Română"
+            },
+            {
+              "code": "ru",
+              "name": "Russian",
+              "nativeName": "Русский"
+            },
+            {
+              "code": "sr",
+              "name": "Serbian",
+              "nativeName": "Српски"
+            },
+            {
+              "code": "sd",
+              "name": "Sindhi",
+              "nativeName": "سنڌي"
+            },
+            {
+              "code": "sk",
+              "name": "Slovak",
+              "nativeName": "Slovenčina"
+            },
+            {
+              "code": "sl",
+              "name": "Slovenian",
+              "nativeName": "Slovenščina"
+            },
+            {
+              "code": "so",
+              "name": "Somali",
+              "nativeName": "Soomaali"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            },
+            {
+              "code": "sw",
+              "name": "Swahili",
+              "nativeName": "Kiswahili"
+            },
+            {
+              "code": "sv",
+              "name": "Swedish",
+              "nativeName": "Svenska"
+            },
+            {
+              "code": "ta",
+              "name": "Tamil",
+              "nativeName": "தமிழ்"
+            },
+            {
+              "code": "te",
+              "name": "Telugu",
+              "nativeName": "తెలుగు"
+            },
+            {
+              "code": "th",
+              "name": "Thai",
+              "nativeName": "ไทย"
+            },
+            {
+              "code": "tr",
+              "name": "Turkish",
+              "nativeName": "Türkçe"
+            },
+            {
+              "code": "uk",
+              "name": "Ukrainian",
+              "nativeName": "Українська"
+            },
+            {
+              "code": "ur",
+              "name": "Urdu",
+              "nativeName": "اردو"
+            },
+            {
+              "code": "vi",
+              "name": "Vietnamese",
+              "nativeName": "Tiếng Việt"
+            },
+            {
+              "code": "cy",
+              "name": "Welsh",
+              "nativeName": "Cymraeg"
+            }
+          ],
+          "capabilities": {
+            "streaming": true,
+            "diarization": false,
+            "telephony": false,
+            "noiseHandling": false,
+            "multilingual": true
+          },
+          "pricing": {
+            "ratePerMinuteMicrocents": 4167,
+            "ratePerMinuteDisplay": "$0.0042"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "soniox",
+      "displayName": "Soniox",
+      "models": [
+        {
+          "modelId": "stt-rt-v5",
+          "name": "Soniox RT v5",
+          "description": "Real-time speech-to-text with automatic language identification, speaker diarization, and translation support.",
+          "languages": [
+            {
+              "code": "af",
+              "name": "Afrikaans",
+              "nativeName": "Afrikaans"
+            },
+            {
+              "code": "sq",
+              "name": "Albanian",
+              "nativeName": "Albanian"
+            },
+            {
+              "code": "ar",
+              "name": "Arabic",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "az",
+              "name": "Azerbaijani",
+              "nativeName": "Azərbaycan"
+            },
+            {
+              "code": "eu",
+              "name": "Basque",
+              "nativeName": "Basque"
+            },
+            {
+              "code": "be",
+              "name": "Belarusian",
+              "nativeName": "Беларуская"
+            },
+            {
+              "code": "bn",
+              "name": "Bengali",
+              "nativeName": "বাংলা"
+            },
+            {
+              "code": "bs",
+              "name": "Bosnian",
+              "nativeName": "Bosanski"
+            },
+            {
+              "code": "bg",
+              "name": "Bulgarian",
+              "nativeName": "Български"
+            },
+            {
+              "code": "ca",
+              "name": "Catalan",
+              "nativeName": "Català"
+            },
+            {
+              "code": "zh",
+              "name": "Chinese",
+              "nativeName": "中文"
+            },
+            {
+              "code": "hr",
+              "name": "Croatian",
+              "nativeName": "Hrvatski"
+            },
+            {
+              "code": "cs",
+              "name": "Czech",
+              "nativeName": "Čeština"
+            },
+            {
+              "code": "da",
+              "name": "Danish",
+              "nativeName": "Dansk"
+            },
+            {
+              "code": "nl",
+              "name": "Dutch",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "et",
+              "name": "Estonian",
+              "nativeName": "Eesti"
+            },
+            {
+              "code": "fi",
+              "name": "Finnish",
+              "nativeName": "Suomi"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "gl",
+              "name": "Galician",
+              "nativeName": "Galego"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "el",
+              "name": "Greek",
+              "nativeName": "Ελληνικά"
+            },
+            {
+              "code": "gu",
+              "name": "Gujarati",
+              "nativeName": "ગુજરાતી"
+            },
+            {
+              "code": "he",
+              "name": "Hebrew",
+              "nativeName": "עברית"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "hu",
+              "name": "Hungarian",
+              "nativeName": "Magyar"
+            },
+            {
+              "code": "id",
+              "name": "Indonesian",
+              "nativeName": "Bahasa Indonesia"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "kn",
+              "name": "Kannada",
+              "nativeName": "ಕನ್ನಡ"
+            },
+            {
+              "code": "kk",
+              "name": "Kazakh",
+              "nativeName": "Қазақша"
+            },
+            {
+              "code": "ko",
+              "name": "Korean",
+              "nativeName": "한국어"
+            },
+            {
+              "code": "lv",
+              "name": "Latvian",
+              "nativeName": "Latviešu"
+            },
+            {
+              "code": "lt",
+              "name": "Lithuanian",
+              "nativeName": "Lietuvių"
+            },
+            {
+              "code": "mk",
+              "name": "Macedonian",
+              "nativeName": "Македонски"
+            },
+            {
+              "code": "ms",
+              "name": "Malay",
+              "nativeName": "Bahasa Melayu"
+            },
+            {
+              "code": "ml",
+              "name": "Malayalam",
+              "nativeName": "മലയാളം"
+            },
+            {
+              "code": "mr",
+              "name": "Marathi",
+              "nativeName": "मराठी"
+            },
+            {
+              "code": "no",
+              "name": "Norwegian",
+              "nativeName": "Norsk"
+            },
+            {
+              "code": "fa",
+              "name": "Persian",
+              "nativeName": "فارسی"
+            },
+            {
+              "code": "pl",
+              "name": "Polish",
+              "nativeName": "Polski"
+            },
+            {
+              "code": "pt",
+              "name": "Portuguese",
+              "nativeName": "Português"
+            },
+            {
+              "code": "pa",
+              "name": "Punjabi",
+              "nativeName": "ਪੰਜਾਬੀ"
+            },
+            {
+              "code": "ro",
+              "name": "Romanian",
+              "nativeName": "Română"
+            },
+            {
+              "code": "ru",
+              "name": "Russian",
+              "nativeName": "Русский"
+            },
+            {
+              "code": "sr",
+              "name": "Serbian",
+              "nativeName": "Српски"
+            },
+            {
+              "code": "sk",
+              "name": "Slovak",
+              "nativeName": "Slovenčina"
+            },
+            {
+              "code": "sl",
+              "name": "Slovenian",
+              "nativeName": "Slovenščina"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            },
+            {
+              "code": "sw",
+              "name": "Swahili",
+              "nativeName": "Kiswahili"
+            },
+            {
+              "code": "sv",
+              "name": "Swedish",
+              "nativeName": "Svenska"
+            },
+            {
+              "code": "tl",
+              "name": "Tagalog",
+              "nativeName": "Tagalog"
+            },
+            {
+              "code": "ta",
+              "name": "Tamil",
+              "nativeName": "தமிழ்"
+            },
+            {
+              "code": "te",
+              "name": "Telugu",
+              "nativeName": "తెలుగు"
+            },
+            {
+              "code": "th",
+              "name": "Thai",
+              "nativeName": "ไทย"
+            },
+            {
+              "code": "tr",
+              "name": "Turkish",
+              "nativeName": "Türkçe"
+            },
+            {
+              "code": "uk",
+              "name": "Ukrainian",
+              "nativeName": "Українська"
+            },
+            {
+              "code": "ur",
+              "name": "Urdu",
+              "nativeName": "اردو"
+            },
+            {
+              "code": "vi",
+              "name": "Vietnamese",
+              "nativeName": "Tiếng Việt"
+            },
+            {
+              "code": "cy",
+              "name": "Welsh",
+              "nativeName": "Cymraeg"
+            }
+          ],
+          "capabilities": {
+            "streaming": true,
+            "diarization": true,
+            "telephony": false,
+            "noiseHandling": false,
+            "multilingual": true
+          },
+          "pricing": {
+            "ratePerMinuteMicrocents": 2000,
+            "ratePerMinuteDisplay": "$0.0020"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "xai",
+      "displayName": "xAI",
+      "models": [
+        {
+          "modelId": "grok-stt",
+          "name": "Grok STT",
+          "description": "Real-time speech-to-text with word-level timestamps, speaker diarization, and telephony (µ-law) support. Top accuracy on phone-call benchmarks across 25 languages.",
+          "languages": [
+            {
+              "code": "ar",
+              "name": "Arabic",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "zh",
+              "name": "Chinese",
+              "nativeName": "中文"
+            },
+            {
+              "code": "cs",
+              "name": "Czech",
+              "nativeName": "Čeština"
+            },
+            {
+              "code": "da",
+              "name": "Danish",
+              "nativeName": "Dansk"
+            },
+            {
+              "code": "nl",
+              "name": "Dutch",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "fi",
+              "name": "Finnish",
+              "nativeName": "Suomi"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "el",
+              "name": "Greek",
+              "nativeName": "Ελληνικά"
+            },
+            {
+              "code": "he",
+              "name": "Hebrew",
+              "nativeName": "עברית"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "ko",
+              "name": "Korean",
+              "nativeName": "한국어"
+            },
+            {
+              "code": "no",
+              "name": "Norwegian",
+              "nativeName": "Norsk"
+            },
+            {
+              "code": "pl",
+              "name": "Polish",
+              "nativeName": "Polski"
+            },
+            {
+              "code": "pt",
+              "name": "Portuguese",
+              "nativeName": "Português"
+            },
+            {
+              "code": "ro",
+              "name": "Romanian",
+              "nativeName": "Română"
+            },
+            {
+              "code": "ru",
+              "name": "Russian",
+              "nativeName": "Русский"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            },
+            {
+              "code": "sv",
+              "name": "Swedish",
+              "nativeName": "Svenska"
+            },
+            {
+              "code": "tr",
+              "name": "Turkish",
+              "nativeName": "Türkçe"
+            },
+            {
+              "code": "uk",
+              "name": "Ukrainian",
+              "nativeName": "Українська"
+            }
+          ],
+          "capabilities": {
+            "streaming": true,
+            "diarization": true,
+            "telephony": true,
+            "noiseHandling": true,
+            "multilingual": true
+          },
+          "pricing": {
+            "ratePerMinuteMicrocents": 3333,
+            "ratePerMinuteDisplay": "$0.0033"
+          }
+        }
+      ]
+    }
+  ],
+  "llm": [
+    {
+      "provider": "anthropic",
+      "displayName": "Anthropic",
+      "models": [
+        {
+          "modelId": "claude-opus-5",
+          "name": "Claude Opus 5",
+          "description": "Most capable Claude. Best for complex reasoning, agentic work, and coding.",
+          "contextWindow": 1000000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": false,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "off",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 5000000,
+            "outputPer1mTokensMicrocents": 25000000,
+            "inputPer1mTokensDisplay": "$5.00",
+            "outputPer1mTokensDisplay": "$25.00"
+          }
+        },
+        {
+          "modelId": "claude-sonnet-5",
+          "name": "Claude Sonnet 5",
+          "description": "Best combination of speed and intelligence for voice AI.",
+          "contextWindow": 1000000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": false,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "off",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 2000000,
+            "outputPer1mTokensMicrocents": 10000000,
+            "inputPer1mTokensDisplay": "$2.00",
+            "outputPer1mTokensDisplay": "$10.00"
+          }
+        },
+        {
+          "modelId": "claude-haiku-4-5",
+          "name": "Claude Haiku 4.5",
+          "description": "Fastest and most cost-effective Claude for simple, latency-sensitive tasks.",
+          "contextWindow": 200000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": true,
+            "hasPriorityTier": false,
+            "reasoning": false,
+            "reasoningEffort": []
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 1000000,
+            "outputPer1mTokensMicrocents": 5000000,
+            "inputPer1mTokensDisplay": "$1.00",
+            "outputPer1mTokensDisplay": "$5.00"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "google",
+      "displayName": "Google",
+      "models": [
+        {
+          "modelId": "gemini-3.5-flash",
+          "name": "Gemini 3.5 Flash",
+          "description": "Most intelligent Gemini built for speed. Frontier intelligence with superior grounding.",
+          "contextWindow": 1000000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": true,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "minimal",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 1500000,
+            "outputPer1mTokensMicrocents": 9000000,
+            "inputPer1mTokensDisplay": "$1.50",
+            "outputPer1mTokensDisplay": "$9.00"
+          }
+        },
+        {
+          "modelId": "gemini-3.1-pro-preview",
+          "name": "Gemini 3.1 Pro Preview",
+          "description": "Most powerful Gemini model. Best for multimodal understanding and complex agentic tasks.",
+          "contextWindow": 1000000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": true,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 2000000,
+            "outputPer1mTokensMicrocents": 12000000,
+            "inputPer1mTokensDisplay": "$2.00",
+            "outputPer1mTokensDisplay": "$12.00"
+          }
+        },
+        {
+          "modelId": "gemini-3.1-flash-lite",
+          "name": "Gemini 3.1 Flash Lite",
+          "description": "Small, cost-effective Gemini 3 tier. Ideal for high-volume voice applications.",
+          "contextWindow": 1000000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": true,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "minimal",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 250000,
+            "outputPer1mTokensMicrocents": 1500000,
+            "inputPer1mTokensDisplay": "$0.25",
+            "outputPer1mTokensDisplay": "$1.50"
+          }
+        },
+        {
+          "modelId": "gemini-3-flash-preview",
+          "name": "Gemini 3 Flash Preview",
+          "description": "Fast and intelligent. Excellent for voice AI with superior search and grounding.",
+          "contextWindow": 1000000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": true,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "minimal",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 500000,
+            "outputPer1mTokensMicrocents": 3000000,
+            "inputPer1mTokensDisplay": "$0.50",
+            "outputPer1mTokensDisplay": "$3.00"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "grok",
+      "displayName": "Grok",
+      "models": [
+        {
+          "modelId": "grok-4.5",
+          "name": "Grok 4.5",
+          "description": "Most intelligent and fastest Grok. xAI's recommended default for chat and code.",
+          "contextWindow": 500000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": true,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "minimal",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 2000000,
+            "outputPer1mTokensMicrocents": 6000000,
+            "inputPer1mTokensDisplay": "$2.00",
+            "outputPer1mTokensDisplay": "$6.00"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "openai",
+      "displayName": "OpenAI",
+      "models": [
+        {
+          "modelId": "gpt-5.6-sol",
+          "name": "GPT-5.6 Sol",
+          "description": "Flagship GPT-5.6 tier. Best for complex reasoning, coding, and creative tasks.",
+          "contextWindow": 1048576,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": false,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "none"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 5000000,
+            "outputPer1mTokensMicrocents": 30000000,
+            "inputPer1mTokensDisplay": "$5.00",
+            "outputPer1mTokensDisplay": "$30.00"
+          }
+        },
+        {
+          "modelId": "gpt-5.6-terra",
+          "name": "GPT-5.6 Terra",
+          "description": "Balanced GPT-5.6 tier. Strong intelligence at mid-tier cost and latency.",
+          "contextWindow": 1048576,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": false,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "none"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 2000000,
+            "outputPer1mTokensMicrocents": 12000000,
+            "inputPer1mTokensDisplay": "$2.00",
+            "outputPer1mTokensDisplay": "$12.00"
+          }
+        },
+        {
+          "modelId": "gpt-5.6-luna",
+          "name": "GPT-5.6 Luna",
+          "description": "Fast, cost-efficient GPT-5.6 tier. Great fit for low-latency voice AI.",
+          "contextWindow": 1048576,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": false,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "none"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 200000,
+            "outputPer1mTokensMicrocents": 1200000,
+            "inputPer1mTokensDisplay": "$0.20",
+            "outputPer1mTokensDisplay": "$1.20"
+          }
+        },
+        {
+          "modelId": "gpt-5.5",
+          "name": "GPT-5.5",
+          "description": "Previous flagship generation with excellent reasoning and instruction following.",
+          "contextWindow": 400000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": false,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "none"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 5000000,
+            "outputPer1mTokensMicrocents": 30000000,
+            "inputPer1mTokensDisplay": "$5.00",
+            "outputPer1mTokensDisplay": "$30.00"
+          }
+        },
+        {
+          "modelId": "gpt-5.4",
+          "name": "GPT-5.4",
+          "description": "Capable general-purpose model with strong reasoning at mid-tier cost.",
+          "contextWindow": 400000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": false,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "none"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 2500000,
+            "outputPer1mTokensMicrocents": 15000000,
+            "inputPer1mTokensDisplay": "$2.50",
+            "outputPer1mTokensDisplay": "$15.00"
+          }
+        },
+        {
+          "modelId": "gpt-5.4-mini",
+          "name": "GPT-5.4 Mini",
+          "description": "Fast, affordable small model. Good balance of speed and capability for voice AI.",
+          "contextWindow": 400000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": false,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "none"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 750000,
+            "outputPer1mTokensMicrocents": 4500000,
+            "inputPer1mTokensDisplay": "$0.75",
+            "outputPer1mTokensDisplay": "$4.50"
+          }
+        },
+        {
+          "modelId": "gpt-5.4-nano",
+          "name": "GPT-5.4 Nano",
+          "description": "Cheapest, lowest-latency GPT tier. High-volume, simple conversational tasks.",
+          "contextWindow": 400000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": false,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "none"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 200000,
+            "outputPer1mTokensMicrocents": 1250000,
+            "inputPer1mTokensDisplay": "$0.20",
+            "outputPer1mTokensDisplay": "$1.25"
+          }
+        },
+        {
+          "modelId": "gpt-5.2",
+          "name": "GPT-5.2",
+          "description": "Highly capable GPT model for complex reasoning, coding, and creative tasks.",
+          "contextWindow": 128000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": false,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "none"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 1750000,
+            "outputPer1mTokensMicrocents": 14000000,
+            "inputPer1mTokensDisplay": "$1.75",
+            "outputPer1mTokensDisplay": "$14.00"
+          }
+        },
+        {
+          "modelId": "gpt-5.1",
+          "name": "GPT-5.1",
+          "description": "High capability model with excellent reasoning and instruction following.",
+          "contextWindow": 128000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": false,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "none"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 1250000,
+            "outputPer1mTokensMicrocents": 10000000,
+            "inputPer1mTokensDisplay": "$1.25",
+            "outputPer1mTokensDisplay": "$10.00"
+          }
+        },
+        {
+          "modelId": "gpt-5",
+          "name": "GPT-5",
+          "description": "Powerful model for general-purpose tasks with strong reasoning.",
+          "contextWindow": 128000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": false,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "minimal",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 1250000,
+            "outputPer1mTokensMicrocents": 10000000,
+            "inputPer1mTokensDisplay": "$1.25",
+            "outputPer1mTokensDisplay": "$10.00"
+          }
+        },
+        {
+          "modelId": "gpt-5-mini",
+          "name": "GPT-5 Mini",
+          "description": "Fast and cost-effective. Great balance of speed and capability for voice AI.",
+          "contextWindow": 128000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": false,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "minimal",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 250000,
+            "outputPer1mTokensMicrocents": 2000000,
+            "inputPer1mTokensDisplay": "$0.25",
+            "outputPer1mTokensDisplay": "$2.00"
+          }
+        },
+        {
+          "modelId": "gpt-4.1",
+          "name": "GPT-4.1",
+          "description": "Strong general-purpose model. Good for most conversational AI tasks.",
+          "contextWindow": 128000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": true,
+            "hasPriorityTier": false,
+            "reasoning": false,
+            "reasoningEffort": []
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 2000000,
+            "outputPer1mTokensMicrocents": 8000000,
+            "inputPer1mTokensDisplay": "$2.00",
+            "outputPer1mTokensDisplay": "$8.00"
+          }
+        },
+        {
+          "modelId": "gpt-4.1-mini",
+          "name": "GPT-4.1 Mini",
+          "description": "Fast and affordable. Excellent for voice AI with good capability.",
+          "contextWindow": 128000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": true,
+            "hasPriorityTier": false,
+            "reasoning": false,
+            "reasoningEffort": []
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 400000,
+            "outputPer1mTokensMicrocents": 1600000,
+            "inputPer1mTokensDisplay": "$0.40",
+            "outputPer1mTokensDisplay": "$1.60"
+          }
+        },
+        {
+          "modelId": "gpt-4.1-nano",
+          "name": "GPT-4.1 Nano",
+          "description": "Fastest GPT-4 variant. Ideal for simple voice interactions with minimal latency.",
+          "contextWindow": 128000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": false,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": true,
+            "hasPriorityTier": false,
+            "reasoning": false,
+            "reasoningEffort": []
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 100000,
+            "outputPer1mTokensMicrocents": 400000,
+            "inputPer1mTokensDisplay": "$0.10",
+            "outputPer1mTokensDisplay": "$0.40"
+          }
+        },
+        {
+          "modelId": "gpt-4o",
+          "name": "GPT-4o",
+          "description": "Versatile multimodal model. Good for voice AI with vision and function calling.",
+          "contextWindow": 128000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": true,
+            "hasPriorityTier": false,
+            "reasoning": false,
+            "reasoningEffort": []
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 2500000,
+            "outputPer1mTokensMicrocents": 10000000,
+            "inputPer1mTokensDisplay": "$2.50",
+            "outputPer1mTokensDisplay": "$10.00"
+          }
+        },
+        {
+          "modelId": "gpt-4o-mini",
+          "name": "GPT-4o Mini",
+          "description": "Small and fast multimodal model. Cost-effective for voice AI workloads.",
+          "contextWindow": 128000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": true,
+            "hasPriorityTier": false,
+            "reasoning": false,
+            "reasoningEffort": []
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 150000,
+            "outputPer1mTokensMicrocents": 600000,
+            "inputPer1mTokensDisplay": "$0.15",
+            "outputPer1mTokensDisplay": "$0.60"
+          }
+        }
+      ]
+    }
+  ]
+}

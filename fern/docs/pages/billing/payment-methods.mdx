@@ -1,0 +1,53 @@
+---
+title: Payment Methods
+description: Add payment methods via Stripe, manage cards, and configure auto-recharge.
+---
+
+Talkif uses Stripe for payment processing. All payment data is handled securely through Stripe — Talkif never stores your card details.
+
+## Adding a payment method
+
+1. Navigate to **Settings → Billing → Payment Methods**
+2. Click **Add payment method**
+3. Enter your card or bank account details
+4. Confirm and save
+
+Credit cards, debit cards, and bank accounts are supported. 3D Secure (3DS) is supported for European cards.
+
+### Labels
+
+Assign a custom label to any payment method (e.g., "Corporate Visa", "Marketing Budget") to keep things organized when you have multiple cards on file.
+
+## Payment method status
+
+Each payment method has a health status based on its most recent charge outcome:
+
+| Status | Meaning |
+|---|---|
+| **Active** | Healthy — last charge succeeded (or never charged) |
+| **Declined** | Card was declined (insufficient funds, generic decline, etc.) |
+| **Expired** | Card expiration date has passed |
+| **Blocked** | Card is permanently unusable (lost, stolen, or flagged as fraudulent) |
+
+Status resets to **Active** on any successful charge. If a charge fails, the status updates automatically based on the Stripe decline code. A `status_reason` field provides the specific decline code when applicable.
+
+Auto-recharge will not attempt charges against **Expired** or **Blocked** payment methods. If your default method enters one of these states, add a new card or update the existing one.
+
+## Default payment method
+
+Set one payment method as your default. This is used for manual purchases and auto-recharge. You can change your default at any time.
+
+## Auto-recharge
+
+Keep your balance topped up automatically so calls never fail due to insufficient credits.
+
+### Setup
+
+1. Navigate to **Settings → Billing → Auto-Recharge**
+2. **Enable** auto-recharge
+3. Set a **threshold** — when your balance drops below this amount, a recharge triggers
+4. Set a **recharge amount** — how many credits to purchase when triggered
+
+Auto-recharge uses your default payment method.
+
+If an auto-recharge payment fails, the system retries up to **4 times** with increasing delays: immediately, then after 1 day, 3 days, and 5 days. If all attempts fail, you'll need to add funds manually.

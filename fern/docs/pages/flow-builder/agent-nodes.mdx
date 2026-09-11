@@ -1,0 +1,94 @@
+---
+title: Agent Nodes
+description: Configure Main Agent and Agent nodes to handle conversation segments and transitions.
+---
+
+Agent nodes are the conversation handlers in your flow. They define what the AI says, how it behaves, and when it hands off to another agent.
+
+## Main Agent
+
+Every flow has exactly one Main Agent. It's the entry point — the first node that handles the call when it connects.
+
+The Main Agent is marked with a **crown badge** on the canvas and cannot be deleted.
+
+### Configuration
+
+| Field | Description |
+|---|---|
+| **Name** | Required. The agent's identifier — must be unique within the flow. |
+| **System prompt** (`roleMessage`) | Required. Defines the agent's personality, role, and behavioral rules. This is the "who you are" instruction. |
+| **Task prompt** (`taskMessage`) | Defines what the agent should accomplish in the conversation. This is the "what you do" instruction. |
+| **Respond immediately** | Boolean. Whether the agent starts speaking immediately upon transition. |
+| **Transitions** | Conditions under which the conversation transfers to another Agent node. |
+
+### Example system prompt
+
+```
+You are a friendly customer support agent for Acme Corp.
+Speak clearly and concisely. Never make promises about
+refunds without checking the customer's order status first.
+```
+
+### Example task prompt
+
+```
+Greet the caller, identify their issue, and route them
+to the appropriate department. If you can resolve the
+issue directly, do so.
+```
+
+## Agent nodes
+
+Agent nodes handle specific conversation topics or tasks. They have the same configuration as the Main Agent — system prompt, task prompt, and transitions.
+
+Use additional Agent nodes when your flow needs specialized handling for different topics. For example:
+
+- A **Billing Agent** that handles payment and invoice questions
+- A **Technical Support Agent** that troubleshoots product issues
+- A **Scheduling Agent** that books appointments
+
+## Transitions
+
+Transitions define when and how the conversation moves from one agent to another.
+
+Each transition has two properties:
+
+| Property | Description |
+|---|---|
+| **Target** | Which Agent node to transfer the conversation to |
+| **Keywords** | Keywords or a short description that trigger this transition |
+
+### Example transitions
+
+| Keywords | Target |
+|---|---|
+| "billing, payment, invoice" | Billing Agent |
+| "technical help, troubleshooting, not working" | Technical Support Agent |
+| "schedule, appointment, booking" | Scheduling Agent |
+
+The LLM evaluates transition keywords during the conversation and triggers the transfer when they match. Agents can transition to any other Agent node, including back to the Main Agent.
+
+## Context strategies
+
+When a conversation transitions between agents, you control how much conversation history carries over.
+
+| Strategy | Behavior |
+|---|---|
+| **APPEND** | Carry the full conversation history to the next agent. The new agent sees everything that was said. |
+| **RESET** | Start with a clean slate. The new agent has no knowledge of the previous conversation. |
+| **RESET_WITH_SUMMARY** | Summarize the previous conversation and pass the summary to the next agent. Balances context preservation with token efficiency. Requires a `summary_prompt` field that instructs the LLM how to summarize the conversation before clearing context. |
+
+When using `RESET_WITH_SUMMARY`, `context_strategy` is an object:
+
+```json
+{
+  "strategy": "RESET_WITH_SUMMARY",
+  "summary_prompt": "Summarize the key issues discussed so far."
+}
+```
+
+### When to use each strategy
+
+- **APPEND** — When the next agent needs full context (e.g., escalation to a supervisor)
+- **RESET** — When topics are completely independent (e.g., switching from sales to a post-call survey)
+- **RESET_WITH_SUMMARY** — When the next agent needs background but not every detail (e.g., transferring to a specialist after initial triage)

@@ -1,0 +1,290 @@
+# Talkif docs — Fern site configuration.
+# Reference: https://buildwithfern.com/learn/docs/configuration/site-level-settings
+instances:
+  - url: talkif.docs.buildwithfern.com
+    # TODO: switch DNS and uncomment once the Fern site replaces apps/docs
+    # custom-domain: docs.talkif.ai
+    edit-this-page:
+      github:
+        owner: Talkif-ai
+        repo: docs
+        branch: main
+
+title: Talkif Docs
+favicon: docs/assets/favicon.svg
+
+# Same mark + wordmark as the shared Navbar; docs blue accent (each public
+# site keeps its own accent: landing coral, docs blue, status green, trust slate).
+logo:
+  light: docs/assets/logo-light.svg
+  dark: docs/assets/logo-dark.svg
+  height: 24
+  href: https://talkif.ai
+
+# Hex values converted from the oklch tokens in packages/ui/src/globals.css
+# and apps/docs/app/globals.css (--emphasis / --background / --border).
+colors:
+  accent-primary:
+    light: "#1570D1"
+    dark: "#5FA7FF"
+  background:
+    light: "#F5F8FF"
+    dark: "#12151A"
+  border:
+    light: "#D4D7E0"
+    dark: "#2C2E32"
+
+# Inter + JetBrains Mono, matching the landing. Variable fonts, OFL (licenses
+# alongside the files).
+typography:
+  bodyFont:
+    name: Inter
+    paths:
+      - path: docs/fonts/inter-latin-wght-normal.woff2
+        weight: 100 900
+        style: normal
+  headingsFont:
+    name: Inter
+    paths:
+      - path: docs/fonts/inter-latin-wght-normal.woff2
+        weight: 100 900
+        style: normal
+  codeFont:
+    name: JetBrains Mono
+    paths:
+      - path: docs/fonts/jetbrains-mono-latin-wght-normal.woff2
+        weight: 100 800
+        style: normal
+
+navbar-links:
+  - type: minimal
+    text: Trust
+    href: https://trust.talkif.ai
+  - type: minimal
+    text: Status
+    href: https://status.talkif.ai
+  - type: filled
+    text: Open App
+    href: https://app.talkif.ai
+
+# Error Codes moved from the Guides tab into the API Reference tab.
+redirects:
+  - source: /error-codes
+    destination: /api-reference/errors
+
+landing-page:
+  page: Documentation
+  path: docs/pages/index.mdx
+  slug: /
+
+tabs:
+  guides:
+    display-name: Guides
+    icon: fa-regular fa-book-open
+    skip-slug: true
+  api:
+    display-name: API Reference
+    icon: fa-regular fa-code
+    slug: api-reference
+
+navigation:
+  - tab: guides
+    layout:
+      - section: Getting started
+        slug: getting-started
+        path: docs/pages/getting-started/index.mdx
+        contents:
+          - page: Create Account
+            slug: create-account
+            path: docs/pages/getting-started/create-account.mdx
+          - page: Platform Overview
+            slug: platform-overview
+            path: docs/pages/getting-started/platform-overview.mdx
+          - page: Your First Call
+            slug: your-first-call
+            path: docs/pages/getting-started/your-first-call.mdx
+      - section: Build
+        skip-slug: true
+        contents:
+          - section: Flow Builder
+            slug: flow-builder
+            path: docs/pages/flow-builder/index.mdx
+            contents:
+              - page: Concepts
+                slug: concepts
+                path: docs/pages/flow-builder/concepts.mdx
+              - page: Agent Nodes
+                slug: agent-nodes
+                path: docs/pages/flow-builder/agent-nodes.mdx
+              - page: Provider Nodes
+                slug: provider-nodes
+                path: docs/pages/flow-builder/provider-nodes.mdx
+              - page: Action Nodes
+                slug: action-nodes
+                path: docs/pages/flow-builder/action-nodes.mdx
+              - page: Flow Functions
+                slug: flow-functions
+                path: docs/pages/flow-builder/flow-functions.mdx
+              - page: Prompt Library
+                slug: prompts
+                path: docs/pages/flow-builder/prompts.mdx
+              - page: Call Lifetime
+                slug: call-lifetime
+                path: docs/pages/flow-builder/call-lifetime.mdx
+              - page: Testing & Publishing
+                slug: testing-and-publishing
+                path: docs/pages/flow-builder/testing-and-publishing.mdx
+              - page: Templates
+                slug: templates
+                path: docs/pages/flow-builder/templates.mdx
+          - page: Assistant
+            slug: assistant
+            path: docs/pages/assistant/index.mdx
+      - section: Operate
+        skip-slug: true
+        contents:
+          - section: Call Center
+            slug: call-center
+            path: docs/pages/call-center/index.mdx
+            contents:
+              - page: Making Calls
+                slug: making-calls
+                path: docs/pages/call-center/making-calls.mdx
+              - page: Call Details
+                slug: call-details
+                path: docs/pages/call-center/call-details.mdx
+              - page: Campaigns
+                slug: campaigns
+                path: docs/pages/call-center/campaigns.mdx
+              - page: Schedules
+                slug: schedules
+                path: docs/pages/call-center/schedules.mdx
+          - section: Phone Numbers
+            slug: phone-numbers
+            path: docs/pages/phone-numbers/index.mdx
+            contents:
+              - page: Purchasing Numbers
+                slug: purchasing
+                path: docs/pages/phone-numbers/purchasing.mdx
+              - page: Configuration
+                slug: configuration
+                path: docs/pages/phone-numbers/configuration.mdx
+              - page: Bring Your Own Carrier
+                slug: byoc
+                path: docs/pages/phone-numbers/byoc.mdx
+              - page: WhatsApp Business Calling
+                slug: whatsapp
+                path: docs/pages/phone-numbers/whatsapp.mdx
+          - section: Contacts
+            slug: contacts
+            path: docs/pages/contacts/index.mdx
+            contents:
+              - page: Managing Contacts
+                slug: managing-contacts
+                path: docs/pages/contacts/managing-contacts.mdx
+              - page: Bulk Import
+                slug: bulk-import
+                path: docs/pages/contacts/bulk-import.mdx
+              - page: Do Not Call
+                slug: do-not-call
+                path: docs/pages/contacts/do-not-call.mdx
+      - section: Business
+        skip-slug: true
+        contents:
+          - section: Billing
+            slug: billing
+            path: docs/pages/billing/index.mdx
+            contents:
+              - page: Credits
+                slug: credits
+                path: docs/pages/billing/credits.mdx
+              - page: Cost Breakdown
+                slug: cost-breakdown
+                path: docs/pages/billing/cost-breakdown.mdx
+              - page: Payment Methods
+                slug: payment-methods
+                path: docs/pages/billing/payment-methods.mdx
+              - page: Transaction History
+                slug: transaction-history
+                path: docs/pages/billing/transaction-history.mdx
+          - section: Organizations
+            slug: organizations
+            path: docs/pages/organizations/index.mdx
+            contents:
+              - page: Creating an Organization
+                slug: creating-an-org
+                path: docs/pages/organizations/creating-an-org.mdx
+              - page: Members & Roles
+                slug: members-and-roles
+                path: docs/pages/organizations/members-and-roles.mdx
+              - page: Invitations
+                slug: invitations
+                path: docs/pages/organizations/invitations.mdx
+          - section: Account
+            slug: account
+            path: docs/pages/account/index.mdx
+            contents:
+              - page: Profile
+                slug: profile
+                path: docs/pages/account/profile.mdx
+              - page: Security
+                slug: security
+                path: docs/pages/account/security.mdx
+              - page: Notifications
+                slug: notifications
+                path: docs/pages/account/notifications.mdx
+              - page: Data Export
+                slug: data-export
+                path: docs/pages/account/data-export.mdx
+              - page: Account Deletion
+                slug: deletion
+                path: docs/pages/account/deletion.mdx
+      - section: Developer
+        skip-slug: true
+        contents:
+          - section: Developer
+            slug: developer
+            contents:
+              - page: API Keys
+                slug: api-keys
+                path: docs/pages/developer/api-keys.mdx
+              - page: Webhooks
+                slug: webhooks
+                path: docs/pages/developer/webhooks.mdx
+      - section: Integrations
+        skip-slug: true
+        contents:
+          - section: Integrations
+            slug: integrations
+            path: docs/pages/integrations/index.mdx
+            contents:
+              - page: Meta Lead Ads
+                slug: meta-lead-ads
+                path: docs/pages/integrations/meta-lead-ads.mdx
+      - section: Reference
+        skip-slug: true
+        contents:
+          - section: Platform
+            slug: platform
+            path: docs/pages/platform/index.mdx
+            contents:
+              - page: Providers
+                slug: providers
+                path: docs/pages/platform/providers.mdx
+              - page: Real-Time Events
+                slug: real-time
+                path: docs/pages/platform/real-time.mdx
+              - page: Limits
+                slug: limits
+                path: docs/pages/platform/limits.mdx
+  - tab: api
+    layout:
+      - page: Error Codes
+        slug: errors
+        path: docs/pages/error-codes.mdx
+      - api: API Reference
+        skip-slug: true
+        display-errors: true
+        playground:
+          environments:
+            - Production
