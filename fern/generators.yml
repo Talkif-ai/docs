@@ -7,7 +7,7 @@ api:
 # SDKs are generated from the same curated public spec as the API reference.
 # Fern opens a pull request in each SDK repo; a human reviews + merges, and a
 # vX.Y.Z tag there publishes to the registry (see the repo's CLAUDE.md).
-# Requires the Fern GitHub app on Talkif-ai/talkif-node + talkif-python.
+# Requires the Fern GitHub app on Talkif-ai/talkif-typescript + talkif-python.
 groups:
   ts-sdk:
     generators:
@@ -18,7 +18,7 @@ groups:
           package-name: "@talkif/sdk"
           token: OIDC
         github:
-          repository: Talkif-ai/talkif-node
+          repository: Talkif-ai/talkif-typescript
           mode: pull-request
         config:
           namespaceExport: Talkif

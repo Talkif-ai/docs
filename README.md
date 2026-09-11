@@ -8,7 +8,7 @@ Source for **[docs.talkif.ai](https://docs.talkif.ai)** and the generated Talkif
 | `fern/docs/pages/` | Guides (MDX) |
 | `fern/openapi.json` | The public API definition — a curated snapshot, see below |
 | `fern/overlays.yml` | Docs/SDK-only adjustments layered on the spec (server URL, pagination, wording) |
-| `fern/generators.yml` | SDK generators → [talkif-node](https://github.com/Talkif-ai/talkif-node), [talkif-python](https://github.com/Talkif-ai/talkif-python) |
+| `fern/generators.yml` | SDK generators → [talkif-typescript](https://github.com/Talkif-ai/talkif-typescript), [talkif-python](https://github.com/Talkif-ai/talkif-python) |
 | `fern/snapshots/` | Public data (models, pricing, error codes) the tables are generated from |
 | `fern/scripts/` | `sync-api.mjs` refreshes the spec + snapshots; `generate-snippets.mjs` renders the tables |
 
