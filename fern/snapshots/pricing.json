@@ -32,11 +32,11 @@
       "provider": "whatsapp",
       "model": null,
       "rates": {
-        "perMinuteOutbound": {
+        "perMinuteInbound": {
           "microcents": 0,
           "display": "$0.0000"
         },
-        "perMinuteInbound": {
+        "perMinuteOutbound": {
           "microcents": 0,
           "display": "$0.0000"
         }
