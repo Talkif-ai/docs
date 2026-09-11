@@ -1,0 +1,27 @@
+name: Check
+
+# Validates the Fern definition and the docs on every PR so a bad merge can't
+# break docs.talkif.ai (Fern republishes straight from main).
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install -g fern-api
+      - name: fern check
+        working-directory: fern
+        run: fern check
+      - name: fern docs broken-links
+        working-directory: fern
+        run: fern docs broken-links
+        env:
+          FERN_TOKEN: ${{ secrets.FERN_TOKEN }}

@@ -1,0 +1,52 @@
+name: SDK release
+
+# Regenerates the SDKs from fern/openapi.json + overlays.yml at the given version.
+# Fern opens a pull request in Talkif-ai/talkif-typescript and/or talkif-python;
+# a human reviews + merges there and pushes the vX.Y.Z tag, which publishes to
+# npm / PyPI via trusted publishing. This workflow never publishes anything.
+#
+# Deliberately manual (workflow_dispatch): SDKs move when the public contract
+# should move, not on every merge.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "SDK version to generate (semver, no v prefix), e.g. 0.2.0"
+        required: true
+        type: string
+      sdks:
+        description: "Which SDKs"
+        required: true
+        default: both
+        type: choice
+        options: [both, ts-sdk, python-sdk]
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install -g fern-api
+      - name: Validate version
+        run: |
+          [[ "${{ inputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]] \
+            || { echo "not semver: ${{ inputs.version }}"; exit 1; }
+      - name: fern check
+        working-directory: fern
+        run: fern check
+      - name: Generate TypeScript SDK
+        if: inputs.sdks == 'both' || inputs.sdks == 'ts-sdk'
+        working-directory: fern
+        run: fern generate --group ts-sdk --version "${{ inputs.version }}" --log-level info
+        env:
+          FERN_TOKEN: ${{ secrets.FERN_TOKEN }}
+      - name: Generate Python SDK
+        if: inputs.sdks == 'both' || inputs.sdks == 'python-sdk'
+        working-directory: fern
+        run: fern generate --group python-sdk --version "${{ inputs.version }}" --log-level info
+        env:
+          FERN_TOKEN: ${{ secrets.FERN_TOKEN }}
