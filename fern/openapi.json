@@ -158,7 +158,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginatedResponse"
+                  "$ref": "#/components/schemas/ChargeListResponse"
                 }
               }
             }
@@ -522,7 +522,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginatedResponse"
+                  "$ref": "#/components/schemas/InvoiceListResponse"
                 }
               }
             }
@@ -701,7 +701,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginatedResponse"
+                  "$ref": "#/components/schemas/BalanceTransactionListResponse"
                 }
               }
             }
@@ -879,16 +879,38 @@
         "summary": "List active calls",
         "description": "GET /api/v1/calls/active",
         "operationId": "get_active_calls",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Max items to return (1-100, default 10)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Items to skip (default 0)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0,
+              "minimum": 0
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Active calls",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CallResponse"
-                  }
+                  "$ref": "#/components/schemas/CallListResponse"
                 }
               }
             }
@@ -949,6 +971,174 @@
         "summary": "List call history",
         "description": "GET /api/v1/calls/history",
         "operationId": "get_call_history",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of items to return (default: 20, max: 100)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Number of items to skip for pagination (default: 0)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "Only include calls after this timestamp (inclusive)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "Only include calls before this timestamp (inclusive)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by call status",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CallStatus"
+            }
+          },
+          {
+            "name": "direction",
+            "in": "query",
+            "description": "Filter by call direction",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CallDirection"
+            }
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "description": "Filter by call source (direct, scheduled, campaign)",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CallSource"
+            }
+          },
+          {
+            "name": "phoneNumber",
+            "in": "query",
+            "description": "Filter by phone number — matches either the from or to number (E.164)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isLead",
+            "in": "query",
+            "description": "Filter by whether the call was triggered by a Meta lead form (true = lead-driven only)",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "flowId",
+            "in": "query",
+            "description": "Filter by flow ID",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "contactId",
+            "in": "query",
+            "description": "Filter by contact ID",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "scheduleId",
+            "in": "query",
+            "description": "Filter by schedule ID (for scheduled calls)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "campaignId",
+            "in": "query",
+            "description": "Filter by campaign ID (for campaign calls)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "providerType",
+            "in": "query",
+            "description": "Filter by telephony provider type (channel)",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CallProviderType"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Free-text search across the contact name and the raw from/to phone\nnumbers (case-insensitive substring). Matches calls to/from numbers that\nwere never saved as contacts.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Field to sort results by (default: creation time)",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CallSortField"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "description": "Sort direction for `sortBy` (default: desc)",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/SortDirection"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Call history",
@@ -4959,7 +5149,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginatedResponse"
+                  "$ref": "#/components/schemas/FlowFunctionListResponse"
                 }
               }
             }
@@ -5426,7 +5616,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginatedResponse"
+                  "$ref": "#/components/schemas/FlowTemplateListResponse"
                 }
               }
             }
@@ -5485,13 +5675,38 @@
         "summary": "List flows",
         "description": "GET /api/v1/flows\n\nReturns lightweight flow list with connected phones.",
         "operationId": "list_flows",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Max items to return (1-100, default 20)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Items to skip (default 0)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0,
+              "minimum": 0
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Paginated list of flows with connected phone numbers",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginatedResponse"
+                  "$ref": "#/components/schemas/FlowListResponse"
                 }
               }
             }
@@ -6833,10 +7048,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PhoneNumberResponse"
-                  }
+                  "$ref": "#/components/schemas/PhoneNumberListResponse"
                 }
               }
             }
@@ -7783,10 +7995,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PhoneProviderResponse"
-                  }
+                  "$ref": "#/components/schemas/PhoneProviderListResponse"
                 }
               }
             }
@@ -9572,6 +9781,101 @@
             "type": "string",
             "description": "Balance from direct purchases (never expires)",
             "example": "100.00"
+          }
+        }
+      },
+      "BalanceTransactionListResponse": {
+        "type": "object",
+        "description": "Page of balance transactions",
+        "required": [
+          "transactions",
+          "meta"
+        ],
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta",
+            "description": "Pagination metadata"
+          },
+          "transactions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalanceTransactionResponse"
+            },
+            "description": "Items on this page"
+          }
+        }
+      },
+      "BalanceTransactionResponse": {
+        "type": "object",
+        "description": "Balance transaction response",
+        "required": [
+          "id",
+          "transactionType",
+          "status",
+          "amount",
+          "balanceBefore",
+          "balanceAfter",
+          "createdAt"
+        ],
+        "properties": {
+          "amount": {
+            "type": "string",
+            "description": "Transaction amount in USD (negative for debits, positive for credits)",
+            "example": "-0.05"
+          },
+          "balanceAfter": {
+            "type": "string",
+            "description": "Account balance after this transaction (USD)",
+            "example": "99.95"
+          },
+          "balanceBefore": {
+            "type": "string",
+            "description": "Account balance before this transaction (USD)",
+            "example": "100.00"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the transaction occurred",
+            "example": "2026-01-15T10:30:00Z"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Human-readable transaction description",
+            "example": "Call usage charge"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique transaction identifier",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "referenceId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "ID of the related entity (e.g., call ID, charge ID)",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "referenceType": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Type of the related entity (e.g., \"call\", \"phone\")",
+            "example": "call"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus",
+            "description": "Current transaction status"
+          },
+          "transactionType": {
+            "$ref": "#/components/schemas/TransactionType",
+            "description": "Type of transaction"
           }
         }
       },
@@ -11761,6 +12065,173 @@
           }
         }
       },
+      "ChargeListResponse": {
+        "type": "object",
+        "description": "Page of charges",
+        "required": [
+          "charges",
+          "meta"
+        ],
+        "properties": {
+          "charges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChargeResponse"
+            },
+            "description": "Items on this page"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta",
+            "description": "Pagination metadata"
+          }
+        }
+      },
+      "ChargeResponse": {
+        "type": "object",
+        "description": "Single charge in the history list",
+        "required": [
+          "id",
+          "chargeType",
+          "chargeTypeDisplay",
+          "icon",
+          "status",
+          "statusDisplay",
+          "description",
+          "totalMicrocents",
+          "totalUsd",
+          "subtotalMicrocents",
+          "taxMicrocents",
+          "refundedMicrocents",
+          "createdAt"
+        ],
+        "properties": {
+          "chargeType": {
+            "$ref": "#/components/schemas/ChargeTypeDb",
+            "description": "Type of charge"
+          },
+          "chargeTypeDisplay": {
+            "type": "string",
+            "description": "Human-readable charge type label",
+            "example": "Call Usage"
+          },
+          "contactName": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Contact name associated with this charge",
+            "example": "Jane Smith"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the charge was created",
+            "example": "2026-01-15T10:30:00Z"
+          },
+          "description": {
+            "type": "string",
+            "description": "Human-readable description",
+            "example": "Call to Jane Smith via +15551234567 (Sales Flow)"
+          },
+          "failureCode": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Stripe failure code if charge failed"
+          },
+          "failureReason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Human-readable failure reason"
+          },
+          "flowName": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Flow name associated with this charge",
+            "example": "Sales Flow"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Icon hint for rendering this charge type.",
+            "example": "phone"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique charge identifier",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "phoneNumber": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Phone number associated with this charge",
+            "example": "+15551234567"
+          },
+          "referenceId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid",
+            "description": "ID of the referenced entity",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "referenceType": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Type of referenced entity (call, phone, etc.)",
+            "example": "call"
+          },
+          "refundedMicrocents": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Amount refunded in microcents",
+            "example": 0
+          },
+          "status": {
+            "$ref": "#/components/schemas/ChargeStatus",
+            "description": "Current charge status"
+          },
+          "statusDisplay": {
+            "type": "string",
+            "description": "Human-readable status label",
+            "example": "Completed"
+          },
+          "subtotalMicrocents": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Subtotal before tax in microcents",
+            "example": 50000
+          },
+          "taxMicrocents": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Tax amount in microcents",
+            "example": 0
+          },
+          "totalMicrocents": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total charge amount in microcents (1 USD = 1,000,000 microcents)",
+            "example": 50000
+          },
+          "totalUsd": {
+            "type": "number",
+            "format": "double",
+            "description": "Total charge amount in USD",
+            "example": "0.05"
+          }
+        }
+      },
       "ChargeStatus": {
         "type": "string",
         "description": "Charge status tracking the lifecycle of a charge",
@@ -13858,6 +14329,27 @@
           }
         }
       },
+      "FlowFunctionListResponse": {
+        "type": "object",
+        "description": "Page of flow functions",
+        "required": [
+          "functions",
+          "meta"
+        ],
+        "properties": {
+          "functions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlowFunctionResponse"
+            },
+            "description": "Items on this page"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta",
+            "description": "Pagination metadata"
+          }
+        }
+      },
       "FlowFunctionResponse": {
         "type": "object",
         "description": "Flow function response for API",
@@ -13941,6 +14433,27 @@
           }
         }
       },
+      "FlowListResponse": {
+        "type": "object",
+        "description": "Page of flows",
+        "required": [
+          "flows",
+          "meta"
+        ],
+        "properties": {
+          "flows": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlowResponse"
+            },
+            "description": "Items on this page"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta",
+            "description": "Pagination metadata"
+          }
+        }
+      },
       "FlowProvidersResponse": {
         "type": "object",
         "description": "Combined response for all flow providers",
@@ -13970,6 +14483,128 @@
               "$ref": "#/components/schemas/TtsProvider"
             },
             "description": "TTS providers with models and pricing"
+          }
+        }
+      },
+      "FlowResponse": {
+        "type": "object",
+        "description": "Flow response for API (list endpoint - lightweight)\n\nExcludes heavy data like definitions.\nUse FlowDetailResponse for full flow data.",
+        "required": [
+          "id",
+          "accountId",
+          "name",
+          "version",
+          "status",
+          "recordingOverride",
+          "analysisOverride",
+          "voicemailEnabled",
+          "nodeCount",
+          "tags",
+          "connectedPhones",
+          "versions",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Account that owns this flow",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "analysisOverride": {
+            "type": "string",
+            "description": "Call analysis behavior override: \"use_account_default\", \"enabled\", or \"disabled\"",
+            "example": "use_account_default"
+          },
+          "connectedPhones": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConnectedPhoneSummary"
+            },
+            "description": "Phone numbers currently connected to this flow"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the flow was created",
+            "example": "2026-01-15T10:30:00Z"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Description of the flow's purpose",
+            "example": "Automated appointment reminder calls"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier of the flow",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the flow",
+            "example": "Appointment Reminder"
+          },
+          "nodeCount": {
+            "type": "integer",
+            "description": "Total number of nodes in the flow graph",
+            "example": 5,
+            "minimum": 0
+          },
+          "publishedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "Timestamp when the flow was last published"
+          },
+          "recordingOverride": {
+            "type": "string",
+            "description": "Recording behavior override: \"use_account_default\", \"enabled\", or \"disabled\"",
+            "example": "use_account_default"
+          },
+          "status": {
+            "$ref": "#/components/schemas/FlowStatus",
+            "description": "Current lifecycle status of the flow"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "User-defined tags for filtering and organization",
+            "example": [
+              "healthcare",
+              "scheduling"
+            ]
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the flow was last updated",
+            "example": "2026-01-20T14:00:00Z"
+          },
+          "version": {
+            "type": "string",
+            "description": "Current semantic version (X.Y.Z)",
+            "example": "1.2.0"
+          },
+          "versions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlowVersionSummary"
+            },
+            "description": "Available published versions (newest first)"
+          },
+          "voicemailEnabled": {
+            "type": "boolean",
+            "description": "Whether voicemail detection is enabled (outbound Twilio calls only)",
+            "example": true
           }
         }
       },
@@ -14195,6 +14830,27 @@
             "format": "date-time",
             "description": "When the template was last modified",
             "example": "2026-02-20T14:45:00Z"
+          }
+        }
+      },
+      "FlowTemplateListResponse": {
+        "type": "object",
+        "description": "Page of flow templates",
+        "required": [
+          "templates",
+          "meta"
+        ],
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta",
+            "description": "Pagination metadata"
+          },
+          "templates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlowTemplate"
+            },
+            "description": "Items on this page"
           }
         }
       },
@@ -14687,6 +15343,27 @@
           "variables": {
             "type": "object",
             "description": "Variable replacements for template placeholders"
+          }
+        }
+      },
+      "InvoiceListResponse": {
+        "type": "object",
+        "description": "Page of invoices",
+        "required": [
+          "invoices",
+          "meta"
+        ],
+        "properties": {
+          "invoices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InvoiceResponse"
+            },
+            "description": "Items on this page"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta",
+            "description": "Pagination metadata"
           }
         }
       },
@@ -15454,6 +16131,27 @@
           "WHATSAPP"
         ]
       },
+      "PhoneNumberListResponse": {
+        "type": "object",
+        "description": "Page of phone numbers",
+        "required": [
+          "phoneNumbers",
+          "meta"
+        ],
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta",
+            "description": "Pagination metadata"
+          },
+          "phoneNumbers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhoneNumberResponse"
+            },
+            "description": "Items on this page"
+          }
+        }
+      },
       "PhoneNumberPricing": {
         "type": "object",
         "description": "Phone number pricing information",
@@ -15667,6 +16365,27 @@
           "SUSPENDED",
           "RELEASED"
         ]
+      },
+      "PhoneProviderListResponse": {
+        "type": "object",
+        "description": "Page of phone providers",
+        "required": [
+          "providers",
+          "meta"
+        ],
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta",
+            "description": "Pagination metadata"
+          },
+          "providers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhoneProviderResponse"
+            },
+            "description": "Items on this page"
+          }
+        }
       },
       "PhoneProviderResponse": {
         "type": "object",
@@ -16970,6 +17689,33 @@
           "month",
           "custom"
         ]
+      },
+      "TransactionStatus": {
+        "type": "string",
+        "description": "Transaction status",
+        "enum": [
+          "pending",
+          "completed",
+          "failed"
+        ],
+        "example": "completed"
+      },
+      "TransactionType": {
+        "type": "string",
+        "description": "Type of balance transaction",
+        "enum": [
+          "subscription_grant",
+          "purchase",
+          "usage",
+          "refund",
+          "adjustment",
+          "expiration",
+          "dispute_hold",
+          "dispute_release",
+          "dispute_loss",
+          "refund_deduction"
+        ],
+        "example": "usage"
       },
       "TranscriptMessage": {
         "type": "object",
