@@ -101,3 +101,26 @@ actions:
       format: int32
       default: 0
       minimum: 0
+
+  # ── Call history / active calls ──────────────────────────────────────────
+  # backend-rs#319 makes limit/offset optional upstream; until that ships the
+  # spec marks them required. Also enable auto-paging like the other lists.
+  - target: $.paths["/api/v1/calls/history"].get.parameters[0]
+    update:
+      required: false
+  - target: $.paths["/api/v1/calls/history"].get.parameters[1]
+    update:
+      required: false
+  - target: $.paths["/api/v1/calls/history"].get
+    update:
+      x-fern-pagination:
+        offset: $request.offset
+        step: $request.limit
+        results: $response.calls
+  - target: $.paths["/api/v1/calls/active"].get
+    update:
+      x-fern-pagination:
+        offset: $request.offset
+        step: $request.limit
+        results: $response.calls
+
