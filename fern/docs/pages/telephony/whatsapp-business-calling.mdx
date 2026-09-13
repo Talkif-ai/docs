@@ -1,0 +1,67 @@
+---
+title: WhatsApp Business Calling
+description: Let your agents answer calls made to your WhatsApp Business number — connect the WABA, register numbers, understand Pending vs Active, and what it costs.
+---
+
+Some customers would rather tap "call" in WhatsApp than dial a number. With WhatsApp Business Calling connected, those calls reach a Talkif agent exactly like phone calls do: same flows, same transcripts, same insights. Meta carries the call; Talkif runs the conversation.
+
+Two things shape everything below. WhatsApp calling in Talkif is **receive-only** — agents answer, they never dial out on WhatsApp. And a WhatsApp number is identified by Meta's *Phone Number ID*, not by its digits, so it lives alongside a regular line with the same digits without conflict.
+
+## Connecting your WhatsApp Business Account
+
+**Phone Numbers → Providers → Add → WhatsApp Business Calling.** Two ways to connect. Both produce the same result: your WABA becomes a provider in Talkif, and its numbers can be registered under it.
+
+| Path | How | Token |
+|---|---|---|
+| **OAuth (Embedded Signup)** | Click through Meta's signup dialog from the dashboard | Issued by Meta; may have an expiry |
+| **Manual credentials** | Paste your WABA ID, Phone Number ID, and Access Token | Permanent System User token (recommended) |
+
+If your access token has an expiry, Talkif records the expiration date on the provider. When the token lapses, calls will fail — reconnect (or use a permanent System User token) before that happens.
+
+Your access token is encrypted before storage. It is never persisted in plaintext.
+
+## Registering numbers
+
+A WABA owns many numbers. After connecting, browse the numbers available on your WABA and register the ones you want Talkif to answer.
+
+You can register multiple numbers in one request. Results are **per number** — one failing number does not block the others:
+
+| Result | Meaning |
+|---|---|
+| `registered` | Number was newly registered |
+| `already_registered` | A row for this number already existed — skipped, not an error |
+| `failed` | Registration failed for this number (reason included) |
+
+A WhatsApp number can only be registered once across the platform, and a phone number owned by another Talkif account cannot be registered.
+
+## Number status
+
+<ParamField path="ACTIVE" type="status">Registered on Meta's Cloud API, verified, and calling enabled on Meta's side. Inbound WhatsApp calls reach the connected flow.</ParamField>
+<ParamField path="PENDING" type="status">Registered in Talkif but Meta hasn't yet confirmed the number as verified with calling enabled. The reason is recorded on the number.</ParamField>
+
+A registered WhatsApp number is **Active** only when it is registered on Meta's Cloud API, verified, and calling is **ENABLED** on Meta's side. Otherwise it lands in **Pending**, with the reason recorded.
+
+Common reason for Pending: Meta requires a messaging limit of 2000+ before calling can be enabled. A brand-new number stays Pending until Meta raises the limit.
+
+Promotion from Pending to Active is driven by Meta's status webhooks: when Meta reports a status change, Talkif re-reads the number's authoritative status from Meta and promotes it once it is verified and calling is enabled. There is no background poller — a Pending number is re-checked when the next Meta status event arrives.
+
+## Same number, two channels
+
+A WhatsApp number is identified by its Meta Phone Number ID, not its phone number. That means the **same E.164 number can exist in your account twice** — once as a regular (PSTN) line and once as a WhatsApp number — each with its own flow assignment and status. A different account owning the number (on either channel) blocks registration.
+
+## What it costs
+
+There is **no telephony charge** for WhatsApp calls — Meta bills you directly for WhatsApp Business Calling, and the number carries no monthly cost in Talkif.
+
+A WhatsApp call's Talkif cost is the AI processing only: STT, LLM, TTS, and infrastructure. See [Cost Breakdown](/account/cost-breakdown).
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Inbound and outbound routing" href="/telephony/inbound-and-outbound-routing" icon="fa-regular fa-route">
+    Connect a flow to the WhatsApp number.
+  </Card>
+  <Card title="Credits and pricing" href="/concepts/credits-and-pricing" icon="fa-regular fa-coins">
+    What the AI leg of a WhatsApp call costs.
+  </Card>
+</CardGroup>

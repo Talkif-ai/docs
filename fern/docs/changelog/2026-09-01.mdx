@@ -1,0 +1,10 @@
+---
+title: "System Prompt and Agent Prompt"
+---
+
+{/* versions: backend=0.1.201 frontend=0.1.32 catflow=0.0.79 */}
+
+- **Builder**: Prompts are now two clearly separated fields. The **System Prompt** is the call's persona, set once on the Main Agent and inherited by every other agent; the **Agent Prompt** is each agent's own job. Existing flows were migrated automatically. See [Write prompts](/build/write-prompts).
+- **Builder**: Flows built by the Assistant now include spoken-output rules on the main agent by default (short replies, no lists read aloud).
+- **Models**: Models no longer offered by any template were retired; ElevenLabs Multilingual v2 removed in favour of the v3 and Flash models.
+- **Calls**: A contact skipped mid-campaign (Do Not Call, opt-out, manual skip) no longer keeps the campaign in *running* after every other contact is done.

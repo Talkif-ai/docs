@@ -1,0 +1,53 @@
+---
+title: Do Not Call
+description: A phone-number list that blocks every outbound call to it — how it's checked, how numbers get on it (including callers asking during a call), bulk import, and checking numbers before a campaign.
+---
+
+Some numbers must never be dialled: people who asked you to stop, numbers on a regulatory registry, your own staff. The Do Not Call (DNC) list is where Talkif enforces that. It's a list of **phone numbers**, not a flag on contacts — a number stays blocked whether or not it's in your contacts, and however a call is started.
+
+## How it's enforced
+
+Before *every* outbound call — direct, campaign, schedule, API, Meta lead — the destination number is checked. On the list, the call is refused with `contact_on_dnc_list`; in a campaign the contact is marked **skipped** with reason `dnc_list` and the campaign moves on. There's no way to override it per call; remove the number from the list if it was added in error.
+
+Inbound calls aren't affected: if someone on the list calls you, the agent answers.
+
+## How numbers get on the list
+
+Every entry records its **source**:
+
+<ParamField path="manual" type="source">Added in the dashboard, with an optional reason.</ParamField>
+<ParamField path="api" type="source">Added with <a href="/api-reference/do-not-call/add-dnc-entry"><code>POST /dnc</code></a> — from your CRM's unsubscribe flow, say.</ParamField>
+<ParamField path="call_opt_out" type="source">The person asked, during a call, not to be called again.</ParamField>
+<ParamField path="bulk_import" type="source">Loaded in bulk — up to 10,000 numbers per request.</ParamField>
+
+The list is per account. If you operate several accounts in an organization, each keeps its own.
+
+## Working with it
+
+<Tabs>
+  <Tab title="Dashboard">
+    **Call Center → Compliance → Do Not Call.** Add a number with a reason, remove one, search the list, or upload a file of numbers.
+  </Tab>
+  <Tab title="API">
+    <EndpointRequestSnippet endpoint="POST /api/v1/dnc" />
+    <EndpointRequestSnippet endpoint="POST /api/v1/dnc/bulk" />
+    <EndpointRequestSnippet endpoint="POST /api/v1/dnc/check" />
+
+    `check` takes up to 100 numbers and returns which are blocked — use it to scrub a list *before* building a campaign, so your counts are right. [`DELETE /dnc/{phoneNumber}`](/api-reference/do-not-call/remove-dnc-entry) removes one.
+  </Tab>
+</Tabs>
+
+<Warning title="Keep it in sync with your other systems">
+  Talkif blocks calls it places. It can't know about a stop request that reached your email inbox or your CRM unless you add the number — wire your unsubscribe path to `POST /dnc`, and import your regulatory registry on its refresh cycle.
+</Warning>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Campaigns" href="/calls/campaigns" icon="fa-regular fa-bullhorn">
+    How skipped contacts are reported.
+  </Card>
+  <Card title="Make a call" href="/calls/make-a-call" icon="fa-regular fa-phone-arrow-up-right">
+    Every check a call passes before dialing.
+  </Card>
+</CardGroup>

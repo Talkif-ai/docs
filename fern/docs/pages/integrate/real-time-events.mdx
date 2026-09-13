@@ -1,0 +1,118 @@
+---
+title: Real-time events
+description: Follow calls as they happen from your own systems — a WebSocket stream of call lifecycle events for the account, and per-call transcript, turn, transition and recording events, with replay for late joiners.
+---
+
+Polling `GET /calls/{callId}` every second tells you a call ended about a second late and costs you a request a second per call. The event stream tells you the moment it happens, and gives you what polling can't: the transcript as it's spoken, each function call and agent transition as it occurs. It's the same feed the dashboard runs on, exposed over a WebSocket you authenticate with an API key.
+
+## What you can subscribe to
+
+<AccordionGroup>
+  <Accordion title="Account-wide: call lifecycle" defaultOpen>
+    Every call in the account, as it's created, changes status, and ends. Three event types:
+
+    | `type` | When | `data` |
+    |---|---|---|
+    | `call.created` | A call record exists — placed, queued, or inbound answered | the full call object, plus `flowName` |
+    | `call.status` | `status` changed (`initiated`, `ringing`, `inprogress`, …) | `callId`, `status`, `direction`, `source`, from/to numbers, contact and campaign IDs |
+    | `call.ended` | Terminal state reached | `callId`, `status`, `endReason`, `failureCode`, `failureReason`, `duration`, `cost` (USD string), `recordingUrl`, campaign / schedule / contact IDs |
+
+    This is the subscription for "update my CRM when a call finishes" and "how many calls are live right now".
+  </Accordion>
+  <Accordion title="Per call: the conversation">
+    Subscribe to a `callId` and receive its stream:
+
+    | `type` | What it carries |
+    |---|---|
+    | `status` | Fine-grained call/agent status changes with a message |
+    | `transcript` | A finalised turn: `role` (`user` / `assistant`), `content`, `timestamp`, `turnNumber` |
+    | `interim` | Partial recognition of what the caller is saying right now — superseded by the next `interim` or a `transcript` |
+    | `turn` | A conversation turn completed, with timing |
+    | `node_transition` | The conversation moved agents: `fromNode`, `toNode` |
+    | `tts`, `tts_word` | Text being synthesized, with word-level timing |
+    | `speech` | Speech activity markers |
+    | `recording` | Recording started / stopped / available |
+    | `voicemail` | Answering-machine detection verdict (outbound) |
+    | `error` | Something went wrong on the call |
+
+    `interim`, `tts` and `tts_word` are high-frequency and **droppable**: if your consumer falls behind, the server skips them rather than buffering forever. `transcript`, `status`, `turn`, `node_transition` and `call.*` are never dropped.
+  </Accordion>
+</AccordionGroup>
+
+## Connecting
+
+Open a WebSocket to `wss://api.talkif.ai/api/v1/ws/events` with your API key as a Bearer token in the `Authorization` header. The key needs the `calls` scope. Then send **subscribe** frames — one with no `call_id` for the account stream, one per call for conversation streams.
+
+```json title="Client → server frames"
+{ "type": "subscribe" }
+{ "type": "subscribe", "call_id": "018f4e9e-…", "replay": true }
+{ "type": "unsubscribe", "call_id": "018f4e9e-…" }
+{ "type": "ping" }
+```
+
+Every server frame is an envelope:
+
+```json title="Server → client"
+{
+  "v": 1,
+  "type": "transcript",
+  "call_id": "018f4e9e-…",
+  "seq": 42,
+  "ts": 1757700000123,
+  "data": { "role": "user", "content": "I'd like to book a cleaning.", "timestamp": 12.4, "turnNumber": 3 }
+}
+```
+
+- `seq` is **per connection** and monotonic. A gap means *this connection* dropped droppable frames under backpressure — not that something happened out of order globally.
+- Control frames use the same envelope: `subscribed` / `unsubscribed` (with the `call_id`, if any) confirm your subscribe frames; `pong` answers `ping`.
+
+```typescript title="Node.js — react to every finished call"
+import WebSocket from "ws";
+
+const ws = new WebSocket("wss://api.talkif.ai/api/v1/ws/events", {
+  headers: { Authorization: `Bearer ${process.env.TALKIF_API_KEY}` },
+});
+
+ws.on("open", () => ws.send(JSON.stringify({ type: "subscribe" })));
+
+ws.on("message", (raw) => {
+  const frame = JSON.parse(raw.toString());
+  if (frame.type === "call.ended") {
+    const { callId, endReason, duration, cost } = frame.data;
+    // update your CRM: callId, endReason, duration, cost
+  }
+});
+```
+
+## Joining late: replay
+
+Subscribing to a call with `"replay": true` streams the call's history first — every event so far, in order — then continues live. A consumer that connects halfway through a call, or restarts, still gets the whole transcript. Live events that arrive during the replay may appear twice; if that matters, de-duplicate on the event's own identity (turn number, timestamp) rather than on `seq`.
+
+## Keeping the connection healthy
+
+| Behaviour | Value |
+|---|---|
+| Server ping | every 25 s; answer with a pong (most clients do automatically) |
+| Idle close | 300 s without any inbound frame, close code `1008` |
+| Max subscriptions per connection | 50 calls |
+| Max connections per account | 20 |
+| Max inbound frame | 4 KB (client frames are tiny JSON) |
+| Malformed frames | 3, then close `1008` |
+| Server restart | the socket closes; reconnect with backoff and re-subscribe — use `replay: true` for calls still in progress |
+
+Design for reconnection from the start: one long-lived connection per service instance, subscribe on open, re-subscribe after any close. Don't open a connection per call.
+
+<Note title="Browser calls">
+  A voice call running in a web page through the browser SDK gets the same per-call events on a session-scoped endpoint, authenticated by the session token rather than an API key — so the page can render its own live transcript without holding your API key. See [Web calls](/sdks/browser).
+</Note>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Webhooks" href="/integrate/webhooks" icon="fa-regular fa-shield-check">
+    When the agent calls *your* endpoint mid-conversation.
+  </Card>
+  <Card title="How a call works" href="/getting-started/how-a-call-works" icon="fa-regular fa-timeline">
+    What every status and end reason in these events means.
+  </Card>
+</CardGroup>

@@ -1,26 +1,38 @@
 ---
-title: Account
-description: Manage your profile, security settings, notification preferences, data export, and account deletion.
+title: Account and billing
+subtitle: Money in, money out, who's on the account, and how it's protected.
+description: Credits and payment, reading costs, organizations and member roles, security settings, notifications, and taking your data out or closing the account.
+layout: overview
 ---
 
-Account settings are personal — they follow you across organizations.
+Two kinds of thing live here. **Billing** is about the account's money: topping up, cards, auto-recharge, and understanding where every cent went. **Settings** is about the people and the protection: who's a member and what they can do, how you sign in, what you're told about, and how to leave with your data.
 
-## Next steps
+A quick orientation to the model, because it affects where things are:
+
+- A **user** is a person who signs in. A user can belong to several accounts and switches between them.
+- An **account** owns everything operational: flows, numbers, contacts, calls, and the credit balance. API keys are per account.
+- An **organization** is a team that owns an account and has **members** with roles. A personal account has no organization; create one when a second person needs access.
 
 <CardGroup cols={2}>
-  <Card title="Profile" href="/account/profile">
-    Name, email, phone, and linked accounts
+  <Card title="Credits and payment" href="/account/credits-and-payment" icon="fa-regular fa-credit-card">
+    Top up, manage cards, set up auto-recharge, and what happens when a charge fails.
   </Card>
-  <Card title="Security" href="/account/security">
-    Password, MFA, and session management
+  <Card title="Cost breakdown" href="/account/cost-breakdown" icon="fa-regular fa-receipt">
+    Reading charges, transactions and per-call costs; finding what drives your bill.
   </Card>
-  <Card title="Notifications" href="/account/notifications">
-    Configure alerts for billing, calls, and security events
+  <Card title="Organizations" href="/account/organizations" icon="fa-regular fa-building">
+    Team ownership of an account, and what an organization changes.
   </Card>
-  <Card title="Data Export" href="/account/data-export">
-    Download a complete copy of your account data
+  <Card title="Members and roles" href="/account/members-and-roles" icon="fa-regular fa-users">
+    Owner, Admin, Member — and inviting people.
   </Card>
-  <Card title="Account Deletion" href="/account/deletion">
-    Permanently delete your account
+  <Card title="Security" href="/account/security" icon="fa-regular fa-shield">
+    Profile, password, two-factor authentication, sessions.
+  </Card>
+  <Card title="Notifications" href="/account/notifications" icon="fa-regular fa-bell">
+    What Talkif tells you about, and the low-balance threshold.
+  </Card>
+  <Card title="Data export and deletion" href="/account/data-export-and-deletion" icon="fa-regular fa-file-export">
+    Take everything out as JSON; close the account with a grace period.
   </Card>
 </CardGroup>

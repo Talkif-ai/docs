@@ -1,0 +1,132 @@
+---
+title: Write prompts
+description: What goes in the System Prompt versus the Agent Prompt, what works on a phone line, the {{variables}} and helpers available, and the Prompts workspace.
+---
+
+A prompt for a voice agent is not a chatbot prompt with a phone attached. The caller can't scroll, can't skim, and won't wait — every reply is heard once, in real time, by someone who may be driving. The prompts that work are short, specific about the *goal*, and silent about the *words*.
+
+## Two prompts, two jobs
+
+<ParamField path="System Prompt" type="Main Agent only">
+  The call's persona: who the agent is, how it sounds, what it must never do. Set once on the Main Agent; stays in force through every transition. If it's on any other agent, publishing is refused.
+</ParamField>
+<ParamField path="Agent Prompt" type="every agent">
+  This agent's job: what to find out, what to do, when it's done. In force only while the conversation is on this agent. Required on every agent.
+</ParamField>
+
+The split matters because of what each one is paid for. The System Prompt is resent on every turn of the whole call, so it should be a few lines. Agent Prompts are only active on their own step, so they can afford detail — but the same rule applies: each one describes *one* job.
+
+## What a good prompt looks like
+
+```text title="System Prompt"
+You are Mia, the phone assistant for Northwind Dental in Seattle.
+This is a live phone call: keep replies to one or two short sentences and never read lists aloud.
+You are not a clinician — never give medical advice; offer to take a message instead.
+If the caller is upset, stay calm and offer a human callback.
+```
+
+```text title="Agent Prompt — booking step"
+Goal: book, move or cancel a hygiene appointment.
+Collect, one at a time: full name, date of birth, preferred day and time.
+Read the collected details back and get an explicit yes before calling book_appointment.
+If the requested slot is unavailable, offer the two nearest alternatives from the function result.
+When the booking is confirmed, thank them and end the call.
+```
+
+What these do right, and why:
+
+| Do | Because |
+|---|---|
+| State the **goal** in the first line | The model plans around it on every turn |
+| Name every datum to collect, and say **one at a time** | Voice callers can't answer three questions at once |
+| Say when to **call a function** and what to do with the result | Otherwise the model guesses, or narrates that it "would check" |
+| Say when to **end the call** | Without an explicit end condition, agents loop on goodbyes |
+| Put **hard limits** in the System Prompt | They must survive every transition |
+
+And what to leave out:
+
+- **Scripts.** "Say: 'Hello, thank you for calling…'" produces robotic delivery and breaks the moment the caller interrupts. Describe the intent; let the model phrase it.
+- **Formatting.** Bullets, bold, headings — the caller hears none of it and the model may read the punctuation.
+- **Everything the agent doesn't need on this step.** A booking agent doesn't need the refund policy. Long prompts cost tokens on every turn and dilute the instructions that matter.
+- **Contradictions between the two prompts.** If the System Prompt says "be brief" and an Agent Prompt says "explain the full policy", the model picks one — not necessarily yours.
+
+<Tip title="Test the failure paths, not the happy path">
+  In the Flow Tester, be the difficult caller: interrupt, give a wrong date of birth, ask something off-topic, go silent. A prompt is finished when those calls go well.
+</Tip>
+
+## Emotion and delivery with ElevenLabs v3
+
+Most voices say exactly what the model writes, in one register. ElevenLabs **v3** (`eleven_v3`, `eleven_v3_conversational`) also reads **inline audio tags** — `[warmly]`, `[laughs]`, `[whispers]`, `[hesitates]`, `[excited]` — and performs them. On a v3 voice, your prompt can direct delivery as well as words:
+
+```text title="System Prompt excerpt (ElevenLabs v3 only)"
+Your speech is rendered by an expressive voice that understands bracketed delivery tags.
+Use at most one tag per reply, only where it changes meaning: [warmly] when greeting,
+[apologetic] when you can't help, [laughs] only if the caller made a joke. Never tag routine sentences.
+```
+
+Rules that follow from how v3 works on Talkif:
+
+- **Only on v3 models.** On every other voice a tag is read aloud as text. If you switch the TTS node, remove the tag instruction from the prompt in the same publish.
+- **Tags appear in the transcript** as written, so a reader sees `[warmly] Good morning`. Acceptable for most teams; if transcripts feed a downstream system, strip `[...]` there.
+- **Fewer voice sliders.** On v3 only *stability* applies; similarity, style and speaker boost are ignored.
+- Keep tags rare. One per reply at most — over-tagged speech sounds theatrical on a phone.
+
+ElevenLabs' own guide to v3 tags and phrasing: [Prompting Eleven v3](https://elevenlabs.io/docs/best-practices/prompting/eleven-v3).
+
+## Dynamic prompts
+
+Both prompts are templates, resolved **when the call starts**. Anything Talkif knows about the call can be inserted with `{{…}}`; type `{{` in the editor for suggestions.
+
+```handlebars title="Agent Prompt with variables"
+You are calling {{default contact.firstName "the customer"}}
+{{#ifExists contact.company}}from {{contact.company}}{{/ifExists}}
+about their appointment. Today is {{formatDate system.date "long"}}.
+{{#if (eq call.direction "inbound")}}Thank them for calling.{{else}}Confirm it's a good time to talk.{{/if}}
+{{#ifExists contact.notes}}Background from our records: {{contact.notes}}{{/ifExists}}
+```
+
+### Variables
+
+| Namespace | Fields | Available when |
+|---|---|---|
+| `contact.*` | `id`, `name`, `firstName`, `lastName`, `primaryPhone`, `email`, `company`, `occupation`, `notes`, `timezone`, `language`, `interests`, `tags`, `personality`, `communicationStyle`, `preferredTopics`, `address.street` / `.city` / `.state` / `.postalCode` / `.country` | the call has a contact: outbound with a `contactId`, or inbound from a number that matches a contact. Otherwise only `primaryPhone` |
+| `call.*` | `id`, `direction` (`inbound` / `outbound`), `fromNumber`, `toNumber` | always |
+| `account.*` | `id`, `name` | always |
+| `system.*` | `date` (`YYYY-MM-DD`), `time` (`HH:MM:SS`), `timezone`, `timestamp` (ISO 8601) | always |
+
+A variable with no value renders as **empty text** — never an error, never the literal `{{…}}`. That's why `default` and `#ifExists` are worth using on every contact field: not every caller is in your contacts.
+
+### Helpers
+
+| Helper | Use |
+|---|---|
+| `{{default contact.name "there"}}` | Fallback when the value is missing |
+| `{{#ifExists contact.email}}…{{else}}…{{/ifExists}}` | Include a block only when the value exists |
+| `{{#if (eq call.direction "inbound")}}…{{/if}}` | Conditions: `eq`, `ne`, `gt`, `lt`, `gte`, `lte`, combined with `and`, `or`, `not` |
+| `{{#if (includes contact.tags "vip")}}…{{/if}}` | Array contains / string contains |
+| `{{join contact.interests ", "}}` | Join a list into a sentence |
+| `{{formatDate system.date "long"}}` | `short` → `MM/DD/YYYY`, `long` → `Month DD, YYYY`, `time`, `datetime`, or default `YYYY-MM-DD` |
+| `{{match …}}`, `{{replace …}}` | Regex test and replace |
+| `{{json contact.address}}` | Dump a value as JSON (rarely useful in speech) |
+
+Truthiness is voice-friendly: empty strings, `"none"`, `"null"`, empty lists and empty objects all count as false. Output is plain text — nothing is HTML-escaped.
+
+## The Prompts workspace
+
+**Flow Builder → Prompts** is a place to write and keep prompts outside any single flow: company-wide tone guidelines, a persona you reuse across lines, a booking step several flows share. It has the same editor with `{{` autocompletion, plus two things the node editor doesn't:
+
+- **Preview with contact data** — pick a real contact and see the prompt exactly as the call would render it, variables filled in.
+- **AI generation** — describe what you want and iterate in chat; the generator knows your variables and helpers and produces a template that's ready to use.
+
+Prompts here are copied into agents, not linked: paste the text into the node. That keeps each published version self-contained, and it means editing a workspace prompt never silently changes a live flow.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Design a conversation" href="/build/design-a-conversation" icon="fa-regular fa-diagram-project">
+    Split a job across agents so each prompt stays short.
+  </Card>
+  <Card title="Choose models and voices" href="/build/choose-models-and-voices" icon="fa-regular fa-sliders">
+    The model reading your prompt matters as much as the prompt.
+  </Card>
+</CardGroup>

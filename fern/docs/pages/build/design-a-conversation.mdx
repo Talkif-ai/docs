@@ -1,0 +1,104 @@
+---
+title: Design a conversation
+description: How agents, transitions and functions combine into a conversation the LLM can run well — and how to split a job across agents so each one stays simple.
+---
+
+The hardest part of building a voice agent isn't the tooling; it's deciding *how much one agent should be responsible for*. Give a single agent a twelve-step job with fifteen rules and it will forget rule nine on turn twenty. Split the job into agents that each own one step, and every prompt gets short, every transition becomes a checkpoint, and the transcript tells you exactly where things went wrong.
+
+This page is about that structure. Prompt wording is in [Write prompts](/build/write-prompts).
+
+## The pieces on the canvas
+
+| Node | What it is | How many |
+|---|---|---|
+| **Main Agent** | The entry point. Owns the call's **System Prompt** (persona) and its own **Agent Prompt** (first job). Can't be deleted. | exactly one |
+| **Agent** | A further step in the conversation with its own Agent Prompt. Inherits the System Prompt. | any number |
+| **Provider** (STT / LLM / TTS) | The services every agent uses. Connected to agents; one of each is required. | one of each |
+| **Function** nodes | Things an agent may do: `End Call`, `Say`, `HTTP Request`. Attached to a specific agent. | as needed |
+
+An agent is where the conversation *sits*. At any moment exactly one agent is active; its Agent Prompt is the LLM's instruction, its functions are the tools the LLM may call, and its transitions are the exits.
+
+## Transitions — moving between agents
+
+A transition is an edge from one agent to another with a short **description of when to take it**. It's exposed to the LLM as a tool: when the model judges that the description matches what's happening, it calls the tool and the conversation moves.
+
+```text title="Transition descriptions on a triage agent"
+→ Billing Agent      "The caller asks about an invoice, a charge, a refund or a payment method."
+→ Technical Agent    "The caller reports something not working: errors, outages, login problems."
+→ Booking Agent      "The caller wants to schedule, move or cancel an appointment."
+```
+
+Three things follow from *the LLM decides*:
+
+- **Write descriptions as conditions, not keywords.** "The caller has confirmed their identity" beats "identity, verified, confirmed". The model reads the description the way it reads your prompt.
+- **Make exits mutually exclusive where you can.** If two transitions could both match, you're leaving the choice to chance. Phrase them so one clearly wins.
+- **Transitions are one-way edges; add the return path deliberately.** A Billing Agent that can't get back to triage strands the caller who then asks a technical question.
+
+When the conversation moves, the **System Prompt stays** and the **Agent Prompt changes**. The full transcript so far is carried into the new agent, so it doesn't re-ask what the caller already said — but it will only *act* on what its own prompt tells it to.
+
+## Functions — letting an agent act
+
+A function is a tool the LLM may call while on that agent. Talkif has three kinds:
+
+| Node | What happens when the LLM calls it |
+|---|---|
+| **End Call** | The call ends after the agent's last sentence finishes. Every flow needs a way to end; see [Transfer and end calls](/build/transfer-and-end-calls). |
+| **HTTP Request** | Talkif calls *your* endpoint with arguments the LLM extracted from the conversation, and feeds the response back to the model before its next reply. See [Call your backend](/build/call-your-backend). |
+| **Say** | Speaks a fixed line verbatim — a scripted disclaimer, a hold message. Runs as an action around the agent's turn, not by LLM choice. |
+
+Functions are attached per agent. A `lookup_order` function on the Support Agent is invisible to the Booking Agent — which is what you want: the model's tool list stays as short as its prompt.
+
+## Patterns that work
+
+<AccordionGroup>
+  <Accordion title="Single agent — one clear job" defaultOpen>
+    Reminders, surveys, confirmations, simple FAQ lines. One Main Agent with both prompts, an End Call function, maybe one HTTP Request. Start here; most flows never need more.
+  </Accordion>
+  <Accordion title="Triage → specialists">
+    Main Agent greets and classifies; one agent per topic. The triage prompt is tiny ("find out which of these three things they need") and each specialist prompt only knows its topic. Give every specialist a transition back to triage for "anything else?".
+  </Accordion>
+  <Accordion title="Linear pipeline — collect, then act, then close">
+    Outbound flows usually have a natural order: open and confirm identity → do the job → wrap up. Three agents in a line, each with a single exit forward. The transitions double as checkpoints: if a call ends on the first agent, you know identity confirmation is where it fails.
+  </Accordion>
+  <Accordion title="Gatekeeper before anything sensitive">
+    Put identity verification on its own agent with an HTTP Request that checks the caller against your system, and make the sensitive agents reachable *only* from it. The LLM can't take a shortcut the graph doesn't have.
+  </Accordion>
+</AccordionGroup>
+
+## What to avoid
+
+- **One agent, many jobs.** The symptom is a prompt with numbered sections; the fix is one agent per section.
+- **Transitions as "intents" for everything.** Two or three exits per agent is normal; eight means the agent is really a router and should say so in its prompt.
+- **Deep chains without a return.** Every agent that isn't terminal should be able to hand back to something.
+- **Relying on the model to end the call.** Put an explicit End Call function on every agent that can be the last one, and tell the prompt when to use it.
+
+## Doing it
+
+<Steps>
+  <Step title="Start with the Main Agent">
+    Write the System Prompt (persona, tone, hard limits — for the whole call) and the Agent Prompt for the first step. Attach STT, LLM and TTS.
+  </Step>
+  <Step title="Add an agent per step or topic">
+    Drag **Agent** nodes onto the canvas; each gets only an Agent Prompt. Name them for what they do — the name appears in transcripts and node-transition events.
+  </Step>
+  <Step title="Draw transitions">
+    Connect agent → agent and write the condition for each edge in the node's **Transitions** section. Add the return edges.
+  </Step>
+  <Step title="Attach functions">
+    Add **End Call** to every agent that can finish a call. Add **HTTP Request** nodes where the agent needs your data.
+  </Step>
+  <Step title="Talk to it">
+    Open the **Flow Tester** and try the paths — especially the wrong ones ("I want billing" on the technical agent). Watch which agent is active as you go.
+  </Step>
+</Steps>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Write prompts" href="/build/write-prompts" icon="fa-regular fa-pen-nib">
+    What to put in each prompt, and what to leave out.
+  </Card>
+  <Card title="Call your backend" href="/build/call-your-backend" icon="fa-regular fa-server">
+    Give agents live data and the ability to act.
+  </Card>
+</CardGroup>

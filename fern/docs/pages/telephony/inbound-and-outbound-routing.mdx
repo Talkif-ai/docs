@@ -1,0 +1,87 @@
+---
+title: Inbound and outbound routing
+description: How a number decides what answers it, which numbers can place outbound calls and from where, pinning a number to a flow version, per-number recording, and the number statuses and capabilities you'll see.
+---
+
+A phone number in Talkif is a small routing record: which flow answers calls *to* it, whether calls can be placed *from* it, and a few per-number overrides. Get those three things right and everything else — campaigns, schedules, the API — just works, because they all route through the same rules.
+
+## Inbound: the connected flow
+
+Every inbound call is answered by the flow **connected** to the number it arrived on, at the version the connection specifies. A number is connected to at most one flow; a flow can be connected to many numbers.
+
+<Tabs>
+  <Tab title="Dashboard">
+    Open the number and choose a flow under **Connected Agent** — only *published* flows are offered. Leave the version on latest unless you have a reason to pin.
+  </Tab>
+  <Tab title="API">
+    <EndpointRequestSnippet endpoint="PATCH /api/v1/phone/numbers/{phoneNumberId}/connect-flow" />
+    <EndpointRequestSnippet endpoint="PATCH /api/v1/phone/numbers/{phoneNumberId}/disconnect-flow" />
+  </Tab>
+</Tabs>
+
+What happens on an inbound call, in order:
+
+1. The number is looked up. Unknown number → rejected (`unknown_phone_number`).
+2. The number must have a connected flow. None → answered **busy**, and a *failed* call is recorded with `no_connected_flow` so the misconfiguration is visible in History.
+3. Your balance must be at or above the minimum ($1.00). Below → busy, recorded with `insufficient_balance`.
+4. The flow version is resolved — *latest* or the pinned version — and the call is admitted like any other. See [How a call works](/getting-started/how-a-call-works).
+
+Disconnecting a flow returns the number to step 2: inbound calls are answered busy until something is connected again. Do it deliberately when retiring a line; don't leave production numbers disconnected.
+
+### Pinning a version
+
+By default a connection follows **latest**: whatever you publish next is what the number answers with, immediately. Pass a `flowVersion` when connecting to **pin** the number to that version. Pinned numbers ignore later publishes — until you publish *over* that exact version, in which case the pin is moved forward to the new one. Use it for lines that must not change without an explicit step; the rules are in [Flows and versions](/concepts/flows-and-versions#which-version-does-a-call-run).
+
+## Outbound: the from-number
+
+An outbound call — from the dashboard, the API, a campaign or a schedule — is placed **from** a number you own. Two things must be true of it:
+
+- It has the **voice** capability and `canInitiateCalls: true`. Talkif-purchased, SIP and own-Twilio numbers do; WhatsApp numbers are receive-only.
+- It's **Active**, and its rental isn't suspended.
+
+The call is routed through the number's **provider**: a Talkif number goes out over Talkif's carrier, a SIP number over your trunk, a Twilio-account number through your Twilio account. That's why [`POST /calls`](/api-reference/calls/make-call) takes both `fromNumber` and `providerId` — the provider is the one that owns the number, and it's returned on the number's record.
+
+The from-number is the caller ID the person sees. Choose one they'll recognise — a local number for a local campaign, your main line for support callbacks. Carriers may override or block caller IDs that don't belong to the trunk; on SIP that's a carrier-side setting.
+
+## Per-number recording
+
+Recording has an account-wide default. A flow can force it on or off; a number can too, and the order is **flow → number → account** (the first explicit setting wins). Set a number's override on its page or with [`PUT /phone/numbers/{id}`](/api-reference/phone-numbers/update-phone-number) (`recordingOverride`: `use_account_default`, `enabled`, `disabled`).
+
+Use a number override for lines with a legal position of their own — a line in a jurisdiction that requires consent, say — knowing that a flow which forces recording on will still record on it.
+
+## What a number record tells you
+
+<ParamField path="status" type="ACTIVE · PENDING · SUSPENDED · RELEASED">
+  `ACTIVE` — provisioned and usable. `PENDING` — being provisioned; for WhatsApp, waiting for Meta to confirm calling is enabled. `SUSPENDED` — disabled, usually for unpaid rental. `RELEASED` — given back; no longer yours.
+</ParamField>
+<ParamField path="capabilities" type="VOICE · SMS · MMS · WHATSAPP">
+  What the number can do. Only `VOICE` matters for calling; a WhatsApp number carries `WHATSAPP` and not `VOICE`.
+</ParamField>
+<ParamField path="channelType" type="pstn · whatsapp">
+  A `pstn` number is identified by its E.164 digits; a `whatsapp` number by Meta's Phone Number ID. The same digits can exist once per channel.
+</ParamField>
+<ParamField path="canInitiateCalls" type="boolean">
+  Whether it can be a from-number. `false` for WhatsApp.
+</ParamField>
+<ParamField path="billingStatus" type="active · processing · past_due · suspended">
+  Rental state for purchased numbers — see [Buy a number](/telephony/buy-a-number#paying-for-it).
+</ParamField>
+<ParamField path="providerId · providerType" type="uuid · enum">
+  Which provider routes it: the platform's system provider (`TWILIO`), your SIP trunk (`SIP`), your Twilio account (`OWN_TWILIO`), or a WABA (`WHATSAPP`).
+</ParamField>
+<ParamField path="twilioEdge · twilioRegion" type="string">
+  Where the number's carrier traffic is served from — see [Regions and edges](/telephony/regions-and-edges).
+</ParamField>
+
+Give every number a **friendly name** ("Support line", "Outbound – Berlin"). It appears in call lists and campaign setup, and it's the difference between recognising a line and reading digits.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Make a call" href="/calls/make-a-call" icon="fa-regular fa-phone-arrow-up-right">
+    Place an outbound call from a number.
+  </Card>
+  <Card title="Flows and versions" href="/concepts/flows-and-versions" icon="fa-regular fa-code-branch">
+    Everything about versions and pinning.
+  </Card>
+</CardGroup>

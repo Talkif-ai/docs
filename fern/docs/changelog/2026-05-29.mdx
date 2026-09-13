@@ -1,0 +1,9 @@
+---
+title: "Voicemail detection; call lifecycle"
+---
+
+- **Calls**: **Voicemail detection** on outbound calls — recognise an answering machine and leave a message (fixed or composed) or hang up, with its own cost line. See [Transfer and end calls](/build/transfer-and-end-calls#safety-net-3-voicemail-outbound-only).
+- **Calls**: Single call state machine with an automatic reconciler — a call can no longer get stuck in an in-progress state; stuck calls are ended with reason `reconciled`.
+- **Calls**: Admission is region-aware, so a call is only accepted where an agent can actually serve it.
+- **Calls**: Lower browser-call connection latency.
+- **Developer**: Account ID and Organization ID shown on the Developer page; link to API documentation.

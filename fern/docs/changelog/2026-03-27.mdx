@@ -1,0 +1,12 @@
+---
+title: "Public REST API, flow versions, API keys"
+---
+
+- **API**: The **public REST API** at `api.talkif.ai` with OpenAPI documentation and an error catalogue endpoint.
+- **API**: **API keys** with scopes, IP allowlists, expiry, usage tracking and error monitoring, managed under Developer → Credentials. See [Authentication](/integrate/authentication).
+- **Builder**: **Flow versions** — every publish is an immutable version with notes, a semantic diff between versions, rollback, and phone numbers that follow *latest* or are pinned to a version. See [Flows and versions](/concepts/flows-and-versions).
+- **Builder**: Voice browser with filters for TTS nodes; ElevenLabs shared voices; a prompt editor dialog on agent nodes.
+- **Calls**: Unified call timeline with every speech event, function calls per turn, and the model used per message; redesigned call detail and cost breakdown; end reasons shown in the UI.
+- **Billing**: **Charge history** — every billable event (call usage, number purchase and rental, analysis, recording storage, adjustments) with status and line items, alongside the transaction ledger. **Payment-method health** — cards show declined / expired / blocked with the decline reason, auto-recharge skips unusable cards, and cards can be labelled. See [Credits and payment](/account/credits-and-payment).
+- **Telephony**: Redesigned number purchase; phone-number change with SMS verification.
+- **Calls**: Faster browser test calls.

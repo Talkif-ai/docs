@@ -1,0 +1,195 @@
+---
+title: SDKs
+description: Official TypeScript/Node.js and Python clients for the Talkif API — install, authenticate, place a call, page through results, handle errors.
+---
+
+Talkif ships two official clients, generated from the same API definition that produces this reference — so every endpoint, parameter and response type in the [API Reference](/api-reference) exists in both, with the same names. When the API changes, the SDKs change with it.
+
+| SDK | TypeScript / Node.js | Python |
+|---|---|---|
+| Package | [`@talkif/sdk`](https://www.npmjs.com/package/@talkif/sdk) on npm | [`talkif`](https://pypi.org/project/talkif/) on PyPI |
+| Runtime | Node 18+, Bun, Deno, modern browsers (server-side recommended — keep your API key out of browsers) | Python 3.10+ |
+| Client | `TalkifClient` | `Talkif` (sync) and `AsyncTalkif` (async) |
+| Source | [Talkif-ai/talkif-typescript](https://github.com/Talkif-ai/talkif-typescript) | [Talkif-ai/talkif-python](https://github.com/Talkif-ai/talkif-python) |
+
+<Note>
+  For voice calls *from a web page* — a "talk to our agent" button — use the browser SDK — see [Web calls](/sdks/browser) — not these. These clients are for the control API: placing phone calls, managing flows, contacts, campaigns, numbers and billing from your backend.
+</Note>
+
+<Tip>
+  Using Claude Code, Codex or Cursor to write the integration? Install the [Talkif Agent Skills](/skills/agent-skills) — they teach the agent these SDKs and every endpoint.
+</Tip>
+
+## Install
+
+<CodeBlocks>
+```bash title="npm"
+npm install @talkif/sdk
+```
+```bash title="pip"
+pip install talkif
+```
+</CodeBlocks>
+
+## Authenticate
+
+Both clients take an API key as `token` and send it as a Bearer header on every request. Create one under **Developer → Credentials** in the dashboard — see [Authentication](/integrate/authentication) for scopes, rotation and where keys are safe to live. Read it from the environment; never hard-code it.
+
+<CodeBlocks>
+```typescript title="TypeScript"
+import { TalkifClient } from "@talkif/sdk";
+
+const client = new TalkifClient({ token: process.env.TALKIF_API_KEY });
+```
+```python title="Python"
+import os
+from talkif import Talkif
+
+client = Talkif(token=os.environ["TALKIF_API_KEY"])
+```
+</CodeBlocks>
+
+`token` also accepts a function, so a key you rotate at runtime (or fetch from a secrets manager) is picked up on the next request without rebuilding the client.
+
+## Place a call
+
+The same request as `POST /api/v1/calls` in the [Quickstart](/getting-started/quickstart): the flow to run, a number you own to call from, the provider that number belongs to, and the destination.
+
+<CodeBlocks>
+```typescript title="TypeScript"
+const result = await client.calls.makeCall({
+  flowId: "550e8400-e29b-41d4-a716-446655440000",
+  fromNumber: "+15559876543",
+  providerId: "550e8400-e29b-41d4-a716-446655440000",
+  toNumber: "+15551234567",
+});
+
+if (result.type === "initiated") {
+  console.log("placing call", result.callId);
+} else {
+  // your account is at its concurrent-call limit; the call is queued
+  console.log(`queued at position ${result.position}`);
+}
+```
+```python title="Python"
+result = client.calls.make_call(
+    flow_id="550e8400-e29b-41d4-a716-446655440000",
+    from_number="+15559876543",
+    provider_id="550e8400-e29b-41d4-a716-446655440000",
+    to_number="+15551234567",
+)
+
+if result.type == "initiated":
+    print("placing call", result.call_id)
+else:
+    # your account is at its concurrent-call limit; the call is queued
+    print("queued at position", result.position)
+```
+</CodeBlocks>
+
+The response is a union: `initiated` (HTTP 201, the call is being placed) or `queued` (HTTP 202). Both shapes are in [How a call works](/getting-started/how-a-call-works#2-admission--the-two-gates-every-call-passes).
+
+## Page through lists
+
+List endpoints (`calls.getCallHistory`, `contacts.listContacts`, `campaigns.listCampaigns`, …) use `limit`/`offset` and return a **pager**. (In the API the call list is `GET /calls`; the 0.1.x SDKs still expose it as `getCallHistory` / `get_call_history` until the next SDK release.) Iterate it and the client fetches the next page for you; you never handle `offset` yourself.
+
+<CodeBlocks>
+```typescript title="TypeScript"
+const history = await client.calls.getCallHistory({
+  status: "completed",
+  startDate: "2026-09-01T00:00:00Z",
+});
+
+for await (const call of history) {
+  console.log(call.id, call.direction, call.duration);
+}
+```
+```python title="Python"
+history = client.calls.get_call_history(
+    status="completed",
+    start_date="2026-09-01T00:00:00Z",
+)
+
+for call in history:
+    print(call.id, call.direction, call.duration)
+```
+</CodeBlocks>
+
+If you'd rather control paging — to show a page in a UI, say — pass `limit` and `offset` explicitly and read the page's items (`calls`, `contacts`, …) and `meta` (total count) without iterating.
+
+## Handle errors
+
+Non-2xx responses raise a typed error per status. The body carries the platform's [error code](/api-reference/errors) — that's the field to branch on, not the message.
+
+<CodeBlocks>
+```typescript title="TypeScript"
+import { Talkif, TalkifError } from "@talkif/sdk";
+
+try {
+  await client.calls.makeCall({ /* … */ });
+} catch (err) {
+  if (err instanceof Talkif.PaymentRequiredError) {
+    // insufficient balance — top up or enable auto-recharge
+  } else if (err instanceof Talkif.TooManyRequestsError) {
+    // rate limited — back off and retry
+  } else if (err instanceof TalkifError) {
+    console.error(err.statusCode, err.body);
+  } else {
+    throw err;
+  }
+}
+```
+```python title="Python"
+from talkif.core.api_error import ApiError
+from talkif.errors import PaymentRequiredError, TooManyRequestsError
+
+try:
+    client.calls.make_call(...)
+except PaymentRequiredError:
+    ...  # insufficient balance — top up or enable auto-recharge
+except TooManyRequestsError:
+    ...  # rate limited — back off and retry
+except ApiError as err:
+    print(err.status_code, err.body)
+```
+</CodeBlocks>
+
+Retries are built in: both clients retry on `408`, `429` and `5xx` responses with exponential backoff — twice by default (`maxRetries` / `max_retries`, per client or per call). Timeouts default to 60 seconds and are set the same way. Because a retried `POST /calls` could place a second call if the first actually succeeded, keep `maxRetries` at its default and check for the call in history before re-issuing a request that timed out.
+
+## Async Python
+
+Every method exists on `AsyncTalkif` with the same name and arguments.
+
+```python title="Python (asyncio)"
+import asyncio
+from talkif import AsyncTalkif
+
+client = AsyncTalkif(token=os.environ["TALKIF_API_KEY"])
+
+async def main():
+    active = await client.calls.get_active_calls()
+    print(len(active.calls), "active")
+
+asyncio.run(main())
+```
+
+## Versioning
+
+SDK versions follow the API: a new endpoint or field is a minor release, a removed or renamed one is a major. Pin a minor range in production (`^0.1` / `~=0.1`) and read the release notes on the repo before moving majors. Both packages are published only from a tagged release, never from a branch.
+
+## What's next
+
+<CardGroup cols={2}>
+  <Card title="Authentication" href="/integrate/authentication" icon="fa-regular fa-key">
+    Create and rotate API keys; what a key can and can't do.
+  </Card>
+  <Card title="Webhooks" href="/integrate/webhooks" icon="fa-regular fa-arrow-right-arrow-left">
+    Receive function calls and events from live conversations, and verify they came from Talkif.
+  </Card>
+  <Card title="API Reference" href="/api-reference" icon="fa-regular fa-book">
+    Every endpoint, with a TypeScript and Python example alongside curl.
+  </Card>
+  <Card title="Web calls" href="/sdks/browser" icon="fa-regular fa-globe">
+    Put a voice agent on a web page with the browser SDK.
+  </Card>
+</CardGroup>

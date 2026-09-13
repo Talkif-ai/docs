@@ -1,0 +1,60 @@
+---
+title: Schedules
+description: Call one contact on a recurrence — once at a set time, daily, weekly, monthly or on a cron expression — with retries, an end date or run cap, and the contact's own timezone.
+---
+
+A schedule is a standing instruction: *call this contact, with this flow, at this time, this often*. A daily medication check-in, a weekly progress call, a reminder the day before every monthly appointment, a single call at 4 pm next Tuesday. Where a campaign is a list run once, a schedule is one person, run repeatedly.
+
+## What a schedule is made of
+
+| Setting | What it decides |
+|---|---|
+| **Contact** | The one person this schedule calls. Their record fills the `{{contact.*}}` prompt variables on every run |
+| **Flow** and **from number** | As for any outbound call — a published flow; a number that can place calls |
+| **Frequency** | `once`, `daily`, `weekly` (choose weekdays), `monthly` (day 1–28), or `custom_cron` |
+| **Time** | Wall-clock `HH:MM`, interpreted in the **contact's** timezone — their explicit zone if set, otherwise the zone derived from their phone number. Runs happen at that local time whatever the season; DST is handled |
+| **Retry on failure** | Whether an unanswered or failed run is retried: delay between tries (1–1440 min, default 30) and how many (0–10, default 2) |
+| **End date** / **Max runs** | Stop after a date, or after N runs, whichever comes first |
+
+Day 28 is the monthly ceiling on purpose: "the 31st" doesn't exist in most months, and a schedule that silently skips February is worse than one that won't let you set it.
+
+## Lifecycle
+
+<ParamField path="active" type="running">Will fire at the next occurrence.</ParamField>
+<ParamField path="paused" type="stopped">Occurrences are skipped until resumed; the recurrence rule is unchanged.</ParamField>
+<ParamField path="completed" type="terminal">`once` fired, or the end date / max runs was reached.</ParamField>
+<ParamField path="canceled" type="terminal">Deleted by you; won't fire again.</ParamField>
+
+A run is an ordinary outbound call: it goes through the same checks — Do Not Call, legal calling hours, balance, capacity — and the same queue. If the contact's number is added to the DNC list, the schedule's runs are refused from then on. If the account is at capacity when the run fires, the call queues with a 10-minute time-to-live; a scheduled call that can't be placed within that window is dropped for that occurrence rather than surprising the contact an hour late.
+
+## Retries
+
+With retries on, a run whose call ends `no_answer`, `busy`, `failed` or `canceled` is tried again after the retry delay, up to the maximum. An *answered* call is a successful run — even a short one — and isn't retried. Retries belong to the run, not the schedule: a daily schedule with 2 retries can place up to 3 calls in a day, then waits for tomorrow.
+
+## Setting one up
+
+<Tabs>
+  <Tab title="Dashboard">
+    **Call Center → Schedules → New Schedule.** Pick the contact, flow and from-number; choose the frequency and the time (shown in the contact's timezone); optionally turn on retries and set an end date or run cap.
+  </Tab>
+  <Tab title="API">
+    <EndpointRequestSnippet endpoint="POST /api/v1/schedules" />
+
+    [Pause](/api-reference/schedules/pause-schedule) and [resume](/api-reference/schedules/resume-schedule) without losing the rule; [update](/api-reference/schedules/update-schedule) to change it; [delete](/api-reference/schedules/delete-schedule) to cancel.
+  </Tab>
+</Tabs>
+
+<Tip title="One contact, many schedules">
+  A contact can have several schedules — a weekly check-in and a monthly review — and each keeps its own run history. Calls placed by a schedule carry `source: scheduled` on the call record, so they're easy to separate from direct and campaign calls in history and analytics.
+</Tip>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Campaigns" href="/calls/campaigns" icon="fa-regular fa-bullhorn">
+    For a list rather than one person.
+  </Card>
+  <Card title="Contacts" href="/calls/contacts" icon="fa-regular fa-address-book">
+    The contact record a schedule calls.
+  </Card>
+</CardGroup>

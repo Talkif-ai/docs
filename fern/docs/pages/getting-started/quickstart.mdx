@@ -1,0 +1,170 @@
+---
+title: Quickstart
+description: Build a voice agent, talk to it in your browser, publish it, put it on a phone number, and make a real call — in about ten minutes.
+---
+
+By the end of this page you will have talked to an agent you designed, twice: once from your browser, once over an actual phone line. Along the way you'll meet every object in Talkif — flow, number, call, credits — in the order you'll use them every day.
+
+The dashboard shows the same five steps as a checklist on your home screen until you've completed them. This page is the long version, with the *why* for each one.
+
+## Before you start
+
+- **An account.** Sign up at [app.talkif.ai](https://app.talkif.ai) with email + password or **Continue with Google**. Email sign-ups get a verification link (valid 24 hours) and an SMS code for the phone number you register. Both must be confirmed before the account can place calls.
+- **Credits.** New accounts receive a **\$5.00 welcome credit**. It's enough to build, test in the browser, and take a few short calls.
+
+<Warning title="The welcome credit can't buy a phone number">
+  Welcome credit is a *bonus* balance. Bonus and promotional balances pay for calls but are never used for phone-number purchases or monthly rental. To buy a number in step 4 you'll add a payment method and top up first — the number itself costs a dollar or two a month, and the top-up minimum is shown on the Billing page. Everything before step 4 works on the welcome credit alone.
+</Warning>
+
+## What you're going to build
+
+A single-agent support line: it greets the caller, asks what they need, answers from the instructions you give it, and ends the call politely. One agent, one flow — the same structure scales to multi-agent flows later without redoing anything here.
+
+<Steps>
+  <Step title="Create a flow and give the agent its instructions">
+    Open **Flow Builder** in the sidebar and choose **Create Flow**. You can start from a template or from an empty canvas; for this walkthrough start empty so you see every piece.
+
+    The canvas opens with a **Main Agent** already placed. It's the entry point of every call and the only node that carries the call's persona. Select it and fill in the two prompts:
+
+    - **System Prompt** — who the agent is, for the whole call. Keep it to identity, tone, and hard limits:
+
+      ```text title="System Prompt"
+      You are Mia, the phone assistant for Northwind Dental in Seattle.
+      Be warm and brief — this is a phone call, so keep every reply to one or two sentences.
+      Never give medical advice. If you don't know something, say so and offer to take a message.
+      ```
+
+    - **Agent Prompt** — what this agent must accomplish while the conversation is on it:
+
+      ```text title="Agent Prompt"
+      Greet the caller and ask how you can help.
+      Answer questions about opening hours (Mon–Fri 8am–5pm), location (1200 Pine St), and parking (free garage on Pine).
+      If they want to book or change an appointment, collect their full name and a callback number, confirm both back to them, and say the office will call within one business day.
+      When the caller has nothing else, say a natural goodbye and then end the call.
+      ```
+
+    <Tip>
+      Prompts are instructions, not scripts. Tell the agent what to achieve and what to collect; let it choose the words. Scripted line-by-line prompts sound robotic and break the moment a caller says something unexpected. Prompts can also use `{{contact.first_name}}`-style variables that are filled in when the call starts — see [Write prompts](/build/write-prompts).
+    </Tip>
+  </Step>
+
+  <Step title="Attach the three providers">
+    An agent can't hear, think, or speak until a provider node is connected for each job. Add an **STT**, an **LLM**, and a **TTS** node to the canvas and connect each one to the Main Agent.
+
+    | Node | Pick for this walkthrough | Why it matters |
+    |---|---|---|
+    | **STT** | Deepgram, English | Converts the caller's speech to text *while they talk* — accuracy here caps everything downstream |
+    | **LLM** | Any current OpenAI or Anthropic model | Decides every reply. Faster models feel more natural on the phone than smarter-but-slower ones |
+    | **TTS** | ElevenLabs, any voice | The agent's voice. Try two voices — it changes how the same prompt lands |
+
+    The live list of vendors and models is in [Models and voices](/reference/models-and-voices). Publishing is refused if any of the three is missing, so the builder flags it early.
+  </Step>
+
+  <Step title="Talk to it in your browser">
+    Open the **Flow Tester** from the builder toolbar and click the phone button. Allow microphone access when the browser asks. You're now on a WebRTC call with the *draft* you have open — unsaved edits included — so you can iterate on prompts without publishing.
+
+    Say "Hi, what time do you close on Friday?" and then "I'd like to book a cleaning." Watch the transcript, the per-turn latency (**LLM TTFB**) and token counts on the right; those numbers tell you whether a model is fast enough for phone use before a real caller finds out.
+
+    <Note>
+      Test calls use the same STT/LLM/TTS as a real call and are billed the same way, at the same rates. They need an available balance of at least **\$1.00** to start — the welcome credit covers this.
+    </Note>
+
+    Adjust the prompts until the conversation feels right, then hang up with the red button.
+  </Step>
+
+  <Step title="Publish the flow">
+    Click **Publish**. Talkif validates the flow and refuses to publish until it passes. The checks that matter most:
+
+    - exactly one Main Agent, and it's the entry node
+    - the Main Agent has a System Prompt; **every** agent has an Agent Prompt
+    - an LLM, an STT and a TTS provider are configured, with models the platform currently offers
+    - every transition points at an agent that exists; agent and function names are unique
+
+    Publishing creates an immutable **version**. The draft stays editable; phone numbers and API calls use the published version until you publish again. Versioning, rollback and pinning are explained in [Flows and versions](/concepts/flows-and-versions).
+  </Step>
+
+  <Step title="Get a phone number">
+    Open **Phone Numbers** in the sidebar and choose **Purchase Number**. Pick a country, then search by area code or digit pattern. Each result shows its capabilities (voice, SMS) and its monthly price. Confirm to buy; the number is provisioned instantly.
+
+    Purchases and rental are paid from your *purchased* balance — add a payment method and top up under **Billing** if you haven't. Numbers renew monthly against the same balance; see [Buy a number](/telephony/buy-a-number) for pricing and what happens if renewal fails.
+
+    <Tabs>
+      <Tab title="Dashboard">
+        **Phone Numbers → Purchase Number**, choose country → search → buy.
+      </Tab>
+      <Tab title="API">
+        The platform's own carrier is a *system provider* — list providers to get its `id`, then search and purchase through it.
+
+        <EndpointRequestSnippet endpoint="GET /api/v1/phone/numbers/twilio/available" />
+        <EndpointRequestSnippet endpoint="POST /api/v1/phone/numbers/twilio/purchase" />
+      </Tab>
+    </Tabs>
+
+    Already have numbers with a SIP carrier or a WhatsApp Business account? Skip the purchase and connect them instead — [Bring your own SIP trunk](/telephony/bring-your-own-sip-trunk), [WhatsApp Business Calling](/telephony/whatsapp-business-calling).
+  </Step>
+
+  <Step title="Connect the flow to the number">
+    Open the number you just bought and connect your published flow to it. From this moment, anyone who dials the number is answered by the agent — this is what makes a number *inbound-capable*.
+
+    <Tabs>
+      <Tab title="Dashboard">
+        **Phone Numbers →** select the number **→ Select a published flow**. Leave the version on *latest published* unless you have a reason to pin.
+      </Tab>
+      <Tab title="API">
+        <EndpointRequestSnippet endpoint="PATCH /api/v1/phone/numbers/{phoneNumberId}/connect-flow" />
+      </Tab>
+    </Tabs>
+
+    A number is connected to at most one flow. If someone dials a number with no flow connected, Talkif answers busy and records a *failed* call in your history with the reason "no connected flow" — so a misconfigured number is visible, not silent. The same busy response is returned when your balance is below the \$1.00 minimum.
+  </Step>
+
+  <Step title="Make a real call">
+    Two ways, and it's worth doing both:
+
+    **Inbound** — dial the number from your own phone. This is the path your customers will take.
+
+    **Outbound** — have the agent call *you*. From the dashboard use **Start a call** on the home screen (or **Call Center → Calls**), pick the flow, the number to call from, and your mobile as the destination. From the API, the same thing is one request:
+
+    <Tabs>
+      <Tab title="Dashboard">
+        Home screen **→ Start a call →** flow, from-number, destination **→ Call**.
+      </Tab>
+      <Tab title="API">
+        `fromNumber` must be a number your account owns; `providerId` is the provider that number belongs to (returned when you list numbers). You'll need an [API key](/integrate/authentication) first.
+
+        <EndpointRequestSnippet endpoint="POST /api/v1/calls" />
+
+        A `201` means the call is being placed now. A `202` means your account is at its concurrent-call limit and the call is queued; the response carries your queue position and it'll be placed automatically.
+      </Tab>
+    </Tabs>
+  </Step>
+
+  <Step title="Read the result">
+    Open **Call Center → History** and select the call. You get three things for every call, test or real:
+
+    - the **transcript**, turn by turn, with who spoke and when
+    - the **recording**, playable in place
+    - the **cost breakdown** — telephony seconds, STT seconds, LLM tokens, TTS characters — each priced, summed to the amount taken from your balance
+
+    Costs are where model choice becomes visible: swap the LLM or TTS in the draft, run the same conversation in the Flow Tester, and compare. [Cost breakdown](/account/cost-breakdown) explains every line.
+  </Step>
+</Steps>
+
+## You now have
+
+A published flow, a live number connected to it, and at least one completed call with a transcript and a cost. Everything else in Talkif is a way to do this at scale or with more precision:
+
+<CardGroup cols={2}>
+  <Card title="How a call works" href="/getting-started/how-a-call-works" icon="fa-regular fa-timeline">
+    What happened between "Call" and the transcript — statuses, queueing, end reasons, billing.
+  </Card>
+  <Card title="Design a conversation" href="/build/design-a-conversation" icon="fa-regular fa-diagram-project">
+    Split the job across agents, add transitions, and hand off cleanly.
+  </Card>
+  <Card title="Call your backend" href="/build/call-your-backend" icon="fa-regular fa-server">
+    Let the agent look things up or take action in your systems mid-call.
+  </Card>
+  <Card title="Campaigns" href="/calls/campaigns" icon="fa-regular fa-bullhorn">
+    Call a list of contacts with one flow, with pacing, retries and analytics.
+  </Card>
+</CardGroup>

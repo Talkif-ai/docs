@@ -1,0 +1,73 @@
+---
+title: Build with AI agents
+description: Use Claude Code, Codex, Cursor or any agent that reads Agent Skills to build on Talkif — install the official skills, what each one teaches, and how these docs are served to agents.
+---
+
+If your coding agent is doing the integration, give it the same knowledge a Talkif engineer would have. Talkif publishes **Agent Skills** — self-contained instructions an agent loads when a task matches — covering every job on this site: authenticate, build and publish a flow, place a call, run a campaign, verify a webhook, stream events, put a call button on a web page. Each skill carries the exact requests, SDK calls in TypeScript and Python, and the mistakes to avoid, and is verified against the public API definition.
+
+## Install
+
+<Tabs>
+  <Tab title="Any agent">
+    ```bash
+    npx skills add Talkif-ai/skills
+    # just one
+    npx skills add Talkif-ai/skills --skill make-call
+    ```
+  </Tab>
+  <Tab title="Claude Code">
+    ```text
+    /plugin marketplace add Talkif-ai/skills
+    /plugin install talkif-voice-agents@talkif-skills
+    ```
+  </Tab>
+  <Tab title="Manual">
+    Copy a `skills/<name>/` folder from [Talkif-ai/skills](https://github.com/Talkif-ai/skills) into your agent's skills directory (`.claude/skills/` for Claude Code).
+  </Tab>
+</Tabs>
+
+Then ask in plain language — *"set up Talkif and make a test call to my phone"* — and the agent loads `quickstart`, then each skill it needs.
+
+## The skills
+
+| Start | |
+|---|---|
+| `quickstart` | sequences key → flow → number → connect → test → results |
+| `api-conventions` | base URL, auth, pagination, errors, rate limits, retries — loaded with everything else |
+| `setup-api-key` | keys, scopes, SDK clients |
+
+| Build | |
+|---|---|
+| `create-flow` · `update-flow` | the flow definition, publish, versions, rollback |
+| `write-prompts` | System vs Agent Prompt, variables, ElevenLabs v3 delivery tags |
+| `create-flow-function` | HTTP tools the agent calls mid-conversation |
+| `choose-models-and-voices` | STT / LLM / TTS from the live catalogue |
+| `test-a-flow` | draft tests, real test calls, the failure paths to exercise |
+
+| Run | |
+|---|---|
+| `make-call` · `handle-inbound-calls` | outbound and inbound |
+| `create-campaign` · `create-schedule` | lists and recurrences |
+| `manage-contacts` · `do-not-call` · `manage-phone-numbers` | the data around calls |
+| `read-call-results` · `read-billing` · `troubleshoot-calls` | outcomes, money, diagnosis |
+
+| Integrate | |
+|---|---|
+| `verify-webhooks` · `realtime-events` · `web-calls` | signatures, WebSocket events, the browser SDK |
+
+Skills track the public API: when an endpoint or SDK method changes, the affected skill changes in the same release. Found one that drifted? Open an issue on the repo.
+
+## These docs, for agents
+
+Every page here is also served as Markdown for agents: append `.md` to any docs URL, or fetch [`/llms.txt`](https://docs.talkif.ai/llms.txt) for the index and [`/llms-full.txt`](https://docs.talkif.ai/llms-full.txt) for the whole site in one file. The API reference is generated from the same OpenAPI definition the SDKs are built from: `https://api.talkif.ai/openapi.json`.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="SDKs" href="/sdks/server" icon="fa-regular fa-cube">
+    The clients the skills call.
+  </Card>
+  <Card title="API Reference" href="/api-reference" icon="fa-regular fa-book">
+    Every endpoint, with examples in curl, TypeScript and Python.
+  </Card>
+</CardGroup>

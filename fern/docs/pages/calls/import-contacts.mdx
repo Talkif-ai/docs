@@ -1,0 +1,84 @@
+---
+title: Import contacts
+description: Bring contacts in from CSV, JSON or vCard — the columns, phone-number normalisation, the dry-run preview, duplicate handling, and what the summary tells you.
+---
+
+Most lists start life somewhere else — a CRM export, a spreadsheet, a phone's address book. The importer takes the three shapes those produce, shows you exactly what it's about to create before it creates anything, and never silently duplicates a number you already have.
+
+## Formats
+
+<Tabs>
+  <Tab title="CSV">
+    A header row with these column names; only `name` and `primary_phone` are required.
+
+    ```csv title="contacts.csv"
+    name,primary_phone,email,company,tags,notes,timezone,language
+    Ada Lovelace,+442071234567,ada@example.com,Analytical Engines,vip|renewal-q4,Prefers mornings,Europe/London,en
+    Grace Hopper,+12025550143,grace@example.com,,lead,,America/New_York,en
+    ```
+
+    | Column | Required | Notes |
+    |---|---|---|
+    | `name` | yes | |
+    | `primary_phone` | yes | E.164, or a local number with `defaultCountryCode` set |
+    | `secondary_phones` | | pipe-separated `\|` |
+    | `email`, `company`, `occupation` | | |
+    | `notes` | | up to 5,000 characters |
+    | `tags`, `interests` | | pipe-separated `\|` |
+    | `timezone` | | IANA; derived from the phone number if omitted |
+    | `language` | | default `en` |
+  </Tab>
+  <Tab title="JSON">
+    An array of objects with the same fields. Keys may be camelCase (`primaryPhone`) or snake_case (`primary_phone`); lists are real arrays.
+
+    ```json title="contacts.json"
+    [
+      { "name": "Ada Lovelace", "primaryPhone": "+442071234567", "tags": ["vip", "renewal-q4"], "timezone": "Europe/London" }
+    ]
+    ```
+  </Tab>
+  <Tab title="vCard">
+    Standard `.vcf` (vCard 4.0), one or many cards per file. Mapped: `FN` → name, `TEL` → phone (first = primary, rest secondary), `EMAIL`, `ORG` → company, `TITLE` → occupation, `NOTE` → notes.
+  </Tab>
+</Tabs>
+
+## Phone numbers
+
+Numbers are validated as E.164 and stored that way. A file with local numbers (`020 7123 4567`) imports cleanly if you set a **default country code** (`44`); numbers that already start with `+` are left alone. A number that can't be parsed is reported as an error for that row; the rest of the file still imports.
+
+## Duplicates
+
+A contact whose **primary phone already exists** in your account is a duplicate and is **skipped** — the existing record is untouched. The same check runs *within* the file, so a list with the same number on two rows creates one contact. The summary tells you how many were skipped and which.
+
+## Preview, then import
+
+<Steps>
+  <Step title="Upload the file">
+    **Call Center → Contacts → Import**, choose the file. The format is detected from the extension; set the default country code if the numbers are local.
+  </Step>
+  <Step title="Read the preview">
+    The importer parses everything and shows what would happen — rows to create, rows skipped as duplicates, rows with errors and why — **without writing anything**. Fix the file and re-upload if the numbers look wrong.
+  </Step>
+  <Step title="Confirm">
+    The import runs and the summary reports contacts created, skipped and errored.
+  </Step>
+</Steps>
+
+From the API the same two-step shape: [`POST /contacts/import`](/api-reference/contacts/import-contacts) with the file base64-encoded, `confirmed: false` for the preview, then `confirmed: true` to run it.
+
+<EndpointRequestSnippet endpoint="POST /api/v1/contacts/import" />
+
+<Tip>
+  Tag on the way in. A `tags` column with the campaign name (`renewal-q4`) means the list is ready to add to a campaign by filter the moment the import finishes — no second pass.
+</Tip>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Campaigns" href="/calls/campaigns" icon="fa-regular fa-bullhorn">
+    Add the imported list by tag.
+  </Card>
+  <Card title="Contacts" href="/calls/contacts" icon="fa-regular fa-address-book">
+    What each field is used for.
+  </Card>
+</CardGroup>

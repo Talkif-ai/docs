@@ -1,0 +1,142 @@
+---
+title: Data export and deletion
+description: Take everything out of Talkif as one JSON file, and close an account with a confirmation step and a seven-day grace period.
+---
+
+Two things you should be able to do with any service that holds your customers' calls: leave with your data, and leave for good. Both are self-service, both are gated by an emailed confirmation so a stolen session can't trigger them, and deletion adds a week in which you can change your mind.
+
+## Exporting your data
+
+One request produces a single JSON file with every category of data the account holds — contacts, calls with transcripts, flows, numbers, campaigns, schedules, billing history — minus secrets (passwords, MFA secrets, carrier credentials). It's built for portability: structured, machine-readable, and the same shapes the API uses, so it loads into another system or your own warehouse without translation.
+
+## What's included
+
+The export covers 13 data categories:
+
+| Category | Description |
+|----------|-------------|
+| **Account** | Account metadata (name, slug, type, status) |
+| **Users** | User profiles (passwords and MFA secrets excluded) |
+| **Contacts** | Full contact records |
+| **Calls** | Call records with PII intact (scrubbed calls excluded) |
+| **Flows** | AI conversation flows |
+| **Phone numbers** | Numbers owned by your account |
+| **VoIP providers** | Provider configurations (credentials excluded) |
+| **Call schedules** | Recurring schedule definitions |
+| **Campaigns** | Bulk campaign records |
+| **Charges** | Billing history |
+| **Balance transactions** | Balance change history |
+| **Notifications** | Notification history |
+| **Cost line items** | Detailed cost breakdown per charge |
+
+The output is a single JSON file structured by category:
+
+```json
+{
+  "exportVersion": "1.0",
+  "accountId": "<your-account-id>",
+  "exportedAt": "2026-02-28T12:00:00Z",
+  "data": {
+    "account": [...],
+    "users": [...],
+    "contacts": [...],
+    "calls": [...]
+  }
+}
+```
+
+## How to request an export
+
+1. Go to **Settings → General → Data Export**
+2. Click **Request Export**
+3. Check your email for a confirmation link
+4. Click the link to start the export
+5. When processing completes, you'll receive an email with a download link
+
+<Info>
+  The confirmation link expires after 24 hours. If it expires, request a new export.
+</Info>
+
+## Download window
+
+Once the export is ready, the download link is valid for **24 hours**. After that, the file is permanently deleted. You can check the current status and download link at any time from the Data Export settings page.
+
+## Limits
+
+- **One active export at a time** — you cannot request a new export while one is pending, processing, or available for download
+- **24-hour cooldown** — after a completed export, you must wait 24 hours before requesting another
+
+## Export statuses
+
+| Status | Meaning |
+|--------|---------|
+| **Pending** | Export requested, awaiting email confirmation |
+| **Confirmed** | Email confirmed, queued for processing |
+| **Processing** | Background job collecting and packaging data |
+| **Completed** | Ready for download |
+| **Expired** | Download window (24h) has passed |
+| **Failed** | Something went wrong — request a new export |
+
+## Security
+
+- Exports require email confirmation before processing starts
+- Sensitive fields (passwords, MFA secrets, provider credentials) are automatically excluded
+- Download links are time-limited and unique to your account
+- Export files are encrypted at rest and deleted after the download window expires
+
+## GDPR data portability
+
+This feature fulfills the right to data portability under [GDPR Article 20](https://trust.talkif.ai/privacy). Your data is provided in a structured, machine-readable JSON format suitable for transfer to another service.
+
+
+## Deleting the account
+
+Account deletion is permanent. To prevent accidental data loss, deletion uses a two-step confirmation with a grace period.
+
+<Steps>
+  <Step title="Request it">
+    **Settings → General → Delete account.** A confirmation link is emailed to you; it expires after **24 hours**.
+  </Step>
+  <Step title="Confirm it">
+    Clicking the link schedules the deletion and starts a **7-day grace period**. The account stays fully usable; you can cancel from Settings at any point; export your data now if you haven't.
+  </Step>
+  <Step title="After seven days">
+    Deletion executes and is irreversible: all account data is removed, phone numbers are released, running campaigns and schedules stop. Charges for usage before deletion still stand.
+  </Step>
+</Steps>
+
+### Cancelling a pending deletion
+
+You can cancel at any stage before the final deletion executes:
+
+- **Before email confirmation** — the request simply expires after 24 hours
+- **During the grace period** — go to **Settings → General** and click **Cancel Deletion**
+
+Cancellation restores your account to its normal active state immediately.
+
+### Before you delete
+
+1. **Export your data** — the export above, before you confirm
+2. **Check billing** — outstanding balance obligations survive deletion
+3. **Notify your team** — if you're in an organization, coordinate with other members
+
+<Warning>
+  After the 7-day grace period, account deletion cannot be reversed. Make sure you've downloaded any data you need.
+</Warning>
+
+## Post-termination export
+
+If you need your data after account deletion, contact legal@talkif.ai within 30 days of termination to request a final export.
+
+For an organization, deletion is requested by the Owner and removes the organization's account the same way. Members lose access when it executes.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Transcripts and recordings" href="/calls/transcripts-and-recordings" icon="fa-regular fa-file-audio">
+    Recording retention and per-call deletion, short of a full export.
+  </Card>
+  <Card title="Organizations" href="/account/organizations" icon="fa-regular fa-building">
+    Deleting an organization versus a personal account.
+  </Card>
+</CardGroup>

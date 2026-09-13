@@ -5,7 +5,8 @@ Source for **[docs.talkif.ai](https://docs.talkif.ai)** and the generated Talkif
 | Path | What it is |
 | --- | --- |
 | `fern/docs.yml` | Site config: navigation, theme, tabs, redirects |
-| `fern/docs/pages/` | Guides (MDX) |
+| `fern/docs/pages/` | Guides (MDX) — one folder per section: `getting-started`, `concepts`, `build`, `telephony`, `calls`, `integrate`, `account`, `reference` |
+| `fern/docs/changelog/` | Changelog — one `YYYY-MM-DD.mdx` per release; the newest entry carries a `versions:` stamp the sync routine reads |
 | `fern/openapi.json` | The public API definition — a curated snapshot, see below |
 | `fern/overlays.yml` | Docs/SDK-only adjustments layered on the spec (server URL, pagination, wording) |
 | `fern/generators.yml` | SDK generators → [talkif-typescript](https://github.com/Talkif-ai/talkif-typescript), [talkif-python](https://github.com/Talkif-ai/talkif-python) |

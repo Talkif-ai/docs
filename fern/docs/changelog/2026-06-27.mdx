@@ -1,0 +1,7 @@
+---
+title: "Call lifetime controls, webhook signing, Meta Lead Ads"
+---
+
+- **Builder**: **Silence handling** ("are you still there?", then a polite hang-up) on by default, and a per-flow **maximum call length** with a graceful goodbye. `end_call` now lets the farewell finish instead of hanging up instantly. See [Transfer and end calls](/build/transfer-and-end-calls).
+- **Integrate**: **Webhook signing** — every request to your endpoints carries a `Talkif-Signature` (HMAC-SHA256) once you create a per-account secret; secrets are rotatable with an overlap window. See [Webhooks](/integrate/webhooks).
+- **Integrate**: **Meta Lead Ads** — connect a Facebook Page, map lead forms to flows, and Talkif calls every new lead within seconds, reporting funnel stages back to Meta's Conversions API. See [Meta Lead Ads](/integrate/meta-lead-ads).

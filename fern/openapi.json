@@ -755,228 +755,19 @@
       }
     },
     "/api/v1/calls": {
-      "post": {
-        "tags": [
-          "Calls"
-        ],
-        "summary": "Initiate a call",
-        "description": "POST /api/v1/calls\n\nSECURITY: Verifies account access, phone ownership, provider ownership, flow ownership\n\nReturns:\n- 201 Created: Call initiated immediately (capacity available)\n- 202 Accepted: Call queued for later processing (at capacity/rate limited)",
-        "operationId": "make_call",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MakeCallRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Call initiated or queued",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MakeCallResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "`validation_failed`, `phone_number_not_active`, `phone_number_not_verified`, `flow_not_published`",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required — token is missing, expired, or invalid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "402": {
-            "description": "`insufficient_balance`",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "`forbidden`",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "`resource_not_found`",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "`concurrent_call_limit_exceeded`, `daily_call_limit_exceeded`, `contact_on_dnc_list`",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "`queue_full`",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error — contact support with the requestId",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
-    "/api/v1/calls/active": {
       "get": {
         "tags": [
           "Calls"
         ],
-        "summary": "List active calls",
-        "description": "GET /api/v1/calls/active",
-        "operationId": "get_active_calls",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Max items to return (1-100, default 10)",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "description": "Items to skip (default 0)",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 0,
-              "minimum": 0
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Active calls",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CallListResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required — token is missing, expired, or invalid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "`forbidden`",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Rate limit exceeded — retry after the delay in the response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error — contact support with the requestId",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
-    "/api/v1/calls/history": {
-      "get": {
-        "tags": [
-          "Calls"
-        ],
-        "summary": "List call history",
-        "description": "GET /api/v1/calls/history",
-        "operationId": "get_call_history",
+        "summary": "List calls",
+        "description": "Returns the account's calls, newest first, with optional filters. Use `status` to narrow to live calls (for example `in_progress`), `flowId` / `campaignId` / `contactId` to scope by resource, and `startDate` / `endDate` for a time window.",
+        "operationId": "list_calls",
         "parameters": [
           {
             "name": "limit",
             "in": "query",
             "description": "Maximum number of items to return (default: 20, max: 100)",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "integer",
               "format": "int32",
@@ -989,7 +780,7 @@
             "name": "offset",
             "in": "query",
             "description": "Number of items to skip for pagination (default: 0)",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "integer",
               "format": "int32",
@@ -1141,7 +932,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Call history",
+            "description": "Paginated list of calls",
             "content": {
               "application/json": {
                 "schema": {
@@ -1172,6 +963,121 @@
           },
           "429": {
             "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Calls"
+        ],
+        "summary": "Initiate a call",
+        "description": "POST /api/v1/calls\n\nSECURITY: Verifies account access, phone ownership, provider ownership, flow ownership\n\nReturns:\n- 201 Created: Call initiated immediately (capacity available)\n- 202 Accepted: Call queued for later processing (at capacity/rate limited)",
+        "operationId": "make_call",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MakeCallRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Call initiated or queued",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MakeCallResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "`validation_failed`, `phone_number_not_active`, `phone_number_not_verified`, `flow_not_published`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "`insufficient_balance`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "`concurrent_call_limit_exceeded`, `daily_call_limit_exceeded`, `contact_on_dnc_list`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "`queue_full`",
             "content": {
               "application/json": {
                 "schema": {
@@ -7113,7 +7019,7 @@
           {
             "name": "providerId",
             "in": "query",
-            "description": "Provider ID",
+            "description": "Provider ID (required)",
             "required": true,
             "schema": {
               "type": "string"
@@ -7122,7 +7028,7 @@
           {
             "name": "countryCode",
             "in": "query",
-            "description": "ISO country code (e.g., US, GB)",
+            "description": "ISO country code (required, e.g. \"US\", \"GB\", \"CA\")",
             "required": true,
             "schema": {
               "type": "string"
@@ -7131,7 +7037,7 @@
           {
             "name": "numberType",
             "in": "query",
-            "description": "Number type: local, toll_free, or mobile",
+            "description": "Number type: \"local\", \"toll_free\", or \"mobile\" (default: \"local\")",
             "required": false,
             "schema": {
               "type": "string"
@@ -7149,16 +7055,162 @@
           {
             "name": "contains",
             "in": "query",
-            "description": "Pattern to match in the phone number",
+            "description": "Pattern to match in the phone number (supports wildcards: *, %)",
             "required": false,
             "schema": {
               "type": "string"
             }
           },
           {
+            "name": "inPostalCode",
+            "in": "query",
+            "description": "Filter by postal/ZIP code (US/Canada only)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "inRegion",
+            "in": "query",
+            "description": "Filter by state/region (US/Canada only)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "inRateCenter",
+            "in": "query",
+            "description": "Filter by rate center (US/Canada only, requires in_lata)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "inLata",
+            "in": "query",
+            "description": "Filter by LATA (US/Canada only)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "inLocality",
+            "in": "query",
+            "description": "Filter by locality/city",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nearNumber",
+            "in": "query",
+            "description": "Find numbers geographically close to this phone number",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nearLatLong",
+            "in": "query",
+            "description": "Find numbers near lat,long (e.g. \"37.7749,-122.4194\")",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "distance",
+            "in": "query",
+            "description": "Distance radius in miles for geographic searches (default: 25, max: 500)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "smsEnabled",
+            "in": "query",
+            "description": "Filter for SMS-capable numbers",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "mmsEnabled",
+            "in": "query",
+            "description": "Filter for MMS-capable numbers",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "voiceEnabled",
+            "in": "query",
+            "description": "Filter for voice-capable numbers",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "faxEnabled",
+            "in": "query",
+            "description": "Filter for fax-capable numbers",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "beta",
+            "in": "query",
+            "description": "Filter for beta numbers (new to Twilio)",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "excludeAllAddressRequired",
+            "in": "query",
+            "description": "Exclude numbers that require any address",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "excludeLocalAddressRequired",
+            "in": "query",
+            "description": "Exclude numbers that require a local address",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "excludeForeignAddressRequired",
+            "in": "query",
+            "description": "Exclude numbers that require a foreign address",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "limit",
             "in": "query",
-            "description": "Max results (default: 20, max: 1000)",
+            "description": "Maximum number of results (default: 20, max: 1000)",
             "required": false,
             "schema": {
               "type": "integer",
@@ -7169,14 +7221,11 @@
         ],
         "responses": {
           "200": {
-            "description": "List of available numbers",
+            "description": "Available numbers and the search that produced them",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AvailablePhoneNumber"
-                  }
+                  "$ref": "#/components/schemas/AvailableNumbersResponse"
                 }
               }
             }
@@ -9653,6 +9702,55 @@
           }
         }
       },
+      "AvailableNumbersEcho": {
+        "type": "object",
+        "description": "Search criteria echoed back with the results",
+        "required": [
+          "countryCode"
+        ],
+        "properties": {
+          "areaCode": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Area code filter that was applied, if any"
+          },
+          "contains": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Pattern filter that was applied, if any"
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "ISO country code that was searched",
+            "example": "US"
+          }
+        }
+      },
+      "AvailableNumbersResponse": {
+        "type": "object",
+        "description": "Available numbers matching a search",
+        "required": [
+          "numbers",
+          "query"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AvailablePhoneNumber"
+            },
+            "description": "Numbers available for purchase"
+          },
+          "query": {
+            "$ref": "#/components/schemas/AvailableNumbersEcho",
+            "description": "The search criteria that produced this result"
+          }
+        }
+      },
       "AvailablePhoneNumber": {
         "type": "object",
         "description": "Available phone number from Twilio search\n\nBased on Twilio AvailablePhoneNumberLocal API response\nSee: https://www.twilio.com/docs/phone-numbers/api/availablephonenumberlocal-resource",
@@ -10867,6 +10965,17 @@
             "example": "voicemail_detected"
           }
         }
+      },
+      "CallSortField": {
+        "type": "string",
+        "description": "Sortable fields for call history\n\nValues match what the dashboard's call-history table emits",
+        "enum": [
+          "status",
+          "direction",
+          "duration",
+          "totalCost",
+          "startedAt"
+        ]
       },
       "CallSource": {
         "type": "string",
@@ -17383,6 +17492,14 @@
             "minimum": 0
           }
         }
+      },
+      "SortDirection": {
+        "type": "string",
+        "description": "Sort direction for list queries",
+        "enum": [
+          "asc",
+          "desc"
+        ]
       },
       "SttCapabilities": {
         "type": "object",

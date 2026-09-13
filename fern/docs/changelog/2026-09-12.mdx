@@ -1,0 +1,11 @@
+---
+title: "SDKs published; typed list responses"
+---
+
+{/* versions: backend=0.1.204 frontend=0.1.33 catflow=0.0.80 */}
+
+- **SDKs**: `@talkif/sdk` 0.1.1 (npm) and `talkif` 0.1.1 (PyPI) are published. Both auto-page list endpoints and expose typed errors — see [SDKs](/sdks/server).
+- **API**: list endpoints now return typed responses (`calls`, `contacts`, `campaigns`, … plus `meta`) instead of untyped arrays; `offset` pagination starts at 0.
+- **Calls**: the call list is now `GET /calls` (replacing `/calls/history` and `/calls/active`); use `status` to narrow to live calls. It gains filters — `status`, `direction`, `source`, `phoneNumber`, `flowId`, `contactId`, `campaignId`, `scheduleId`, `providerType`, `isLead`, `search`, and sorting.
+- **Integrate**: **Agent Skills** for Claude Code, Codex, Cursor and any Agent-Skills-compatible tool — `npx skills add Talkif-ai/skills` — covering every job in these docs, verified against the public API. See [Build with AI agents](/skills/agent-skills).
+- **Docs**: docs.talkif.ai restructured around tasks — Getting started, Concepts, Build agents, Telephony, Run calls, Integrate, Account and billing, Reference. Every previous URL redirects.

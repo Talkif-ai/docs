@@ -1,0 +1,12 @@
+---
+title: "Contact-local call windows; ElevenLabs v3"
+---
+
+{/* versions: backend=0.1.196 frontend=0.1.28 catflow=0.0.77 */}
+
+- **Calls**: Campaign call windows are evaluated in each contact's local time, so a list spanning time zones is called at sensible hours everywhere. See [Campaigns](/calls/campaigns#contact-timezones-and-call-windows).
+- **Calls**: Campaign pacing is budgeted against your concurrent-call limit, and busy agents are protected during platform scaling — fewer mid-call drops under load.
+- **Builder**: Campaign screens rebuilt around the new analytics; raw call errors no longer appear in the campaign summary.
+- **Models**: ElevenLabs v3 conversational voices are available for text-to-speech.
+- **Calls**: A call now ends cleanly, with a recorded reason, when a speech or language service becomes unusable mid-call, instead of hanging silently.
+- **Telephony**: Meta Lead Ads form mappings can declare the phone country for their leads, so numbers submitted without a country code are normalised correctly.

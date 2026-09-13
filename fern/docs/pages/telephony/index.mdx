@@ -1,0 +1,35 @@
+---
+title: Telephony
+subtitle: The phone lines your agents answer and dial from — bought from Talkif, brought from your carrier, or connected from WhatsApp.
+description: Phone numbers in Talkif — buying them, bringing your own SIP trunk or Twilio account, WhatsApp Business Calling, routing inbound and outbound calls, and where calls are served from.
+layout: overview
+---
+
+A flow needs a line to live on. Talkif gives you three ways to get one, and they can be mixed freely in one account — a purchased US number for the support line, your existing SIP trunk for the numbers customers already know, and a WhatsApp Business number for the customers who'd rather not dial.
+
+| Way | What you get | Outbound | Talkif telephony charge |
+|---|---|---|---|
+| **Buy a number** | A new local number in a supported country, provisioned in seconds | yes | per minute + monthly rental |
+| **Bring your own SIP trunk** | Your carrier's numbers, routed through Talkif over SIP | yes | per minute (lower rate); your carrier bills the PSTN leg |
+| **Your own Twilio account** | Numbers you already hold in Twilio, used as-is | yes | per minute; Twilio bills you for the number |
+| **WhatsApp Business Calling** | Inbound calls to your WhatsApp Business number | no — receive only | none; Meta bills the calling |
+
+Whatever the source, a number in Talkif has the same lifecycle: it's **connected** to one published flow for inbound calls, it can be used as the **from** number for outbound calls if it has the voice capability, and it carries its own recording override.
+
+<CardGroup cols={2}>
+  <Card title="Buy a number" href="/telephony/buy-a-number" icon="fa-regular fa-cart-shopping">
+    Countries, search, pricing, renewal, and what happens when rental can't be paid.
+  </Card>
+  <Card title="Bring your own SIP trunk" href="/telephony/bring-your-own-sip-trunk" icon="fa-regular fa-network-wired">
+    The SIP address to allowlist, the credentials, and the inbound and outbound paths — plus connecting your own Twilio account.
+  </Card>
+  <Card title="WhatsApp Business Calling" href="/telephony/whatsapp-business-calling" icon="fa-brands fa-whatsapp">
+    Connect a WABA, register numbers, and why a number stays Pending.
+  </Card>
+  <Card title="Inbound and outbound routing" href="/telephony/inbound-and-outbound-routing" icon="fa-regular fa-route">
+    Connecting flows, pinning versions, from-number rules, statuses and capabilities.
+  </Card>
+  <Card title="Regions and edges" href="/telephony/regions-and-edges" icon="fa-regular fa-globe">
+    Where calls are served from, and how the edge is chosen for your carrier.
+  </Card>
+</CardGroup>

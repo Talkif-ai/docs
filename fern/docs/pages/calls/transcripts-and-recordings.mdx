@@ -1,0 +1,85 @@
+---
+title: Transcripts and recordings
+description: Everything a finished call leaves behind — the transcript, the recording and its retention, the cost breakdown, conversation metrics, and AI insights — and how to get each from the dashboard or the API.
+---
+
+A call ends and Talkif hands you five things about it. Together they answer the questions you'll actually ask: *what was said* (transcript), *how did it sound* (recording), *what did it cost and why* (cost breakdown), *how well did the agent perform* (metrics), and *what should happen next* (insights). All of them live on the call record in **Call Center → History**, and each is reachable by API.
+
+## Transcript
+
+Every turn, with who spoke and when. Available the moment the call ends — and while it's running, live, turn by turn. Alongside it, the call record counts the turns the caller cut off — a quick read on whether the agent was talking too long.
+
+[`GET /calls/{callId}/transcript`](/api-reference/calls/get-call-transcript). History is searchable by contact name or phone number, and filterable by status, direction, source, flow, campaign and date.
+
+## Recording
+
+Full-call audio, playable in the call view and downloadable. Whether a call is recorded is decided at call start by the recording setting — flow override, then number override, then the account default (see [Flows and versions](/concepts/flows-and-versions#what-a-flow-is-made-of)).
+
+[`GET /calls/{callId}/recording`](/api-reference/calls/get-call-recording) returns a **short-lived signed URL** — fetch it when you need it rather than storing it. [`DELETE /calls/{callId}/recording`](/api-reference/calls/delete-call-recording) removes the audio permanently; the transcript and everything else stay.
+
+<AccordionGroup>
+  <Accordion title="Retention and storage cost">
+    Recordings are kept for the retention period set on your account (**Settings → Account**); when it expires the audio is deleted and the call record remains. Storage is billed per GB-month for the time a recording exists, with a one-day minimum — see [Credits and pricing](/concepts/credits-and-pricing#recording-storage). If your balance can't cover storage, recordings enter a 30-day grace period before deletion; topping up clears it.
+  </Accordion>
+  <Accordion title="Consent">
+    Recording laws vary by jurisdiction and Talkif doesn't announce recording for you. If you must announce it, put the line in the Main Agent's prompt, or use a **Say** pre-action so it's spoken verbatim every time — see [Transfer and end calls](/build/transfer-and-end-calls#scripted-lines-say). Use per-number overrides for lines that must never record.
+  </Accordion>
+</AccordionGroup>
+
+## Cost breakdown
+
+One line per resource with quantity, rate and amount, and the total that was taken from your balance:
+
+| Line | Quantity |
+|---|---|
+| Telephony | minutes (rounded up) |
+| STT | seconds transcribed |
+| LLM | input and output tokens |
+| TTS | characters synthesized |
+| Infrastructure | seconds |
+| LLM analysis | tokens, if insights ran |
+
+[`GET /billing/costs/calls/{callId}`](/api-reference/billing/get-billing-call-cost-breakdown). What each line means and how to bring it down is in [Cost breakdown](/account/cost-breakdown).
+
+## Conversation metrics
+
+Numbers that tell you how the agent performed, on every call:
+
+| Metric | Why it matters |
+|---|---|
+| **Time to first response** | The pause after the caller's first words. Over ~1 s and callers start repeating themselves |
+| **Turns** and **interrupted turns** | Many interruptions = the agent talks too long per turn — shorten the prompt's reply guidance |
+| **Function calls** — count and total time | Slow endpoints show up here as silence on the line |
+| **Speech seconds** — caller vs agent | A support call where the agent speaks 80% of the time is a monologue |
+| **Tokens** — prompt and completion | Prompt tokens per turn × turns is your LLM bill; a long System Prompt shows up here |
+| **TTS characters** and **wasted characters** | Wasted = synthesized but never heard because the caller interrupted. Pure cost |
+
+These are on the call record ([`GET /calls/{callId}`](/api-reference/calls/get-call-details)) and aggregated per flow and per campaign.
+
+## Insights
+
+If analysis is on — account default, overridable per flow — a model reads the transcript after the call and produces:
+
+| Field | What it holds |
+|---|---|
+| **Summary** | Two or three sentences |
+| **Sentiment** | Overall, with confidence |
+| **Intents** and **topics** | What the caller wanted; what came up |
+| **Action items** | Extracted commitments, with completion state |
+| **Outcome** | A classification with confidence and a suggested next step |
+| **Caller info** | Name, company, email, role mentioned in the call — used to enrich the contact (empty fields only) |
+
+You can steer it: a flow's **analysis instructions** are appended to the analysis prompt, so a sales flow can ask for "budget and decision timeline" and a support flow for "root cause and whether it was resolved". Analysis is a separate LLM line on the bill.
+
+Not analysed automatically? [`POST /calls/{callId}/analyze`](/api-reference/calls/analyze-call) runs it on demand for any finished call with a transcript — including re-running with a newer model.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Cost breakdown" href="/account/cost-breakdown" icon="fa-regular fa-receipt">
+    Reading a bill and finding the cost drivers.
+  </Card>
+  <Card title="Data export and deletion" href="/account/data-export-and-deletion" icon="fa-regular fa-file-export">
+    Take transcripts and recordings out of Talkif.
+  </Card>
+</CardGroup>

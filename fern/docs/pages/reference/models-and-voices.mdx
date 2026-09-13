@@ -1,0 +1,31 @@
+---
+title: Models and voices
+description: Every speech-to-text, language and text-to-speech model Talkif offers, with languages, features and current per-unit prices — generated from the live catalogue.
+layout: reference
+---
+
+The catalogue below is generated from the platform's live model list — the same one the builder's provider nodes show and the same rates the billing engine applies. Prices are per unit as billed: STT per minute of audio, LLM per million tokens (input and output separately), TTS per thousand characters synthesized. How those units turn into a call's cost is in [Credits and pricing](/concepts/credits-and-pricing); how to choose between them is in [Choose models and voices](/build/choose-models-and-voices).
+
+Voices aren't listed here — each TTS provider has hundreds, and the list is live in the builder's voice selector (or [`GET /models/tts/voices`](/api-reference/ai-models/list-tts-voices)).
+
+## Speech-to-text
+
+<Markdown src="/docs/snippets/generated/models-stt.mdx" />
+
+## Language models
+
+<Markdown src="/docs/snippets/generated/models-llm.mdx" />
+
+Some models don't accept a temperature; the builder hides the setting for those. Reasoning-style models add thinking time before each reply — better for post-call analysis than for live conversation.
+
+## Text-to-speech
+
+<Markdown src="/docs/snippets/generated/models-tts.mdx" />
+
+## Telephony
+
+<Markdown src="/docs/snippets/generated/pricing-telephony.mdx" />
+
+## By API
+
+[`GET /models`](/api-reference/ai-models/list-providers-public) returns the same catalogue as JSON, including each model's capabilities — use it if you build flows programmatically and want to validate a model before publishing.
