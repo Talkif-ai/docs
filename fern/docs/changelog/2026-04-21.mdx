@@ -1,0 +1,7 @@
+---
+title: "Flow functions"
+---
+
+- **Builder**: **Flow functions** — the agent calls your HTTP endpoints mid-conversation. Structured requests (path, query and body parameters as JSON Schema), with each parameter bound to the model, to call context (caller, call, flow) or to a static value; values bound to context are never shown to the model. Attach a function to any agent with the **HTTP Request** node. See [Call your backend](/build/call-your-backend).
+- **Builder**: Functions (called by the model) and actions (run automatically around an agent's turn) are now distinct concepts.
+- **Models**: Settings a model doesn't support — a temperature on a reasoning model, for example — are stripped automatically rather than failing the call; the builder hides them.

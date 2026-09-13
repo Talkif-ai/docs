@@ -1,0 +1,151 @@
+---
+title: Credits and pricing
+description: How Talkif charges — what a call costs and why, the four kinds of balance and the order they're spent in, what happens at zero, and a worked example.
+---
+
+Talkif is prepaid and usage-based. You keep a USD balance; every call, phone number and post-call analysis takes what it costs from that balance, itemised. There are no plans to pick and no per-seat fees — the price of a call is the sum of the resources it used, at the rates for the providers *you* chose in the flow.
+
+This page explains the model. Topping up, cards and auto-recharge are in [Credits and payment](/account/credits-and-payment); reading a bill is in [Cost breakdown](/account/cost-breakdown).
+
+## What a call costs
+
+A finished call is priced as a set of line items, one per resource, each with its own unit:
+
+| Line item | Unit | How it's measured |
+|---|---|---|
+| **Telephony** | per minute, **rounded up** to the next whole minute | Carrier time for the call. Rate depends on provider (Talkif number, your SIP trunk, WhatsApp) and direction |
+| **STT** | per minute, prorated to the second | Duration of the call, at the chosen speech-to-text model's rate |
+| **LLM** | per token, input and output priced separately | Every turn re-sends the prompts and transcript, so tokens grow with call length and prompt size |
+| **TTS** | per character synthesized | Only what the agent actually said |
+| **Infrastructure** | per minute, prorated to the second | The agent runtime itself — a flat platform rate |
+| **Function calls** | — | Calls to your own HTTP endpoints are **free**; you pay only the LLM tokens around them |
+| **LLM analysis** | per token | Post-call insights, if enabled — a separate line so you can see what analysis costs versus the conversation |
+
+Two consequences worth knowing before you design a flow:
+
+- **Telephony rounds up; nothing else does.** A 61-second call pays 2 telephony minutes but 61 seconds of STT and infrastructure. Short calls are proportionally more expensive on the telephony line — [WhatsApp calls](/telephony/whatsapp-business-calling) have no telephony line at all.
+- **LLM cost is quadratic-ish in call length.** Each turn resends the whole context, so a long System Prompt is paid on every turn of every call. Keeping prompts short is a cost lever as well as a quality one — see [Write prompts](/build/write-prompts).
+
+Rates are published live. The current telephony and number prices are below; model rates are on [Models and voices](/reference/models-and-voices).
+
+### Telephony
+
+<Markdown src="/docs/snippets/generated/pricing-telephony.mdx" />
+
+### Phone numbers
+
+<Markdown src="/docs/snippets/generated/pricing-phone-numbers.mdx" />
+
+### Recording storage
+
+<Markdown src="/docs/snippets/generated/pricing-recording-storage.mdx" />
+
+## The four kinds of balance
+
+Your balance is made of *buckets*, and which bucket pays for what is the part that surprises people.
+
+<ParamField path="subscription" type="expires">
+  Granted monthly by a subscription plan; expires at the end of the period. Spent **first**.
+</ParamField>
+<ParamField path="promotional" type="may expire">
+  Credits from a promotion, usually with an expiry date. Spent **second**.
+</ParamField>
+<ParamField path="bonus" type="never expires">
+  Welcome credit, referral rewards and similar. Spent **third**.
+</ParamField>
+<ParamField path="purchased" type="never expires">
+  Money you paid. Spent **last**, so it's never wasted while expiring credit exists.
+</ParamField>
+
+Two rules sit on top of the order:
+
+1. **Calls and analysis can be paid from any bucket.** Expiring buckets go first so you lose as little as possible.
+2. **Phone number purchases and monthly rental can only be paid from purchased or subscription balance.** Bonus and promotional credit never buy or rent a number. This is why a new account with only its welcome credit can build and test but must top up before buying a line.
+
+`GET /billing/balance` reports `available` (everything usable), `purchasedBalance`, `bonusBalance` and the `earliestExpiration` across buckets.
+
+## Admission, overdraft and suspension
+
+Talkif checks your balance **once per call, before it starts** — and never again during it.
+
+- To start any call (inbound, outbound, browser test) the account must be active and have at least **\$1.00** available. Below that: outbound requests fail with `insufficient_balance`, inbound calls are answered busy, campaigns and schedules hold.
+- Once a call is running it is **never cut off for money**. It's metered to the end and settled as one charge, even if that takes the balance negative.
+- If the balance ends at or below zero, the account is **suspended**: no new calls until a top-up brings it positive. The dashboard, billing and your data stay fully accessible — suspension only blocks spending. A top-up reactivates the account automatically.
+- With **auto-recharge** on, the top-up happens instead of the suspension: the shortfall triggers a charge to your default card for your configured amount.
+
+## A worked example
+
+You sign up, get the **\$5.00 welcome credit** (bonus), and add **\$50.00** by card (purchased).
+
+```text
+Purchased   $50.00
+Bonus        $5.00
+Available   $55.00
+```
+
+<Steps>
+  <Step title="You buy a US local number at $1.15/month">
+    Number purchases can't use bonus, so the rental comes off *purchased* even though bonus is available.
+
+    ```text
+    Purchased   $50.00  −  $1.15   =  $48.85
+    Bonus        $5.00             =   $5.00
+    Available                      =  $53.85
+    ```
+  </Step>
+  <Step title="You make a 4 min 20 s test call">
+    Telephony is billed per started minute; STT, TTS and infrastructure per second; the LLM per token. Say the call comes to \$0.42:
+
+    ```text
+    Telephony        5 min (started)  ×  $0.014/min   =  $0.07
+    STT              4.33 min         ×  model rate
+    LLM              ~2,800 tokens    ×  model rate
+    TTS              ~1,900 chars     ×  model rate
+    Infrastructure   4.33 min         ×  platform rate
+    Call total                                        ≈  $0.42
+    ```
+
+    Calls spend **expiring-first**, so the whole amount comes off bonus:
+
+    ```text
+    Purchased   $48.85             =  $48.85
+    Bonus        $5.00  −  $0.42   =   $4.58
+    Available                      =  $53.43
+    ```
+  </Step>
+  <Step title="Twelve more calls use up the bonus">
+    Bonus hits \$0.00; the next call spends from purchased. Nothing else changes — you don't notice the bucket switch except in the transaction history, where each entry names its bucket.
+  </Step>
+  <Step title="A long campaign runs the balance to –$0.80">
+    The last call was admitted with \$1.10 available, ran long, and settled at \$1.90. A running call is always billed to the end, so the balance goes negative and the account is **suspended**: existing calls finish normally, the queue holds.
+
+    ```text
+    Available    $1.10  −  $1.90   =  −$0.80   → suspended
+    Top-up      −$0.80  + $20.00   =  $19.20   → active, queue resumes
+    ```
+  </Step>
+  <Step title="Next month, rental renews">
+    \$1.15 is taken from purchased balance for the number. If the balance can't cover rental, the number's billing status moves to *past due* and eventually *suspended* — see [Buy a number](/telephony/buy-a-number).
+  </Step>
+</Steps>
+
+## Where the numbers come from
+
+Every line item on a bill records the **rate that applied at the time**, so historical bills don't change when prices do. Rates are per account — if you're on negotiated pricing, your rates apply automatically everywhere the public ones are shown here.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Credits and payment" href="/account/credits-and-payment" icon="fa-regular fa-credit-card">
+    Top up, manage cards, set up auto-recharge.
+  </Card>
+  <Card title="Cost breakdown" href="/account/cost-breakdown" icon="fa-regular fa-receipt">
+    Read a call's bill line by line and find what drives cost.
+  </Card>
+  <Card title="Models and voices" href="/reference/models-and-voices" icon="fa-regular fa-microchip">
+    Current per-model rates for STT, LLM and TTS.
+  </Card>
+  <Card title="Choose models and voices" href="/build/choose-models-and-voices" icon="fa-regular fa-sliders">
+    Trade off latency, quality and cost per provider.
+  </Card>
+</CardGroup>

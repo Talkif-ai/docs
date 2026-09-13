@@ -18,13 +18,13 @@
       "provider": "twilio",
       "model": null,
       "rates": {
-        "perMinuteOutbound": {
-          "microcents": 14000,
-          "display": "$0.0140"
-        },
         "perMinuteInbound": {
           "microcents": 8500,
           "display": "$0.0085"
+        },
+        "perMinuteOutbound": {
+          "microcents": 14000,
+          "display": "$0.0140"
         }
       }
     },
@@ -32,11 +32,11 @@
       "provider": "whatsapp",
       "model": null,
       "rates": {
-        "perMinuteOutbound": {
+        "perMinuteInbound": {
           "microcents": 0,
           "display": "$0.0000"
         },
-        "perMinuteInbound": {
+        "perMinuteOutbound": {
           "microcents": 0,
           "display": "$0.0000"
         }

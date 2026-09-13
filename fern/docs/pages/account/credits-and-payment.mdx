@@ -1,0 +1,65 @@
+---
+title: Credits and payment
+description: Adding money to your balance, cards and their health, auto-recharge and its retry schedule, and what to do when a payment fails.
+---
+
+Talkif is prepaid: you add money, calls draw it down. This page is the mechanics of adding it and keeping it topped up. How the balance is *spent* — buckets, the $1.00 admission minimum, what happens at zero — is in [Credits and pricing](/concepts/credits-and-pricing); if you haven't read that, the rules below will feel arbitrary.
+
+## Topping up
+
+**Billing → Overview → Add balance.** Choose an amount between **\$10 and \$10,000**; pay with a saved card, or through a hosted checkout if you haven't saved one yet. The balance updates the moment the payment succeeds — no invoice cycle, no waiting.
+
+Purchased balance never expires and is spent last, after any subscription, promotional or bonus credit.
+
+## Payment methods
+
+Cards are handled by Stripe; Talkif stores only a reference and the card's last digits. **Billing → Payment Methods** lets you add cards and bank accounts, label them ("Corporate Visa"), and choose a **default** — the one used for manual top-ups by default and for auto-recharge. 3-D Secure is supported for cards that require it.
+
+Each method carries a health status from its last charge:
+
+<ParamField path="active" type="status">Healthy — the last charge succeeded, or it's never been charged.</ParamField>
+<ParamField path="declined" type="status">The last charge was declined; the specific decline reason is recorded. Try again, or ask the bank.</ParamField>
+<ParamField path="expired" type="status">Past its expiry date. Add a replacement.</ParamField>
+<ParamField path="blocked" type="status">Permanently unusable — reported lost, stolen or fraudulent. Remove it.</ParamField>
+
+A successful charge resets a method to `active`. Auto-recharge never attempts `expired` or `blocked` methods.
+
+## Auto-recharge
+
+The single most useful thing to switch on. When the balance falls below a **threshold**, Talkif charges your default card for a fixed **amount** — so a busy campaign never stalls on an empty balance and a long call never suspends the account.
+
+| Setting | Range |
+|---|---|
+| Threshold — recharge when balance falls below | \$1 – \$1,000 |
+| Amount — how much to add | \$5 – \$1,000 |
+| Payment method | default, or a specific card |
+
+**Billing → Overview → Auto-recharge.** Pick a threshold above your biggest plausible hour of spend and an amount that covers a day; you can always change both.
+
+<AccordionGroup>
+  <Accordion title="When a recharge fails" defaultOpen>
+    The charge is retried on a schedule — **immediately, then after 1, 3 and 5 days**. At most **5 recharge attempts run per day**, so a broken card can't be hammered. If every retry fails, auto-recharge stops trying for that shortfall and the balance behaves as if auto-recharge were off: calls are refused below $1.00 and the account is suspended if it goes negative. Fix the card (or top up manually) and it resumes.
+  </Accordion>
+  <Accordion title="Auto-recharge and suspension">
+    With auto-recharge on, a charge that takes the balance to zero triggers a recharge instead of a suspension. The recharge is what keeps you calling — which is why the retry schedule matters: if the card fails on the first attempt, the account *will* be suspended until a retry succeeds or you top up by hand.
+  </Accordion>
+</AccordionGroup>
+
+## When a manual payment fails
+
+The balance simply doesn't change; nothing is charged twice. The method's status shows the decline reason. Common causes: a card limit, 3-D Secure not completed, a bank blocking an unfamiliar merchant. Retry with the same card after the bank clears it, or use another.
+
+## Disputes
+
+If you dispute a charge with your bank, the disputed amount plus a **$15 processing fee** is held from your balance while the dispute is open. If it resolves in your favour the hold is released; if not, it's deducted. Contact support before disputing — a billing error is fixed far faster as an adjustment.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Credits and pricing" href="/concepts/credits-and-pricing" icon="fa-regular fa-coins">
+    How the balance is spent, and what happens at zero.
+  </Card>
+  <Card title="Cost breakdown" href="/account/cost-breakdown" icon="fa-regular fa-receipt">
+    Where the money went.
+  </Card>
+</CardGroup>

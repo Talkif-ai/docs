@@ -1,0 +1,117 @@
+---
+title: Introduction
+description: What Talkif is, the four things every call depends on, and how the dashboard and the API fit together.
+---
+
+Talkif turns a written description of a conversation into a phone agent that can hold that conversation with real people, on real phone lines, in real time. You describe who the agent is and what it should achieve; Talkif handles the telephony, the speech recognition, the language model, the voice, and the billing — and gives you back a transcript, a recording, and an exact cost for every call.
+
+It's built for teams who need calls answered or placed at scale — appointment reminders, lead qualification, support triage, surveys, order confirmations — without building a voice stack of their own.
+
+## The four things every call depends on
+
+Everything in Talkif reduces to four objects. Once you can name them, the rest of the product is just ways to create, connect, and observe them.
+
+| Concept | What it is |
+|---|---|
+| **Flow** | The conversation design — agents with their instructions, the providers they use, the functions they may call. Versioned; only a *published* version takes calls. |
+| **Phone number** | A line the agent answers or dials from: bought in Talkif, or brought from your SIP carrier or WhatsApp. Connected to one published flow for inbound. |
+| **Call** | One conversation between a flow and a person, inbound or outbound. Leaves a transcript, a recording and a cost breakdown. |
+| **Credits** | A prepaid USD balance. Every second of a call is metered against it and settled when the call ends. |
+
+A call always runs the flow's **published** version; every second of it is paid from credits.
+
+A flow does nothing on its own. A number with no flow rejects inbound calls. A call cannot start below the \$1.00 minimum balance. Most "why isn't this working?" questions are one of those three sentences.
+
+## Agents, prompts and providers — the part worth understanding first
+
+A flow is not a script. The agent decides each reply itself, from two prompts:
+
+- The **System Prompt** is the call's persona — who the agent is, its tone, its hard limits. It lives on the entry agent (the *Main Agent*) only and stays in force for the whole call, even after the conversation moves to other agents.
+- The **Agent Prompt** is that agent's job — what to find out, what to do, when to move on. Every agent has one; it applies only while the conversation is on that agent.
+
+A single-agent flow is one Main Agent with both prompts. A multi-agent flow splits the work — "greet and qualify", then "book the slot", then "confirm and close" — with each agent carrying only the instructions for its step. That keeps prompts short, which is the single biggest lever on how well a voice agent performs.
+
+### Prompts are dynamic
+
+Both prompts are templates, resolved **when the call starts** — not when you publish. Anything Talkif knows about the call can be dropped in with `{{…}}`:
+
+```handlebars title="Agent Prompt (excerpt)"
+You are calling {{default contact.firstName "the customer"}} from {{contact.company}}.
+Today is {{formatDate system.date "long"}}; it is {{system.time}} in the caller's timezone.
+{{#ifExists contact.notes}}Background from our CRM: {{contact.notes}}{{/ifExists}}
+```
+
+| Namespace | What's in it | Populated when |
+|---|---|---|
+| `contact.*` | `name`, `firstName`, `lastName`, `primaryPhone`, `email`, `company`, `occupation`, `address`, `notes`, `interests`, `tags`, `timezone`, `language` | the call has a contact — outbound with a `contactId`, or inbound from a number that matches a contact |
+| `call.*` | `id`, `direction`, `fromNumber`, `toNumber` | always |
+| `system.*` | `date`, `time`, `timezone`, `timestamp` | always |
+
+Helpers cover the usual gaps: `default` for missing values, `formatDate`, `join` for lists, `#ifExists` / `#if` with `eq`, `and`, `includes` for conditional lines. The full reference is in [Write prompts](/build/write-prompts#dynamic-prompts).
+
+Three providers do the actual work on every turn:
+
+| Provider | What it does on each turn | You choose |
+|---|---|---|
+| **STT** (speech-to-text) | Turns the caller's audio into text as they speak | Vendor, model, language |
+| **LLM** | Reads the prompts + transcript so far, decides what to say or which function to call | Vendor, model, temperature, reasoning effort |
+| **TTS** (text-to-speech) | Turns the reply into audio in the agent's voice | Vendor, model, voice |
+
+The available vendors and models are listed live from the platform — see [Models and voices](/reference/models-and-voices). Choosing them is covered in [Choose models and voices](/build/choose-models-and-voices).
+
+## Two ways to work with Talkif
+
+<Tabs>
+  <Tab title="Dashboard">
+    [app.talkif.ai](https://app.talkif.ai) is where flows are designed — the builder is visual and the browser-based **Flow Tester** lets you talk to a draft over your microphone before it ever touches a phone line. Numbers, contacts, campaigns, call history, transcripts, recordings and billing all live there too.
+
+    If you never write code, the dashboard is the whole product.
+  </Tab>
+  <Tab title="API">
+    Everything the dashboard does after design time is available over a REST API at `https://api.talkif.ai`: place calls, run campaigns, manage numbers and contacts, read transcripts and costs. Authenticate with an API key (`tif_live_…`) as a Bearer token.
+
+    Flows are typically designed in the dashboard and *driven* from the API — your CRM triggers a call, your backend answers a function call mid-conversation, your system receives the outcome. Start at [Authentication](/integrate/authentication) and the [API Reference](/api-reference).
+  </Tab>
+</Tabs>
+
+## Where Talkif runs
+
+Talkif runs in two regions — **EU (Frankfurt)** and **US (Virginia)** — and serves both `api.talkif.ai` and call media from whichever is closer to the caller. You don't pick a region per call; you may care about it when bringing your own carrier, where the SIP edge is chosen from your carrier's location — see [Bring your own SIP trunk](/telephony/bring-your-own-sip-trunk).
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" href="/getting-started/quickstart" icon="fa-regular fa-rocket">
+    Build a flow, test it in the browser, publish it, and make a real call — about ten minutes.
+  </Card>
+  <Card title="How a call works" href="/getting-started/how-a-call-works" icon="fa-regular fa-timeline">
+    The full lifecycle of a call, from trigger to settled cost, and every status you'll see on the way.
+  </Card>
+</CardGroup>
+
+<Note>
+  Already integrating from code? Jump to [Authentication](/integrate/authentication) for an API key, then the [SDKs](/sdks/server) and the [API Reference](/api-reference). Letting Claude Code, Codex or Cursor do the work? Install the [Talkif Agent Skills](/skills/agent-skills) first — they teach the agent this whole site.
+</Note>
+
+## Then, by what you're doing
+
+<CardGroup cols={2}>
+  <Card title="Build agents" href="/build" icon="fa-regular fa-diagram-project">
+    Design conversations, write prompts that work on the phone, choose models and voices, call your backend, test and publish.
+  </Card>
+  <Card title="Telephony" href="/telephony" icon="fa-regular fa-phone">
+    Buy numbers, bring your own SIP trunk, WhatsApp Business Calling, inbound and outbound routing.
+  </Card>
+  <Card title="Run calls" href="/calls" icon="fa-regular fa-headset">
+    Single calls, campaigns and schedules, transcripts and recordings, contacts, Do Not Call.
+  </Card>
+  <Card title="Integrate" href="/integrate" icon="fa-regular fa-plug">
+    Authentication, SDKs, web calls, webhooks and signatures, real-time events, Meta Lead Ads.
+  </Card>
+  <Card title="Account and billing" href="/account" icon="fa-regular fa-coins">
+    Credits and payment, cost breakdown, organizations and roles, security, data export.
+  </Card>
+  <Card title="Reference" href="/reference/limits" icon="fa-regular fa-book">
+    Limits, models and voices, network allowlists, the changelog, the API reference.
+  </Card>
+</CardGroup>

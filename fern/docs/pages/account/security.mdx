@@ -1,47 +1,56 @@
 ---
 title: Security
-description: Password management, multi-factor authentication, and session control.
+description: Your profile and verification status, password and Google sign-in, two-factor authentication with backup codes, and ending sessions on other devices.
 ---
 
-Navigate to **Settings → Account → Security** to manage your security settings.
+Your user is the key to every account you belong to — including the organization's balance and its phone lines. Securing it is not optional for anyone with the Owner role, and it's cheap: two-factor authentication takes a minute to set up and is required on every sign-in afterwards.
 
-## Password
+Everything on this page is **per user**, not per account: it follows you across every account you can access. **Settings → Security**, and **Profile** from the user menu.
 
-Change your password at any time. You must enter your current password to set a new one.
+## Profile
 
-## Multi-Factor Authentication (MFA)
+Your name, email and phone number, and which are verified. Email is verified by a link at sign-up; the phone by a 6-digit SMS code (valid 10 minutes). Both are needed before an account can place calls, and the phone is what receives an SMS notification if you enable one.
 
-Add a second layer of security with TOTP-based authentication. Works with Google Authenticator, Authy, and any TOTP-compatible app.
+Changing your email or phone repeats the verification for the new value. **Connected accounts** shows whether Google sign-in is linked.
 
-### Setup
+## Signing in
 
-1. Click **Enable MFA**
-2. Scan the QR code with your authenticator app
-3. Enter the verification code from the app
-4. Save your **backup codes** — one-time use codes for recovery if you lose access to your authenticator
+Two ways, and you can have both on one user:
 
-Once enabled, MFA is required on every login.
+- **Email and password.** Change the password from Security; the current password is required to set a new one. A user created through Google can add a password here to sign in either way.
+- **Continue with Google.** Links your Google identity to the user. Google handles the credential; Talkif still applies your two-factor setting.
 
-### Backup codes
+Failed sign-ins are rate-limited per address — a handful of quick attempts, then a slow trickle — so a password can't be brute-forced, and you may briefly be locked out after several typos.
 
-You receive **10 backup codes** during setup, each in `XXXX-XXXX` format. Each code can only be used once. Store them in a secure location — they are your recovery method if you lose your authenticator device.
+## Two-factor authentication
 
-### Disable MFA
+Time-based one-time passwords (TOTP), compatible with Google Authenticator, Authy, 1Password and any standard app.
 
-To disable MFA, go to Security settings and enter your current password for confirmation.
+<Steps>
+  <Step title="Enable">
+    **Security → Two-Factor Authentication → Enable.** Scan the QR code with your app and enter the six-digit code it shows.
+  </Step>
+  <Step title="Save the backup codes">
+    You get **10 single-use backup codes** (8 characters each, shown as `XXXX-XXXX`). They're the only way back in if you lose the phone. Put them in a password manager now — they are not shown again.
+  </Step>
+  <Step title="Sign in with it">
+    From then on, every sign-in — password or Google — asks for the current code, or a backup code.
+  </Step>
+</Steps>
 
-## Phone verification
+To disable, confirm with your current password. If you're an organization Owner, consider it mandatory; you're the only person who can change the organization's billing.
 
-Phone verification confirms ownership of the phone number on your account. A 6-digit code is sent via SMS, valid for 10 minutes.
+## Sessions
 
-Verification is required when:
+**Security → Sessions** shows this device's session. **Log out of other devices** ends every session except the current one — the right response to a lost laptop or a suspected compromise. Changing your password does not by itself end other sessions; do both.
 
-- Setting up your account phone number for the first time
-- Changing your phone number (see [Profile](/account/profile))
+## Next
 
-If the code expires or you exceed the maximum attempts, request a new code.
-
-## Session management
-
-- **Log out** — end your current session
-- **Revoke all other sessions** — immediately terminate all sessions except your current one. Use this if you suspect unauthorized access.
+<CardGroup cols={2}>
+  <Card title="Members and roles" href="/account/members-and-roles" icon="fa-regular fa-users">
+    Suspend a member whose account may be compromised.
+  </Card>
+  <Card title="Authentication" href="/integrate/authentication" icon="fa-regular fa-key">
+    API keys: scopes, IP allowlists and rotation.
+  </Card>
+</CardGroup>

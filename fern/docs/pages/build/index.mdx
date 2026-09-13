@@ -1,0 +1,38 @@
+---
+title: Build agents
+subtitle: Design the conversation, give it a voice and a brain, connect it to your systems, and prove it works before it goes live.
+description: The Flow Builder — how to design conversations, write prompts, choose models and voices, call your backend, control how calls end, and test and publish.
+layout: overview
+---
+
+A flow is where a Talkif agent is designed. You work on a canvas: **agent** nodes hold the instructions, **provider** nodes give the agents hearing, thinking and speech, **function** nodes let them act — and edges say what is connected to what. There is no code, but there is real engineering: prompt quality, model choice and hand-off design decide whether callers get a good experience.
+
+These pages are in the order you'll need them.
+
+<CardGroup cols={2}>
+  <Card title="Design a conversation" href="/build/design-a-conversation" icon="fa-regular fa-diagram-project">
+    Main Agent and sub-agents, transitions between them, and how to split a job so each prompt stays short.
+  </Card>
+  <Card title="Write prompts" href="/build/write-prompts" icon="fa-regular fa-pen-nib">
+    System Prompt vs Agent Prompt, what works on a phone line, dynamic `{{variables}}`, and the Prompts workspace.
+  </Card>
+  <Card title="Choose models and voices" href="/build/choose-models-and-voices" icon="fa-regular fa-sliders">
+    STT, LLM and TTS providers — how to trade latency, quality and cost, and every setting each one exposes.
+  </Card>
+  <Card title="Call your backend" href="/build/call-your-backend" icon="fa-regular fa-server">
+    Flow functions: let the agent look things up or take action in your systems mid-call, with signed requests.
+  </Card>
+  <Card title="Transfer and end calls" href="/build/transfer-and-end-calls" icon="fa-regular fa-phone-slash">
+    Ending well, scripted lines, silence handling, maximum length, and voicemail.
+  </Card>
+  <Card title="Test and publish" href="/build/test-and-publish" icon="fa-regular fa-circle-check">
+    The Flow Tester, what validation checks, and what publishing changes.
+  </Card>
+  <Card title="Templates" href="/build/templates" icon="fa-regular fa-clone">
+    Five ready-made flows to start from instead of an empty canvas.
+  </Card>
+</CardGroup>
+
+<Note>
+  Not sure how flows, versions and phone numbers relate? Read [Flows and versions](/concepts/flows-and-versions) first — it's five minutes and it answers most "why isn't it live?" questions.
+</Note>

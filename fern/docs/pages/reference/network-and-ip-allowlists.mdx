@@ -1,0 +1,52 @@
+---
+title: Network and IP allowlists
+description: Every address involved in traffic between Talkif and your systems — SIP signalling, media, and the egress addresses Talkif's requests to your endpoints come from — and what to allowlist for each.
+layout: reference
+---
+
+If a firewall sits between Talkif and something you run — a SIP carrier, a webhook endpoint, an internal API — this is the page to hand your network team. Three kinds of traffic, three different sets of addresses; conflating them is the usual cause of "signalling works but there's no audio" and "the webhook never arrives".
+
+## Talkif's endpoints (you → Talkif)
+
+| Endpoint | Purpose | Port |
+|---|---|---|
+| `api.talkif.ai` | REST API, real-time WebSocket (`/api/v1/ws/events`) | 443 |
+| `app.talkif.ai` | dashboard | 443 |
+| `sip.talkif.ai` → **`63.176.211.13`** | SIP signalling for your carrier's trunk | 5060 (UDP / TCP / TLS as configured) |
+
+`api.talkif.ai` and `app.talkif.ai` are served from both regions behind standard HTTPS; there's nothing to allowlist outbound beyond port 443 to those names.
+
+## SIP trunks (your carrier ↔ Talkif)
+
+<AccordionGroup>
+  <Accordion title="Signalling" defaultOpen>
+    Talkif sends outbound INVITEs **from** `63.176.211.13` and accepts inbound INVITEs **to** the same address on port 5060. Your carrier must allow this address; Talkif accepts inbound SIP only from the carrier IPs/CIDRs listed on your SIP provider in the dashboard. Talkif does not REGISTER with your carrier.
+  </Accordion>
+  <Accordion title="Media (RTP)">
+    RTP does not flow through the signalling address. Talkif's trunking is bridged through its carrier's media edges in Frankfurt and Ashburn, and audio is exchanged directly with those. If your carrier filters RTP by source, allow the published media ranges for those two edges — [Twilio's SIP IP address list](https://www.twilio.com/docs/sip-trunking/ip-addresses) is the authoritative source and changes occasionally. Symptom of getting this wrong: calls connect, nobody hears anything (or only one side does).
+  </Accordion>
+</AccordionGroup>
+
+Full setup in [Bring your own SIP trunk](/telephony/bring-your-own-sip-trunk); how the edge is chosen in [Regions and edges](/telephony/regions-and-edges).
+
+## Webhooks and flow functions (Talkif → you)
+
+HTTPS requests from Talkif to your endpoints — flow functions called during a call — leave through a **single fixed egress address per region** (EU and US). They are the addresses to allowlist if your endpoint isn't open to the internet.
+
+The current addresses are provided by support on request and confirmed in writing, so that a change is communicated rather than discovered. Two things to design in regardless of source IP:
+
+- **Verify the `Talkif-Signature` header** on every request — [Webhooks](/integrate/webhooks). An allowlist proves where a request came from; the signature proves who sent it and that it's intact.
+- **Allow both regions.** A call served from the US region calls your endpoint from the US egress address even if your account "lives" in the EU.
+
+Requests are made only to **public** addresses: private ranges (`10/8`, `172.16/12`, `192.168/16`), loopback, link-local and cloud-metadata addresses are refused, and hostnames resolving to any such address are refused too. Redirects are not followed.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Bring your own SIP trunk" href="/telephony/bring-your-own-sip-trunk" icon="fa-regular fa-network-wired">
+    Trunk setup, step by step.
+  </Card>
+  <Card title="Webhooks" href="/integrate/webhooks" icon="fa-regular fa-shield-check">
+    Signature verification code in Node and Python.
+  </Card>
+</CardGroup>

@@ -1,35 +1,40 @@
 ---
 title: Notifications
-description: Configure notification preferences for billing, calls, usage, and security events.
+description: What Talkif tells you about — billing, calls, security, organization — where it appears, and the low-balance threshold you should set.
 ---
 
-Talkif delivers notifications in real-time via Server-Sent Events (SSE). Notifications appear instantly in the dashboard — no polling, no delays.
+Most of what happens in Talkif is visible on the dashboard as it happens; notifications are for the things you'd want to know about even when you're not looking: money running low, a card failing, a number suspended, a campaign pausing itself, someone inviting you to an organization.
 
-## Notification categories
+## Where they appear
 
-| Category | Events |
+In the **bell** in the dashboard header, instantly — the notification inbox is pushed over the same live connection as call status. Unread counts, mark read/unread, delete. Notifications are per user within an account; each member of an organization has their own inbox.
+
+## What you're told about
+
+| Category | Examples |
 |---|---|
-| **Billing** | Low balance alerts, payment confirmations, auto-recharge notifications |
-| **Calls** | Call completion summaries, failed call alerts |
-| **Usage** | Usage threshold alerts |
-| **Security** | Login from new device, password changes, MFA changes |
-| **System** | Platform maintenance, feature updates |
-| **Organization** | Invitation received, member changes |
+| **Billing** | Balance below your threshold; auto-recharge failed; a number's rental couldn't be paid; a number suspended for non-payment; the account suspended for a negative balance, and reactivated |
+| **Calls** | A high failure rate across recent calls; a WhatsApp call declined |
+| **Usage** | The concurrent-call limit was hit and calls queued |
+| **System** | A phone number went inactive; a model you use was retired and the flow's setting adjusted; a Meta connection needs re-authorisation; maintenance |
+| **Organization** | You were invited; your role changed; a member joined or left |
+| **Security** | Sign-in security events on your user |
 
-## Managing notifications
+## The one setting worth changing
 
-- **Mark as read / unread** — toggle notification read status
-- **Delete** — remove notifications you no longer need
+**Settings → Notifications → Alert thresholds → Low balance warning.** Talkif warns when the balance drops below the amount you set. Set it to roughly a day of spend at your busiest — high enough that a warning at 5 pm still leaves time to top up before the morning's campaign, and above the [auto-recharge threshold](/account/credits-and-payment#auto-recharge) if you use it, so you hear about a failing card before the account is suspended.
 
-Notifications are accessible from the bell icon in the dashboard header.
+<Note>
+  Some emails are transactional rather than notifications and are always sent: sign-up and email-change verification, data-export and account-deletion confirmations, organization invitations.
+</Note>
 
-## Delivery channels
+## Next
 
-| Channel | Description |
-|---|---|
-| **Email** | Notification sent to your email address |
-| **SMS** | Text message to your phone number |
-| **Webhook** | HTTP POST to a configured URL |
-| **Push** | Browser push notification |
-
-Configure which events trigger notifications and through which channels from **Settings → Notifications**.
+<CardGroup cols={2}>
+  <Card title="Credits and payment" href="/account/credits-and-payment" icon="fa-regular fa-credit-card">
+    Auto-recharge, so the low-balance warning is rarely needed.
+  </Card>
+  <Card title="Real-time events" href="/integrate/real-time-events" icon="fa-regular fa-bolt">
+    For your own systems: call events over WebSocket.
+  </Card>
+</CardGroup>

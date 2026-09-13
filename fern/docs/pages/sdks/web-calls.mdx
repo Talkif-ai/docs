@@ -1,0 +1,170 @@
+---
+title: Web calls
+description: Put a voice agent on any web page — the browser SDK, publishable keys and origin allowlists, the two modes, events you can render live, and the abuse limits that make an unauthenticated call endpoint safe.
+---
+
+A phone number isn't the only way to reach an agent. With **web calls**, a visitor presses a button on your site and is talking to your flow over WebRTC a second later — no dial pad, no telephony charge, and a live transcript you can render next to the button. The browser SDK handles the media and signalling; you bring the UI.
+
+<Note>
+  This is the *browser* SDK. For placing phone calls and managing the account from a backend, use the [server SDKs](/sdks/server).
+</Note>
+
+## How it works
+
+```mermaid
+sequenceDiagram
+  participant V as Visitor's browser
+  participant T as Talkif
+  V->>T: publishable key + page origin → session token
+  V->>T: create call, fetch relay servers, exchange SDP
+  T-->>V: audio over WebRTC; events over WebSocket
+  V->>V: your UI renders transcript, captions, state
+```
+
+The key point: the browser never holds your API key. A **publishable key** (`pk_live_…`) is safe in page source. It is bound to **one flow**, valid only from **origins you allowlist**, and rate-limited per key, per visitor session and per IP. Talkif exchanges it for a short-lived session token; everything after that is scoped to that one session.
+
+## Packages
+
+| Package | Use |
+|---|---|
+| [`@talkif/webrtc`](https://www.npmjs.com/package/@talkif/webrtc) | Framework-agnostic core: `TalkifCall` class, events |
+| [`@talkif/webrtc-react`](https://www.npmjs.com/package/@talkif/webrtc-react) | `useTalkifCall` hook on top of the core (React ≥ 18) |
+
+Both are headless — no UI ships with them. Source: [Talkif-ai/webrtc-js](https://github.com/Talkif-ai/webrtc-js) (MIT).
+
+```bash
+npm install @talkif/webrtc @talkif/webrtc-react
+```
+
+## Two modes
+
+<Tabs>
+  <Tab title="Public (embed)">
+    For widgets on any web page. Ship the publishable key; the flow is bound to the key.
+
+    ```ts
+    const config = {
+      baseUrl: "https://api.talkif.ai",
+      publishableKey: "pk_live_…",
+    };
+    ```
+
+    Get the key from the flow: **Flow Builder → open the flow → Flow Settings → Web calls**. Publish the flow first — web calls always run the published version.
+  </Tab>
+  <Tab title="Authenticated">
+    For your own dashboard or an app where the user is already signed in to Talkif. You supply the account and an `auth` function returning the `Authorization` header value; you can call any published flow, or a draft definition for testing.
+
+    ```ts
+    const config = {
+      baseUrl: "https://api.talkif.ai",
+      accountId: "<account-id>",
+      auth: async () => `Bearer ${await getToken()}`,
+    };
+    ```
+  </Tab>
+</Tabs>
+
+## Setting up a public widget
+
+<Steps>
+  <Step title="Enable web calls on the flow">
+    **Flow Settings → Web calls → Enable.** A publishable key is generated and shown once; copy it. Regenerating issues a new key and invalidates the old one immediately.
+  </Step>
+  <Step title="Allowlist your origins">
+    Add every origin the widget will run on (`https://www.example.com`, `https://app.example.com`). Requests from anywhere else are refused — with a response that reveals nothing about which check failed.
+  </Step>
+  <Step title="Set the limits">
+    **Concurrent calls** for this key (default 2) and **calls per visitor session** (default 3). These are your caps on what a public page can spend; see the limits below for the platform's own.
+  </Step>
+  <Step title="Embed">
+    ```tsx title="CallButton.tsx"
+    import { useTalkifCall } from "@talkif/webrtc-react";
+
+    const config = { baseUrl: "https://api.talkif.ai", publishableKey: "pk_live_…" };
+
+    export function CallButton() {
+      const { state, durationSecs, muted, start, hangup, toggleMute } = useTalkifCall({
+        config,
+        onTranscript: ({ role, content }) => console.log(role, content),
+        onEnded: (reason) => console.log("ended", reason),
+        onError: (error) => console.error(error.code, error.message),
+      });
+
+      if (state === "connected") {
+        return (
+          <>
+            <span>{durationSecs}s</span>
+            <button onClick={toggleMute}>{muted ? "Unmute" : "Mute"}</button>
+            <button onClick={hangup}>Hang up</button>
+          </>
+        );
+      }
+      return (
+        <button onClick={() => start({})} disabled={state === "requesting" || state === "connecting"}>
+          Call us
+        </button>
+      );
+    }
+    ```
+
+    Without React, the core does the same:
+
+    ```ts title="call.ts"
+    import { TalkifCall } from "@talkif/webrtc";
+
+    const call = new TalkifCall(config);
+    call.on("connected", ({ callId }) => console.log("live", callId));
+    call.on("transcript", ({ role, content }) => console.log(role, content));
+    call.on("ended", ({ reason }) => console.log("ended", reason));
+    await call.start({}); // flowId is implied by the key in public mode
+    // later: call.setMuted(true); call.hangup();
+    ```
+  </Step>
+</Steps>
+
+If the flow's bot gate is on, the SDK completes a Cloudflare Turnstile challenge invisibly — nothing to set up. To supply your own token, pass `turnstileToken: () => Promise<string>` in the config.
+
+## What you can render live
+
+Every call event arrives on the SDK instance (and as hook callbacks), so a page can show more than a spinner:
+
+| Event | Payload | Use it for |
+|---|---|---|
+| `statechange` | `{ state, previous }` | button states: `requesting` → `connecting` → `connected` → `ended` |
+| `transcript` | `{ role, content }` | the conversation, one line per turn; on an interruption `content` includes what was synthesized but never heard |
+| `interim` | `{ data }` | the visitor's words as they're recognised (droppable) |
+| `ttschunk` | `{ text }` | the agent's reply sentence by sentence, ahead of audio |
+| `ttsword` | `{ word, ptsMs }` | word-level timing at playback pace — karaoke captions |
+| `tick` | `{ durationSecs }` | a call timer |
+| `appmessage` | `{ message }` | JSON the agent sends over the data channel; `sendAppMessage(json)` goes the other way |
+| `ended` | `{ reason }` | `local-hangup`, `peer-left`, `terminal-status`, `external` |
+| `error` | `{ error }` | fatal; the call is torn down. `error.code` is the field to branch on |
+
+The core also handles what you'd otherwise get wrong: relay-only ICE with fast first-candidate connect, the data-channel keepalive, a reconnecting events WebSocket with server-side replay after a gap, a liveness check before tearing down a silent call, and deterministic release of the microphone and peer connection on hangup, error or unmount. One active call per hook; starting another disposes the first.
+
+## Limits that protect you
+
+An unauthenticated endpoint that spends your money needs guardrails. These apply to every public call, in this order:
+
+| Layer | Limit |
+|---|---|
+| Per-IP key exchanges | 20 per hour |
+| Per-IP calls | 10 per hour |
+| Per-key calls | 60 per hour |
+| Per-key concurrent calls | your setting (default 2) |
+| Per-visitor session | your setting (default 3 calls); a session lives 30 minutes; one active call at a time |
+| Account | the same concurrent-call limit and $1.00 balance gate as every call — see [Limits](/reference/limits) |
+| Kill switch | disabling web calls on the flow, or regenerating the key, stops new calls within one attempt |
+
+A public call is billed like any other call minus telephony — STT, LLM, TTS and infrastructure — and appears in history with `providerType: webrtc`.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Real-time events" href="/integrate/real-time-events" icon="fa-regular fa-bolt">
+    The same event stream, account-wide, for your backend.
+  </Card>
+  <Card title="Test and publish" href="/build/test-and-publish" icon="fa-regular fa-circle-check">
+    The Flow Tester is the authenticated mode, built in.
+  </Card>
+</CardGroup>

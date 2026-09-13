@@ -1,0 +1,82 @@
+---
+title: Choose models and voices
+description: How the STT, LLM and TTS choices shape a phone conversation, how to trade latency against quality and cost, and every setting each provider exposes.
+---
+
+Every turn of a call goes through three vendors you pick: one hears the caller, one decides the reply, one speaks it. The choice is the single biggest lever on how a call *feels* — more than the prompt — because it sets the latency between the caller finishing a sentence and the agent starting one. Above about a second that gap reads as hesitation; above two, callers start talking over the agent.
+
+The live catalogue with prices is on [Models and voices](/reference/models-and-voices). This page is about choosing.
+
+## What each provider decides
+
+| Provider | Decides | Latency it adds | Cost driver |
+|---|---|---|---|
+| **STT** | Whether the caller's words arrive correctly — names, numbers, accents, noise | small; streams while they talk | per minute |
+| **LLM** | What the agent says and does; how well it follows the prompt | the largest share — time to first token | per token, every turn |
+| **TTS** | How the agent sounds; whether it's pleasant to listen to for five minutes | time to first audio | per character |
+
+A mistake at STT propagates: if "fourteenth" arrives as "fortieth", the best LLM books the wrong date. A slow LLM can't be fixed by a fast TTS. Choose in that order.
+
+## Choosing an LLM
+
+The trade is **speed against judgment**. For phone work, speed wins more often than people expect: a fast model that replies in 400 ms with a decent answer beats a brilliant one that pauses for two seconds.
+
+- **Start with a small, fast model** from any vendor — the ones the catalogue describes as low-latency or "for voice". Most flows (reminders, booking, triage, surveys) never need more.
+- **Move up only for a specific reason**: multi-step reasoning inside a turn, long function results the model must interpret, or strict policy compliance where a wrong answer is costly.
+- **Reasoning models** think before replying. That's a strength for analysis and a liability for live conversation — the thinking time lands in the pause before every reply. Prefer non-reasoning models for the call itself.
+
+**Settings on the LLM node**
+
+| Setting | What it does | Guidance |
+|---|---|---|
+| **Model** | Which model | See above |
+| **Temperature** (0–2) | Randomness of wording | 0.3–0.7 for a natural but consistent agent. Some models don't accept a temperature; Talkif hides or strips it for those — setting one has no effect |
+| **Max Tokens** | Cap on reply length | Keep it low (a few hundred). It's a safety net, not a style control — use the prompt to ask for short replies |
+| **Priority Tier** (OpenAI) | Faster, more reliable inference at 2× the token price | Worth it for customer-facing lines under load; not for testing |
+
+## Choosing STT
+
+The trade is **language coverage and robustness against price**.
+
+- **Language first.** Pick a model that lists the caller's language; multilingual, auto-detecting models (Soniox, xAI) are the safe default for mixed lines.
+- **Numbers and names.** The newer conversational models (Deepgram `nova-3`, for example) handle spelled names and digit strings noticeably better — relevant for reference numbers, postcodes, dates of birth. Test with your own data.
+- **Telephony audio is 8 kHz.** Every model in the catalogue works with it; the ones that advertise telephony support (xAI, Amazon Transcribe) were tuned on it.
+
+**Settings on the STT nodes** — each takes a **Model** and, where the model supports several, a **Language** (Deepgram, Google, Amazon Transcribe, Cartesia; a language *hint* for ElevenLabs). Soniox and xAI models detect language automatically and expose only the model choice.
+
+## Choosing TTS
+
+The trade is **naturalness against latency**, and it's the most subjective choice — always listen before you decide.
+
+- **Try two or three voices with the same prompt** in the Flow Tester. The same words land very differently.
+- **Flash / low-latency models** for conversation; the expressive premium models are for lines where tone carries the brand and a little extra delay is acceptable.
+- **Match language and accent** to the callers, not to the company.
+
+**Settings on the TTS nodes**
+
+| Provider | Settings |
+|---|---|
+| **ElevenLabs** | Voice; Stability 0–1 (higher = steadier, lower = more expressive); Similarity 0–1; Style 0–1; Speaker Boost; Speed 0.7–1.2. On **v3** models only Stability applies, and the prompt can use inline delivery tags — see [Write prompts](/build/write-prompts#emotion-and-delivery-with-elevenlabs-v3) |
+| **Cartesia** | Voice; Emotion (on `sonic-3`); Speed 0.6–1.5; Volume 0.5–2.0 |
+| **Rime** | Voice; Emotion; Speed; Volume |
+| **xAI** | Voice; Speed 0.7–1.5 |
+| **Google** | Voice only |
+
+## A default that works
+
+If you have no constraints yet: **Deepgram `nova-3-general`** → a small, fast OpenAI model (the templates use `gpt-4o-mini`) at temperature 0.5 → **ElevenLabs `eleven_flash_v2_5`** with a voice you've listened to. That's what the built-in [templates](/build/templates) ship with, and it's a good baseline to measure others against: change one provider at a time, run the same test conversation, compare the per-turn latency in the Flow Tester and the cost line on the call.
+
+<Note>
+  Provider and model choices are part of the flow definition, so they're versioned with it. Switching the LLM and publishing creates a new version; a number pinned to the old version keeps the old model until you republish over it. See [Flows and versions](/concepts/flows-and-versions).
+</Note>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Models and voices" href="/reference/models-and-voices" icon="fa-regular fa-microchip">
+    Every model, language count, feature and current price.
+  </Card>
+  <Card title="Credits and pricing" href="/concepts/credits-and-pricing" icon="fa-regular fa-coins">
+    How the per-token, per-minute and per-character rates add up to a call's cost.
+  </Card>
+</CardGroup>

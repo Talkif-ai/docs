@@ -1,0 +1,56 @@
+---
+title: Regions and edges
+description: Where Talkif runs, how a call is served from the region nearest the caller, how the carrier edge is chosen for a SIP trunk, and what to allowlist for signalling and media.
+---
+
+Latency is the enemy of a natural phone conversation, and a good part of it is geography: audio has to travel from the caller to the machine running the agent and back on every turn. Talkif runs the agent in two regions and serves each call from the one closer to the call, so that round trip stays short. You don't configure this — but if you bring your own carrier or run a firewall, you'll want to know how it works.
+
+## Two regions
+
+| Region | Location | Carrier edge |
+|---|---|---|
+| **EU** | Frankfurt (`eu-central-1`) | Frankfurt |
+| **US** | Virginia (`us-east-1`) | Ashburn |
+
+Both regions run the full platform: the API, the agents, and the media path. `api.talkif.ai` and the media endpoints are DNS-routed to the region with the lowest latency from where the request comes from. Your account, flows, numbers and call history are the same in both — there's one account, served from two places.
+
+## Which region serves a call
+
+- **Purchased numbers** are served through the carrier edge recorded on the number (`twilioEdge` / `twilioRegion` on the record), chosen when the number is bought.
+- **SIP trunks**: when you create a SIP provider, Talkif looks at your carrier's IP addresses and picks the closer of the two edges. All numbers on that provider inherit it. If your carrier is in neither continent, the geographically nearer edge is used.
+- **Your own Twilio account** numbers follow Twilio's edge for that number.
+- **WhatsApp** calls arrive from Meta and are served from the nearer region.
+- **Browser (WebRTC) test calls** connect to the nearer region from the browser's location.
+
+An agent always runs in the same region as the call's media — there's no cross-region hop inside a call.
+
+## What to allowlist
+
+If your carrier or network filters traffic, these are the addresses involved. They differ for **signalling** (SIP) and **media** (RTP), which is the most common thing to get wrong.
+
+<AccordionGroup>
+  <Accordion title="SIP signalling — your carrier ↔ Talkif" defaultOpen>
+    Talkif's SIP address is **`sip.talkif.ai`**, currently **`63.176.211.13`**, port **5060** (UDP, TCP or TLS as configured on your provider). Outbound INVITEs come *from* this address; inbound calls should be sent *to* it. Allowlist it on your carrier's trunk. Talkif accepts inbound SIP only from the carrier IPs listed on your provider.
+  </Accordion>
+  <Accordion title="Media (RTP) — your carrier ↔ the carrier edge">
+    Media doesn't flow through the signalling address. Talkif bridges SIP trunks through its carrier's edges (Frankfurt and Ashburn), and RTP is exchanged with that edge's media ranges. If your carrier restricts RTP by source, allow the published media IP ranges for those two edges — see [Twilio's SIP IP address list](https://www.twilio.com/docs/sip-trunking/ip-addresses) for the current ranges. One-way or no audio with working signalling is almost always this.
+  </Accordion>
+  <Accordion title="Webhooks and flow functions — Talkif → your servers">
+    HTTPS requests from Talkif to your endpoints (flow functions, webhooks) leave from a fixed set of egress addresses per region. See [Network and IP allowlists](/reference/network-and-ip-allowlists) for the current list — and verify the `Talkif-Signature` header rather than relying on source IP alone.
+  </Accordion>
+</AccordionGroup>
+
+## Data residency
+
+Your data — recordings, transcripts, contacts, insights — is stored once, in Talkif's EU primary datastore, with a replica in the US region for latency; recordings are held in EU object storage. Serving a call from the US region does not create a separate US copy of your account data. For questions about residency commitments, contact support.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Bring your own SIP trunk" href="/telephony/bring-your-own-sip-trunk" icon="fa-regular fa-network-wired">
+    Set up the trunk with the addresses above.
+  </Card>
+  <Card title="Network and IP allowlists" href="/reference/network-and-ip-allowlists" icon="fa-regular fa-shield-halved">
+    Every address in one place.
+  </Card>
+</CardGroup>

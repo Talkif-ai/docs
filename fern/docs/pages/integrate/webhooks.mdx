@@ -1,0 +1,153 @@
+---
+title: Webhooks
+description: Every request Talkif makes to your servers — flow functions called mid-conversation — can be signed. How to verify the Talkif-Signature header, handle rotation and empty bodies, and what delivery limits apply.
+---
+
+When an agent calls one of your [flow functions](/build/call-your-backend), Talkif makes an HTTPS request to the URL you configured. Anything that takes action on such a request — creates a booking, updates a record — needs to know the request really came from Talkif and wasn't altered in transit. Talkif signs each one; the signature travels in the **`Talkif-Signature`** header, and verifying it takes a dozen lines in any language.
+
+Signing is **per account and opt-in**: requests are signed once you've created a signing secret. Until then they're sent unsigned — fine for a prototype, not for anything that acts.
+
+## What your endpoint receives
+
+| Aspect | What Talkif sends |
+|---|---|
+| Method, URL, body | Exactly as declared on the flow function, with the model's arguments merged in |
+| Headers | Your function's `webhookHeaders` (e.g. `Authorization`), `Content-Type: application/json` when there's a body, and `Talkif-Signature` once a secret exists |
+| Timeout | The function's `timeoutMs` (100 ms – 30 s) |
+| Body size | Requests ≤ 1 MB; the first 1 MB of your response is read |
+| Redirects | Not followed — respond directly with a 2xx/3xx |
+| Reachability | Public internet only; private and cloud-metadata addresses are refused |
+| Source | Fixed egress addresses per region — see [Network and IP allowlists](/reference/network-and-ip-allowlists) |
+
+Respond quickly: the caller is waiting in silence. A 2xx–3xx status is a success; the JSON body (or `{"raw": "…"}` for non-JSON) goes back to the model.
+
+## Get your signing secret
+
+1. Go to **Developer → Credentials → Webhook signing**.
+2. Click **Create signing secret**.
+3. Copy the secret. It's shown **once** — it can't be retrieved later.
+
+The secret looks like `whsec_` followed by 43 URL-safe characters (49 characters total).
+
+<Warning>
+  Use the secret **exactly as shown**, including the `whsec_` prefix, as the raw HMAC key. Do **not** strip the prefix and do **not** base64-decode it. Some providers (e.g. Svix) base64-decode the part after `whsec_` — Talkif does not. A verifier that decodes the secret will fail every check.
+</Warning>
+
+## The signature header
+
+```
+Talkif-Signature: t=1718983045,v1=3f9a...c2
+```
+
+| Component | Meaning |
+|---|---|
+| `t` | Unix timestamp (seconds) when the signature was generated |
+| `v1` | Lowercase hex `HMAC-SHA256` of the signed payload. There may be **more than one** `v1` during secret rotation — accept the request if **any** matches. |
+
+## How the signature is computed
+
+```
+signed_payload = "{t}.{body}"
+v1             = lowercase_hex( HMAC_SHA256(secret, signed_payload) )
+```
+
+- **`{t}`** is the timestamp from the header.
+- **`{body}`** is the **exact raw bytes of the request body** as received — do not parse and re-serialize it (key order and whitespace must match byte-for-byte).
+- **`secret`** is your full `whsec_…` value, used verbatim as the UTF-8 HMAC key.
+
+## Verifying a request
+
+1. Read the `Talkif-Signature` header and parse out `t` and every `v1`.
+2. (Recommended) Reject the request if `t` is too old — this limits replay. A 5-minute tolerance is typical.
+3. Compute `HMAC_SHA256(secret, "{t}.{rawBody}")` as lowercase hex.
+4. Compare it against each `v1` with a **constant-time** comparison. Accept if any matches.
+
+### Node.js
+
+```js
+const crypto = require("crypto");
+
+function verifyTalkifWebhook(rawBody, signatureHeader, secret) {
+  let t;
+  const v1s = [];
+  for (const part of signatureHeader.split(",")) {
+    const [key, value] = part.split("=");
+    if (key === "t") t = value;
+    else if (key === "v1") v1s.push(value);
+  }
+  if (!t || v1s.length === 0) return false;
+
+  // Replay protection (recommended)
+  if (Math.abs(Date.now() / 1000 - Number(t)) > 300) return false;
+
+  const expected = crypto
+    .createHmac("sha256", secret) // key = the full "whsec_..." string
+    .update(`${t}.${rawBody}`, "utf8")
+    .digest("hex");
+
+  return v1s.some(
+    (v1) =>
+      v1.length === expected.length &&
+      crypto.timingSafeEqual(Buffer.from(v1), Buffer.from(expected)),
+  );
+}
+```
+
+### Python
+
+```python
+import hashlib, hmac, time
+
+def verify_talkif_webhook(raw_body: bytes, signature_header: str, secret: str) -> bool:
+    t, v1s = None, []
+    for part in signature_header.split(","):
+        key, _, value = part.partition("=")
+        if key == "t":
+            t = value
+        elif key == "v1":
+            v1s.append(value)
+    if not t or not v1s:
+        return False
+
+    # Replay protection (recommended)
+    if abs(time.time() - int(t)) > 300:
+        return False
+
+    signed_payload = t.encode() + b"." + raw_body
+    expected = hmac.new(secret.encode(), signed_payload, hashlib.sha256).hexdigest()
+    return any(hmac.compare_digest(v1, expected) for v1 in v1s)
+```
+
+<Warning>
+  Verify against the **raw body bytes**, not a re-encoded copy. Frameworks that auto-parse JSON and hand you a re-serialized string will change key order or spacing and break the signature. Capture the raw body before parsing.
+</Warning>
+
+## Empty-body requests
+
+For requests with no body — non-body methods (`GET`, `HEAD`) or a body that is an empty object `{}` — Talkif sends no body and signs over an **empty** body. The signed payload is `"{t}."` (the timestamp, a dot, then nothing), **not** `"{t}.{}"`. The verifiers above handle this automatically when the raw body is an empty string/bytes.
+
+## Rotating the secret
+
+Rotating issues a new secret while keeping the old one valid for an overlap window, so in-flight integrations don't break.
+
+1. In **Developer → Credentials → Webhook signing**, click **Rotate**.
+2. Copy the new secret and deploy it to your endpoint.
+
+During the overlap, Talkif signs each request with **both** secrets and includes a `v1` for each:
+
+```
+Talkif-Signature: t=1718983045,v1=<new>,v1=<old>
+```
+
+Because a correct verifier accepts the request if **any** `v1` matches, both your old and newly deployed code keep working until the window closes. After it closes, only the new secret is sent.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Call your backend" href="/build/call-your-backend" icon="fa-regular fa-server">
+    Define the functions whose requests you're verifying.
+  </Card>
+  <Card title="Network and IP allowlists" href="/reference/network-and-ip-allowlists" icon="fa-regular fa-shield-halved">
+    The addresses Talkif's requests come from.
+  </Card>
+</CardGroup>

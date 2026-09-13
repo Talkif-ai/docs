@@ -1,0 +1,90 @@
+---
+title: Authentication
+description: API keys for server-to-server access — how they're scoped to an account, creating and using one, permission scopes, IP allowlists and expiry, usage and error tracking, and safe rotation.
+---
+
+Every API request is made on behalf of one account, and an **API key** is how a server proves it's allowed to act for that account. A key is not a user: it never logs in, it has no password, and it can be limited to exactly the operations and source addresses an integration needs. Treat it like a database credential — it can place calls that cost money.
+
+## How keys work
+
+- A key belongs to **one account**. You never send an account ID; everything the key does is scoped automatically. An organization with several accounts needs a key per account.
+- It's sent as a Bearer token: `Authorization: Bearer tif_live_…`.
+- The full key is shown **once**, at creation. Afterwards only its prefix (`tif_live_aBc…hijk`) is visible, for identification.
+- It carries **scopes** — which resources it may read or write — and optionally an **IP allowlist** and an **expiry**.
+
+```bash title="First request"
+curl "https://api.talkif.ai/api/v1/calls?status=in_progress" \
+  -H "Authorization: Bearer $TALKIF_API_KEY"
+```
+
+## Creating a key
+
+<Steps>
+  <Step title="Developer → Credentials → Create API Key">
+    Name it for the system that will hold it ("CRM callback service", "Nightly campaign loader") — the name is how you'll recognise it in usage logs a year from now.
+  </Step>
+  <Step title="Choose scopes">
+    The default is full access. Narrow it: an integration that only places calls and reads results needs `calls:*` and `contacts:read`, not `billing` or `flows`.
+  </Step>
+  <Step title="Optionally restrict and expire">
+    An **IP allowlist** (CIDRs) rejects requests from anywhere else with `403`. An **expiry** turns the key off on a date — right for a contractor's key or a migration window.
+  </Step>
+  <Step title="Copy the key now">
+    Store it in your secret manager. It won't be shown again; if it's lost, create a new one and revoke the old.
+  </Step>
+</Steps>
+
+## Scopes
+
+A scope is `resource:action`. Actions are `read`, `write`, or `*`; `*` alone means everything.
+
+| Resource | Covers |
+|---|---|
+| `calls` | Placing calls, history, transcripts, recordings, analysis, the real-time event stream |
+| `flows` | Flows, versions, publish, validate |
+| `contacts` | Contacts, import and export, tags |
+| `phones` | Phone numbers and providers |
+| `billing` | Balance, charges, costs, invoices, transactions (read-only by nature) |
+| `analytics` | Flow and campaign analytics |
+| `schedules` | Schedules |
+| `campaigns` | Campaigns and their contacts |
+| `dnc` | The Do Not Call list |
+| `templates` | Prompt templates |
+| `models` | The model catalogue |
+| `flow_templates` | Flow templates |
+
+A request outside the key's scopes fails with `403` and an error code naming the missing scope. Examples: `["calls:*", "contacts:read"]`; `["campaigns:*", "contacts:*", "dnc:read"]` for a campaign loader; `["billing:read"]` for a finance dashboard.
+
+## Knowing what a key is doing
+
+Each key keeps daily usage — request count, error count, approximate distinct source IPs — and its **50 most recent errors** with status, error code, path, method, request ID and time. Open the key under **Developer → Credentials** to see both. When an integration misbehaves, this is faster than your own logs: the request ID here matches the one in the API's error response.
+
+## Rotation and revocation
+
+Revoking is immediate and permanent. To rotate without downtime:
+
+1. Create the new key with the same scopes.
+2. Deploy it to the integration.
+3. Confirm the new key's usage counter is climbing and the old one's has stopped.
+4. Revoke the old key.
+
+Revoked and expired keys stay listed for audit; they can't be re-enabled.
+
+## Limits
+
+Up to **25 keys** per account; at least one scope per key; names 1–100 characters.
+
+<Warning title="Never put an API key in a browser or mobile app">
+  A key in client-side code is public. For browser voice calls use [Web calls](/sdks/browser) with a publishable key; for anything else, call Talkif from your own backend.
+</Warning>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="SDKs" href="/sdks/server" icon="fa-regular fa-cube">
+    Use the key from TypeScript or Python.
+  </Card>
+  <Card title="Idempotency and rate limits" href="/integrate/idempotency-and-rate-limits" icon="fa-regular fa-gauge-high">
+    Retrying safely and staying under the limits.
+  </Card>
+</CardGroup>

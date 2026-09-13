@@ -1,0 +1,40 @@
+---
+title: Run calls
+subtitle: One call, a list, or a recurring appointment — and everything a finished call leaves behind.
+description: Placing single calls, running campaigns and schedules, reading transcripts, recordings and insights, and managing the contacts and Do Not Call list they draw on.
+layout: overview
+---
+
+Once a flow is published and on a number, running calls is operations: deciding who gets called, when, from which line, and then reading what happened. Talkif gives you three ways to start outbound calls and one place to read the results, all sharing the same contacts and the same Do Not Call list.
+
+| Way to start | Good for | Set up in |
+|---|---|---|
+| **Single call** | Testing, one-off callbacks, calls triggered by your own systems | Dashboard **Start a call**, or `POST /calls` |
+| **Campaign** | A list of contacts, called with pacing, windows, retries and analytics | **Call Center → Campaigns** |
+| **Schedule** | One contact, called on a recurrence — daily check-ins, monthly reminders | **Call Center → Schedules** |
+
+Inbound calls need nothing here; they're handled by the flow connected to the number ([Telephony](/telephony)).
+
+<CardGroup cols={2}>
+  <Card title="Make a call" href="/calls/make-a-call" icon="fa-regular fa-phone-arrow-up-right">
+    Place an outbound call from the dashboard or API, and what gets checked before it's placed.
+  </Card>
+  <Card title="Campaigns" href="/calls/campaigns" icon="fa-regular fa-bullhorn">
+    Lists, concurrency, call windows, retries, contact timezones, the lifecycle, and analytics.
+  </Card>
+  <Card title="Schedules" href="/calls/schedules" icon="fa-regular fa-calendar-clock">
+    Recurring calls to one contact — once, daily, weekly, monthly or cron.
+  </Card>
+  <Card title="Transcripts and recordings" href="/calls/transcripts-and-recordings" icon="fa-regular fa-file-audio">
+    What a finished call gives you: transcript, recording, cost, metrics and insights.
+  </Card>
+  <Card title="Contacts" href="/calls/contacts" icon="fa-regular fa-address-book">
+    The people your agents call, and the data your prompts can use about them.
+  </Card>
+  <Card title="Import contacts" href="/calls/import-contacts" icon="fa-regular fa-file-import">
+    CSV, JSON or vCard, with a dry-run preview and duplicate handling.
+  </Card>
+  <Card title="Do Not Call" href="/calls/do-not-call" icon="fa-regular fa-ban">
+    The list that blocks outbound calls to a number, whoever asks.
+  </Card>
+</CardGroup>

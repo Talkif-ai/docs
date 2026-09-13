@@ -1,0 +1,72 @@
+---
+title: Idempotency and rate limits
+description: Retrying requests without placing a call twice, what Talkif rate-limits and at what defaults, how a limited request answers, and how to design an integration that never trips them.
+---
+
+Two things separate an integration that works in a demo from one that works at 3 am under load: it retries safely, and it stays under limits it knows about. Both are simple once the rules are explicit.
+
+## Retrying safely
+
+Most Talkif endpoints are naturally safe to retry: a `GET` is harmless, a `PUT` sets the same state twice, a `DELETE` of something already gone succeeds. The one that isn't is **`POST /calls`** — retried blindly after a timeout, it can dial the same person twice.
+
+Talkif doesn't currently accept a client-supplied idempotency key on call creation. Use the request's own identity instead:
+
+<Steps>
+  <Step title="Attach the contact">
+    Pass `contactId` on `POST /calls` whenever you have one. It makes the call findable by contact, and it means a duplicate would be a second call to the *same* contact record — easy to spot.
+  </Step>
+  <Step title="On timeout, look before you retry">
+    A timeout means you don't know whether the call was created. Before re-issuing, list recent calls — [`GET /calls`](/api-reference/calls/list-calls) filtered by `contactId` (or `phoneNumber`) with `startDate` a few minutes back. A call created since your request → done. Nothing → retry.
+  </Step>
+  <Step title="Keep the SDK's retries for the rest">
+    The official [SDKs](/sdks/server) retry `408`, `429` and `5xx` twice with backoff. That's right for every endpoint except call creation; for `POST /calls`, pass `maxRetries: 0` and do the check above.
+  </Step>
+</Steps>
+
+Campaigns are idempotent by construction: adding a contact who's already in the campaign doesn't add them twice, and a campaign never redials a contact whose call was answered.
+
+## What's rate-limited
+
+| Limit | Default | Applies to | On breach |
+|---|---|---|---|
+| **Concurrent calls** | 10 | all calls in flight for the account — inbound, outbound, browser | outbound calls **queue** (HTTP `202`) instead of failing; queue depth 100, then `queue_full` |
+| **Call placements per minute** | 60 | `POST /calls`, campaign and schedule dials combined | `rate_limit_exceeded` — wait and retry |
+| **Assistant prompts** | 10 / minute | dashboard assistant | wait |
+| **Authentication endpoints** | small bursts (e.g. 5 login attempts, then 20 per 15 min) | per IP | `429` |
+
+Defaults are per account and can be raised — contact support with your expected peak concurrency. The account's current values are shown in the dashboard's account settings, and [Limits](/reference/limits) explains how the queue prioritises when you're at the ceiling.
+
+A limited request gets a `429` (or a `4xx` with the error code above) and a JSON error body:
+
+```json
+{
+  "code": "rate_limit",
+  "title": "Rate Limit Exceeded",
+  "status": 429,
+  "detail": "Call rate limit exceeded",
+  "requestId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+Every API error has this shape — `code` is the field to branch on, `requestId` is what to quote to support. The full catalogue is on [Error codes](/api-reference/errors).
+
+Back off exponentially from the first `429`, jitter the delay, and never retry in a tight loop — the limiter counts attempts, so a hot retry loop keeps you limited longer.
+
+## Designing for the limits
+
+- **Batch through campaigns, not `POST /calls` loops.** A campaign paces itself to your concurrency and windows, retries no-answers, and skips DNC — a loop of `POST /calls` has to reimplement all of that and will hit the per-minute limit at 60.
+- **Treat `202` as success.** A queued call will be placed; read `queueId` and `position` and move on. Only `4xx`/`5xx` need handling.
+- **Use the event stream, not polling.** [Real-time events](/integrate/real-time-events) removes almost all read traffic from an integration.
+- **One WebSocket per service instance**, re-subscribing on reconnect — not one per call. The per-account connection cap is 20.
+- **Set concurrency to what your own systems can absorb.** If every call creates a ticket in your helpdesk, 50 concurrent calls create tickets at a rate your helpdesk's API may not like.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Limits" href="/reference/limits" icon="fa-regular fa-gauge">
+    Queue priority, time-to-live, and every default in one table.
+  </Card>
+  <Card title="SDKs" href="/sdks/server" icon="fa-regular fa-cube">
+    Retry and timeout settings per client and per call.
+  </Card>
+</CardGroup>

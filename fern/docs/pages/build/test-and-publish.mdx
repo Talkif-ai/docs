@@ -1,0 +1,104 @@
+---
+title: Test and publish
+description: Talk to a draft in the browser, understand what validation checks and why, publish a version with notes, compare versions, and roll back.
+---
+
+Nothing reaches a phone line until you publish, and nothing should be published until you've talked to it. The builder gives you a browser call against the draft you're editing, a validator that refuses to publish anything that would fail on a real call, and a version history you can diff and roll back. This page is the loop: **test → fix → publish → compare**.
+
+## The Flow Tester
+
+**Test flow** in the builder toolbar opens the Flow Tester: a real-time WebRTC call between your microphone and the flow. Click the phone button, allow microphone access, and talk.
+
+What makes it more than a demo:
+
+- **It runs the draft as it is in the editor — unsaved edits included.** Change a prompt, hit the phone button again, hear the difference. No save, no publish.
+- **It goes through the same pipeline as a phone call.** Same STT, LLM and TTS, same functions (your endpoints really get called), same validation and preparation. The only difference is the audio arrives from your browser instead of a carrier.
+- **It shows the numbers a caller feels.** Per-turn **LLM TTFB** (time to first token), token counts and turn count sit next to the transcript. If TTFB is over a second here, it will be on the phone.
+- **It's billed like a call**, at the same rates, and needs at least $1.00 of available balance to start — so the cost breakdown you get afterwards is a true preview of production cost.
+
+<Tip title="Test the paths you're worried about">
+  Interrupt the agent mid-sentence. Give a wrong date. Ask for something the flow doesn't handle. Go silent for 15 seconds. Say goodbye and see whether it ends. A flow is ready when those calls go well, not when the happy path does.
+</Tip>
+
+One difference to know: a browser test has no phone number and no caller identity, so `contact.*` variables are empty and any function with an `onNull: reject` binding on caller context is hidden for that call. Test those paths with a real outbound call to your own phone.
+
+## What validation checks
+
+**Publish** runs the validator and refuses to publish on any error. The same checks run on save for anything you've filled in (a bad value is rejected immediately; an empty field is fine in a draft), and you can run them on demand with [`POST /flows/{flowId}/validate`](/api-reference/flows/validate-flow).
+
+<AccordionGroup>
+  <Accordion title="Structure" defaultOpen>
+    - Exactly one **Main Agent**, and it's the entry node.
+    - Every transition targets an agent that exists; no agent transitions to itself.
+    - Agent names are unique; function names are unique across the flow.
+  </Accordion>
+  <Accordion title="Prompts">
+    - The Main Agent has a **System Prompt**; no other agent does (a System Prompt elsewhere would silently replace the call's persona from that point on).
+    - **Every** agent has an Agent Prompt.
+  </Accordion>
+  <Accordion title="Providers">
+    - An **LLM**, an **STT** and a **TTS** provider are configured.
+    - Provider names are known and each model exists in the current catalogue. A model that has since been retired fails here — the fix is to pick a current one.
+    - Numeric settings are in range (temperature 0–2, ElevenLabs stability 0–1, …). Settings a model doesn't support — a temperature on a model that rejects it — are stripped rather than failed, so an old flow keeps publishing when a model's capabilities change.
+    - Language codes are valid for the chosen STT model.
+  </Accordion>
+  <Accordion title="Functions and actions">
+    - A built-in function is `end_call` and nothing else.
+    - An HTTP Request references a flow function that exists and is active in this account.
+    - A Say action has text.
+  </Accordion>
+</AccordionGroup>
+
+Errors name the field (`nodes.booking_agent.agentPrompt`) and a code (`required`, `invalid_model`, `out_of_range`, `duplicate_agent_name`, …). The builder shows them in the validation panel and marks the node.
+
+## Publishing
+
+**Publish** asks for optional **notes** — what changed — then validates and creates a new version. The version number auto-increments (`1.0.4` → `1.0.5`); from the API you can set it explicitly.
+
+If someone else published while you had the flow open, publishing is refused with *"This flow was modified since you last loaded it"* — the API's `expectedVersion` optimistic lock. Refresh, review their change, and publish again.
+
+After publishing:
+
+- **Numbers on *latest*** serve the new version on their next call, immediately.
+- **Numbers pinned** to the version you just replaced are moved to the new one; numbers pinned to older versions are untouched.
+- **The draft stays editable.** Keep working; publish again when ready.
+- **API calls** with no `flowVersion` use the new version.
+
+Details of versions and pinning: [Flows and versions](/concepts/flows-and-versions).
+
+## Comparing and rolling back
+
+**Version History** lists every published version with its notes, who published it and when. Pick two to see a **diff** — what changed in prompts, transitions, functions and providers, ignoring layout.
+
+**Restore** on any version republishes its content as a *new* version — history never rewinds, it grows. If `1.0.9` is bad, restoring `1.0.8` gives you `1.0.10` with `1.0.8`'s content, and every number on *latest* is on it at once. From the API: [`POST /flows/{flowId}/rollback/{version}`](/api-reference/flows/rollback-flow).
+
+## A working loop
+
+<Steps>
+  <Step title="Edit, then talk">
+    Change one thing — a prompt line, a model, a transition — and run the Flow Tester on the same scenario. One change per test, or you won't know what helped.
+  </Step>
+  <Step title="Watch the tester's numbers">
+    TTFB and tokens per turn. If a change made the agent smarter but slower, decide which you wanted.
+  </Step>
+  <Step title="Publish with a note">
+    "Shorter greeting; booking agent now reads details back." Future you, reading the version list at 2am, will be grateful.
+  </Step>
+  <Step title="Make one real call">
+    Dial the number, or place an outbound call to your own phone. The browser can't test the carrier leg, caller identity, or voicemail.
+  </Step>
+  <Step title="Compare against the previous version's calls">
+    The flow's stats and the cost breakdown per call are per version. If the new version costs 30% more per call, the diff tells you why.
+  </Step>
+</Steps>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Flows and versions" href="/concepts/flows-and-versions" icon="fa-regular fa-code-branch">
+    States, versions, pinning and which version a call runs.
+  </Card>
+  <Card title="Inbound and outbound routing" href="/telephony/inbound-and-outbound-routing" icon="fa-regular fa-route">
+    Connect the published flow to a number.
+  </Card>
+</CardGroup>

@@ -1,0 +1,88 @@
+---
+title: Buy a number
+description: Search and buy a phone number inside Talkif — which countries, what it costs, how monthly rental works, what happens when it can't be paid, and how to release a number.
+---
+
+The simplest way to get a line is to buy one from Talkif. The number is provisioned on Talkif's own carrier, appears in your account within seconds, and needs no configuration beyond connecting a flow. It can answer inbound calls and place outbound ones, and it renews monthly from your balance until you release it.
+
+## What you're buying
+
+A **local number** in a supported country, with the capabilities that number type carries — every purchasable number has **voice**; many also have **SMS** and **MMS**, which Talkif shows but doesn't use for calling. The monthly price depends on the country and number type; the search results show it per number before you commit.
+
+<Markdown src="/docs/snippets/generated/pricing-phone-numbers.mdx" />
+
+Some countries require an address or identity documentation for regulatory reasons; a number's `addressRequirements` says whether it needs one (`none`, `any`, `local`, `foreign`). Where a requirement exists, the carrier needs that documentation on file before the purchase goes through — contact support before buying in that country.
+
+Per-minute call charges are separate from rental and are the same for every Talkif number regardless of country: see [Credits and pricing](/concepts/credits-and-pricing#telephony).
+
+## Paying for it
+
+Two rules that surprise people:
+
+- **Purchase and rental come only from purchased or subscription balance.** Bonus and promotional credit — including the welcome credit — never pay for a number. Top up first.
+- **Rental renews monthly, automatically**, from the day of purchase, against the same balance. The number's `monthlyCost` and `billingStatus` are on the record.
+
+<AccordionGroup>
+  <Accordion title="What happens when rental can't be paid" defaultOpen>
+    The number's billing status moves to **`past_due`**. Calls keep working. You have a **7-day grace period** to top up; the renewal is retried on each billing run during that window. If it still can't be paid at the end of the grace period, the number is **`suspended`**: it stops taking and placing calls, and you're notified again. Topping up reactivates it — the number stays yours; it isn't released.
+  </Accordion>
+  <Accordion title="Billing statuses">
+    <ParamField path="active" type="billingStatus">Rental is paid up.</ParamField>
+    <ParamField path="processing" type="billingStatus">A renewal charge is in progress.</ParamField>
+    <ParamField path="past_due" type="billingStatus">Renewal failed for insufficient balance; inside the grace period. Calls still work.</ParamField>
+    <ParamField path="suspended" type="billingStatus">Grace period elapsed unpaid. No calls until the balance covers rental.</ParamField>
+  </Accordion>
+</AccordionGroup>
+
+## Buying
+
+<Tabs>
+  <Tab title="Dashboard">
+    <Steps>
+      <Step title="Open Phone Numbers → Purchase Number">
+        Pick a country from the list of those available for purchase.
+      </Step>
+      <Step title="Search">
+        Filter by area code, city, state, ZIP, or a digit pattern (`555%` for a prefix, `%1234` for a suffix). Tick **Exclude address-required numbers** to skip numbers that need regulatory paperwork. Each search returns a fresh random batch from the carrier's inventory; search again to see more. Results show the formatted number, capabilities and monthly price.
+      </Step>
+      <Step title="Confirm">
+        Optionally give it a friendly name ("Support line"). The purchase charge is taken immediately and the number is provisioned — it appears in your list as **Active**.
+      </Step>
+      <Step title="Connect a flow">
+        Until a published flow is connected, inbound calls are answered busy. See [Inbound and outbound routing](/telephony/inbound-and-outbound-routing).
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="API">
+    Purchases go through the platform's **system provider** — list providers and take the one with `isSystemProvider: true`.
+
+    <EndpointRequestSnippet endpoint="GET /api/v1/phone/numbers/twilio/available-countries" />
+    <EndpointRequestSnippet endpoint="GET /api/v1/phone/numbers/twilio/pricing" />
+    <EndpointRequestSnippet endpoint="GET /api/v1/phone/numbers/twilio/available" />
+    <EndpointRequestSnippet endpoint="POST /api/v1/phone/numbers/twilio/purchase" />
+
+    The response is the new number's record, including its `id` for [`PATCH …/connect-flow`](/api-reference/phone-numbers/connect-flow).
+  </Tab>
+</Tabs>
+
+## Releasing a number
+
+Releasing gives the number back to the carrier and stops rental. It's permanent — a released number can't be recovered by you, and may later be issued to someone else. From the number's page, or [`DELETE /phone/numbers/{id}`](/api-reference/phone-numbers/release-phone-number).
+
+Two guards:
+
+- A number that's the **caller ID for a Meta Lead Ads form mapping** can't be released while the mapping exists — releasing it would silently stop calling new leads. Remove the mapping first.
+- Releasing is idempotent: releasing an already-released number succeeds without effect.
+
+There's no refund for the remainder of a rental period.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Inbound and outbound routing" href="/telephony/inbound-and-outbound-routing" icon="fa-regular fa-route">
+    Connect the number to a flow and use it for outbound calls.
+  </Card>
+  <Card title="Bring your own SIP trunk" href="/telephony/bring-your-own-sip-trunk" icon="fa-regular fa-network-wired">
+    Keep the numbers you already have instead.
+  </Card>
+</CardGroup>

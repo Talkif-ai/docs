@@ -1,0 +1,73 @@
+---
+title: Members and roles
+description: The three roles in an organization — Owner, Admin, Member — exactly what each may do, how invitations work, and how to suspend, remove or hand over.
+---
+
+Roles answer one question: *who can spend the account's money, and who can change who's in the room?* Everything operational — building flows, placing calls, managing contacts and campaigns — is open to every member, because that's the work. What's gated is billing, telephony purchases, membership, and the account itself.
+
+## The roles
+
+<ParamField path="Owner" type="exactly one">
+  Created the organization or was handed it. The only role that touches money and the account's existence: billing and cards, buying and releasing numbers, connecting carriers, account settings, deletion, changing members' roles, transferring ownership.
+</ParamField>
+<ParamField path="Admin" type="any number">
+  Runs the team without touching the money: invites, suspends and removes members (not the Owner), plus everything a Member can do.
+</ParamField>
+<ParamField path="Member" type="any number">
+  Does the work: flows, prompts, calls, campaigns, schedules, contacts, DNC, connecting flows to numbers, reading transcripts and costs.
+</ParamField>
+
+## What each role can do
+
+| Action | Owner | Admin | Member |
+|---|:-:|:-:|:-:|
+| Build, test, publish flows; manage prompts and flow functions | ✓ | ✓ | ✓ |
+| Place calls; run campaigns and schedules; read transcripts, recordings, insights | ✓ | ✓ | ✓ |
+| Manage contacts, imports, the Do Not Call list | ✓ | ✓ | ✓ |
+| Connect or disconnect a flow on a number; set a number's friendly name and recording override | ✓ | ✓ | ✓ |
+| View costs and per-call cost breakdowns | ✓ | ✓ | ✓ |
+| **Buy or release numbers; add, edit or remove carriers (SIP, Twilio, WhatsApp); register BYOC numbers** | ✓ | — | — |
+| **Top up; manage cards; auto-recharge; invoices; balance and transactions** | ✓ | — | — |
+| **Account settings (recording, analysis, notifications thresholds)** | ✓ | — | — |
+| Invite members; suspend or remove a member | ✓ | ✓ | — |
+| **Change a member's role** | ✓ | — | — |
+| **Transfer ownership** | ✓ | — | — |
+| **Delete the organization and its account** | ✓ | — | — |
+
+API keys are created and revoked by the **Owner** and act with the scopes they're given regardless of who uses them.
+
+## Inviting someone
+
+<Steps>
+  <Step title="Settings → General → Members → Invite Member">
+    Enter their email, choose **Admin** or **Member** (no one is invited as Owner — ownership is transferred, not granted), and optionally a title and department for the member list.
+  </Step>
+  <Step title="They accept">
+    An email carries the invitation. If they already have a Talkif user, it also appears when they next sign in. Until accepted, the member shows as **Pending**.
+  </Step>
+  <Step title="They switch to the account">
+    Accepting adds the organization's account to their account switcher. Their personal account, if any, is untouched.
+  </Step>
+</Steps>
+
+## Suspending, removing, leaving
+
+- **Suspend** keeps the member on the list but blocks access — the right move for a leaver whose work you still need to audit. **Reactivate** reverses it.
+- **Remove** takes them off the organization. Their user account and personal account continue to exist; anything they created in the organization's account stays there.
+- A member can **leave** on their own. The Owner can't leave without first transferring ownership.
+- The Owner can't be removed by anyone; transfer ownership first.
+
+## Transferring ownership
+
+The Owner picks an existing active member; that member becomes Owner and the previous Owner becomes an Admin. Do this before an Owner leaves the company — an organization without a reachable Owner can't change its billing or delete itself without support's help.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Organizations" href="/account/organizations" icon="fa-regular fa-building">
+    Users, accounts and organizations, and why resources don't move.
+  </Card>
+  <Card title="Security" href="/account/security" icon="fa-regular fa-shield">
+    Two-factor authentication for every member.
+  </Card>
+</CardGroup>

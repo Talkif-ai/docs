@@ -1,0 +1,59 @@
+---
+title: Contacts
+description: The people your agents call — what a contact record holds, how it feeds prompts and campaigns, tags and segmentation, timezone and language, timelines, and soft deletion.
+---
+
+A contact is more than a phone number to dial. It's the context an agent gets about the person on the line — their name, company, notes from last time — and the handle that ties calls together into a history. Outbound flows that address people by name, know why they're being called, and pick up where the last call left off are built on well-kept contacts.
+
+## What a contact holds
+
+| Field | Notes | Used by |
+|---|---|---|
+| **Name** | Required, 1–255 characters | `{{contact.name}}`, `firstName`, `lastName` in prompts |
+| **Primary phone** | Required, E.164 — the number campaigns and schedules dial | matching inbound callers; `{{contact.primaryPhone}}` |
+| **Secondary phones** | Up to 10 | history matching |
+| **Email**, **company**, **occupation** | | prompts; campaign filters (`company`) |
+| **Address** | street, city, state, postal code, country | `{{contact.address.city}}` … |
+| **Notes** | Free text, up to 5,000 characters | `{{contact.notes}}` — the most useful field for a personalised call |
+| **Tags** | Up to 50 free-form strings | segmentation, campaign filters, `{{#if (includes contact.tags "vip")}}` |
+| **Interests** | List | prompts |
+| **Timezone** | IANA zone; derived from the phone number when not set | campaign call windows, legal calling hours |
+| **Language** | Default `en` | prompts (`{{contact.language}}`) |
+
+Everything here is available to prompts at call time — see [Write prompts](/build/write-prompts#dynamic-prompts). A contact without a value simply renders that variable empty, which is why prompts should use `default` and `#ifExists`.
+
+## Where contacts come from
+
+- **You create them** — one at a time in **Call Center → Contacts**, or [`POST /contacts`](/api-reference/contacts/create-contact).
+- **You import them** — CSV, JSON or vCard with a preview first. See [Import contacts](/calls/import-contacts).
+- **Talkif creates or enriches them from calls** — after a call is analysed, an unknown caller becomes a contact, and details the caller mentioned (name, company, email) are added to an existing contact's **empty** fields. Nothing you entered is ever overwritten.
+- **Meta Lead Ads** — a new lead becomes a contact and, optionally, a call. See [Meta Lead Ads](/integrate/meta-lead-ads).
+
+## Tags and segmentation
+
+Tags are how lists get built. Tag on import (`tags` column), on the record, or in bulk by API ([`POST /contacts/{contactId}/tags`](/api-reference/contacts/add-tags)). Then a campaign can take *everyone tagged `renewal-q4` who is also at Acme* in one step — the bulk-add filter combines tags (any or all), company and free-text search with AND.
+
+[`GET /contacts/tags`](/api-reference/contacts/list-tags) lists every tag in use with counts.
+
+## Timeline
+
+A contact's page shows every call they've been on — inbound or outbound, from any source — each linking to its transcript, recording and cost. `lastContactedAt` on the record is the most recent one. [`GET /contacts/{contactId}/calls`](/api-reference/contacts/get-contact-calls).
+
+## Deleting and restoring
+
+Deleting a contact is a **soft delete**: they leave lists, campaigns and search, but the record and its call history are kept and can be restored ([`POST /contacts/{contactId}/restore`](/api-reference/contacts/restore-contact)). Deleting a contact does *not* stop calls to their number — for that, add the number to the [Do Not Call list](/calls/do-not-call).
+
+## Exporting
+
+**Export** on the contacts page, or [`GET /contacts/export?format=csv|json|vcf`](/api-reference/contacts/export-contacts), gives you the full list in the same shapes the importer accepts — so a round trip through a spreadsheet works.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Import contacts" href="/calls/import-contacts" icon="fa-regular fa-file-import">
+    Bring a list in, with a dry run first.
+  </Card>
+  <Card title="Do Not Call" href="/calls/do-not-call" icon="fa-regular fa-ban">
+    Numbers that must never be dialled.
+  </Card>
+</CardGroup>

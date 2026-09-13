@@ -1,0 +1,47 @@
+---
+title: Integrate
+subtitle: Drive Talkif from your own systems — place calls, receive what happens, and let agents reach your backend mid-conversation.
+description: The developer surface — API keys, SDKs, webhooks and signature verification, real-time events over WebSocket, idempotency and rate limits, and the Meta Lead Ads integration.
+layout: overview
+---
+
+Everything the dashboard does after design time is available over HTTPS at `https://api.talkif.ai`, and the interesting integrations run in the other direction too: Talkif calling your endpoints during a conversation, and streaming what's happening on a call to your systems as it happens.
+
+Three directions, three mechanisms:
+
+| Direction | Mechanism | Page |
+|---|---|---|
+| **You → Talkif** — place calls, manage contacts, read results | REST API with an API key; SDKs for TypeScript and Python | [Authentication](/integrate/authentication), [SDKs](/sdks/server) |
+| **Talkif → you, during a call** — the agent needs data or to act | Flow functions: signed HTTPS requests to your endpoint | [Call your backend](/build/call-your-backend), [Webhooks](/integrate/webhooks) |
+| **Talkif → you, as things happen** — status, transcript, ends | WebSocket event stream | [Real-time events](/integrate/real-time-events) |
+
+<CardGroup cols={2}>
+  <Card title="Authentication" href="/integrate/authentication" icon="fa-regular fa-key">
+    API keys: scopes, IP allowlists, expiry, usage and error tracking, revocation.
+  </Card>
+  <Card title="SDKs" href="/sdks/server" icon="fa-regular fa-cube">
+    `@talkif/sdk` and `talkif` — install, auth, paging, errors.
+  </Card>
+  <Card title="Build with AI agents" href="/skills/agent-skills" icon="fa-regular fa-robot">
+    Install the Talkif Agent Skills into Claude Code, Codex or Cursor.
+  </Card>
+  <Card title="Web calls" href="/sdks/browser" icon="fa-regular fa-globe">
+    A voice agent on any web page with a publishable key and the browser SDK.
+  </Card>
+  <Card title="Webhooks" href="/integrate/webhooks" icon="fa-regular fa-shield-check">
+    Verify the `Talkif-Signature` header; rotate secrets; delivery limits.
+  </Card>
+  <Card title="Real-time events" href="/integrate/real-time-events" icon="fa-regular fa-bolt">
+    Subscribe to an account or a call over WebSocket; every event type.
+  </Card>
+  <Card title="Idempotency and rate limits" href="/integrate/idempotency-and-rate-limits" icon="fa-regular fa-gauge-high">
+    Safe retries, what's limited and how to behave when you hit it.
+  </Card>
+  <Card title="Meta Lead Ads" href="/integrate/meta-lead-ads" icon="fa-brands fa-meta">
+    Call every lead within seconds and feed outcomes back to Meta.
+  </Card>
+</CardGroup>
+
+<Note>
+  The complete endpoint reference, with request and response schemas and examples in curl, TypeScript and Python, is the [API Reference](/api-reference).
+</Note>

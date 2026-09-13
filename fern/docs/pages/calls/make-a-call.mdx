@@ -1,0 +1,71 @@
+---
+title: Make a call
+description: Place a single outbound call from the dashboard or the API, what Talkif checks before dialing, why a request can be refused, and how to follow the call while it runs.
+---
+
+A single outbound call is the building block everything else is made of: a campaign is many of them with pacing; a schedule is one of them on a timer; your own system triggering a callback is one of them with `contactId` set. Understand this one and the rest are configuration.
+
+## What a call needs
+
+| Input | Meaning |
+|---|---|
+| **Flow** | A *published* flow. Optionally a specific version; otherwise latest |
+| **From number** | A number your account owns with the voice capability — the caller ID the person sees. Its provider routes the call |
+| **To number** | E.164. Emergency numbers are refused |
+| **Contact** (optional) | Links the call to a contact record: their timeline shows it, and `{{contact.*}}` variables in the prompts are filled from it. If you omit it, the to-number is still matched against your contacts for prompt variables; and after analysis, Talkif creates or enriches a contact from the call — filling empty fields only, never overwriting yours |
+| **Metadata** (optional) | Any JSON you want stored with the call — your order ID, your ticket number — returned on the call record |
+
+## Placing it
+
+<Tabs>
+  <Tab title="Dashboard">
+    **Start a call** on the home screen, or **Call Center → Calls**. Pick a contact or type a number, choose the from-number and the flow, and call. The call appears in the active list immediately with its live status and transcript.
+  </Tab>
+  <Tab title="API">
+    <EndpointRequestSnippet endpoint="POST /api/v1/calls" />
+    <EndpointResponseSnippet endpoint="POST /api/v1/calls" />
+
+    Two success shapes: **`201`** with `type: "initiated"` — the call is being placed now; **`202`** with `type: "queued"` — your account is at its concurrent-call limit, and the call will be placed automatically when a slot frees. The queued response carries `position` and `estimatedWaitSeconds`.
+
+    `providerId` is the provider that owns the from-number; both are on the number's record from [`GET /phone/numbers`](/api-reference/phone-numbers/list-phone-numbers).
+  </Tab>
+</Tabs>
+
+## What's checked before dialing
+
+In order, and each one is a distinct refusal you can act on:
+
+<AccordionGroup>
+  <Accordion title="Do Not Call" defaultOpen>
+    The to-number is checked against your [Do Not Call list](/calls/do-not-call). On the list → refused with `contact_on_dnc_list`. This applies to every outbound path — direct, campaign, schedule.
+  </Accordion>
+  <Accordion title="Legal calling hours">
+    Talkif enforces calling-hours rules by the recipient's jurisdiction — for US numbers, 8 am – 9 pm in the recipient's local time (TCPA). Outside the window → refused with `outside_callable_hours`. Campaign and scheduled calls aren't refused; they're **held** until the window opens. This is a floor, not a substitute for your own compliance: you remain responsible for the rules that apply to you.
+  </Accordion>
+  <Accordion title="Balance">
+    At least $1.00 available and the account active → otherwise `insufficient_balance`. See [Credits and pricing](/concepts/credits-and-pricing#admission-overdraft-and-suspension).
+  </Accordion>
+  <Accordion title="Rate and concurrency">
+    Requests over your per-minute rate limit → `rate_limit_exceeded`. All concurrent slots busy → the call is **queued** (202), unless the queue is full → `queue_full`. Limits and queue priority are in [Limits](/reference/limits).
+  </Accordion>
+  <Accordion title="Flow and number">
+    The flow must have a published version (`flow_not_published`); the from-number must be active and voice-capable (`phone_number_not_active`, `phone_number_cannot_initiate_calls`).
+  </Accordion>
+</AccordionGroup>
+
+## Following the call
+
+While it runs, the call's `status` moves `queued → initiated → ringing → inprogress`, and the transcript grows turn by turn. The dashboard shows both live; from your own systems, use [real-time events](/integrate/real-time-events) rather than polling. When it ends you get a terminal status, an `endReason`, and everything in [Transcripts and recordings](/calls/transcripts-and-recordings).
+
+The full state machine, with every status, end reason and failure code explained: [How a call works](/getting-started/how-a-call-works).
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Campaigns" href="/calls/campaigns" icon="fa-regular fa-bullhorn">
+    The same call, for a whole list, with pacing and retries.
+  </Card>
+  <Card title="Real-time events" href="/integrate/real-time-events" icon="fa-regular fa-bolt">
+    Follow status and transcript from your own code.
+  </Card>
+</CardGroup>

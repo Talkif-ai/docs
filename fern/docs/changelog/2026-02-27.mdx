@@ -1,0 +1,15 @@
+---
+title: "Recording, Do Not Call, calling hours, data export"
+---
+
+- **Calls**: **Call recording** with playback and download, per-recording storage billing, and a retention period you set. Delete a recording on demand. See [Transcripts and recordings](/calls/transcripts-and-recordings).
+- **Calls**: **Do Not Call list** — numbers on it are never dialled, by any path; campaign contacts are skipped with the reason. See [Do Not Call](/calls/do-not-call).
+- **Calls**: **Legal calling hours** enforced by the recipient's jurisdiction (US: 8 am – 9 pm local, TCPA), with timezone derived from area code when the contact has none.
+- **Builder**: Dynamic prompts — `{{contact.*}}`, `{{call.*}}`, `{{system.*}}` variables with helpers, resolved at call time; AI-assisted prompt authoring; per-flow analysis instructions. See [Write prompts](/build/write-prompts).
+- **Builder**: Start from a blank flow, or a template.
+- **Calls**: Campaign contacts are **snapshotted at enrollment** — a contact edited mid-campaign is still called with the data the campaign started with, so every retry sees the same context.
+- **Telephony**: Two regions (EU and US) — calls are served from the closer one; SIP numbers activate immediately (no verification call).
+- **Billing**: Phone-number prices fetched live from the carrier per country; direction-based (inbound/outbound) telephony pricing; public pricing endpoint.
+- **Account**: **Data export** — everything as one JSON file, email-confirmed, GDPR Article 20; account name and deletion from Settings → General; legal document acceptance with change notices.
+- **Dashboard**: Onboarding checklist; toast notifications for every action.
+- **Security**: SIP/Twilio credentials and two-factor secrets encrypted at rest; personal data redacted from logs.

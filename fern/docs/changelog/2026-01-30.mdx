@@ -1,0 +1,13 @@
+---
+title: "Campaigns, templates, OpenAI, Google sign-in"
+---
+
+- **Calls**: **Campaigns** — call a contact list with a flow, with concurrency, call windows, an end time and per-contact outcomes; skipped contacts are previewed with reasons before you start. See [Campaigns](/calls/campaigns).
+- **Calls**: Two-layer call status: the telephony leg (`status`) and the agent leg (`agentStatus`) reported separately. See [How a call works](/getting-started/how-a-call-works).
+- **Builder**: **Flow templates** to start from; an **End Call** function for graceful termination; structured validation errors that name the field.
+- **Builder**: OpenAI language models; Cartesia text-to-speech; ElevenLabs voice filtering; Soniox languages. Multi-provider STT/TTS per flow.
+- **Contacts**: Import from CSV, JSON and vCard with phone-number normalisation and a country-code selector; tags with multi-tag filtering; export.
+- **Telephony**: Caller ID on SIP calls; automatic carrier-edge selection from your carrier's location; timezone detection from phone numbers.
+- **Billing**: Auto-recharge; Stripe-hosted payment methods and 3-D Secure; cost breakdown per call with cached and reasoning token pricing for every LLM provider; telephony billed at the carrier's actual per-call price.
+- **Account**: Sign in with Google; organization invitations; personal and organization accounts.
+- **Calls**: Faster first response — the greeting is prepared while the call connects; idle calls end automatically.

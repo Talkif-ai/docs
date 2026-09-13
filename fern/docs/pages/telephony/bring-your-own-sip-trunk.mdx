@@ -1,0 +1,106 @@
+---
+title: Bring your own SIP trunk
+description: Keep your existing numbers and carrier — connect a SIP trunk to Talkif. The IP to allowlist, the credentials, the inbound and outbound call paths, protocol and port options, and how to bring numbers from your own Twilio account instead.
+---
+
+If your business already has phone numbers with a carrier, you don't have to move them. Talkif connects to your carrier's SIP trunk: inbound calls to your numbers reach Talkif's agents, and outbound calls go out through your carrier under your caller IDs. You keep your carrier contract, your rates for the PSTN leg, and your numbers; Talkif charges only its per-minute SIP rate for the AI leg.
+
+There's a second, simpler path if your numbers are in **Twilio**: connect your Twilio account directly, no trunk needed. Both are below.
+
+## How SIP trunking with Talkif works
+
+```mermaid
+flowchart LR
+  P[PSTN] <--> C[Your carrier]
+  C <-->|"SIP · sip.talkif.ai"| T[Talkif]
+  T <--> A[Your agent]
+```
+
+- **Inbound**: your carrier sends calls for your numbers to Talkif's SIP address. Talkif answers with the flow connected to that number.
+- **Outbound**: Talkif sends the call to your carrier's SIP host with the credentials you provide; the carrier terminates it to the PSTN.
+- **Talkif does not register** with your carrier. There's no SIP REGISTER; traffic is authenticated by **IP allowlist** in both directions plus the trunk username/password for outbound.
+
+That last point is the one that causes most setup failures, so:
+
+<Warning title="Add Talkif's SIP address to your carrier's IP allowlist">
+  Outbound calls from Talkif arrive at your carrier from **`sip.talkif.ai` = `63.176.211.13`**, port 5060. Your carrier must accept SIP from that address, or every outbound call fails at INVITE. Inbound works the other way: Talkif only accepts SIP from the carrier IPs you list on the provider.
+</Warning>
+
+## Before you start
+
+Have these from your carrier:
+
+| Item | Example | Notes |
+|---|---|---|
+| SIP host | `sip.mycarrier.com` | The host Talkif sends outbound calls to |
+| Port | `5060` | Default 5060; TLS trunks commonly use 5061 |
+| Protocol | `UDP`, `TCP` or `TLS` | Whatever the trunk is provisioned for |
+| Trunk username and password | | Used by Talkif to authenticate outbound INVITEs |
+| Carrier source IPs or CIDR | `185.45.12.34` or `185.45.12.0/24` | The addresses your carrier sends inbound calls **from**. Required for inbound |
+| Your numbers | `+15551234567` | E.164 |
+
+And on the carrier side, ask them to (1) allowlist `63.176.211.13`, and (2) route inbound calls for your numbers to `sip.talkif.ai:5060`.
+
+## Setting it up
+
+<Steps>
+  <Step title="Create the SIP provider">
+    **Phone Numbers → Providers → Add → SIP Provider**. Enter the SIP host, port, protocol, username and password, and the carrier's IP addresses or CIDR. Give it a name you'll recognise. Providers are set up in the dashboard; the API can list them but not create them.
+  </Step>
+  <Step title="Point your carrier at Talkif">
+    Have the carrier send inbound calls for your numbers to `sip.talkif.ai` on port 5060, and allow SIP from `63.176.211.13`. Most carriers do this in a "trunk" or "DID routing" screen; some need a support ticket.
+  </Step>
+  <Step title="Register your numbers">
+    Under the provider, add each number in E.164 form. SIP numbers are **Active immediately** — there's no verification call.
+  </Step>
+  <Step title="Connect flows and test both directions">
+    Connect a published flow to a number and dial it from a phone (inbound). Then use **Start a call** from that number to your phone (outbound). If one direction fails, the table below says where to look.
+  </Step>
+</Steps>
+
+## When it doesn't work
+
+| Symptom | Almost always |
+|---|---|
+| Inbound: your number rings out or the carrier reports "unreachable" | The carrier isn't routing to `sip.talkif.ai:5060`, or the carrier's *source* IP isn't in the provider's IP list — check the carrier's actual signalling IPs, which are often not the SIP host's address |
+| Inbound: answered busy, a failed call appears in History | Talkif got the call; no flow is connected to the number, or your balance is below the minimum. See [How a call works](/getting-started/how-a-call-works#2-admission--the-two-gates-every-call-passes) |
+| Outbound: fails immediately, `provider_error` | The carrier rejected the INVITE — `63.176.211.13` isn't allowlisted, or the username/password is wrong |
+| Outbound: connects but no audio, or one-way audio | Firewall on the carrier side blocking RTP. Media doesn't come from the signalling address — see [Regions and edges](/telephony/regions-and-edges) |
+| Caller sees the wrong caller ID | The carrier is overriding the From header; ask them to pass it through |
+
+## What you pay
+
+Talkif charges its **SIP per-minute rate** (lower than for Talkif-purchased numbers, because the carrier leg is yours) plus the AI usage. No monthly rental — the number is your carrier's. Rates: [Credits and pricing](/concepts/credits-and-pricing#telephony).
+
+## Instead: your own Twilio account
+
+If your numbers are already in Twilio, connect the account and use them directly — no SIP configuration at all.
+
+<Steps>
+  <Step title="Add a Twilio provider">
+    **Phone Numbers → Providers → Add → Your Twilio Account**. Enter the **Account SID** and **Auth Token** from the Twilio Console. The token is encrypted at rest.
+  </Step>
+  <Step title="Pick the numbers to bring">
+    Talkif lists the voice-capable numbers on your Twilio account. Register the ones Talkif should answer or call from.
+  </Step>
+  <Step title="Connect flows">
+    Same as any number. Twilio continues to bill you for the numbers; Talkif bills its per-minute rate and AI usage.
+  </Step>
+</Steps>
+
+Registering never moves a number out of your Twilio account. Removing the provider later asks whether to **keep the numbers in Twilio** (Talkif simply forgets them) or **release** them from Twilio.
+
+<Note>
+  Talkif configures the voice webhook on each registered Twilio number so inbound calls reach it. If you also use that number with other Twilio applications, the webhook will now point at Talkif.
+</Note>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Regions and edges" href="/telephony/regions-and-edges" icon="fa-regular fa-globe">
+    Where signalling and media come from, and which edge your trunk lands on.
+  </Card>
+  <Card title="Inbound and outbound routing" href="/telephony/inbound-and-outbound-routing" icon="fa-regular fa-route">
+    Connect flows and choose from-numbers.
+  </Card>
+</CardGroup>

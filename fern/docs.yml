@@ -20,11 +20,13 @@ logo:
   height: 24
   href: https://talkif.ai
 
+# Light accent darkened from the shared token #1570D1 to #0F54A0 so it clears Fern's 7:1
+# (WCAG AAA) contrast check on the light background; otherwise Fern substitutes its own.
 # Hex values converted from the oklch tokens in packages/ui/src/globals.css
 # and apps/docs/app/globals.css (--emphasis / --background / --border).
 colors:
   accent-primary:
-    light: "#1570D1"
+    light: "#0F54A0"
     dark: "#5FA7FF"
   background:
     light: "#F5F8FF"
@@ -55,6 +57,13 @@ typography:
         weight: 100 800
         style: normal
 
+# Use the whole viewport; keep prose at a readable measure, left-aligned to the sidebar.
+layout:
+  page-width: full
+  content-width: 60rem
+  content-alignment: left
+  tabs-placement: header
+
 navbar-links:
   - type: minimal
     text: Trust
@@ -66,15 +75,125 @@ navbar-links:
     text: Open App
     href: https://app.talkif.ai
 
-# Error Codes moved from the Guides tab into the API Reference tab.
+# Every old slug maps to its new home (restructure 2026-09-12). The old tree
+# had skip-slug on the tab, so old URLs were /{section}/{page}; section index
+# pages redirect too. Never remove an entry — every published URL keeps working.
 redirects:
+  - source: /getting-started
+    destination: /getting-started/introduction
+  - source: /integrate/ai-agents
+    destination: /skills/agent-skills
+  - source: /getting-started/ai-agents
+    destination: /skills/agent-skills
+  - source: /integrate/sdks
+    destination: /sdks/server
+  - source: /integrate/web-calls
+    destination: /sdks/browser
   - source: /error-codes
     destination: /api-reference/errors
-
-landing-page:
-  page: Documentation
-  path: docs/pages/index.mdx
-  slug: /
+  # getting started
+  - source: /getting-started/create-account
+    destination: /getting-started/quickstart
+  - source: /getting-started/platform-overview
+    destination: /getting-started/introduction
+  - source: /getting-started/your-first-call
+    destination: /getting-started/quickstart
+  # flow builder → build / concepts
+  - source: /flow-builder
+    destination: /build
+  - source: /flow-builder/concepts
+    destination: /concepts/flows-and-versions
+  - source: /flow-builder/agent-nodes
+    destination: /build/design-a-conversation
+  - source: /flow-builder/provider-nodes
+    destination: /build/choose-models-and-voices
+  - source: /flow-builder/action-nodes
+    destination: /build/transfer-and-end-calls
+  - source: /flow-builder/flow-functions
+    destination: /build/call-your-backend
+  - source: /flow-builder/prompts
+    destination: /build/write-prompts
+  - source: /flow-builder/call-lifetime
+    destination: /build/transfer-and-end-calls
+  - source: /flow-builder/testing-and-publishing
+    destination: /build/test-and-publish
+  - source: /flow-builder/templates
+    destination: /build/templates
+  - source: /assistant
+    destination: /build/assistant
+  # call center / contacts → calls
+  - source: /call-center
+    destination: /calls
+  - source: /call-center/making-calls
+    destination: /calls/make-a-call
+  - source: /call-center/call-details
+    destination: /calls/transcripts-and-recordings
+  - source: /call-center/campaigns
+    destination: /calls/campaigns
+  - source: /call-center/schedules
+    destination: /calls/schedules
+  - source: /contacts
+    destination: /calls/contacts
+  - source: /contacts/managing-contacts
+    destination: /calls/contacts
+  - source: /contacts/bulk-import
+    destination: /calls/import-contacts
+  - source: /contacts/do-not-call
+    destination: /calls/do-not-call
+  # phone numbers → telephony
+  - source: /phone-numbers
+    destination: /telephony
+  - source: /phone-numbers/purchasing
+    destination: /telephony/buy-a-number
+  - source: /phone-numbers/configuration
+    destination: /telephony/inbound-and-outbound-routing
+  - source: /phone-numbers/byoc
+    destination: /telephony/bring-your-own-sip-trunk
+  - source: /phone-numbers/whatsapp
+    destination: /telephony/whatsapp-business-calling
+  # billing / organizations / account → account
+  - source: /billing
+    destination: /account/credits-and-payment
+  - source: /billing/credits
+    destination: /account/credits-and-payment
+  - source: /billing/payment-methods
+    destination: /account/credits-and-payment
+  - source: /billing/cost-breakdown
+    destination: /account/cost-breakdown
+  - source: /billing/transaction-history
+    destination: /account/cost-breakdown
+  - source: /organizations
+    destination: /account/organizations
+  - source: /organizations/creating-an-org
+    destination: /account/organizations
+  - source: /organizations/members-and-roles
+    destination: /account/members-and-roles
+  - source: /organizations/invitations
+    destination: /account/members-and-roles
+  - source: /account/profile
+    destination: /account/security
+  - source: /account/deletion
+    destination: /account/data-export-and-deletion
+  - source: /account/data-export
+    destination: /account/data-export-and-deletion
+  # developer / integrations → integrate
+  - source: /developer/api-keys
+    destination: /integrate/authentication
+  - source: /developer/webhooks
+    destination: /integrate/webhooks
+  - source: /integrations
+    destination: /integrate
+  - source: /integrations/meta-lead-ads
+    destination: /integrate/meta-lead-ads
+  # platform → reference / integrate
+  - source: /platform
+    destination: /reference/limits
+  - source: /platform/providers
+    destination: /reference/models-and-voices
+  - source: /platform/real-time
+    destination: /integrate/real-time-events
+  - source: /platform/limits
+    destination: /reference/limits
 
 tabs:
   guides:
@@ -85,197 +204,195 @@ tabs:
     display-name: API Reference
     icon: fa-regular fa-code
     slug: api-reference
+  sdks:
+    display-name: SDKs
+    icon: fa-regular fa-cube
+    slug: sdks
+  skills:
+    display-name: Skills
+    icon: fa-regular fa-robot
+    slug: skills
+  changelog:
+    display-name: Changelog
+    icon: fa-regular fa-clock-rotate-left
+    skip-slug: true
 
 navigation:
   - tab: guides
     layout:
       - section: Getting started
         slug: getting-started
-        path: docs/pages/getting-started/index.mdx
+        icon: fa-regular fa-rocket
+        collapsed: true
         contents:
-          - page: Create Account
-            slug: create-account
-            path: docs/pages/getting-started/create-account.mdx
-          - page: Platform Overview
-            slug: platform-overview
-            path: docs/pages/getting-started/platform-overview.mdx
-          - page: Your First Call
-            slug: your-first-call
-            path: docs/pages/getting-started/your-first-call.mdx
-      - section: Build
-        skip-slug: true
+          - page: Introduction
+            slug: introduction
+            path: docs/pages/getting-started/introduction.mdx
+          - page: Quickstart
+            slug: quickstart
+            path: docs/pages/getting-started/quickstart.mdx
+          - page: How a call works
+            slug: how-a-call-works
+            path: docs/pages/getting-started/how-a-call-works.mdx
+
+      - section: Concepts
+        slug: concepts
+        icon: fa-regular fa-lightbulb
+        collapsed: true
         contents:
-          - section: Flow Builder
-            slug: flow-builder
-            path: docs/pages/flow-builder/index.mdx
-            contents:
-              - page: Concepts
-                slug: concepts
-                path: docs/pages/flow-builder/concepts.mdx
-              - page: Agent Nodes
-                slug: agent-nodes
-                path: docs/pages/flow-builder/agent-nodes.mdx
-              - page: Provider Nodes
-                slug: provider-nodes
-                path: docs/pages/flow-builder/provider-nodes.mdx
-              - page: Action Nodes
-                slug: action-nodes
-                path: docs/pages/flow-builder/action-nodes.mdx
-              - page: Flow Functions
-                slug: flow-functions
-                path: docs/pages/flow-builder/flow-functions.mdx
-              - page: Prompt Library
-                slug: prompts
-                path: docs/pages/flow-builder/prompts.mdx
-              - page: Call Lifetime
-                slug: call-lifetime
-                path: docs/pages/flow-builder/call-lifetime.mdx
-              - page: Testing & Publishing
-                slug: testing-and-publishing
-                path: docs/pages/flow-builder/testing-and-publishing.mdx
-              - page: Templates
-                slug: templates
-                path: docs/pages/flow-builder/templates.mdx
+          - page: Flows and versions
+            slug: flows-and-versions
+            path: docs/pages/concepts/flows-and-versions.mdx
+          - page: Credits and pricing
+            slug: credits-and-pricing
+            path: docs/pages/concepts/credits-and-pricing.mdx
+
+      - section: Build agents
+        slug: build
+        icon: fa-regular fa-diagram-project
+        collapsed: true
+        path: docs/pages/build/index.mdx
+        contents:
+          - page: Design a conversation
+            slug: design-a-conversation
+            path: docs/pages/build/design-a-conversation.mdx
+          - page: Write prompts
+            slug: write-prompts
+            path: docs/pages/build/write-prompts.mdx
+          - page: Choose models and voices
+            slug: choose-models-and-voices
+            path: docs/pages/build/choose-models-and-voices.mdx
+          - page: Call your backend
+            slug: call-your-backend
+            path: docs/pages/build/call-your-backend.mdx
+          - page: Transfer and end calls
+            slug: transfer-and-end-calls
+            path: docs/pages/build/transfer-and-end-calls.mdx
+          - page: Test and publish
+            slug: test-and-publish
+            path: docs/pages/build/test-and-publish.mdx
+          - page: Templates
+            slug: templates
+            path: docs/pages/build/templates.mdx
           - page: Assistant
             slug: assistant
-            path: docs/pages/assistant/index.mdx
-      - section: Operate
-        skip-slug: true
+            path: docs/pages/build/assistant.mdx
+
+      - section: Telephony
+        slug: telephony
+        icon: fa-regular fa-phone
+        collapsed: true
+        path: docs/pages/telephony/index.mdx
         contents:
-          - section: Call Center
-            slug: call-center
-            path: docs/pages/call-center/index.mdx
-            contents:
-              - page: Making Calls
-                slug: making-calls
-                path: docs/pages/call-center/making-calls.mdx
-              - page: Call Details
-                slug: call-details
-                path: docs/pages/call-center/call-details.mdx
-              - page: Campaigns
-                slug: campaigns
-                path: docs/pages/call-center/campaigns.mdx
-              - page: Schedules
-                slug: schedules
-                path: docs/pages/call-center/schedules.mdx
-          - section: Phone Numbers
-            slug: phone-numbers
-            path: docs/pages/phone-numbers/index.mdx
-            contents:
-              - page: Purchasing Numbers
-                slug: purchasing
-                path: docs/pages/phone-numbers/purchasing.mdx
-              - page: Configuration
-                slug: configuration
-                path: docs/pages/phone-numbers/configuration.mdx
-              - page: Bring Your Own Carrier
-                slug: byoc
-                path: docs/pages/phone-numbers/byoc.mdx
-              - page: WhatsApp Business Calling
-                slug: whatsapp
-                path: docs/pages/phone-numbers/whatsapp.mdx
-          - section: Contacts
+          - page: Buy a number
+            slug: buy-a-number
+            path: docs/pages/telephony/buy-a-number.mdx
+          - page: Bring your own SIP trunk
+            slug: bring-your-own-sip-trunk
+            path: docs/pages/telephony/bring-your-own-sip-trunk.mdx
+          - page: WhatsApp Business Calling
+            slug: whatsapp-business-calling
+            path: docs/pages/telephony/whatsapp-business-calling.mdx
+          - page: Inbound and outbound routing
+            slug: inbound-and-outbound-routing
+            path: docs/pages/telephony/inbound-and-outbound-routing.mdx
+          - page: Regions and edges
+            slug: regions-and-edges
+            path: docs/pages/telephony/regions-and-edges.mdx
+
+      - section: Run calls
+        slug: calls
+        icon: fa-regular fa-headset
+        collapsed: true
+        path: docs/pages/calls/index.mdx
+        contents:
+          - page: Make a call
+            slug: make-a-call
+            path: docs/pages/calls/make-a-call.mdx
+          - page: Campaigns
+            slug: campaigns
+            path: docs/pages/calls/campaigns.mdx
+          - page: Schedules
+            slug: schedules
+            path: docs/pages/calls/schedules.mdx
+          - page: Transcripts and recordings
+            slug: transcripts-and-recordings
+            path: docs/pages/calls/transcripts-and-recordings.mdx
+          - page: Contacts
             slug: contacts
-            path: docs/pages/contacts/index.mdx
-            contents:
-              - page: Managing Contacts
-                slug: managing-contacts
-                path: docs/pages/contacts/managing-contacts.mdx
-              - page: Bulk Import
-                slug: bulk-import
-                path: docs/pages/contacts/bulk-import.mdx
-              - page: Do Not Call
-                slug: do-not-call
-                path: docs/pages/contacts/do-not-call.mdx
-      - section: Business
-        skip-slug: true
+            path: docs/pages/calls/contacts.mdx
+          - page: Import contacts
+            slug: import-contacts
+            path: docs/pages/calls/import-contacts.mdx
+          - page: Do Not Call
+            slug: do-not-call
+            path: docs/pages/calls/do-not-call.mdx
+
+      - section: Integrate
+        slug: integrate
+        icon: fa-regular fa-plug
+        collapsed: true
+        path: docs/pages/integrate/index.mdx
         contents:
-          - section: Billing
-            slug: billing
-            path: docs/pages/billing/index.mdx
-            contents:
-              - page: Credits
-                slug: credits
-                path: docs/pages/billing/credits.mdx
-              - page: Cost Breakdown
-                slug: cost-breakdown
-                path: docs/pages/billing/cost-breakdown.mdx
-              - page: Payment Methods
-                slug: payment-methods
-                path: docs/pages/billing/payment-methods.mdx
-              - page: Transaction History
-                slug: transaction-history
-                path: docs/pages/billing/transaction-history.mdx
-          - section: Organizations
+          - page: Authentication
+            slug: authentication
+            path: docs/pages/integrate/authentication.mdx
+          - page: Webhooks
+            slug: webhooks
+            path: docs/pages/integrate/webhooks.mdx
+          - page: Real-time events
+            slug: real-time-events
+            path: docs/pages/integrate/real-time-events.mdx
+          - page: Idempotency and rate limits
+            slug: idempotency-and-rate-limits
+            path: docs/pages/integrate/idempotency-and-rate-limits.mdx
+          - page: Meta Lead Ads
+            slug: meta-lead-ads
+            path: docs/pages/integrate/meta-lead-ads.mdx
+
+      - section: Account and billing
+        slug: account
+        icon: fa-regular fa-coins
+        collapsed: true
+        path: docs/pages/account/index.mdx
+        contents:
+          - page: Credits and payment
+            slug: credits-and-payment
+            path: docs/pages/account/credits-and-payment.mdx
+          - page: Cost breakdown
+            slug: cost-breakdown
+            path: docs/pages/account/cost-breakdown.mdx
+          - page: Organizations
             slug: organizations
-            path: docs/pages/organizations/index.mdx
-            contents:
-              - page: Creating an Organization
-                slug: creating-an-org
-                path: docs/pages/organizations/creating-an-org.mdx
-              - page: Members & Roles
-                slug: members-and-roles
-                path: docs/pages/organizations/members-and-roles.mdx
-              - page: Invitations
-                slug: invitations
-                path: docs/pages/organizations/invitations.mdx
-          - section: Account
-            slug: account
-            path: docs/pages/account/index.mdx
-            contents:
-              - page: Profile
-                slug: profile
-                path: docs/pages/account/profile.mdx
-              - page: Security
-                slug: security
-                path: docs/pages/account/security.mdx
-              - page: Notifications
-                slug: notifications
-                path: docs/pages/account/notifications.mdx
-              - page: Data Export
-                slug: data-export
-                path: docs/pages/account/data-export.mdx
-              - page: Account Deletion
-                slug: deletion
-                path: docs/pages/account/deletion.mdx
-      - section: Developer
-        skip-slug: true
-        contents:
-          - section: Developer
-            slug: developer
-            contents:
-              - page: API Keys
-                slug: api-keys
-                path: docs/pages/developer/api-keys.mdx
-              - page: Webhooks
-                slug: webhooks
-                path: docs/pages/developer/webhooks.mdx
-      - section: Integrations
-        skip-slug: true
-        contents:
-          - section: Integrations
-            slug: integrations
-            path: docs/pages/integrations/index.mdx
-            contents:
-              - page: Meta Lead Ads
-                slug: meta-lead-ads
-                path: docs/pages/integrations/meta-lead-ads.mdx
+            path: docs/pages/account/organizations.mdx
+          - page: Members and roles
+            slug: members-and-roles
+            path: docs/pages/account/members-and-roles.mdx
+          - page: Security
+            slug: security
+            path: docs/pages/account/security.mdx
+          - page: Notifications
+            slug: notifications
+            path: docs/pages/account/notifications.mdx
+          - page: Data export and deletion
+            slug: data-export-and-deletion
+            path: docs/pages/account/data-export-and-deletion.mdx
+
       - section: Reference
-        skip-slug: true
+        slug: reference
+        icon: fa-regular fa-book
+        collapsed: true
         contents:
-          - section: Platform
-            slug: platform
-            path: docs/pages/platform/index.mdx
-            contents:
-              - page: Providers
-                slug: providers
-                path: docs/pages/platform/providers.mdx
-              - page: Real-Time Events
-                slug: real-time
-                path: docs/pages/platform/real-time.mdx
-              - page: Limits
-                slug: limits
-                path: docs/pages/platform/limits.mdx
+          - page: Limits
+            slug: limits
+            path: docs/pages/reference/limits.mdx
+          - page: Models and voices
+            slug: models-and-voices
+            path: docs/pages/reference/models-and-voices.mdx
+          - page: Network and IP allowlists
+            slug: network-and-ip-allowlists
+            path: docs/pages/reference/network-and-ip-allowlists.mdx
+
   - tab: api
     layout:
       - page: Error Codes
@@ -284,6 +401,30 @@ navigation:
       - api: API Reference
         skip-slug: true
         display-errors: true
+        # SDK examples next to curl on every endpoint. Package names must match
+        # generators.yml exactly; snippets exist once `fern generate` has run
+        # for that group against a published version.
+        snippets:
+          typescript: "@talkif/sdk"
+          python: talkif
         playground:
           environments:
             - Production
+  - tab: sdks
+    layout:
+      - page: Server SDKs
+        slug: server
+        path: docs/pages/sdks/sdks.mdx
+      - page: Browser SDK (web calls)
+        slug: browser
+        path: docs/pages/sdks/web-calls.mdx
+
+  - tab: skills
+    layout:
+      - page: Agent Skills
+        slug: agent-skills
+        path: docs/pages/skills/agent-skills.mdx
+
+  - tab: changelog
+    layout:
+      - changelog: docs/changelog

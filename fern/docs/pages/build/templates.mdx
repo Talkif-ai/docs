@@ -1,0 +1,53 @@
+---
+title: Templates
+description: Five ready-made flows — reminder, support triage, survey, lead qualification, payment reminder — what each one contains, and how to make one yours.
+---
+
+A template is a complete, publishable flow you copy instead of starting from an empty canvas: agents with written prompts, transitions between them, an End Call on the right agents, and a working provider set. Copying one is the fastest way to see what a well-structured flow looks like, and most production flows start as a template with the prompts rewritten for the business.
+
+## The templates
+
+| Template | Direction | Agents | What it does |
+|---|---|---|---|
+| **Appointment Reminder** | outbound | reminder → reschedule | Reminds a contact about an upcoming appointment, confirms attendance, and captures reschedule requests |
+| **Customer Support Triage** | inbound | triage → billing / technical | Answers support calls, triages between billing and technical issues, and captures a callback ticket when needed |
+| **Customer Satisfaction Survey** | outbound | survey | Short NPS-style survey: a 0–10 score, one open-ended reason, and a polite close |
+| **Lead Qualification** | outbound | opener → qualification → booking | Qualifies interest, captures needs and timeline, and books a follow-up with a human rep |
+| **Payment Reminder** | outbound | payment | Polite reminder about an overdue invoice that captures a payment commitment or a dispute for human follow-up |
+
+All five ship with the same baseline providers — Deepgram `nova-3-general`, OpenAI `gpt-4o-mini`, ElevenLabs `eleven_flash_v2_5` — so they're comparable, and so the first thing you change is the prompts, not the plumbing. You choose the voice when you create the flow.
+
+The outbound templates lean on `{{contact.*}}` variables — the contact's name, the appointment, the invoice — so they only make sense on calls with a contact attached: campaigns, schedules, or `POST /calls` with a `contactId`. [Write prompts](/build/write-prompts#dynamic-prompts) explains the variables.
+
+## Using one
+
+<Steps>
+  <Step title="Create a flow from the template">
+    **Flow Builder → Create Flow**, pick the template (or **Blank Flow**), name it. The template is copied into a new draft — nodes, transitions, prompts, providers. Nothing links back; it's yours.
+
+    From the API: [`POST /flows/from-template/{templateSlug}`](/api-reference/flow-templates/instantiate-template) with the slug from [`GET /flow-templates`](/api-reference/flow-templates/list-system-templates) (`appointment-reminder`, `customer-support`, `customer-survey`, `lead-qualification`, `payment-reminder`).
+  </Step>
+  <Step title="Rewrite the System Prompt">
+    It carries a placeholder persona. Put your business, tone and hard limits in.
+  </Step>
+  <Step title="Walk each agent's prompt">
+    Keep the structure — goal, what to collect, when to move on, when to end — and replace the specifics.
+  </Step>
+  <Step title="Add your functions">
+    The templates capture information in conversation; to *act* on it (check a calendar, create a ticket), attach an [HTTP Request](/build/call-your-backend).
+  </Step>
+  <Step title="Test, then publish">
+    Flow Tester first, then a real call to your own phone.
+  </Step>
+</Steps>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Design a conversation" href="/build/design-a-conversation" icon="fa-regular fa-diagram-project">
+    Why the templates are shaped the way they are.
+  </Card>
+  <Card title="Campaigns" href="/calls/campaigns" icon="fa-regular fa-bullhorn">
+    Run the outbound templates against a contact list.
+  </Card>
+</CardGroup>
