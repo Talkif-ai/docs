@@ -1,0 +1,178 @@
+---
+title: Transfer calls to people
+description: Hand a live call from the AI to a person — when the AI transfers, warm and cold transfers, what the caller hears, the handoff case, destinations and destination groups, teams, and what happens when nobody answers.
+max-toc-depth: 2
+---
+
+Some calls need a person: a caller who asks for one, a complaint the agent shouldn't handle, a sale that's ready to close. A transfer hands the live call from the AI to one of your people without the caller hanging up and dialling again — and hands over what the AI already learned, so the caller doesn't repeat themselves. If nobody picks up, the call comes back to the AI instead of ringing out.
+
+## How a transfer works
+
+A transfer has two halves that you configure in different places:
+
+- **When** to transfer is the AI's decision. You describe it in plain language on a **Transfer** node, and the AI calls the transfer when the conversation matches.
+- **Where** the call goes is never the AI's decision. It's a destination or a destination group you set up in advance — the AI can't invent a number or pick someone you didn't list.
+
+```mermaid
+flowchart LR
+  A[Agent talking with caller] -->|AI decides to transfer| T[Transfer node]
+  T --> R[Ring the destination]
+  R -->|someone answers| P[Caller talks to your person]
+  R -->|nobody answers| N[No answer → back to an agent]
+```
+
+The Transfer node attaches to an agent like any other function node. Its **When should the AI transfer?** field is the description the model reads, and it matters as much as the prompt: *"Use when the caller asks for a person, or wants to change an existing contract"* transfers the right calls; *"when needed"* transfers too many.
+
+## Warm and cold transfers
+
+| Mode | What happens | Good for |
+|---|---|---|
+| **Cold** | The call is connected to your person as soon as they answer; the AI leaves | Callers who asked for "a person", simple routing |
+| **Warm** | When your person answers, the AI briefs them first while the caller waits on hold. Then the caller is connected and the AI leaves | Anything where the person needs context before they speak — complaints, qualified sales leads, escalations |
+
+A warm transfer adds two settings:
+
+| Setting | Default | What it does |
+|---|---|---|
+| **Briefing instructions** | *"Tell them who is calling and why, in two sentences."* | What the AI tells your colleague before connecting the caller |
+| **Max briefing time** | 60 s (15–120 s) | The briefing is cut off at this point and the caller is connected |
+
+## What the caller hears
+
+A transfer has up to three moments where the caller is waiting. Each is configurable on the node.
+
+<Steps>
+  <Step title="Before dialling — Announcement (optional)">
+    A line said by the system, not by the AI, right before the call is dialled — for example *"Connecting you now, please hold."* Because it's fixed text, it's the same on every call. Leave it empty and Talkif says a default line in the flow's language (*"Connecting you now, please hold."* in English).
+  </Step>
+  <Step title="While it rings — While ringing, the caller hears">
+    | Option | What the caller experiences |
+    |---|---|
+    | **Bot keeps talking with the caller** (default) | The caller stays in the conversation while the destination rings. If nobody answers, the agent apologises and offers alternatives |
+    | **Ringback tone** | The caller is put on hold and hears a ringing tone until someone answers |
+    | **Silence** | The caller is put on hold and hears nothing until someone answers |
+  </Step>
+  <Step title="During the briefing (warm only) — While you brief, the caller hears">
+    **Hold tone** (default) or **Silence**, while the AI briefs your colleague.
+  </Step>
+</Steps>
+
+<Tip>
+  Keep the agent talking while it rings unless you have a reason not to. A caller left in silence can't tell a transfer from a dropped line; a caller still in conversation barely notices the wait.
+</Tip>
+
+## The handoff case
+
+Every transfer carries a short case file to the person who picks up, so they start with context instead of "how can I help you?":
+
+| Field | Always there | What it holds |
+|---|:-:|---|
+| **Reason** | ✓ | Why the caller is being transferred |
+| **Summary** | ✓ | What was discussed so far |
+| **Caller name** | optional | Filled in when the caller gave it |
+| Your own fields | — | Up to 8 extra fields you define, e.g. *Order number* or *Contract ID* |
+
+The AI fills the case when it calls the transfer. Mark a field **required** and the AI asks the caller for it before transferring — useful when your team can't do anything without, say, an account number. People taking the call in the dashboard or the app see the case on the incoming-call screen.
+
+## Where a transfer can go
+
+Transfer targets are set up once for the whole account, in **Settings → People & numbers**, and picked by name on each Transfer node. Every member can see them; owners and admins add, change and delete them.
+
+### Destinations
+
+A destination is one place a call can go:
+
+<ParamField path="Phone number" type="destination">
+  An outside phone number — a desk phone, a mobile, a call-center line. You choose the caller ID shown to the person answering: **The number the caller dialled** (recommended) or **The caller's own number** (some carriers reject this).
+</ParamField>
+<ParamField path="People in the dashboard" type="destination">
+  Your teammates who are available for calls in the Talkif dashboard or the Talkif iPhone app. Choose **Everyone who is available** or **Only the people I choose**; in a team account you can also limit it to members of certain teams. The first person to accept takes the call — see [Take calls in the dashboard and the app](/calls/take-calls-in-the-dashboard-and-the-app).
+</ParamField>
+
+Emergency and special-service numbers, and premium-rate or shared-cost numbers, can't be phone destinations.
+
+A destination can be disabled without deleting it; disabled destinations are skipped when a group rings.
+
+### Destination groups
+
+A destination group is a named set of destinations that ring together as one transfer target — *"Support desk"* made of two phone numbers and the people in the dashboard, for instance. Everyone in the group rings at once and the first to answer gets the call. For each member you set how long it rings, and for the group a **Give up after** time after which the transfer counts as unanswered.
+
+Groups are the usual target: they let you change who picks up — add a number, swap a person — without editing and republishing any flow.
+
+<Note>
+  A destination or group used by a published flow can't be deleted until no published flow points at it — otherwise a live transfer would lead nowhere.
+</Note>
+
+### Call from
+
+A transfer to a phone number is a new outgoing call, placed from one of your numbers. **Call from** on the node (or on the phone destination) picks which one; by default it's the number the caller dialled. The number's provider carries that leg. Calls that didn't arrive on one of your numbers — browser test calls, for example — need a **Call from** number to transfer to a phone.
+
+### Managing destinations by API
+
+Destinations and destination groups are account resources with their own endpoints, under `/api/v1/transfers/destinations` and `/api/v1/transfers/destination-groups`, so you can keep them in sync with your own staff directory.
+
+{/* TODO: link API reference after the spec sync */}
+
+## Teams: routing to the right people
+
+In a team (organization) account, each member can carry **tags** — `sales`, `billing`, `turkish` — and optional **available hours**, both set per member in the dashboard's organization settings. Tags are set by owners and admins; hours by the member themselves or an owner or admin.
+
+A transfer to people in the dashboard can be limited to certain tags. When it rings, it rings only members who are:
+
+1. available for calls right now,
+2. carrying one of the tags, and
+3. within their available hours, if they set any.
+
+If nobody matches, nobody is rung and the transfer goes to its **No answer** path. It never falls back to ringing everyone.
+
+### Let the bot choose the team
+
+Turn on **Let the bot choose the team** on a Transfer node and, instead of one fixed target, you give the AI 2–8 teams to choose from. For each team you set:
+
+| Setting | What it does |
+|---|---|
+| **Team** | A member tag |
+| **When to use** | A short description the AI reads to decide — *"Internet, modem or line problems."* |
+| **If nobody in this team is available** | Optional fallback team, tried once |
+
+The AI picks one team from the conversation. Talkif rings that team's available members within their hours; if none answers, the fallback team is tried once; if that fails too, the call goes to **No answer**.
+
+## When nobody answers
+
+Every Transfer node has a **No answer** output that you connect to the agent that continues the call — its **transfer fallback** input. Busy, declined, unanswered, and "nobody available" all take this path. The agent picks the conversation back up, and a good prompt for it offers a callback or takes a message.
+
+A call can be offered to people at most **twice**. After that, a further transfer to people goes straight to **No answer**, so a caller isn't put through the same ringing again.
+
+## Set up a transfer
+
+<Steps>
+  <Step title="Add destinations">
+    **Settings → People & numbers → Destinations**: add the phone numbers and, if your team takes calls in the dashboard or app, a *People in the dashboard* destination.
+  </Step>
+  <Step title="Group them">
+    Under **Destination groups**, create a group for each team you transfer to.
+  </Step>
+  <Step title="Add a Transfer node">
+    In the flow, add a **Transfer** node, attach it to the agents that may transfer, and write **When should the AI transfer?**. Pick the destination group (or turn on **Let the bot choose the team**).
+  </Step>
+  <Step title="Choose the mode and what the caller hears">
+    Cold or warm, the announcement, **While ringing, the caller hears**, and for warm transfers the briefing settings.
+  </Step>
+  <Step title="Connect No answer">
+    Connect the node's **No answer** output to the agent that should continue the call.
+  </Step>
+  <Step title="Test, then publish">
+    Try it in the Flow Tester with a real destination before publishing — see [Test and publish](/build/test-and-publish).
+  </Step>
+</Steps>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Take calls in the dashboard and the app" href="/calls/take-calls-in-the-dashboard-and-the-app" icon="fa-regular fa-headset">
+    Be available for transfers, accept them, and listen in on live calls.
+  </Card>
+  <Card title="Transfer and end calls" href="/build/transfer-and-end-calls" icon="fa-regular fa-phone-slash">
+    Ending calls well, silence handling, maximum length and voicemail.
+  </Card>
+</CardGroup>

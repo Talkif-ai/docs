@@ -92,13 +92,16 @@ Silence handling depends on conversation state; the length cap is a plain timer;
 
 Every ending is recorded on the call as an `endReason` (`agent_completed`, `caller_hangup`, `agent_timeout`, …) — see [How a call works](/getting-started/how-a-call-works#5-finalization--what-a-finished-call-gives-you).
 
-<Note title="Call transfer">
-  Forwarding a live call to a human is on the roadmap. The builder shows a **Forward Call** node in preview; it is not yet active on calls. Today, the pattern for escalation is: collect a callback number, confirm it, and hand the case to your team with an [HTTP Request](/build/call-your-backend).
+<Note title="Handing the call to a person">
+  To pass a live call to one of your people instead of ending it, use a **Transfer** node — warm or cold, with a handoff case, and a **No answer** path back to an agent. See [Transfer calls to people](/build/transfer-calls-to-people).
 </Note>
 
 ## Next
 
 <CardGroup cols={2}>
+  <Card title="Transfer calls to people" href="/build/transfer-calls-to-people" icon="fa-regular fa-phone-arrow-right">
+    Hand a live call to a person, warm or cold, with a fallback when nobody answers.
+  </Card>
   <Card title="Campaigns" href="/calls/campaigns" icon="fa-regular fa-bullhorn">
     Voicemail outcomes, retries and pacing for outbound lists.
   </Card>
