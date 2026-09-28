@@ -11,7 +11,7 @@ Roles answer one question: *who can spend the account's money, and who can chang
   Created the organization or was handed it. The only role that touches money and the account's existence: billing and cards, buying and releasing numbers, connecting carriers, account settings, deletion, changing members' roles, transferring ownership.
 </ParamField>
 <ParamField path="Admin" type="any number">
-  Runs the team without touching the money: invites, suspends and removes members (not the Owner), plus everything a Member can do.
+  Runs the team without touching the money: invites, suspends and removes members (not the Owner), manages transfer destinations and members' team tags, plus everything a Member can do.
 </ParamField>
 <ParamField path="Member" type="any number">
   Does the work: flows, prompts, calls, campaigns, schedules, contacts, DNC, connecting flows to numbers, reading transcripts and costs.
@@ -26,6 +26,10 @@ Roles answer one question: *who can spend the account's money, and who can chang
 | Manage contacts, imports, the Do Not Call list | ✓ | ✓ | ✓ |
 | Connect or disconnect a flow on a number; set a number's friendly name and recording override | ✓ | ✓ | ✓ |
 | View costs and per-call cost breakdowns | ✓ | ✓ | ✓ |
+| Be available for calls; receive transferred calls; listen to and take over live calls | ✓ | ✓ | ✓ |
+| Set your own available hours for transferred calls | ✓ | ✓ | ✓ |
+| Add, edit or delete transfer destinations and destination groups | ✓ | ✓ | — |
+| Set members' team tags; set another member's available hours | ✓ | ✓ | — |
 | **Buy or release numbers; add, edit or remove carriers (SIP, Twilio, WhatsApp); register BYOC numbers** | ✓ | — | — |
 | **Top up; manage cards; auto-recharge; invoices; balance and transactions** | ✓ | — | — |
 | **Account settings (recording, analysis, notifications thresholds)** | ✓ | — | — |
@@ -35,6 +39,8 @@ Roles answer one question: *who can spend the account's money, and who can chang
 | **Delete the organization and its account** | ✓ | — | — |
 
 API keys are created and revoked by the **Owner** and act with the scopes they're given regardless of who uses them.
+
+Taking calls is operational work, so every active member can do it: any member who is [available for calls](/calls/take-calls-in-the-dashboard-and-the-app) can be rung by a transfer, and any member can listen to or take over a live call in the account. Who a transfer rings is narrowed by the flow's destination, team tags and hours — not by role. Suspended members are never rung.
 
 ## Inviting someone
 

@@ -7,13 +7,13 @@ A call ends and Talkif hands you five things about it. Together they answer the 
 
 ## Transcript
 
-Every turn, with who spoke and when. Available the moment the call ends — and while it's running, live, turn by turn. Alongside it, the call record counts the turns the caller cut off — a quick read on whether the agent was talking too long.
+Every turn, with who spoke and when. Available the moment the call ends — and while it's running, live, turn by turn. When a call is [transferred to a person](/build/transfer-calls-to-people), the transcript keeps going and shows the caller, the agent and the person, each labelled. Alongside it, the call record counts the turns the caller cut off — a quick read on whether the agent was talking too long.
 
 [`GET /calls/{callId}/transcript`](/api-reference/calls/get-call-transcript). History is searchable by contact name or phone number, and filterable by status, direction, source, flow, campaign and date.
 
 ## Recording
 
-Full-call audio, playable in the call view and downloadable. Whether a call is recorded is decided at call start by the recording setting — flow override, then number override, then the account default (see [Flows and versions](/concepts/flows-and-versions#what-a-flow-is-made-of)).
+Full-call audio, playable in the call view and downloadable. The recording covers the whole call, including the part after a transfer or after a person [joins from the dashboard or the app](/calls/take-calls-in-the-dashboard-and-the-app). Whether a call is recorded is decided at call start by the recording setting — flow override, then number override, then the account default (see [Flows and versions](/concepts/flows-and-versions#what-a-flow-is-made-of)).
 
 [`GET /calls/{callId}/recording`](/api-reference/calls/get-call-recording) returns a **short-lived signed URL** — fetch it when you need it rather than storing it. [`DELETE /calls/{callId}/recording`](/api-reference/calls/delete-call-recording) removes the audio permanently; the transcript and everything else stay.
 
@@ -22,7 +22,7 @@ Full-call audio, playable in the call view and downloadable. Whether a call is r
     Recordings are kept for the retention period set on your account (**Settings → Account**); when it expires the audio is deleted and the call record remains. Storage is billed per GB-month for the time a recording exists, with a one-day minimum — see [Credits and pricing](/concepts/credits-and-pricing#recording-storage). If your balance can't cover storage, recordings enter a 30-day grace period before deletion; topping up clears it.
   </Accordion>
   <Accordion title="Consent">
-    Recording laws vary by jurisdiction and Talkif doesn't announce recording for you. If you must announce it, put the line in the Main Agent's prompt, or use a **Say** pre-action so it's spoken verbatim every time — see [Transfer and end calls](/build/transfer-and-end-calls#scripted-lines-say). Use per-number overrides for lines that must never record.
+    Recording laws vary by jurisdiction and Talkif doesn't announce recording for you. The same goes for telling callers that a person may listen to or join the call. If you must announce it, put the line in the Main Agent's prompt, or use a **Say** pre-action so it's spoken verbatim every time — see [Transfer and end calls](/build/transfer-and-end-calls#scripted-lines-say). Use per-number overrides for lines that must never record.
   </Accordion>
 </AccordionGroup>
 
