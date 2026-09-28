@@ -148,7 +148,7 @@ Member tags and available hours have their own endpoints, next to the destinatio
 
 | Endpoint | What it does |
 |---|---|
-| `GET /api/v1/transfers/members` | Every member with their user ID, name, email, role, tags and hours. The user ID is what a *People in the dashboard* destination lists in `userIds` |
+| `GET /api/v1/transfers/members` | Every member with their user ID, name, role, tags and hours. The user ID is what a *People in the dashboard* destination lists in `userIds` |
 | `GET /api/v1/transfers/member-tags` | The tags in use, with how many members carry each |
 | `GET` / `PUT /api/v1/transfers/members/{memberId}/tags` | Read or replace a member's tags |
 | `GET` / `PUT` / `DELETE /api/v1/transfers/members/{memberId}/hours` | Read, set or remove a member's available hours |
