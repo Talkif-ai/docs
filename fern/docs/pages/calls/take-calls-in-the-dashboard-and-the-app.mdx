@@ -1,0 +1,74 @@
+---
+title: Take calls in the dashboard and the app
+description: Answer calls your agents transfer to people — in the browser or on your iPhone — and listen in on or take over a live call from the AI.
+---
+
+When an agent transfers a call to a person, that person doesn't need a desk phone. Anyone on your team can take the call in the Talkif dashboard or in the Talkif iPhone app, with the caller's reason and a summary on screen before they say hello. The same tools let you listen to any live call and step in when the AI needs help.
+
+## Being available for calls
+
+Transfers to *People in the dashboard* ([Transfer calls to people](/build/transfer-calls-to-people#destinations)) ring only the people who are **available for calls** at that moment. Availability is a switch you turn on yourself, per account, and it's off until you do.
+
+| Where | How you're available | What it needs |
+|---|---|---|
+| **Dashboard** | The phone icon in the top bar — **Available for calls** | Your microphone, and notification permission so calls ring while the tab is in the background. You're available while a dashboard tab is open and connected |
+| **iPhone app** | **Settings → Calls → Available for calls** | Your microphone. With call notifications allowed, you're also **available on mobile**: your iPhone rings like a phone call even when the app is closed |
+
+You stay available as long as any one of your devices is: close the dashboard tab and your iPhone still rings. Turning availability off in one place stops that device ringing, not the others.
+
+In a team account, members can also have [tags and available hours](/build/transfer-calls-to-people#teams-routing-to-the-right-people). Outside your hours you aren't offered calls even when you're available.
+
+## How an offer rings
+
+When a transfer reaches you, it rings on every device where you're available:
+
+- **In the browser**, an **Incoming transfer** window opens with a ringtone: who is calling, which flow, whether it's a warm transfer, a countdown, and the handoff case — reason, summary and any custom fields. It stays open until you accept, decline or it times out.
+- **On your iPhone**, the call rings on the lock screen through a call notification, like a regular phone call. Open the app for the same details as in the browser.
+
+The first person to accept gets the call. Accepting stops it ringing everywhere else — for your teammates, and on your own other tabs and devices. If a teammate answers first, the caller hangs up, or the offer runs out, the ringing stops and you're told why.
+
+On a **warm** transfer, the AI briefs you first while the caller is on hold; then the caller is connected. On a **cold** transfer you're connected straight away.
+
+## Listen to and take over a live call
+
+From a live call in the Call Center, **Listen** joins the call with your microphone off: you hear the caller and the agent, and nobody hears you. From the call panel, **Take over** unmutes you and the agent leaves the call after a short line to the caller. If a teammate took the call first, you're told so. A few teammates can listen to the same call at once; only one can take it over.
+
+Not every call can be listened to or taken over; the dashboard tells you when a call doesn't support it.
+
+## What gets recorded
+
+A person joining doesn't change the call's records:
+
+- If the call is recorded, the **recording keeps running** after a person joins and covers the whole call.
+- The **transcript** shows the caller, the agent and the person, turn by turn.
+
+See [Transcripts and recordings](/calls/transcripts-and-recordings).
+
+<Warning title="Tell callers a person may listen or join">
+  Where local law requires it, you must tell callers that a person may listen to or join the call — for example with a fixed line at the start of the call. Talkif doesn't announce it for you.
+</Warning>
+
+## Get ready to take calls
+
+<Steps>
+  <Step title="Turn on Available for calls">
+    In the dashboard's top bar, or in the iPhone app under **Settings → Calls**. Allow the microphone and notifications when asked.
+  </Step>
+  <Step title="Make sure a transfer can reach you">
+    A flow must transfer to a *People in the dashboard* destination (directly or in a destination group) that includes you. In a team account, check your tags and hours with an owner or admin.
+  </Step>
+  <Step title="Accept when it rings">
+    Read the case, accept, and you're on the call.
+  </Step>
+</Steps>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Transfer calls to people" href="/build/transfer-calls-to-people" icon="fa-regular fa-phone-arrow-right">
+    Set up the Transfer node, destinations and teams.
+  </Card>
+  <Card title="Members and roles" href="/account/members-and-roles" icon="fa-regular fa-users">
+    Who in your organization can take calls and change teams.
+  </Card>
+</CardGroup>

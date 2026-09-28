@@ -321,6 +321,9 @@ navigation:
           - page: Transcripts and recordings
             slug: transcripts-and-recordings
             path: docs/pages/calls/transcripts-and-recordings.mdx
+          - page: Take calls in the dashboard and the app
+            slug: take-calls-in-the-dashboard-and-the-app
+            path: docs/pages/calls/take-calls-in-the-dashboard-and-the-app.mdx
           - page: Contacts
             slug: contacts
             path: docs/pages/calls/contacts.mdx
