@@ -4,7 +4,7 @@ description: Hand a live call from the AI to a person — when the AI transfers,
 max-toc-depth: 2
 ---
 
-Some calls need a person: a caller who asks for one, a complaint the agent shouldn't handle, a sale that's ready to close. A transfer hands the live call from the AI to one of your people without the caller hanging up and dialling again — and hands over what the AI already learned, so the caller doesn't repeat themselves. If nobody picks up, the call comes back to the AI instead of ringing out.
+Some calls need a person: a caller who asks for one, a complaint the agent shouldn't handle, a sale that's ready to close. A transfer hands the live call from the AI to one of your people without the caller hanging up and dialling again — and hands over what the AI already learned, so the caller doesn't repeat themselves. If nobody picks up, the agent is told and carries on the conversation instead of the call ringing out.
 
 ## How a transfer works
 
@@ -18,7 +18,7 @@ flowchart LR
   A[Agent talking with caller] -->|AI decides to transfer| T[Transfer node]
   T --> R[Ring the destination]
   R -->|someone answers| P[Caller talks to your person]
-  R -->|nobody answers| N[No answer → back to an agent]
+  R -->|nobody answers| N[The agent is told and continues]
 ```
 
 The Transfer node attaches to an agent like any other function node. Its **When should the AI transfer?** field is the description the model reads, and it matters as much as the prompt: *"Use when the caller asks for a person, or wants to change an existing contract"* transfers the right calls; *"when needed"* transfers too many.
@@ -128,7 +128,7 @@ A transfer to people in the dashboard can be limited to certain tags. When it ri
 2. carrying one of the tags, and
 3. within their available hours, if they set any.
 
-If nobody matches, nobody is rung and the transfer goes to its **No answer** path. It never falls back to ringing everyone.
+If nobody matches, nobody is rung and the transfer fails as if nobody answered. It never falls back to ringing everyone.
 
 ### Let the bot choose the team
 
@@ -159,9 +159,9 @@ They use the `transfers` API key scope — read for `GET`, write for the rest �
 
 ## When nobody answers
 
-Every Transfer node has a **No answer** output that you connect to the agent that continues the call — its **transfer fallback** input. Busy, declined, unanswered, and "nobody available" all take this path. The agent picks the conversation back up, and a good prompt for it offers a callback or takes a message.
+There's nothing to connect. When a transfer doesn't go through — busy, declined, unanswered, or nobody available — the agent that started it is told that nobody answered and continues the conversation. A good prompt for that agent says what to offer then: a callback, or taking a message.
 
-A call can be offered to people at most **twice**. After that, a further transfer to people goes straight to **No answer**, so a caller isn't put through the same ringing again.
+A call can be offered to people at most **twice**. After that, a further transfer to people fails straight away and the agent carries on, so a caller isn't put through the same ringing again.
 
 ## Set up a transfer
 
@@ -178,8 +178,8 @@ A call can be offered to people at most **twice**. After that, a further transfe
   <Step title="Choose the mode and what the caller hears">
     Cold or warm, the announcement, **While ringing, the caller hears**, and for warm transfers the briefing settings.
   </Step>
-  <Step title="Connect No answer">
-    Connect the node's **No answer** output to the agent that should continue the call.
+  <Step title="Tell the agent what to do if nobody answers">
+    In the prompt of each agent that can transfer, say what to offer when a transfer doesn't go through — a callback or taking a message.
   </Step>
   <Step title="Test, then publish">
     Try it in the Flow Tester with a real destination before publishing — see [Test and publish](/build/test-and-publish).
