@@ -38,7 +38,7 @@ Roles answer one question: *who can spend the account's money, and who can chang
 | **Transfer ownership** | ✓ | — | — |
 | **Delete the organization and its account** | ✓ | — | — |
 
-API keys are created and revoked by the **Owner** and act with the scopes they're given regardless of who uses them.
+API keys are created and revoked by the **Owner** and act with the scopes they're given regardless of who uses them. A key with write access to the `transfers` scope can set members' tags and available hours — see [Managing tags and hours by API](/build/transfer-calls-to-people#managing-tags-and-hours-by-api).
 
 Taking calls is operational work, so every active member can do it: any member who is [available for calls](/calls/take-calls-in-the-dashboard-and-the-app) can be rung by a transfer, and any member can listen to or take over a live call in the account. Who a transfer rings is narrowed by the flow's destination, team tags and hours — not by role. Suspended members are never rung.
 

@@ -115,7 +115,12 @@ Destinations and destination groups are account resources with their own endpoin
 
 ## Teams: routing to the right people
 
-In a team (organization) account, each member can carry **tags** — `sales`, `billing`, `turkish` — and optional **available hours**, both set per member in the dashboard's organization settings. Tags are set by owners and admins; hours by the member themselves or an owner or admin.
+In a team (organization) account, each member can carry **tags** — `sales`, `billing`, `turkish` — and optional **available hours**. Both are set per member, in the dashboard's organization settings or [by API](#managing-tags-and-hours-by-api). Tags are set by owners and admins; hours by the member themselves or an owner or admin.
+
+Tags and hours belong to the organization, not to one account: a member has the same tags and hours in every account the organization owns. A personal account has no members to tag, so a transfer limited to tags rings nobody there.
+
+- **Tags** are short labels, normalized as you save them: lowercased, spaces turned into `-`. Allowed are `a`–`z`, the Turkish letters `ı ğ ü ş ö ç`, digits, `-` and `_`, up to 32 characters. A member can carry up to 20.
+- **Available hours** are a weekly schedule in the member's time zone — for each weekday, up to six time ranges such as 09:00–18:00. A range never crosses midnight; an overnight shift is two ranges on two days (22:00–24:00, then 00:00–06:00 the next day). Hours follow the local clock, so 09:00–18:00 stays 09:00–18:00 across daylight-saving changes. A member with no hours set is always within hours.
 
 A transfer to people in the dashboard can be limited to certain tags. When it rings, it rings only members who are:
 
@@ -136,6 +141,21 @@ Turn on **Let the bot choose the team** on a Transfer node and, instead of one f
 | **If nobody in this team is available** | Optional fallback team, tried once |
 
 The AI picks one team from the conversation. Talkif rings that team's available members within their hours; if none answers, the fallback team is tried once; if that fails too, the call goes to **No answer**.
+
+### Managing tags and hours by API
+
+Member tags and available hours have their own endpoints, next to the destinations, so you can keep teams and shifts in sync with your staff directory or rota:
+
+| Endpoint | What it does |
+|---|---|
+| `GET /api/v1/transfers/members` | Every member with their user ID, name, email, role, tags and hours. The user ID is what a *People in the dashboard* destination lists in `userIds` |
+| `GET /api/v1/transfers/member-tags` | The tags in use, with how many members carry each |
+| `GET` / `PUT /api/v1/transfers/members/{memberId}/tags` | Read or replace a member's tags |
+| `GET` / `PUT` / `DELETE /api/v1/transfers/members/{memberId}/hours` | Read, set or remove a member's available hours |
+
+They use the `transfers` API key scope — read for `GET`, write for the rest — and follow the same rules as the dashboard: every member can read, owners and admins set tags, and hours are set by the member or an owner or admin. On a personal account the lists are empty.
+
+{/* TODO: link API reference after the spec sync */}
 
 ## When nobody answers
 
