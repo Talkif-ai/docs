@@ -27,7 +27,7 @@ sequenceDiagram
     **Settings → People & numbers → Add destination → Your app.** Enter a name and your webhook URL (HTTPS, reachable from the internet). Copy the **signing secret** shown after you save — it is shown once.
   </Step>
   <Step title="Create an API key for accepting">
-    Create an API key with the **`transfer_offers`** scope. It can view, accept and decline transfer offers — nothing else. Keep your configuration keys (`transfers` scope) off the server that receives webhooks.
+    Create an API key with the scope **`transfer_offers:*`** (or `transfer_offers:read` + `transfer_offers:write`). It can view, accept and decline transfer offers — nothing else. A key created without scopes gets full access, so always set them. Keep your configuration keys (`transfers` scope) off the server that receives webhooks.
   </Step>
   <Step title="Point a Transfer node at it">
     On the Transfer node, under **Who should get the call?**, choose **Your app** and pick the destination. You can also put it in a destination group to ring your app, phones and people together.
@@ -111,7 +111,7 @@ Always verify against the raw bytes you received, before parsing the JSON.
 
 ## Accept or decline
 
-Use an API key with the `transfer_offers` scope:
+Use an API key with the `transfer_offers:*` scope:
 
 ```bash
 curl -X POST https://api.talkif.ai/api/v1/transfers/offers/$OFFER_ID/accept \

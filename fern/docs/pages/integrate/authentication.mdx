@@ -53,7 +53,7 @@ A scope is `resource:action`. Actions are `read`, `write`, or `*`; `*` alone mea
 | `models` | The model catalogue |
 | `flow_templates` | Flow templates |
 | `transfers` | Transfer destinations and groups, member tags and hours |
-| `transfer_offers` | Viewing, accepting and declining transfer offers sent to [your app](/build/receive-transfers-in-your-app) — give the server that receives the webhooks only this scope |
+| `transfer_offers` | Viewing, accepting and declining transfer offers sent to [your app](/build/receive-transfers-in-your-app) — give the server that receives the webhooks only `transfer_offers:*` |
 
 A request outside the key's scopes fails with `403` and an error code naming the missing scope. Examples: `["calls:*", "contacts:read"]`; `["campaigns:*", "contacts:*", "dnc:read"]` for a campaign loader; `["billing:read"]` for a finance dashboard.
 
