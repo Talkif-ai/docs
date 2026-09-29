@@ -30,36 +30,15 @@ The Transfer node attaches to an agent like any other function node. Its **When 
 | **Cold** | The call is connected to your person as soon as they answer; the AI leaves | Callers who asked for "a person", simple routing |
 | **Warm** | When your person answers, the AI briefs them first while the caller waits on hold. Then the caller is connected and the AI leaves | Anything where the person needs context before they speak — complaints, qualified sales leads, escalations |
 
-A warm transfer adds two settings:
-
-| Setting | Default | What it does |
-|---|---|---|
-| **Briefing instructions** | *"Tell them who is calling and why, in two sentences."* | What the AI tells your colleague before connecting the caller |
-| **Max briefing time** | 60 s (15–120 s) | The briefing is cut off at this point and the caller is connected |
+In a warm transfer the AI tells your colleague who is calling and why, in a couple of sentences, then connects the caller. The briefing is capped at one minute.
 
 ## What the caller hears
 
-A transfer has up to three moments where the caller is waiting. Each is configurable on the node.
+What the caller hears during a transfer is the same on every node, so you don't have to design it:
 
-<Steps>
-  <Step title="Before dialling — Announcement (optional)">
-    A line said by the system, not by the AI, right before the call is dialled — for example *"Connecting you now, please hold."* Because it's fixed text, it's the same on every call. Leave it empty and Talkif says a default line in the flow's language (*"Connecting you now, please hold."* in English).
-  </Step>
-  <Step title="While it rings — While ringing, the caller hears">
-    | Option | What the caller experiences |
-    |---|---|
-    | **Bot keeps talking with the caller** (default) | The caller stays in the conversation while the destination rings. If nobody answers, the agent apologises and offers alternatives |
-    | **Ringback tone** | The caller is put on hold and hears a ringing tone until someone answers |
-    | **Silence** | The caller is put on hold and hears nothing until someone answers |
-  </Step>
-  <Step title="During the briefing (warm only) — While you brief, the caller hears">
-    **Hold tone** (default) or **Silence**, while the AI briefs your colleague.
-  </Step>
-</Steps>
-
-<Tip>
-  Keep the agent talking while it rings unless you have a reason not to. A caller left in silence can't tell a transfer from a dropped line; a caller still in conversation barely notices the wait.
-</Tip>
+1. **Before dialling** — a short line in the flow's language, such as *"Connecting you now, please hold."*
+2. **While it rings** — the AI keeps talking with the caller, so a wait never sounds like a dropped line. If nobody answers, the agent is told and continues the conversation.
+3. **During a warm briefing** — the caller hears a hold tone while the AI briefs your colleague.
 
 ## The handoff case
 
@@ -76,7 +55,14 @@ The AI fills the case when it calls the transfer. Mark a field **required** and 
 
 ## Where a transfer can go
 
-Transfer targets are set up once for the whole account, in **Settings → People & numbers**, and picked by name on each Transfer node. Every member can see them; owners and admins add, change and delete them.
+On the Transfer node, **Who should get the call?** has two tabs:
+
+| Tab | What rings |
+|---|---|
+| **Phone number** | One phone-number destination |
+| **Your team** | **Everyone online** — everyone in the account who is available for calls right now, with nothing to set up; one [team](#teams-routing-to-the-right-people); several teams the [AI picks between](#let-the-ai-pick-the-team); a *People in the dashboard* destination; or a destination group |
+
+Destinations and destination groups are set up once for the whole account, in **Settings → People & numbers**, and picked by name on the node. Every member can see them; owners and admins add, change and delete them.
 
 ### Destinations
 
@@ -130,17 +116,11 @@ A transfer to people in the dashboard can be limited to certain tags. When it ri
 
 If nobody matches, nobody is rung and the transfer fails as if nobody answered. It never falls back to ringing everyone.
 
-### Let the bot choose the team
+### Let the AI pick the team
 
-Turn on **Let the bot choose the team** on a Transfer node and, instead of one fixed target, you give the AI 2–8 teams to choose from. For each team you set:
+Pick one team under **Your team** and the node rings that team. Add a second team and the AI picks one of them from the conversation — up to 8 teams. Once there is more than one, each team needs a short description the AI reads to decide, such as *"Internet, modem or line problems."*
 
-| Setting | What it does |
-|---|---|
-| **Team** | A member tag |
-| **When to use** | A short description the AI reads to decide — *"Internet, modem or line problems."* |
-| **If nobody in this team is available** | Optional fallback team, tried once |
-
-The AI picks one team from the conversation. Talkif rings that team's available members within their hours; if none answers, the fallback team is tried once; if that fails too, the agent is told nobody answered and continues the conversation.
+Talkif rings the chosen team's available members within their hours. If nobody in it answers, the agent is told and continues the conversation.
 
 ### Managing tags and hours by API
 
@@ -166,17 +146,14 @@ A call can be offered to people at most **twice**. After that, a further transfe
 ## Set up a transfer
 
 <Steps>
-  <Step title="Add destinations">
-    **Settings → People & numbers → Destinations**: add the phone numbers and, if your team takes calls in the dashboard or app, a *People in the dashboard* destination.
-  </Step>
-  <Step title="Group them">
-    Under **Destination groups**, create a group for each team you transfer to.
+  <Step title="Add destinations, if you need them">
+    Ringing everyone online or a team needs no setup. To transfer to an outside number or a fixed set of people, add them under **Settings → People & numbers** — phone numbers as destinations, and a destination group for each set that should ring together.
   </Step>
   <Step title="Add a Transfer node">
-    In the flow, add a **Transfer** node, attach it to the agents that may transfer, and write **When should the AI transfer?**. Pick the destination group (or turn on **Let the bot choose the team**).
+    In the flow, add a **Transfer** node and attach it to the agents that may transfer. Choose **Warm transfer** or **Cold transfer**, write **When should the AI transfer?**, and under **Who should get the call?** pick a phone number or, under **Your team**, who rings.
   </Step>
-  <Step title="Choose the mode and what the caller hears">
-    Cold or warm, the announcement, **While ringing, the caller hears**, and for warm transfers the briefing settings.
+  <Step title="Choose what the AI collects">
+    Under **What should the AI collect first?**, add the details your colleague needs, such as an order number. Mark a detail required and the AI asks the caller for it before transferring.
   </Step>
   <Step title="Tell the agent what to do if nobody answers">
     In the prompt of each agent that can transfer, say what to offer when a transfer doesn't go through — a callback or taking a message.
