@@ -8394,6 +8394,98 @@
         ]
       }
     },
+    "/api/v1/public/calls/calls/{callId}/end": {
+      "post": {
+        "tags": [
+          "Public Calls"
+        ],
+        "summary": "End public call",
+        "description": "POST /api/v1/public/calls/calls/{callId}/end",
+        "operationId": "end_call",
+        "parameters": [
+          {
+            "name": "callId",
+            "in": "path",
+            "description": "Call ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Hangup delivered (or call already ended)"
+          },
+          "401": {
+            "description": "`unauthorized`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient permissions for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "`service_unavailable`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/api/v1/public/calls/calls/{callId}/offer": {
       "post": {
         "tags": [
@@ -9298,10 +9390,2201 @@
           }
         ]
       }
+    },
+    "/api/v1/transfers/destination-groups": {
+      "get": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "List destination groups",
+        "description": "Destination groups are named sets of destinations that ring together as one\ntransfer target.",
+        "operationId": "list_groups",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Page size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Page offset",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of destination groups",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DestinationGroupListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient permissions for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Create a destination group",
+        "description": "A destination group is a named set of destinations that ring together as\none transfer target. With the `simultaneous` strategy every member rings at\nonce and the first to answer is connected.",
+        "operationId": "create_group",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDestinationGroupRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Destination group created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DestinationGroup"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Owner or admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Name already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/transfers/destination-groups/{id}": {
+      "get": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Get a destination group",
+        "description": "A named set of destinations that ring together as one transfer target.",
+        "operationId": "get_group",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Destination group ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Destination group",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DestinationGroup"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient permissions for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Update a destination group",
+        "description": "Omitted fields keep their value; `members` replaces the whole list.",
+        "operationId": "update_group",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Destination group ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDestinationGroupRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Destination group updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DestinationGroup"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Owner or admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Name already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Delete a destination group",
+        "description": "Refused with `in_use` while a published flow transfers to it; `meta.flows`\nnames them.",
+        "operationId": "delete_group",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Destination group ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Destination group deleted"
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Owner or admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "`in_use`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/transfers/destinations": {
+      "get": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "List transfer destinations",
+        "description": "Destinations are the places a flow's Transfer node can send a call: a phone\nnumber, the people who are available for calls in the dashboard, or your\nown app.",
+        "operationId": "list_destinations",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Page size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Page offset",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of destinations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransferDestinationListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient permissions for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Create a transfer destination",
+        "description": "A destination is somewhere a Transfer node can send a call: a phone number,\nthe people who are available for calls in the dashboard, or your own app\n(`app`: offers arrive as signed `transfer.offer` webhooks; the response\ncarries the signing secret once, in `signingSecret`). Emergency,\nspecial-service and premium-rate numbers are refused.",
+        "operationId": "create_destination",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTransferDestinationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Destination created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransferDestination"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Owner or admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Name already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "`unsupported_kind`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/transfers/destinations/{id}": {
+      "get": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Get a transfer destination",
+        "description": "One place a flow's Transfer node can send a call.",
+        "operationId": "get_destination",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Destination ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Destination",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransferDestination"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient permissions for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Update a transfer destination",
+        "description": "The kind cannot change. Sending `config` replaces the whole settings object.",
+        "operationId": "update_destination",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Destination ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTransferDestinationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Destination updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransferDestination"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Owner or admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Name already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Delete a transfer destination",
+        "description": "Refused with `in_use` while a destination group lists it or a published\nflow transfers to it; `meta.groups` and `meta.flows` name them.",
+        "operationId": "delete_destination",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Destination ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Destination deleted"
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Owner or admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "`in_use`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/transfers/destinations/{id}/deliveries": {
+      "get": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "List an app destination's deliveries",
+        "description": "The last 20 webhook deliveries (test sends and real offers), newest first.",
+        "operationId": "list_deliveries",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Destination ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Latest deliveries",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransferAppDeliveryListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient permissions for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/transfers/destinations/{id}/rotate-secret": {
+      "post": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Rotate an app destination's signing secret",
+        "description": "Replaces the secret that signs `transfer.offer` webhooks and returns the new\none once, in `signingSecret`. For 24 hours, until `previousSecretExpiresAt`,\nwebhooks carry a second signature made with the previous secret\n(`Talkif-Signature: t=…,v1=<new>,v1=<previous>`), so your server can switch\nsecrets without missing an offer.",
+        "operationId": "rotate_secret",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Destination ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Secret rotated; `signingSecret` holds the new secret and `previousSecretExpiresAt` says when the old one stops signing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransferDestination"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Not an app destination",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Owner or admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/transfers/destinations/{id}/test": {
+      "post": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Send a test offer to an app destination",
+        "description": "Sends a sample `transfer.offer` webhook (fake caller, `\"test\": true`),\nsigned like a real one, and reports how your server answered. Test offers\ncannot be accepted. The delivery is logged. At most 5 test sends per\ndestination per minute and 30 per account per hour.",
+        "operationId": "test_destination",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Destination ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delivery result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransferAppDeliveryResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Not an app destination",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Owner or admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "`rate_limit_exceeded`: too many test sends; `meta.retryAfterSecs` says when to retry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/transfers/member-tags": {
+      "get": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "List member tags in use",
+        "description": "Every tag at least one member of your organization carries, with how many\nmembers carry it. Use these in an `available_humans` destination's `tags`\nto ring only that team. Empty on a personal account.",
+        "operationId": "list_member_tags",
+        "responses": {
+          "200": {
+            "description": "Tags in use",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberTagCatalogResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient permissions for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/transfers/members": {
+      "get": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "List members with their tags and hours",
+        "description": "Every member of your organization, with the tags and weekly available\nhours that decide which transfers to people ring them. Tags and hours\nbelong to the organization: the same member has the same tags and hours\nin every account of the organization. On a personal account the list is\nempty.",
+        "operationId": "list_members",
+        "responses": {
+          "200": {
+            "description": "Members of the organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransferMemberListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient permissions for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/transfers/members/{memberId}/hours": {
+      "get": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Get a member's available hours",
+        "operationId": "get_member_hours",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "description": "Membership ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The member's hours; `hours` is `null` when always within hours",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberHoursResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient permissions for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not a member of this organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Set a member's available hours",
+        "description": "Sets the weekly schedule inside which transfers to people ring this\nmember. Outside it the member is skipped even when available for calls;\nif nobody is left, the destination's nobody-available path runs. Hours\nbelong to the organization and apply in every account of it. The member\nthemselves, or an owner or admin.",
+        "operationId": "set_member_hours",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "description": "Membership ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberHours"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Hours set (normalized: canonical timezone name, sorted ranges)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberHoursResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only the member, an owner or an admin can set these hours",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not a member of this organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Remove a member's available hours",
+        "description": "Removes the schedule: the member is always within hours again. The member\nthemselves, or an owner or admin.",
+        "operationId": "delete_member_hours",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "description": "Membership ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Hours removed"
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only the member, an owner or an admin can remove these hours",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not a member of this organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/transfers/members/{memberId}/tags": {
+      "get": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Get a member's tags",
+        "operationId": "get_member_tags",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "description": "Membership ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The member's tags",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberTagsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient permissions for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not a member of this organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Replace a member's tags",
+        "description": "Sets the member's complete tag list. Tags group members into teams for\ntransfers: an `available_humans` destination with `tags` rings only\nmembers carrying at least one of them. Tags belong to the organization,\nso the change applies in every account of the organization. Owner or\nadmin only.",
+        "operationId": "set_member_tags",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "description": "Membership ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetMemberTagsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Tags replaced",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberTagsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Owner or admin role required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not a member of this organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/transfers/offers/{offerId}": {
+      "get": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Get a transfer offer",
+        "description": "A ringing offer to one of your app destinations: the same body as the\n`transfer.offer` webhook. Only offers to app destinations of this account\nare visible. Requires an API key with the `transfer_offers:read` scope.",
+        "operationId": "get_offer",
+        "parameters": [
+          {
+            "name": "offerId",
+            "in": "path",
+            "description": "Offer ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The offer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransferOffer"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not an API key, or the key lacks the `transfer_offers` scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "`offer_expired`: the offer can no longer be accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/transfers/offers/{offerId}/accept": {
+      "post": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Accept a transfer offer",
+        "description": "The first accept wins; accept before `acceptUntil`. Without a body the\nreply carries a single-use WebSocket `joinUrl` for the call's audio; with\n`{\"sdpOffer\": \"<SDP>\"}` the call joins over WebRTC and the reply carries\nthe SDP answer and ICE servers. Join within 10 seconds (20 for WebRTC) or\nthe offer counts as unanswered. Requires an API key with the\n`transfer_offers:write` scope; repeating the accept with the same key\nreturns a new join.",
+        "operationId": "accept_offer",
+        "parameters": [
+          {
+            "name": "offerId",
+            "in": "path",
+            "description": "Offer ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Optional; omit for a WebSocket join",
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/components/schemas/AcceptTransferOfferRequest"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Accepted; how to join the call",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransferOfferAcceptResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not an API key, or the key lacks the `transfer_offers` scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "`offer_taken` (accepted elsewhere) or `offer_expired` (no longer ringing, declined, or the destination was disabled or deleted)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "`invalid_sdp_offer`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/transfers/offers/{offerId}/decline": {
+      "post": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Decline a transfer offer",
+        "description": "Your app will not take this call: the transfer stops ringing it at once.\nDeclining an offer that already ended, or that was already accepted, does\nnothing. Requires an API key with the `transfer_offers:write` scope.",
+        "operationId": "decline_offer",
+        "parameters": [
+          {
+            "name": "offerId",
+            "in": "path",
+            "description": "Offer ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Declined"
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not an API key, or the key lacks the `transfer_offers` scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {
+      "AcceptTransferOfferRequest": {
+        "type": "object",
+        "description": "Optional accept body: a WebRTC SDP offer switches the join to WebRTC.",
+        "properties": {
+          "clientId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Identifier of the accepting client (at most 64 characters)"
+          },
+          "sdpOffer": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "WebRTC SDP offer; present = join over WebRTC, absent = WebSocket join"
+          }
+        },
+        "additionalProperties": false
+      },
       "ActionDefinition": {
         "type": "object",
         "description": "Action definition for pre/post agent actions\n\nActions execute before or after an agent speaks. Unlike functions\n(which are LLM-invoked tools), actions are deterministic steps\ntriggered automatically by the flow engine.\n\nAction types:\n- `\"tts_say\"`: Speak specific text (config: `{ text: \"...\" }`)\n- `\"play_audio\"`: Play an audio file (config: `{ url: \"...\" }`)\n- `\"wait\"`: Pause for duration (config: `{ durationMs: 1000 }`)\n- `\"webhook\"`: Fire a webhook (config: `{ url: \"...\", method: \"POST\" }`)",
@@ -9497,6 +11780,14 @@
           }
         }
       },
+      "AgentRuntime": {
+        "type": "string",
+        "description": "Where a flow's conversation runs (spike, staging). Default `cloud`.",
+        "enum": [
+          "cloud",
+          "device"
+        ]
+      },
       "AgentStatus": {
         "type": "string",
         "description": "Status of the AI agent handling the call.",
@@ -9672,6 +11963,21 @@
             "description": "Unit of usage (e.g., \"tokens\", \"characters\", \"minutes\")"
           }
         }
+      },
+      "AppDestinationConfig": {
+        "type": "object",
+        "description": "Configuration of a \"Your app\" destination: the HTTPS endpoint of your\nserver that receives transfer offers.",
+        "required": [
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "HTTPS URL that receives signed `transfer.offer` webhooks",
+            "example": "https://example.com/talkif/transfers"
+          }
+        },
+        "additionalProperties": false
       },
       "AttemptBucket": {
         "type": "object",
@@ -11116,6 +13422,14 @@
             "example": "09:00"
           }
         }
+      },
+      "CallerIdPolicy": {
+        "type": "string",
+        "description": "Caller ID presented to a phone destination.",
+        "enum": [
+          "did",
+          "caller"
+        ]
       },
       "CampaignAnalyticsResponse": {
         "type": "object",
@@ -13200,6 +15514,46 @@
           }
         }
       },
+      "CreateDestinationGroupRequest": {
+        "type": "object",
+        "description": "Create a destination group: a named set of destinations that ring together\nas one transfer target.",
+        "required": [
+          "name",
+          "members"
+        ],
+        "properties": {
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DestinationGroupMember"
+            },
+            "description": "1–10 destinations of this account, in ring order."
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name, unique per account (1–100 characters).",
+            "example": "Sales team"
+          },
+          "strategy": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "`simultaneous` (default): ring every member at once, first to answer wins.",
+            "example": "simultaneous"
+          },
+          "totalTimeoutSecs": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "Upper bound for the whole attempt, 5–60 seconds. Default 30.",
+            "example": 30,
+            "minimum": 0
+          }
+        }
+      },
       "CreateDncEntryRequest": {
         "type": "object",
         "description": "Request to add a phone number to the DNC list",
@@ -13545,6 +15899,38 @@
           }
         }
       },
+      "CreateTransferDestinationRequest": {
+        "type": "object",
+        "description": "Create a transfer destination.",
+        "required": [
+          "name",
+          "kind",
+          "config"
+        ],
+        "properties": {
+          "config": {
+            "type": "object",
+            "description": "Kind-specific settings. For `app`: `{ \"url\": \"https://...\" }`, the HTTPS endpoint that\nreceives signed `transfer.offer` webhooks; the signing secret is returned once, in the\ncreate response. For `available_humans`: `{ \"userIds\": null }` (everyone\navailable) or `{ \"userIds\": [\"<user id>\", ...] }`, plus optional `\"tags\": [\"sales\", ...]`\nto ring only members with any of those tags (team accounts); members are rung only\nwithin their available hours. For `phone`: `{ \"number\": \"+E164\", \"callerId\": \"did\" | \"caller\",\n\"fromNumberId\"?: \"<id of one of your phone numbers>\" }`. `fromNumberId` picks the number\nthat places the call; when omitted, the number the original call came in on is used."
+          },
+          "enabled": {
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "description": "Disabled destinations are skipped when a transfer rings. Default `true`."
+          },
+          "kind": {
+            "type": "string",
+            "description": "Destination kind: `phone`, `available_humans` (the people who are\navailable for calls in the dashboard), or `app` (your own server)",
+            "example": "phone"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name, unique per account (1–100 characters).",
+            "example": "Sales desk"
+          }
+        }
+      },
       "CreateWebRTCCallResponse": {
         "type": "object",
         "description": "Response after creating a WebRTC call record (includes bot assignment)",
@@ -13579,6 +15965,95 @@
             "description": "Current call status"
           }
         }
+      },
+      "DestinationGroup": {
+        "type": "object",
+        "description": "A destination group: a named set of destinations that ring together as one\ntransfer target.",
+        "required": [
+          "id",
+          "name",
+          "strategy",
+          "members",
+          "totalTimeoutSecs",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DestinationGroupMember"
+            }
+          },
+          "name": {
+            "type": "string",
+            "example": "Sales team"
+          },
+          "strategy": {
+            "type": "string",
+            "example": "simultaneous"
+          },
+          "totalTimeoutSecs": {
+            "type": "integer",
+            "format": "int32",
+            "example": 30
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "DestinationGroupListResponse": {
+        "type": "object",
+        "description": "Page of destination groups",
+        "required": [
+          "groups",
+          "meta"
+        ],
+        "properties": {
+          "groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DestinationGroup"
+            },
+            "description": "Items on this page"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta",
+            "description": "Pagination metadata"
+          }
+        }
+      },
+      "DestinationGroupMember": {
+        "type": "object",
+        "description": "One member of a destination group.",
+        "required": [
+          "destinationId"
+        ],
+        "properties": {
+          "destinationId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A destination of the same account."
+          },
+          "ringTimeoutSecs": {
+            "type": "integer",
+            "format": "int32",
+            "description": "How long this member rings, 5–45 seconds.",
+            "example": 20,
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false
       },
       "DetectedIntent": {
         "type": "object",
@@ -13868,6 +16343,7 @@
           "queue_full",
           "assistant_quota_exceeded",
           "user_phone_not_verified",
+          "account_not_verified",
           "payment_method_required",
           "trial_already_claimed",
           "promotion_not_eligible",
@@ -13909,6 +16385,13 @@
           "invalid_id_format",
           "verification_code_invalid",
           "cannot_delete_has_dependencies",
+          "in_use",
+          "unsupported_kind",
+          "offer_taken",
+          "offer_taken_self",
+          "offer_expired",
+          "already_taken",
+          "takeover_unsupported",
           "schedule_not_found",
           "schedule_already_paused",
           "schedule_not_paused",
@@ -16180,6 +18663,225 @@
         },
         "additionalProperties": false
       },
+      "MemberHours": {
+        "type": "object",
+        "description": "A member's weekly available hours. A transfer to people rings the member\nonly inside these hours, evaluated on the local clock of `timezone` (a\n09:00–18:00 range stays 09:00–18:00 across daylight-saving changes).",
+        "required": [
+          "timezone",
+          "weekly"
+        ],
+        "properties": {
+          "timezone": {
+            "type": "string",
+            "description": "IANA timezone the times are in",
+            "example": "Europe/Istanbul"
+          },
+          "weekly": {
+            "$ref": "#/components/schemas/MemberWeeklyHours",
+            "description": "Ranges per weekday (`mon` … `sun`)"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MemberHoursRange": {
+        "type": "object",
+        "description": "A range of local time on one day. It never crosses midnight: for an\novernight shift use two ranges on two days, e.g. `22:00`–`24:00` and\n`00:00`–`06:00`.",
+        "required": [
+          "start",
+          "end"
+        ],
+        "properties": {
+          "end": {
+            "type": "string",
+            "description": "End, `HH:MM` (00:01–24:00), exclusive; after `start` on the same day",
+            "example": "18:00"
+          },
+          "start": {
+            "type": "string",
+            "description": "Start, `HH:MM` (00:00–23:59), inclusive",
+            "example": "09:00"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MemberHoursResponse": {
+        "type": "object",
+        "description": "A member's available hours.",
+        "required": [
+          "memberId",
+          "userId"
+        ],
+        "properties": {
+          "hours": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/MemberHours",
+                "description": "The weekly schedule; `null` when the member has none, which means\nalways within hours"
+              }
+            ]
+          },
+          "memberId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Membership ID of the member in your organization",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "User ID of the member",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          }
+        }
+      },
+      "MemberRole": {
+        "type": "string",
+        "description": "Role of a member in your organization: `owner`, `admin` or `member`.",
+        "enum": [
+          "owner",
+          "admin",
+          "member"
+        ]
+      },
+      "MemberStatus": {
+        "type": "string",
+        "description": "Status of a member in your organization: `active`, `pending` (invited,\nnot yet joined) or `suspended`.",
+        "enum": [
+          "active",
+          "pending",
+          "suspended"
+        ]
+      },
+      "MemberTagCatalogResponse": {
+        "type": "object",
+        "description": "Tags in use in your organization.",
+        "required": [
+          "tags"
+        ],
+        "properties": {
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberTagUsage"
+            },
+            "description": "Every tag at least one member carries, sorted"
+          }
+        }
+      },
+      "MemberTagUsage": {
+        "type": "object",
+        "description": "One tag in use in your organization.",
+        "required": [
+          "tag",
+          "memberCount"
+        ],
+        "properties": {
+          "memberCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "How many members carry the tag",
+            "example": 3
+          },
+          "tag": {
+            "type": "string",
+            "description": "The tag, normalized",
+            "example": "sales"
+          }
+        }
+      },
+      "MemberTagsResponse": {
+        "type": "object",
+        "description": "A member's tags.",
+        "required": [
+          "memberId",
+          "userId",
+          "tags"
+        ],
+        "properties": {
+          "memberId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Membership ID of the member in your organization",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The member's tags, normalized and sorted",
+            "example": [
+              "billing",
+              "sales"
+            ]
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "User ID of the member (the ID `available_humans` destinations list in `userIds`)",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          }
+        }
+      },
+      "MemberWeeklyHours": {
+        "type": "object",
+        "description": "Ranges per weekday, at most 6 per day, not overlapping. A missing or\nempty day has no hours.",
+        "properties": {
+          "fri": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberHoursRange"
+            },
+            "description": "Ranges on Friday"
+          },
+          "mon": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberHoursRange"
+            },
+            "description": "Ranges on Monday"
+          },
+          "sat": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberHoursRange"
+            },
+            "description": "Ranges on Saturday"
+          },
+          "sun": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberHoursRange"
+            },
+            "description": "Ranges on Sunday"
+          },
+          "thu": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberHoursRange"
+            },
+            "description": "Ranges on Thursday"
+          },
+          "tue": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberHoursRange"
+            },
+            "description": "Ranges on Tuesday"
+          },
+          "wed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberHoursRange"
+            },
+            "description": "Ranges on Wednesday"
+          }
+        },
+        "additionalProperties": false
+      },
       "PaginatedResponse": {
         "allOf": [
           {
@@ -16229,6 +18931,33 @@
             "example": 142
           }
         }
+      },
+      "PhoneDestinationConfig": {
+        "type": "object",
+        "description": "Configuration of a phone destination.",
+        "required": [
+          "number"
+        ],
+        "properties": {
+          "callerId": {
+            "$ref": "#/components/schemas/CallerIdPolicy",
+            "description": "Caller ID shown to the person answering."
+          },
+          "fromNumberId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid",
+            "description": "Which of the account's phone numbers places the call (its provider\ndecides the route). Omitted: the number the original call came in on."
+          },
+          "number": {
+            "type": "string",
+            "description": "Number to ring, E.164.",
+            "example": "+905551234567"
+          }
+        },
+        "additionalProperties": false
       },
       "PhoneNumberCapability": {
         "type": "string",
@@ -17444,6 +20173,27 @@
           }
         }
       },
+      "SetMemberTagsRequest": {
+        "type": "object",
+        "description": "Replace a member's tags.",
+        "required": [
+          "tags"
+        ],
+        "properties": {
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The member's complete tag list; it replaces the current one. Tags are\nnormalized: trimmed, lowercased, spaces become `-`. Allowed: `a`–`z`,\n`ı ğ ü ş ö ç`, digits, `-` and `_`, at most 32 characters each, at most\n20 tags. An empty list removes every tag.",
+            "example": [
+              "sales",
+              "billing"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
       "SkipContactRequest": {
         "type": "object",
         "description": "Request to skip a campaign contact",
@@ -18032,8 +20782,566 @@
         "description": "Transcript speaker type identifying who spoke a message",
         "enum": [
           "ai",
-          "human"
+          "human",
+          "colleague"
         ]
+      },
+      "TransferAppDelivery": {
+        "type": "object",
+        "description": "One logged delivery to an app destination.",
+        "required": [
+          "id",
+          "kind",
+          "durationMs",
+          "createdAt"
+        ],
+        "properties": {
+          "callId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid",
+            "description": "Call transferred (null for test sends)"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the delivery was sent",
+            "example": "2026-01-15T10:30:00Z"
+          },
+          "deliveryId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid",
+            "description": "The delivery's `deliveryId` (null for deliveries logged before it existed)",
+            "example": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+          },
+          "durationMs": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Time until the response, in milliseconds",
+            "example": 142
+          },
+          "error": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Why the delivery did not ring (see `TransferAppDeliveryResult.error`)"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier of the delivery",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "kind": {
+            "type": "string",
+            "description": "`test` (a test send), `offer` (a real transfer offer) or `withdrawn` (the\nnotice that an offer stopped ringing)",
+            "example": "offer"
+          },
+          "offerId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid",
+            "description": "Offer delivered (null for test sends)"
+          },
+          "statusCode": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "HTTP status your server answered with",
+            "example": 200
+          }
+        }
+      },
+      "TransferAppDeliveryListResponse": {
+        "type": "object",
+        "description": "The latest deliveries to an app destination, newest first.",
+        "required": [
+          "deliveries"
+        ],
+        "properties": {
+          "deliveries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferAppDelivery"
+            },
+            "description": "Up to 20 deliveries, newest first"
+          }
+        }
+      },
+      "TransferAppDeliveryResult": {
+        "type": "object",
+        "description": "Outcome of one webhook delivery.",
+        "required": [
+          "deliveryId",
+          "durationMs"
+        ],
+        "properties": {
+          "deliveryId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique id of the delivery (`deliveryId` in the body, `Talkif-Delivery-Id` header)",
+            "example": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+          },
+          "durationMs": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Time until the response, in milliseconds",
+            "example": 142
+          },
+          "error": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Why the delivery did not ring: `No response within 3 s`, `Could not\nconnect`, `Blocked address`, `TLS error`, `HTTP <status>` or `Delivery is\nunavailable`; null after a 2xx answer",
+            "example": "HTTP 500"
+          },
+          "statusCode": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "HTTP status your server answered with (null when no response arrived)",
+            "example": 200,
+            "minimum": 0
+          }
+        }
+      },
+      "TransferDestination": {
+        "type": "object",
+        "description": "A transfer destination: somewhere a flow's Transfer node can send a call.",
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "config",
+          "enabled",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "config": {
+            "type": "object"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "description": "Destination kind: `phone`, `available_humans` (the people who are\navailable for calls in the dashboard), or `app` (your own server)",
+            "example": "phone"
+          },
+          "name": {
+            "type": "string",
+            "example": "Sales desk"
+          },
+          "previousSecretExpiresAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "App destinations, after a rotation: until this time webhooks are also signed\nwith the previous secret (a second `v1=` in `Talkif-Signature`)",
+            "example": "2026-01-16T10:30:00Z"
+          },
+          "signingSecret": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "App destinations: the secret that signs the webhooks. Returned only when the\ndestination is created or its secret rotated; store it, it is not shown again"
+          },
+          "signingSecretHint": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "App destinations: the last characters of the signing secret, to tell secrets apart",
+            "example": "whsec_••••ff00"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "TransferDestinationListResponse": {
+        "type": "object",
+        "description": "Page of transfer destinations",
+        "required": [
+          "destinations",
+          "meta"
+        ],
+        "properties": {
+          "destinations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferDestination"
+            },
+            "description": "Items on this page"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta",
+            "description": "Pagination metadata"
+          }
+        }
+      },
+      "TransferMember": {
+        "type": "object",
+        "description": "A member of your organization, with the tags and available hours that\ndecide which transfers ring them.",
+        "required": [
+          "memberId",
+          "userId",
+          "name",
+          "role",
+          "status",
+          "tags"
+        ],
+        "properties": {
+          "hours": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/MemberHours",
+                "description": "Weekly available hours; `null` = always within hours"
+              }
+            ]
+          },
+          "memberId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Membership ID; use it in the member's `tags` and `hours` paths",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Full name",
+            "example": "Ayşe Yılmaz"
+          },
+          "role": {
+            "$ref": "#/components/schemas/MemberRole",
+            "description": "Role in the organization"
+          },
+          "status": {
+            "$ref": "#/components/schemas/MemberStatus",
+            "description": "Membership status"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The member's tags, normalized and sorted",
+            "example": [
+              "sales"
+            ]
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "User ID; the ID `available_humans` destinations list in `userIds`",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          }
+        }
+      },
+      "TransferMemberListResponse": {
+        "type": "object",
+        "description": "Every member of your organization with their tags and hours.",
+        "required": [
+          "members"
+        ],
+        "properties": {
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferMember"
+            },
+            "description": "Members of the organization"
+          }
+        }
+      },
+      "TransferOffer": {
+        "type": "object",
+        "description": "A transfer offer to your app: the body of the `transfer.offer` webhook and\nof `GET /api/v1/transfers/offers/{offerId}`.",
+        "required": [
+          "type",
+          "offerId",
+          "callId",
+          "expiresAt",
+          "acceptUntil",
+          "mode",
+          "caller",
+          "flowName",
+          "test"
+        ],
+        "properties": {
+          "acceptUntil": {
+            "type": "string",
+            "description": "Accept before this time (it can be earlier than `expiresAt`: joining the\ncall takes a few seconds)",
+            "example": "2026-01-15T10:29:50Z"
+          },
+          "callId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Call being transferred",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "caller": {
+            "$ref": "#/components/schemas/TransferOfferCaller"
+          },
+          "case": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/TransferOfferCase",
+                "description": "Handoff case; null when the agent sent none"
+              }
+            ]
+          },
+          "deliveryId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid",
+            "description": "Unique id of this webhook delivery, also sent in the `Talkif-Delivery-Id`\nheader (webhook only; absent from `GET /api/v1/transfers/offers/{offerId}`)",
+            "example": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+          },
+          "expiresAt": {
+            "type": "string",
+            "description": "The offer stops ringing at this time",
+            "example": "2026-01-15T10:30:00Z"
+          },
+          "flowName": {
+            "type": "string",
+            "description": "Name of the flow that handled the call",
+            "example": "Support line"
+          },
+          "mode": {
+            "type": "string",
+            "description": "`cold` (the caller is connected at once) or `warm` (the agent briefs you first)",
+            "example": "cold"
+          },
+          "offerId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Offer to accept or decline",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "test": {
+            "type": "boolean",
+            "description": "`true` for test deliveries, which cannot be accepted",
+            "example": false
+          },
+          "type": {
+            "type": "string",
+            "description": "Event type, always `transfer.offer`",
+            "example": "transfer.offer"
+          }
+        }
+      },
+      "TransferOfferAcceptResponse": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/TransferOfferJoin",
+            "description": "WebSocket join (accept without a body)"
+          },
+          {
+            "$ref": "#/components/schemas/TransferOfferWebRtcAnswer",
+            "description": "WebRTC join (accept with `sdpOffer`)"
+          }
+        ],
+        "description": "The accept reply: the WebSocket shape (no body) or the WebRTC shape\n(`sdpOffer` in the body)."
+      },
+      "TransferOfferCaller": {
+        "type": "object",
+        "description": "Who is calling.",
+        "properties": {
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Contact name, when the caller is a known contact",
+            "example": "Jane Doe"
+          },
+          "number": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Caller's number in E.164 format; null when the call has none (web calls)",
+            "example": "+15559876543"
+          }
+        }
+      },
+      "TransferOfferCase": {
+        "type": "object",
+        "description": "The handoff case the agent collected before transferring.",
+        "required": [
+          "fields"
+        ],
+        "properties": {
+          "fields": {
+            "type": "object",
+            "description": "Custom fields configured on the Transfer node, and the team rung",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "propertyNames": {
+              "type": "string"
+            },
+            "example": {
+              "order_no": "A-17"
+            }
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Why the caller is being transferred",
+            "example": "Refund request"
+          },
+          "summary": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Short summary of the conversation so far",
+            "example": "Parcel arrived damaged; caller wants a refund"
+          }
+        }
+      },
+      "TransferOfferJoin": {
+        "type": "object",
+        "description": "WebSocket join: a single-use URL for the call's audio.",
+        "required": [
+          "joinUrl",
+          "joinToken",
+          "callId",
+          "expiresAt"
+        ],
+        "properties": {
+          "callId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Call joined",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "expiresAt": {
+            "type": "string",
+            "description": "The join token must be used before this time",
+            "example": "2026-01-15T10:30:00Z"
+          },
+          "joinToken": {
+            "type": "string",
+            "description": "The single-use join token (already in `joinUrl`)"
+          },
+          "joinUrl": {
+            "type": "string",
+            "description": "WebSocket URL to join the call; carries the single-use join token",
+            "example": "wss://relay.example.com/join?token=eyJ..."
+          }
+        }
+      },
+      "TransferOfferWebRtcAnswer": {
+        "type": "object",
+        "description": "WebRTC join: the SDP answer plus the ICE servers to keep using\n(short-lived TURN credentials).",
+        "required": [
+          "callId",
+          "sdpAnswer",
+          "iceServers",
+          "expiresAt"
+        ],
+        "properties": {
+          "callId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Call joined",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "expiresAt": {
+            "type": "string",
+            "description": "The TURN credentials stop working after this time",
+            "example": "2026-01-15T10:30:00Z"
+          },
+          "iceServers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IceServerEntry"
+            },
+            "description": "ICE servers for the connection"
+          },
+          "sdpAnswer": {
+            "type": "string",
+            "description": "SDP answer to apply to your peer connection"
+          }
+        }
+      },
+      "TransferOfferWithdrawn": {
+        "type": "object",
+        "description": "Body of the `transfer.offer.withdrawn` webhook: the offer stopped ringing\nwithout your app taking it. Sent once, best effort, without retries.",
+        "required": [
+          "type",
+          "offerId",
+          "callId",
+          "reason",
+          "deliveryId"
+        ],
+        "properties": {
+          "callId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Call it belonged to",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "deliveryId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique id of this webhook delivery (also the `Talkif-Delivery-Id` header)",
+            "example": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+          },
+          "offerId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Offer that stopped ringing",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "reason": {
+            "type": "string",
+            "description": "`answered_elsewhere` (another destination took the call), `cancelled`\n(the caller hung up or the transfer was called off) or `expired`",
+            "example": "answered_elsewhere"
+          },
+          "type": {
+            "type": "string",
+            "description": "Event type, always `transfer.offer.withdrawn`",
+            "example": "transfer.offer.withdrawn"
+          }
+        }
       },
       "TransformationSummary": {
         "type": "object",
@@ -18480,6 +21788,42 @@
           }
         }
       },
+      "UpdateDestinationGroupRequest": {
+        "type": "object",
+        "description": "Update a destination group. Omitted fields keep their value.",
+        "properties": {
+          "members": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/DestinationGroupMember"
+            },
+            "description": "Replaces the whole member list."
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "strategy": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "totalTimeoutSecs": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "minimum": 0
+          }
+        }
+      },
       "UpdateFlowFunctionRequest": {
         "type": "object",
         "description": "Request to update a flow function",
@@ -18787,6 +22131,31 @@
               "null"
             ],
             "description": "Time of day to execute in HH:MM or HH:MM:SS format"
+          }
+        }
+      },
+      "UpdateTransferDestinationRequest": {
+        "type": "object",
+        "description": "Update a transfer destination. The kind cannot change.",
+        "properties": {
+          "config": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "Replaces the whole kind-specific settings object."
+          },
+          "enabled": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
           }
         }
       },
@@ -19120,7 +22489,7 @@
     },
     {
       "name": "Phone Providers",
-      "description": "Manage phone providers (Twilio, SIP, BYOC)"
+      "description": "Manage phone providers (Twilio, SIP, own Twilio)"
     },
     {
       "name": "Contacts",
@@ -19153,6 +22522,10 @@
     {
       "name": "Flow Functions",
       "description": "User-defined webhook functions for AI voice calls"
+    },
+    {
+      "name": "Transfers",
+      "description": "Where a flow's Transfer node can send a call: destinations (a phone number, the people available for calls in the dashboard, or your own app, which receives signed transfer offers and accepts them with an API key), destination groups (named sets of destinations that ring together as one transfer target), and the tags and available hours of your organization's members, which decide who a transfer to people rings"
     },
     {
       "name": "Flow Templates",

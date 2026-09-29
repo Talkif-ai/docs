@@ -271,6 +271,9 @@ navigation:
           - page: Transfer calls to people
             slug: transfer-calls-to-people
             path: docs/pages/build/transfer-calls-to-people.mdx
+          - page: Receive transfers in your app
+            slug: receive-transfers-in-your-app
+            path: docs/pages/build/receive-transfers-in-your-app.mdx
           - page: Test and publish
             slug: test-and-publish
             path: docs/pages/build/test-and-publish.mdx

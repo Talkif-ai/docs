@@ -465,6 +465,14 @@
       "description": "Your phone number must be verified before claiming this promotion. Verify your phone in profile settings first."
     },
     {
+      "code": "account_not_verified",
+      "status": 403,
+      "title": "Account Verification Required",
+      "category": "calls",
+      "categoryTitle": "Calls",
+      "description": "Verify your email address or phone number before starting calls. Complete verification in profile settings."
+    },
+    {
       "code": "payment_method_required",
       "status": 403,
       "title": "Payment Method Required",
@@ -791,6 +799,62 @@
       "category": "conflict",
       "categoryTitle": "Conflicts",
       "description": "This resource has dependent resources that must be removed first. Check which resources reference it before deleting."
+    },
+    {
+      "code": "in_use",
+      "status": 409,
+      "title": "In Use",
+      "category": "transfers",
+      "categoryTitle": "Call Transfer",
+      "description": "This transfer destination or group is still used by a published flow or a transfer group. Remove it from those first, then delete it."
+    },
+    {
+      "code": "unsupported_kind",
+      "status": 422,
+      "title": "Unsupported Kind",
+      "category": "transfers",
+      "categoryTitle": "Call Transfer",
+      "description": "This destination kind is not available yet. Use a phone destination."
+    },
+    {
+      "code": "offer_taken",
+      "status": 409,
+      "title": "Offer Taken",
+      "category": "transfers",
+      "categoryTitle": "Call Transfer",
+      "description": "This call was already answered."
+    },
+    {
+      "code": "offer_taken_self",
+      "status": 409,
+      "title": "Offer Taken Self",
+      "category": "transfers",
+      "categoryTitle": "Call Transfer",
+      "description": "You answered this call on another device."
+    },
+    {
+      "code": "offer_expired",
+      "status": 409,
+      "title": "Offer Expired",
+      "category": "transfers",
+      "categoryTitle": "Call Transfer",
+      "description": "This call is no longer ringing: it was answered elsewhere, the caller hung up, or it timed out."
+    },
+    {
+      "code": "already_taken",
+      "status": 409,
+      "title": "Already Taken",
+      "category": "transfers",
+      "categoryTitle": "Call Transfer",
+      "description": "A teammate already took over this call."
+    },
+    {
+      "code": "takeover_unsupported",
+      "status": 409,
+      "title": "Takeover Unsupported",
+      "category": "transfers",
+      "categoryTitle": "Call Transfer",
+      "description": "This call does not run through a Talkif call room, so it cannot be listened to or taken over."
     },
     {
       "code": "schedule_not_found",
