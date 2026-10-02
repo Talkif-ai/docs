@@ -1,55 +1,86 @@
 ---
 title: Members and roles
-description: The three roles in an organization — Owner, Admin, Member — exactly what each may do, how invitations work, and how to suspend, remove or hand over.
+description: The Team page and the four roles in an organization — Owner, Admin, Member, Agent — exactly what each may do, who can change roles, how invitations work, and how to suspend, remove or hand over.
+max-toc-depth: 2
 ---
 
-Roles answer one question: *who can spend the account's money, and who can change who's in the room?* Everything operational — building flows, placing calls, managing contacts and campaigns — is open to every member, because that's the work. What's gated is billing, telephony purchases, membership, and the account itself.
+Roles answer one question: *who may do what in the organization's account?* The answer follows how teams actually work. The person who pays decides about money and the account's existence. The people who run the team manage access, settings and integrations. The people who do the work build flows and run calls. And the people who only answer the phone get exactly that — calls transferred to them, and nothing else.
 
-## The roles
+Every member has one role, and it applies in every account the organization owns. The server checks it on every request, from the dashboard and the API alike; the dashboard hides what your role can't do.
+
+## The four roles
 
 <ParamField path="Owner" type="exactly one">
-  Created the organization or was handed it. The only role that touches money and the account's existence: billing and cards, buying and releasing numbers, connecting carriers, account settings, deletion, changing members' roles, transferring ownership.
+  Created the organization or was handed it. The only role that touches money and the account's existence: payments, cards and auto-recharge, buying and releasing numbers, connecting carriers, deleting the account or organization, exporting the account's data, transferring ownership, and changing members' roles. Can do everything an Admin can.
 </ParamField>
 <ParamField path="Admin" type="any number">
-  Runs the team without touching the money: invites, suspends and removes members (not the Owner), manages transfer destinations and members' team tags, plus everything a Member can do.
+  Runs the account and the team, without the money. Invites, suspends and removes members; manages API keys and the webhook signing secret; changes account settings; configures phone numbers, webhooks and integrations; manages transfer destinations and members' teams. Can do everything a Member can.
 </ParamField>
 <ParamField path="Member" type="any number">
-  Does the work: flows, prompts, calls, campaigns, schedules, contacts, DNC, connecting flows to numbers, reading transcripts and costs.
+  Does the daily work: flows, prompts, calls, campaigns, schedules, contacts, the Do Not Call list, leads and analytics; reads transcripts, listens to recordings, listens in on and takes over live calls; sees the balance, invoices and costs. Can do everything an Agent can.
+</ParamField>
+<ParamField path="Agent" type="any number">
+  Only takes calls. Sets their own availability and answers the calls transferred to them in the dashboard. Agents don't see call history, flows, contacts or billing — the role is for the people on the phone, not for the people building the agent.
 </ParamField>
 
 ## What each role can do
 
-| Action | Owner | Admin | Member |
-|---|:-:|:-:|:-:|
-| Build, test, publish flows; manage prompts and flow functions | ✓ | ✓ | ✓ |
-| Place calls; run campaigns and schedules; read transcripts, recordings, insights | ✓ | ✓ | ✓ |
-| Manage contacts, imports, the Do Not Call list | ✓ | ✓ | ✓ |
-| Connect or disconnect a flow on a number; set a number's friendly name and recording override | ✓ | ✓ | ✓ |
-| View costs and per-call cost breakdowns | ✓ | ✓ | ✓ |
-| Be available for calls; receive transferred calls; listen to and take over live calls | ✓ | ✓ | ✓ |
-| Set your own available hours for transferred calls | ✓ | ✓ | ✓ |
-| Add, edit or delete transfer destinations and destination groups | ✓ | ✓ | — |
-| Set members' team tags; set another member's available hours | ✓ | ✓ | — |
-| **Buy or release numbers; add, edit or remove carriers (SIP, Twilio, WhatsApp); register BYOC numbers** | ✓ | — | — |
-| **Top up; manage cards; auto-recharge; invoices; balance and transactions** | ✓ | — | — |
-| **Account settings (recording, analysis, notifications thresholds)** | ✓ | — | — |
-| Invite members; suspend or remove a member | ✓ | ✓ | — |
-| **Change a member's role** | ✓ | — | — |
-| **Transfer ownership** | ✓ | — | — |
-| **Delete the organization and its account** | ✓ | — | — |
+| Action | Owner | Admin | Member | Agent |
+|---|:-:|:-:|:-:|:-:|
+| Set your own availability; answer calls transferred to you; edit your own profile | ✓ | ✓ | ✓ | ✓ |
+| Build, test and publish flows; manage prompts and flow functions | ✓ | ✓ | ✓ | — |
+| Place calls; run campaigns and schedules; read transcripts and insights; listen to recordings | ✓ | ✓ | ✓ | — |
+| Listen in on or take over a live call | ✓ | ✓ | ✓ | — |
+| Manage contacts, imports, the Do Not Call list and leads; view analytics | ✓ | ✓ | ✓ | — |
+| View the balance, invoices, costs and per-call cost breakdowns | ✓ | ✓ | ✓ | — |
+| View transfer destinations, members' teams and hours; set your own hours | ✓ | ✓ | ✓ | — |
+| Change account settings (recording, analysis, compliance, notifications) | ✓ | ✓ | — | — |
+| Configure phone numbers (connect a flow, name, recording override); manage webhooks and integrations; web-call access on flows | ✓ | ✓ | — | — |
+| Delete call recordings | ✓ | ✓ | — | — |
+| Add, change or delete transfer destinations and destination groups | ✓ | ✓ | — | — |
+| Set members' teams; set another member's hours or availability | ✓ | ✓ | — | — |
+| Create and revoke API keys; create and rotate the webhook signing secret | ✓ | ✓ | — | — |
+| Invite members; suspend, reactivate or remove a member | ✓ | ✓ | — | — |
+| **Top up; manage cards and auto-recharge; redeem coupons** | ✓ | — | — | — |
+| **Buy or release numbers; add, edit or remove carriers (SIP, Twilio, WhatsApp)** | ✓ | — | — | — |
+| **Change a member's role** | ✓ | — | — | — |
+| **Transfer ownership** | ✓ | — | — | — |
+| **Export the account's data; delete the account or the organization** | ✓ | — | — | — |
 
-API keys are created and revoked by the **Owner** and act with the scopes they're given regardless of who uses them. A key with write access to the `transfers` scope can set members' tags and available hours — see [Managing tags and hours by API](/build/transfer-calls-to-people#managing-tags-and-hours-by-api).
+The same table is in the dashboard, under **Team → Roles & permissions**, with your own role marked. Apps can read it with [`GET /roles`](/api-reference/accounts/get-roles) and the caller's own role and permissions with [`GET /permissions`](/api-reference/accounts/get-permissions).
 
-Taking calls is operational work, so every active member can do it: any member who is [available for calls](/calls/take-calls-in-the-dashboard-and-the-app) can be rung by a transfer, and any member can listen to or take over a live call in the account. Who a transfer rings is narrowed by the flow's destination, team tags and hours — not by role. Suspended members are never rung.
+### Who changes roles
+
+Only the **Owner** changes a member's role, between Admin, Member and Agent. Nobody is made Owner by a role change — ownership is [transferred](#transferring-ownership). Admins invite people with any of the three roles but can't change a role afterwards.
+
+### API keys and roles
+
+API keys belong to the account, not to a person: Owners and Admins create and revoke them, and a key acts with the [scopes](/integrate/authentication#scopes) it was given, whoever uses it. Give each integration only the scopes it needs.
+
+### Taking calls
+
+Every role can take calls. Whether a transfer rings someone is decided by the flow's destination, the member's teams and hours, and their availability — not by role. Suspended members are never rung. See [Take calls in the dashboard](/calls/take-calls-in-the-dashboard).
+
+## The Team page
+
+**Team** in the sidebar (organization accounts only — a personal account has no team) has three tabs:
+
+| Tab | What it shows | Who sees it |
+|---|---|---|
+| **Members** | Everyone in the organization with their role, status (*Active*, *Suspended*), availability for transferred calls, and teams and hours. The row menu holds **Tags and available hours**, availability, role, **Suspend** and **Remove** | Owner, Admin, Member |
+| **Invitations** | Invitations not yet accepted or declined, with role and date sent; cancel one from its row | Owner, Admin, Member |
+| **Roles & permissions** | The role table above, with your own role marked | Everyone, including Agents |
+
+Your own availability — whether you take transferred calls right now — is the **You** control at the top right of the page.
 
 ## Inviting someone
 
 <Steps>
-  <Step title="Settings → General → Members → Invite Member">
-    Enter their email, choose **Admin** or **Member** (no one is invited as Owner — ownership is transferred, not granted), and optionally a title and department for the member list.
+  <Step title="Team → Invite to the team">
+    Enter their email and choose **Admin**, **Member** or **Agent** (no one is invited as Owner — ownership is transferred, not granted). Optionally add a title and department for the member list. The person must already have a Talkif login with that email.
   </Step>
   <Step title="They accept">
-    An email carries the invitation. If they already have a Talkif user, it also appears when they next sign in. Until accepted, the member shows as **Pending**.
+    An email carries the invitation, and it also appears when they next sign in. Until then it's listed under **Team → Invitations**, where you can cancel it.
   </Step>
   <Step title="They switch to the account">
     Accepting adds the organization's account to their account switcher. Their personal account, if any, is untouched.
@@ -58,10 +89,10 @@ Taking calls is operational work, so every active member can do it: any member w
 
 ## Suspending, removing, leaving
 
-- **Suspend** keeps the member on the list but blocks access — the right move for a leaver whose work you still need to audit. **Reactivate** reverses it.
-- **Remove** takes them off the organization. Their user account and personal account continue to exist; anything they created in the organization's account stays there.
+- **Suspend** keeps the member on the list but blocks access until they're reactivated — the right move for a leaver whose work you still need to audit. **Reactivate** reverses it.
+- **Remove** takes them out of the organization and all of its accounts. Their user and personal account continue to exist; anything they created in the organization's account stays there.
 - A member can **leave** on their own. The Owner can't leave without first transferring ownership.
-- The Owner can't be removed by anyone; transfer ownership first.
+- The Owner can't be suspended or removed by anyone; transfer ownership first.
 
 ## Transferring ownership
 
@@ -73,7 +104,7 @@ The Owner picks an existing active member; that member becomes Owner and the pre
   <Card title="Organizations" href="/account/organizations" icon="fa-regular fa-building">
     Users, accounts and organizations, and why resources don't move.
   </Card>
-  <Card title="Security" href="/account/security" icon="fa-regular fa-shield">
-    Two-factor authentication for every member.
+  <Card title="Take calls in the dashboard" href="/calls/take-calls-in-the-dashboard" icon="fa-regular fa-headset">
+    Availability, answering transfers, and listening in on live calls.
   </Card>
 </CardGroup>
