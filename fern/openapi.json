@@ -1432,7 +1432,7 @@
           "Calls"
         ],
         "summary": "Delete a call recording from S3.",
-        "description": "DELETE /api/v1/calls/:callId/recording → 204\n\nCharges for actual storage duration before deletion (billing at lifecycle end).\nUses idempotency key to prevent double-charging if racing with retention job.\n\nSECURITY: Verifies account access, call ownership.",
+        "description": "DELETE /api/v1/calls/:callId/recording → 204\n\nCharges for actual storage duration before deletion (billing at lifecycle end).\nUses idempotency key to prevent double-charging if racing with retention job.\n\nOwner or admin only: deleting a recording destroys data the account may\nneed to keep. With an API key, the key's creator must be an owner or admin.",
         "operationId": "delete_call_recording",
         "parameters": [
           {
@@ -1471,7 +1471,7 @@
             }
           },
           "403": {
-            "description": "`forbidden`",
+            "description": "`forbidden`, `insufficient_permissions` (owner or admin role required)",
             "content": {
               "application/json": {
                 "schema": {
@@ -6917,6 +6917,73 @@
         ]
       }
     },
+    "/api/v1/permissions": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "List your permissions",
+        "description": "Your role in the account and the permissions it grants, for showing or\nhiding actions. The server enforces them regardless.",
+        "operationId": "get_permissions",
+        "responses": {
+          "200": {
+            "description": "Your role and permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PermissionsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not a member of this account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/api/v1/phone/numbers": {
       "get": {
         "tags": [
@@ -8752,6 +8819,73 @@
             }
           }
         }
+      }
+    },
+    "/api/v1/roles": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "List the built-in roles",
+        "description": "Every built-in role with the permissions it grants in the selected\naccount, for showing what each role may do.",
+        "operationId": "get_roles",
+        "responses": {
+          "200": {
+            "description": "The built-in roles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RolesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not a member of this account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/v1/schedules": {
@@ -10641,6 +10775,16 @@
                 }
               }
             }
+          },
+          "503": {
+            "description": "`service_unavailable`: test sends are unavailable right now; retry later",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -10748,6 +10892,202 @@
           },
           "403": {
             "description": "Insufficient permissions for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/transfers/members/{memberId}/availability": {
+      "get": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Get a member's availability",
+        "description": "Whether the member takes transferred calls: `available`, `away` or\n`offline` (with the end time, who set it, and whether they are on a call\nright now). An away/offline whose end time passed reads as `available`.",
+        "operationId": "get_member_availability",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "description": "Membership ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The member's availability",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberAvailability"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient permissions for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not a member of this organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Set a member's availability",
+        "description": "Turns transferred calls on or off for a member, in every account of the\norganization: `away` or `offline`, optionally `until` a moment (then the\nmember is available again by itself), or `available`. The member may set\nany status. An owner or admin may set another member `away` or\n`offline`, and may make them `available` again only if the member did not\nturn calls off themselves.",
+        "operationId": "set_member_availability",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "description": "Membership ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetMemberAvailabilityRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Availability set",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberAvailability"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed to set this member's availability",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not a member of this organization",
             "content": {
               "application/json": {
                 "schema": {
@@ -11584,6 +11924,16 @@
           }
         },
         "additionalProperties": false
+      },
+      "AccountRole": {
+        "type": "string",
+        "description": "A role level inside an account or organization. Ordered: an owner passes\nevery admin check, an admin every member check, a member every agent\ncheck.",
+        "enum": [
+          "agent",
+          "member",
+          "admin",
+          "owner"
+        ]
       },
       "ActionDefinition": {
         "type": "object",
@@ -18663,6 +19013,88 @@
         },
         "additionalProperties": false
       },
+      "MemberAvailability": {
+        "type": "object",
+        "description": "A member's availability.",
+        "required": [
+          "memberId",
+          "userId",
+          "status",
+          "busy"
+        ],
+        "properties": {
+          "busy": {
+            "type": "boolean",
+            "description": "On a transferred call right now; not offered another one"
+          },
+          "memberId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Membership ID"
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Why the platform set it (`missed_calls`), with `source: auto`"
+          },
+          "source": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/MemberAvailabilitySource",
+                "description": "Who set the current `away`/`offline`"
+              }
+            ]
+          },
+          "status": {
+            "$ref": "#/components/schemas/MemberAvailabilityStatus",
+            "description": "The status in force now (an away/offline whose end time passed reads\nas `available`)"
+          },
+          "until": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "When `away`/`offline` ends by itself; `null` = until changed"
+          },
+          "updatedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "When the current `away`/`offline` was set"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "User ID"
+          }
+        }
+      },
+      "MemberAvailabilitySource": {
+        "type": "string",
+        "description": "Who set the status: the `member`, an owner/`admin`, or the platform\n(`auto`, after missed calls).",
+        "enum": [
+          "member",
+          "admin",
+          "auto"
+        ]
+      },
+      "MemberAvailabilityStatus": {
+        "type": "string",
+        "description": "Whether a member takes transferred calls: `available`, `away` or `offline`.",
+        "enum": [
+          "available",
+          "away",
+          "offline"
+        ]
+      },
       "MemberHours": {
         "type": "object",
         "description": "A member's weekly available hours. A transfer to people rings the member\nonly inside these hours, evaluated on the local clock of `timezone` (a\n09:00–18:00 range stays 09:00–18:00 across daylight-saving changes).",
@@ -18739,11 +19171,12 @@
       },
       "MemberRole": {
         "type": "string",
-        "description": "Role of a member in your organization: `owner`, `admin` or `member`.",
+        "description": "Role of a member in your organization: `owner`, `admin`, `member` or\n`agent`.",
         "enum": [
           "owner",
           "admin",
-          "member"
+          "member",
+          "agent"
         ]
       },
       "MemberStatus": {
@@ -18929,6 +19362,33 @@
             "format": "int64",
             "description": "Total number of items available",
             "example": 142
+          }
+        }
+      },
+      "PermissionsResponse": {
+        "type": "object",
+        "description": "What the caller may do in the selected account.",
+        "required": [
+          "accountId",
+          "role",
+          "permissions"
+        ],
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The selected account"
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Permissions you hold, as `resource:read` / `resource:write`"
+          },
+          "role": {
+            "$ref": "#/components/schemas/AccountRole",
+            "description": "Your role in it: `owner`, `admin`, `member` or `agent`"
           }
         }
       },
@@ -19796,6 +20256,42 @@
           }
         }
       },
+      "RoleDefinition": {
+        "type": "object",
+        "description": "One built-in role and what it may do.",
+        "required": [
+          "role",
+          "permissions"
+        ],
+        "properties": {
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Permissions the role holds, as `resource:read` / `resource:write`"
+          },
+          "role": {
+            "$ref": "#/components/schemas/AccountRole",
+            "description": "`owner`, `admin`, `member` or `agent`"
+          }
+        }
+      },
+      "RolesResponse": {
+        "type": "object",
+        "description": "The built-in roles, highest first.",
+        "required": [
+          "roles"
+        ],
+        "properties": {
+          "roles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoleDefinition"
+            }
+          }
+        }
+      },
       "RollbackResponse": {
         "type": "object",
         "description": "Rollback response",
@@ -20172,6 +20668,28 @@
             ]
           }
         }
+      },
+      "SetMemberAvailabilityRequest": {
+        "type": "object",
+        "description": "Set a member's availability.",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/MemberAvailabilityStatus",
+            "description": "`available`, `away` or `offline`"
+          },
+          "until": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "For `away`/`offline`: when it ends by itself (RFC 3339, in the future,\nat most 30 days ahead). Omit for \"until I change it\". Not allowed with\n`available`."
+          }
+        },
+        "additionalProperties": false
       },
       "SetMemberTagsRequest": {
         "type": "object",
@@ -21014,9 +21532,19 @@
           "name",
           "role",
           "status",
-          "tags"
+          "tags",
+          "availability",
+          "busy"
         ],
         "properties": {
+          "availability": {
+            "$ref": "#/components/schemas/MemberAvailabilityStatus",
+            "description": "Whether the member takes calls now (their own choice or an admin's;\nan away/offline whose end time passed reads as `available`)"
+          },
+          "busy": {
+            "type": "boolean",
+            "description": "On a transferred call right now; not offered another one"
+          },
           "hours": {
             "oneOf": [
               {
