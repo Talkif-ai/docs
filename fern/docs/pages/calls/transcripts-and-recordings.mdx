@@ -13,7 +13,7 @@ Every turn, with who spoke and when. Available the moment the call ends — and 
 
 ## Recording
 
-Full-call audio, playable in the call view and downloadable. The recording covers the whole call, including the part after a transfer or after a person [joins from the dashboard or the app](/calls/take-calls-in-the-dashboard-and-the-app). Whether a call is recorded is decided at call start by the recording setting — flow override, then number override, then the account default (see [Flows and versions](/concepts/flows-and-versions#what-a-flow-is-made-of)).
+Full-call audio, playable in the call view and downloadable. The recording covers the whole call, including the part after a transfer or after a person [joins from the dashboard](/calls/take-calls-in-the-dashboard). Whether a call is recorded is decided at call start by the recording setting — flow override, then number override, then the account default (see [Flows and versions](/concepts/flows-and-versions#what-a-flow-is-made-of)).
 
 [`GET /calls/{callId}/recording`](/api-reference/calls/get-call-recording) returns a **short-lived signed URL** — fetch it when you need it rather than storing it. [`DELETE /calls/{callId}/recording`](/api-reference/calls/delete-call-recording) removes the audio permanently; the transcript and everything else stay.
 
