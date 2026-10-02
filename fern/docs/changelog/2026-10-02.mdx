@@ -1,0 +1,14 @@
+---
+title: "Call transfers, taking calls in the dashboard, and the Team page"
+---
+
+{/* versions: backend=0.1.278 frontend=0.1.58 catflow=0.0.109 */}
+
+- **Builder**: a new **Transfer** node hands a live call from the AI to a person — **warm** (the AI briefs your colleague while the caller holds) or **cold**. Ring a phone number, your team, a team the AI picks from the conversation, a destination group, or your own app. Every transfer carries a handoff case (reason, summary, your own fields). If nobody answers, or your colleague drops right after connecting, the agent comes back to the caller and carries on. See [Transfer calls to people](/build/transfer-calls-to-people).
+- **Settings**: **Settings → People & numbers** holds transfer destinations (phone numbers, people in the dashboard, your app) and destination groups that ring together.
+- **Integrate**: **Your app** destinations send your server a signed `transfer.offer` webhook. Your server accepts it with an API key that has the new `transfer_offers` scope, then joins the call audio over a websocket. See [Receive transfers in your app](/build/receive-transfers-in-your-app).
+- **Calls**: take transferred calls in the browser. Turn on **Available for calls** in the top bar, then accept from the incoming-transfer window with the handoff case on screen. **Listen** and **Take over** let you join a live call. See [Take calls in the dashboard](/calls/take-calls-in-the-dashboard).
+- **Account**: a new **Team** page lists members, invitations, and a **Roles & permissions** table. Members carry teams (tags), weekly available hours and a status (*Available*, *Away* with an end time, *Offline*). Owners and admins can set a member's status. See [Members and roles](/account/members-and-roles).
+- **Account**: a fourth role, **Agent**, only takes transferred calls. **Admins** now manage API keys, the webhook signing secret, account settings, phone number configuration, webhooks, integrations and transfer destinations. Money, deletion, ownership and role changes stay with the **Owner**. Members keep the daily work but no longer change account settings or number configuration.
+- **API**: new endpoints for transfer destinations and groups, member tags, hours and availability, and transfer offers (`transfers` and `transfer_offers` scopes). Also new: [`GET /roles`](/api-reference/accounts/get-roles) and [`GET /permissions`](/api-reference/accounts/get-permissions).
+- **Billing**: AI usage stops when the agent leaves a transferred call. The outgoing leg to a phone-number destination is billed as telephony from answer. See [Credits and pricing](/concepts/credits-and-pricing#transferred-calls).
