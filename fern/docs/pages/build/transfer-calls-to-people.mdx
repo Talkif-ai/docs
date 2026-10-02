@@ -55,15 +55,15 @@ The AI fills the case when it calls the transfer. Mark a field **required** and 
 
 ## Where a transfer can go
 
-On the Transfer node, **Who should get the call?** has two tabs:
+On the Transfer node, **Who should get the call?** has three tabs:
 
 | Tab | What rings |
 |---|---|
 | **Phone number** | One phone-number destination |
+| **Your team** | **Everyone online** — everyone in the account who [can take a call in the dashboard](/calls/take-calls-in-the-dashboard#two-switches-decide-whether-you-ring) right now, with nothing to set up; one [team](#teams-routing-to-the-right-people); several teams the [AI picks between](#let-the-ai-pick-the-team); a *People in the dashboard* destination; or a destination group |
 | **Your app** | Your own server, over a signed webhook — see [Receive transfers in your app](/build/receive-transfers-in-your-app) |
-| **Your team** | **Everyone online** — everyone in the account who is available for calls right now, with nothing to set up; one [team](#teams-routing-to-the-right-people); several teams the [AI picks between](#let-the-ai-pick-the-team); a *People in the dashboard* destination; or a destination group |
 
-Destinations and destination groups are set up once for the whole account, in **Settings → People & numbers**, and picked by name on the node. Every member can see them; owners and admins add, change and delete them.
+Destinations and destination groups are set up once for the whole account, in **Settings → People & numbers**, and picked by name on the node. Owners, admins and members can see them; owners and admins add, change and delete them.
 
 ### Destinations
 
@@ -73,7 +73,10 @@ A destination is one place a call can go:
   An outside phone number — a desk phone, a mobile, a call-center line. You choose the caller ID shown to the person answering: **The number the caller dialled** (recommended) or **The caller's own number** (some carriers reject this).
 </ParamField>
 <ParamField path="People in the dashboard" type="destination">
-  Your teammates who are available for calls in the Talkif dashboard or the Talkif iPhone app. Choose **Everyone who is available** or **Only the people I choose**; in a team account you can also limit it to members of certain teams. The first person to accept takes the call — see [Take calls in the dashboard and the app](/calls/take-calls-in-the-dashboard-and-the-app).
+  Your teammates who can take calls in the Talkif dashboard right now. Choose **Everyone who is available** or **Only the people I choose**; in a team account you can also limit it to members of certain teams. The first person to accept takes the call — see [Take calls in the dashboard](/calls/take-calls-in-the-dashboard).
+</ParamField>
+<ParamField path="Your app" type="destination">
+  Your own server: Talkif sends it a signed webhook for each transfer, and it accepts with an API key and joins the call audio. See [Receive transfers in your app](/build/receive-transfers-in-your-app).
 </ParamField>
 
 Emergency and special-service numbers, and premium-rate or shared-cost numbers, can't be phone destinations.
@@ -96,13 +99,14 @@ A transfer to a phone number is a new outgoing call, placed from one of your num
 
 ### Managing destinations by API
 
-Destinations and destination groups are account resources with their own endpoints, under `/api/v1/transfers/destinations` and `/api/v1/transfers/destination-groups`, so you can keep them in sync with your own staff directory.
+Destinations and destination groups are account resources with their own endpoints, so you can keep them in sync with your own staff directory. They use the `transfers` API key scope — read to list, write to change:
 
-{/* TODO: link API reference after the spec sync */}
+- [`GET /transfers/destinations`](/api-reference/transfers/list-destinations), [`POST`](/api-reference/transfers/create-destination), [`PUT`](/api-reference/transfers/update-destination) and [`DELETE /transfers/destinations/{id}`](/api-reference/transfers/delete-destination)
+- [`GET /transfers/destination-groups`](/api-reference/transfers/list-groups), [`POST`](/api-reference/transfers/create-group), [`PUT`](/api-reference/transfers/update-group) and [`DELETE /transfers/destination-groups/{id}`](/api-reference/transfers/delete-group)
 
 ## Teams: routing to the right people
 
-In a team (organization) account, each member can carry **tags** — `sales`, `billing`, `turkish` — and optional **available hours**. Both are set per member, in the dashboard's organization settings or [by API](#managing-tags-and-hours-by-api). Tags are set by owners and admins; hours by the member themselves or an owner or admin.
+In a team (organization) account, each member can carry **tags** — `sales`, `billing`, `turkish` — and optional **available hours**. Both are set per member on the **Team** page (a member's row → **Tags and available hours**) or [by API](#managing-tags-and-hours-by-api). Tags are set by owners and admins; hours by the member themselves or an owner or admin.
 
 Tags and hours belong to the organization, not to one account: a member has the same tags and hours in every account the organization owns. A personal account has no members to tag, so a transfer limited to tags rings nobody there.
 
@@ -111,7 +115,7 @@ Tags and hours belong to the organization, not to one account: a member has the 
 
 A transfer to people in the dashboard can be limited to certain tags. When it rings, it rings only members who are:
 
-1. available for calls right now,
+1. able to take a call right now — **Available for calls** on in an open dashboard tab, Team status *Available*, and not already on a transferred call (see [Two switches decide whether you ring](/calls/take-calls-in-the-dashboard#two-switches-decide-whether-you-ring)),
 2. carrying one of the tags, and
 3. within their available hours, if they set any.
 
@@ -127,20 +131,21 @@ Talkif rings the chosen team's available members within their hours. If nobody i
 
 Member tags and available hours have their own endpoints, next to the destinations, so you can keep teams and shifts in sync with your staff directory or rota:
 
-| Endpoint | What it does |
-|---|---|
-| `GET /api/v1/transfers/members` | Every member with their user ID, name, role, tags and hours. The user ID is what a *People in the dashboard* destination lists in `userIds` |
-| `GET /api/v1/transfers/member-tags` | The tags in use, with how many members carry each |
-| `GET` / `PUT /api/v1/transfers/members/{memberId}/tags` | Read or replace a member's tags |
-| `GET` / `PUT` / `DELETE /api/v1/transfers/members/{memberId}/hours` | Read, set or remove a member's available hours |
+- [`GET /transfers/members`](/api-reference/transfers/list-members) — every member with their user ID, name, role, tags, hours and availability. The user ID is what a *People in the dashboard* destination lists in `userIds`.
+- [`GET /transfers/member-tags`](/api-reference/transfers/list-member-tags) — the tags in use, with how many members carry each.
+- [`GET`](/api-reference/transfers/get-member-tags) / [`PUT /transfers/members/{memberId}/tags`](/api-reference/transfers/set-member-tags) — read or replace a member's tags.
+- [`GET`](/api-reference/transfers/get-member-hours) / [`PUT`](/api-reference/transfers/set-member-hours) / [`DELETE /transfers/members/{memberId}/hours`](/api-reference/transfers/delete-member-hours) — read, set or remove a member's available hours.
+- [`GET`](/api-reference/transfers/get-member-availability) / [`PUT /transfers/members/{memberId}/availability`](/api-reference/transfers/set-member-availability) — read or set a member's Team status (*available*, *away*, *offline*, optionally until a time).
 
-They use the `transfers` API key scope — read for `GET`, write for the rest — and follow the same rules as the dashboard: every member can read, owners and admins set tags, and hours are set by the member or an owner or admin. On a personal account the lists are empty.
-
-{/* TODO: link API reference after the spec sync */}
+They use the `transfers` API key scope — read for `GET`, write for the rest — and follow the same rules as the dashboard: owners and admins set tags; hours are set by the member or an owner or admin; and an owner or admin can set a member *away* or *offline*, but back to *available* only if the member didn't turn calls off themselves. On a personal account the lists are empty.
 
 ## When nobody answers
 
 There's nothing to connect. When a transfer doesn't go through — busy, declined, unanswered, or nobody available — the agent that started it is told that nobody answered and continues the conversation. A good prompt for that agent says what to offer then: a callback, or taking a message.
+
+If your person hangs up within the first 15 seconds after being connected — a misdial, a dropped line — the agent comes back to the caller, apologizes, and offers to help or take a message, instead of leaving the caller in silence.
+
+Some calls can't be transferred. A transfer on such a call fails the same way, so the agent carries on with the caller.
 
 A call can be offered to people at most **twice**. After that, a further transfer to people fails straight away and the agent carries on, so a caller isn't put through the same ringing again.
 
@@ -167,7 +172,7 @@ A call can be offered to people at most **twice**. After that, a further transfe
 ## Next
 
 <CardGroup cols={2}>
-  <Card title="Take calls in the dashboard and the app" href="/calls/take-calls-in-the-dashboard-and-the-app" icon="fa-regular fa-headset">
+  <Card title="Take calls in the dashboard" href="/calls/take-calls-in-the-dashboard" icon="fa-regular fa-headset">
     Be available for transfers, accept them, and listen in on live calls.
   </Card>
   <Card title="Transfer and end calls" href="/build/transfer-and-end-calls" icon="fa-regular fa-phone-slash">

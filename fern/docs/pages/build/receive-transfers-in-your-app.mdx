@@ -129,8 +129,10 @@ curl -X POST https://api.talkif.ai/api/v1/transfers/offers/$OFFER_ID/accept \
 
 - The first to accept gets the call. A later accept gets `409 offer_taken`; an accept after `acceptUntil` gets `409 offer_expired`.
 - Retrying an accept with the **same key** returns a fresh join for the same claim.
-- `POST …/decline` (204) lets the transfer move on without waiting for the ring timeout.
-- `GET /api/v1/transfers/offers/{offerId}` returns the offer as it was delivered.
+- [`POST /transfers/offers/{offerId}/decline`](/api-reference/transfers/decline-offer) (204) lets the transfer move on without waiting for the ring timeout.
+- [`GET /transfers/offers/{offerId}`](/api-reference/transfers/get-offer) returns the offer as it was delivered.
+
+Full request and response shapes: [`POST /transfers/offers/{offerId}/accept`](/api-reference/transfers/accept-offer).
 
 <Note>
   Join within 10 seconds of accepting. An accept that never joins counts as unanswered, and the agent carries on with the caller.
@@ -167,7 +169,7 @@ If an offer ends before your app accepted or declined it, Talkif sends a best-ef
 
 ## Rotate the secret
 
-**Rotate secret** on the destination (or `POST /api/v1/transfers/destinations/{id}/rotate-secret`) returns a new secret once. The old one keeps working for 24 hours (`previousSecretExpiresAt`): deliveries are signed with both, so you can deploy the new secret without dropping calls.
+**Rotate secret** on the destination (or [`POST /transfers/destinations/{id}/rotate-secret`](/api-reference/transfers/rotate-secret)) returns a new secret once. The old one keeps working for 24 hours (`previousSecretExpiresAt`): deliveries are signed with both, so you can deploy the new secret without dropping calls.
 
 ## Limits
 
