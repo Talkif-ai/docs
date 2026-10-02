@@ -1,0 +1,92 @@
+---
+title: Take calls in the dashboard
+description: Answer calls your agents transfer to people in the browser — the two switches that decide whether you ring, how an offer rings, and how to listen in on or take over a live call.
+max-toc-depth: 2
+---
+
+When an agent transfers a call to a person, that person doesn't need a desk phone. Anyone on your team can take the call in the Talkif dashboard, with the caller's reason and a summary on screen before they say hello. The same tools let you listen to any live call and step in when the AI needs help.
+
+## Two switches decide whether you ring
+
+A transfer to *People in the dashboard*, to **Everyone online** or to a team ([Transfer calls to people](/build/transfer-calls-to-people#where-a-transfer-can-go)) rings only the people who can answer right now. Two separate switches decide that, because they answer two separate questions. Both live in the status button in the dashboard's top bar, which says the result in words: **Taking calls**, **Not ringing here**, **Away until 14:30**, **Offline**, or **On a call**.
+
+| Switch | Where | The question it answers | Scope |
+|---|---|---|---|
+| **Ring in this browser** | Status button → **Ring in this browser** | *Can this browser ring?* It needs an open, connected dashboard tab and your microphone. Allowing notifications as well lets calls ring while the tab is in the background | Your browser. Off until you turn it on; every tab of yours follows the same choice |
+| **Your Team status** | Status button → **Your status for the team** (also on the **Team** page → **You**): *Available*, *Away for 30 minutes*, *Away for 1 hour*, *Away until changed*, *Offline* | *Do you want calls right now?* | Your membership in the organization, in every account it owns. Organization accounts only |
+
+**Both must be on for a call to ring you in the browser**: **Ring in this browser** on in an open tab, and your Team status **Available** — the button then says **Taking calls**. Turning **Ring in this browser** on while your status says *Away* rings nothing; neither does being *Available* with no dashboard tab open (the button says **Not ringing here**).
+
+Worked example: Ayşe is *Available* on the Team page and has the dashboard open with **Ring in this browser** on. She goes to lunch and picks *Away for 1 hour* — transfers skip her, and she's *Available* again by herself an hour later without touching anything. If instead she simply closes the tab, she stops ringing at once, whatever her Team status says.
+
+On top of the two switches, a transfer only rings you when:
+
+- **You're not busy.** While you're on a transferred call, you aren't offered another one.
+- **Your [tags and available hours](/build/transfer-calls-to-people#teams-routing-to-the-right-people) match**, when the transfer is limited to a team or you set hours. Outside your hours you aren't offered calls, even with both switches on.
+
+A personal account has no Team page and no Team status — the top-bar switch alone decides.
+
+### Who can change a status
+
+- **You** can set your own status to anything, with or without an end time (*Away for 1 hour* ends by itself; *Away until changed* and *Offline* last until someone changes them).
+- **Owners and admins** can set another member *Away* or *Offline* from the member list — useful when someone left without switching off. They can set a member back to *Available* only if the member didn't turn calls off themselves; a member's own *Away* or *Offline* is theirs to undo.
+- **Talkif** sets you *Away* when **three transfers in a row** ring out on you without you accepting or declining, so callers aren't kept ringing someone who has walked away. Accepting or declining an offer resets the count; you come back by setting yourself *Available*.
+
+The Team page shows everyone's status — *Available*, *Away · back at 14:30*, *Offline*, or *Busy* while on a transferred call — and who set it. Statuses can also be read and set by API with [`GET`](/api-reference/transfers/get-member-availability) and [`PUT /transfers/members/{memberId}/availability`](/api-reference/transfers/set-member-availability) (`transfers` scope), following the same rules.
+
+## How an offer rings
+
+When a transfer reaches you, an **Incoming transfer** window opens in every dashboard tab where you're available, with a ringtone: who is calling, which flow, whether it's a warm transfer, a countdown, and the handoff case — reason, summary and any custom fields. It stays open until you accept, decline or it times out. Declining lets the transfer move on without waiting for the countdown.
+
+The first person to accept gets the call. Accepting stops it ringing everywhere else — for your teammates and on your own other tabs. If a teammate answers first, the caller hangs up, or the offer runs out, the ringing stops and you're told why.
+
+On a **warm** transfer, the AI briefs you first while the caller is on hold; then the caller is connected. On a **cold** transfer you're connected straight away. Either way, a short chime that both of you hear marks the moment you and the caller are connected; it isn't in the recording.
+
+## Listen to and take over a live call
+
+From a live call in the Call Center, **Listen** joins the call with your microphone off: you hear the caller and the agent, and nobody hears you. From the call panel, **Take over** unmutes you and the agent leaves the call after a short line to the caller. If a teammate took the call first, you're told so. A few teammates can listen to the same call at once; only one can take it over.
+
+Listening and taking over are open to Owners, Admins and Members. Agents take the calls transferred to them but don't see other calls — see [Members and roles](/account/members-and-roles).
+
+Not every call can be listened to or taken over; the dashboard tells you when a call doesn't support it.
+
+## What gets recorded
+
+A person joining doesn't change the call's records:
+
+- If the call is recorded, the **recording keeps running** after a person joins and covers the whole call.
+- The **transcript** shows the caller, the agent and the person, turn by turn.
+
+See [Transcripts and recordings](/calls/transcripts-and-recordings).
+
+<Warning title="Tell callers a person may listen or join">
+  Where local law requires it, you must tell callers that a person may listen to or join the call — for example with a fixed line at the start of the call. Talkif doesn't announce it for you.
+</Warning>
+
+## Get ready to take calls
+
+<Steps>
+  <Step title="Turn on Ring in this browser">
+    Click the status button in the dashboard's top bar and turn on **Ring in this browser**. Allow the microphone when the browser asks; allow notifications too if you want calls to ring while the tab is in the background. Keep a dashboard tab open while you take calls.
+  </Step>
+  <Step title="Set your Team status to Available">
+    In an organization account, pick *Available* under **Your status for the team** in the same menu. The button now says **Taking calls**.
+  </Step>
+  <Step title="Make sure a transfer can reach you">
+    A flow must transfer to **Everyone online**, to a team whose tag you carry, or to a *People in the dashboard* destination that includes you. Check your tags and hours under **Team → Members** (your row → **Tags and available hours**), or ask an owner or admin.
+  </Step>
+  <Step title="Accept when it rings">
+    Read the case, accept, and you're on the call.
+  </Step>
+</Steps>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Transfer calls to people" href="/build/transfer-calls-to-people" icon="fa-regular fa-phone-arrow-right">
+    Set up the Transfer node, destinations and teams.
+  </Card>
+  <Card title="Members and roles" href="/account/members-and-roles" icon="fa-regular fa-users">
+    The Team page, the four roles, and who can take calls.
+  </Card>
+</CardGroup>

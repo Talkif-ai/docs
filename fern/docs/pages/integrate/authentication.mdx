@@ -19,6 +19,8 @@ curl "https://api.talkif.ai/api/v1/calls?status=in_progress" \
 
 ## Creating a key
 
+In an organization account, Owners and Admins create and revoke keys — see [Members and roles](/account/members-and-roles).
+
 <Steps>
   <Step title="Developer → Credentials → Create API Key">
     Name it for the system that will hold it ("CRM callback service", "Nightly campaign loader") — the name is how you'll recognise it in usage logs a year from now.
@@ -52,6 +54,8 @@ A scope is `resource:action`. Actions are `read`, `write`, or `*`; `*` alone mea
 | `templates` | Prompt templates |
 | `models` | The model catalogue |
 | `flow_templates` | Flow templates |
+| `transfers` | Transfer destinations and groups, member tags and hours |
+| `transfer_offers` | Viewing, accepting and declining transfer offers sent to [your app](/build/receive-transfers-in-your-app) — give the server that receives the webhooks only `transfer_offers:*` |
 
 A request outside the key's scopes fails with `403` and an error code naming the missing scope. Examples: `["calls:*", "contacts:read"]`; `["campaigns:*", "contacts:*", "dnc:read"]` for a campaign loader; `["billing:read"]` for a finance dashboard.
 

@@ -26,6 +26,14 @@ Two consequences worth knowing before you design a flow:
 - **Telephony rounds up; nothing else does.** A 61-second call pays 2 telephony minutes but 61 seconds of STT and infrastructure. Short calls are proportionally more expensive on the telephony line — [WhatsApp calls](/telephony/whatsapp-business-calling) have no telephony line at all.
 - **LLM cost is quadratic-ish in call length.** Each turn resends the whole context, so a long System Prompt is paid on every turn of every call. Keeping prompts short is a cost lever as well as a quality one — see [Write prompts](/build/write-prompts).
 
+### Transferred calls
+
+When an agent [transfers a call to a person](/build/transfer-calls-to-people), the AI part of the bill stops where the agent leaves the call:
+
+- **STT, LLM, TTS and infrastructure** are billed for the time the agent was on the call, including a warm-transfer briefing — not for the conversation between the caller and your person afterwards.
+- **Phone legs** are billed as **telephony**, at the rates below. The caller's leg is billed for the whole call, before and after the transfer. A transfer to a phone-number destination is an extra outgoing leg, billed from the moment it's answered at the rate of the **Call from** number's provider — ringing isn't billed.
+- Time your person spends on the call in the **dashboard** carries no platform fee of its own.
+
 Rates are published live. The current telephony and number prices are below; model rates are on [Models and voices](/reference/models-and-voices).
 
 ### Telephony

@@ -1,0 +1,12 @@
+---
+title: Direct outbound calling for SIP trunks
+---
+
+{/* versions: api=0.1.217 app=0.1.37 voice=0.0.83 */}
+
+- **Telephony**: SIP trunk connections now handle outbound calls end-to-end without an extra telephony hop, and new SIP numbers go active immediately with no verification call. You can also set the outbound caller-ID format per SIP trunk provider. See [Bring your own SIP trunk](/telephony/bring-your-own-sip-trunk).
+- **Calls**: Ending a call from an embedded web widget now hangs up right away instead of waiting on a network timeout. See [Browser SDK](/sdks/browser).
+- **Builder**: The AI Assistant keeps one conversation thread as you move between the dashboard and the flow canvas.
+- **Account**: Adding a first phone number to your account no longer requires setting a password, including for Google-only sign-ins. See [Security](/account/security).
+- **Account**: Data from a deleted account is now permanently erased 60 days after the deletion grace period ends. See [Data export and deletion](/account/data-export-and-deletion).
+- **Billing**: Fixed a display bug where a real-time balance update could briefly show the wrong amount.

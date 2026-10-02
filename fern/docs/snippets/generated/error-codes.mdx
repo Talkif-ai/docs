@@ -70,6 +70,7 @@
 | `phone_number_not_active` | 400 | **Phone Number Not Active** — This phone number is not in active status. Activate the phone number from your dashboard before using it for calls. |
 | `phone_number_not_verified` | 400 | **Phone Number Not Verified** — This phone number must be verified before making outbound calls. Complete the verification process first. |
 | `provider_call_rejected` | 400 | **Provider Call Rejected** — The telephony provider rejected the call to this number. The destination may not be enabled for outbound calling from this account. |
+| `account_not_verified` | 403 | **Account Verification Required** — Verify your email address or phone number before starting calls. Complete verification in profile settings. |
 | `call_already_completed` | 422 | **Call Already Completed** — This call has already ended and cannot be modified. Fetch the call details to see the final status. |
 | `concurrent_call_limit_exceeded` | 422 | **Concurrent Call Limit Exceeded** — You have reached the maximum number of simultaneous active calls for your account. Wait for active calls to end or upgrade your plan. |
 | `contact_on_dnc_list` | 422 | **Contact On DNC List** — This phone number is on your account's Do Not Call list. Remove it from the DNC list before calling, or skip this contact. |
@@ -217,6 +218,18 @@
 | Code | Status | Description |
 | --- | --- | --- |
 | `template_variable_resolution_failed` | 400 | **Template Variable Resolution Failed** — One or more template variables could not be resolved. Ensure all required variables are provided in the request. |
+
+## Transfers
+
+| Code | Status | Description |
+| --- | --- | --- |
+| `already_taken` | 409 | **Already Taken** — A teammate already took over this call. |
+| `in_use` | 409 | **In Use** — This transfer destination or group is still used by a published flow or a transfer group. Remove it from those first, then delete it. |
+| `offer_expired` | 409 | **Offer Expired** — This call is no longer ringing: it was answered elsewhere, the caller hung up, or it timed out. |
+| `offer_taken` | 409 | **Offer Taken** — This call was already answered. |
+| `offer_taken_self` | 409 | **Offer Taken Self** — You answered this call on another device. |
+| `takeover_unsupported` | 409 | **Takeover Unsupported** — This call does not run through a Talkif call room, so it cannot be listened to or taken over. |
+| `unsupported_kind` | 422 | **Unsupported Kind** — This destination kind is not available yet. Use a phone destination. |
 
 ## Validation
 
