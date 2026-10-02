@@ -1,0 +1,8 @@
+---
+title: "Available number search now fully typed"
+---
+
+{/* versions: backend=0.1.205 frontend=0.1.34 catflow=0.0.80 */}
+
+- **Telephony**: Searching for available phone numbers now returns full, correctly-typed results through the SDKs — previously the Python SDK could fail to parse the response and only 6 of 22 search filters (area code, region, postal code, capabilities, and more) were usable from the SDKs. See [Buy a number](/telephony/buy-a-number).
+- **Builder**: The assistant now keeps a single conversation as you move between the dashboard and the flow canvas, so following a "take me there" suggestion no longer starts a new, empty thread. See [Assistant](/build/assistant).
