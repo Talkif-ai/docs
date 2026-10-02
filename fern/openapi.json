@@ -8275,13 +8275,13 @@
         }
       }
     },
-    "/api/v1/public/calls/calls": {
+    "/api/v1/public/calls": {
       "post": {
         "tags": [
           "Public Calls"
         ],
         "summary": "Create public WebRTC call",
-        "description": "POST /api/v1/public/calls/calls",
+        "description": "POST /api/v1/public/calls",
         "operationId": "create_call",
         "responses": {
           "201": {
@@ -8356,306 +8356,6 @@
           },
           "503": {
             "description": "`service_unavailable` — no bot available",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
-    "/api/v1/public/calls/calls/{callId}": {
-      "get": {
-        "tags": [
-          "Public Calls"
-        ],
-        "summary": "Get public call status",
-        "description": "GET /api/v1/public/calls/calls/{callId}",
-        "operationId": "get_call_status",
-        "parameters": [
-          {
-            "name": "callId",
-            "in": "path",
-            "description": "Call ID",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Call status",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PublicCallStatusResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "`unauthorized`",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Insufficient permissions for this action",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "`resource_not_found`",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Rate limit exceeded — retry after the delay in the response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error — contact support with the requestId",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
-    "/api/v1/public/calls/calls/{callId}/end": {
-      "post": {
-        "tags": [
-          "Public Calls"
-        ],
-        "summary": "End public call",
-        "description": "POST /api/v1/public/calls/calls/{callId}/end",
-        "operationId": "end_call",
-        "parameters": [
-          {
-            "name": "callId",
-            "in": "path",
-            "description": "Call ID",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Hangup delivered (or call already ended)"
-          },
-          "401": {
-            "description": "`unauthorized`",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Insufficient permissions for this action",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "`resource_not_found`",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Rate limit exceeded — retry after the delay in the response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error — contact support with the requestId",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "`service_unavailable`",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
-    "/api/v1/public/calls/calls/{callId}/offer": {
-      "post": {
-        "tags": [
-          "Public Calls"
-        ],
-        "summary": "Relay public WebRTC offer",
-        "description": "POST /api/v1/public/calls/calls/{callId}/offer",
-        "operationId": "relay_offer",
-        "parameters": [
-          {
-            "name": "callId",
-            "in": "path",
-            "description": "Call ID",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WebRTCOfferRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "SDP answer",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WebRTCOfferResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "`unauthorized`",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Insufficient permissions for this action",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "`resource_not_found`",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "`conflict` — offer already submitted",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Rate limit exceeded — retry after the delay in the response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error — contact support with the requestId",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "`service_unavailable`",
             "content": {
               "application/json": {
                 "schema": {
@@ -8819,6 +8519,306 @@
             }
           }
         }
+      }
+    },
+    "/api/v1/public/calls/{callId}": {
+      "get": {
+        "tags": [
+          "Public Calls"
+        ],
+        "summary": "Get public call status",
+        "description": "GET /api/v1/public/calls/{callId}",
+        "operationId": "get_call_status",
+        "parameters": [
+          {
+            "name": "callId",
+            "in": "path",
+            "description": "Call ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Call status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicCallStatusResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "`unauthorized`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient permissions for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/public/calls/{callId}/end": {
+      "post": {
+        "tags": [
+          "Public Calls"
+        ],
+        "summary": "End public call",
+        "description": "POST /api/v1/public/calls/{callId}/end",
+        "operationId": "end_call",
+        "parameters": [
+          {
+            "name": "callId",
+            "in": "path",
+            "description": "Call ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Hangup delivered (or call already ended)"
+          },
+          "401": {
+            "description": "`unauthorized`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient permissions for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "`service_unavailable`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/public/calls/{callId}/offer": {
+      "post": {
+        "tags": [
+          "Public Calls"
+        ],
+        "summary": "Relay public WebRTC offer",
+        "description": "POST /api/v1/public/calls/{callId}/offer",
+        "operationId": "relay_offer",
+        "parameters": [
+          {
+            "name": "callId",
+            "in": "path",
+            "description": "Call ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebRTCOfferRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "SDP answer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebRTCOfferResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "`unauthorized`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient permissions for this action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "`conflict` — offer already submitted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "`service_unavailable`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/v1/roles": {
@@ -16296,7 +16296,7 @@
               "null"
             ],
             "description": "Assigned bot ID (null if bot assignment failed non-fatally)",
-            "example": "catflow-bot-abc123"
+            "example": "bot-7f3a9c"
           },
           "callId": {
             "type": "string",
@@ -22978,7 +22978,7 @@
               "null"
             ],
             "description": "Bot ID that will handle this call",
-            "example": "catflow-bot-abc123"
+            "example": "bot-7f3a9c"
           },
           "sdp": {
             "type": "string",

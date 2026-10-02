@@ -8,16 +8,16 @@ When an agent transfers a call to a person, that person doesn't need a desk phon
 
 ## Two switches decide whether you ring
 
-A transfer to *People in the dashboard*, to **Everyone online** or to a team ([Transfer calls to people](/build/transfer-calls-to-people#where-a-transfer-can-go)) rings only the people who can answer right now. Two separate switches decide that, because they answer two separate questions:
+A transfer to *People in the dashboard*, to **Everyone online** or to a team ([Transfer calls to people](/build/transfer-calls-to-people#where-a-transfer-can-go)) rings only the people who can answer right now. Two separate switches decide that, because they answer two separate questions. Both live in the status button in the dashboard's top bar, which says the result in words: **Taking calls**, **Not ringing here**, **Away until 14:30**, **Offline**, or **On a call**.
 
 | Switch | Where | The question it answers | Scope |
 |---|---|---|---|
-| **Available for calls** | The phone icon in the dashboard's top bar | *Can this browser ring?* It needs an open, connected dashboard tab, your microphone, and notification permission so calls ring while the tab is in the background | Your browser. Off until you turn it on; every tab of yours follows the same choice |
-| **Your Team status** | **Team** page → **You** (top right): *Available*, *Away for 30 minutes*, *Away for 1 hour*, *Away until changed*, *Offline* | *Do you want calls right now?* | Your membership in the organization, in every account it owns. Organization accounts only |
+| **Ring in this browser** | Status button → **Ring in this browser** | *Can this browser ring?* It needs an open, connected dashboard tab and your microphone. Allowing notifications as well lets calls ring while the tab is in the background | Your browser. Off until you turn it on; every tab of yours follows the same choice |
+| **Your Team status** | Status button → **Your status for the team** (also on the **Team** page → **You**): *Available*, *Away for 30 minutes*, *Away for 1 hour*, *Away until changed*, *Offline* | *Do you want calls right now?* | Your membership in the organization, in every account it owns. Organization accounts only |
 
-**Both must be on for a call to ring you in the browser**: the top-bar switch on in an open tab, and your Team status **Available**. Turning the top-bar switch on while your status says *Away* rings nothing; neither does being *Available* on the Team page with no dashboard tab open.
+**Both must be on for a call to ring you in the browser**: **Ring in this browser** on in an open tab, and your Team status **Available** — the button then says **Taking calls**. Turning **Ring in this browser** on while your status says *Away* rings nothing; neither does being *Available* with no dashboard tab open (the button says **Not ringing here**).
 
-Worked example: Ayşe is *Available* on the Team page and has the dashboard open with **Available for calls** on. She goes to lunch and picks *Away for 1 hour* — transfers skip her, and she's *Available* again by herself an hour later without touching anything. If instead she simply closes the tab, she stops ringing at once, whatever her Team status says.
+Worked example: Ayşe is *Available* on the Team page and has the dashboard open with **Ring in this browser** on. She goes to lunch and picks *Away for 1 hour* — transfers skip her, and she's *Available* again by herself an hour later without touching anything. If instead she simply closes the tab, she stops ringing at once, whatever her Team status says.
 
 On top of the two switches, a transfer only rings you when:
 
@@ -66,11 +66,11 @@ See [Transcripts and recordings](/calls/transcripts-and-recordings).
 ## Get ready to take calls
 
 <Steps>
-  <Step title="Turn on Available for calls">
-    Click the phone icon in the dashboard's top bar. Allow the microphone and notifications when the browser asks. Keep a dashboard tab open while you take calls.
+  <Step title="Turn on Ring in this browser">
+    Click the status button in the dashboard's top bar and turn on **Ring in this browser**. Allow the microphone when the browser asks; allow notifications too if you want calls to ring while the tab is in the background. Keep a dashboard tab open while you take calls.
   </Step>
   <Step title="Set your Team status to Available">
-    In an organization account, open **Team** and check the **You** control at the top right says *Available*.
+    In an organization account, pick *Available* under **Your status for the team** in the same menu. The button now says **Taking calls**.
   </Step>
   <Step title="Make sure a transfer can reach you">
     A flow must transfer to **Everyone online**, to a team whose tag you carry, or to a *People in the dashboard* destination that includes you. Check your tags and hours under **Team → Members** (your row → **Tags and available hours**), or ask an owner or admin.
