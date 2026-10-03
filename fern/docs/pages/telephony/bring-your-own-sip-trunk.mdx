@@ -45,7 +45,7 @@ And on the carrier side, ask them to (1) allowlist `63.176.211.13`, and (2) rout
 
 <Steps>
   <Step title="Create the SIP provider">
-    **Phone Numbers → Providers → Add → SIP Provider**. Enter the SIP host, port, protocol, username and password, and the carrier's IP addresses or CIDR. Give it a name you'll recognise. Providers are set up in the dashboard; the API can list them but not create them.
+    **Phone & WhatsApp → Add Provider → SIP Provider**. Enter the SIP host, port, protocol, username and password, and the carrier's IP addresses or CIDR. Give it a name you'll recognise. Providers are set up in the dashboard; the API can list them but not create them.
   </Step>
   <Step title="Point your carrier at Talkif">
     Have the carrier send inbound calls for your numbers to `sip.talkif.ai` on port 5060, and allow SIP from `63.176.211.13`. Most carriers do this in a "trunk" or "DID routing" screen; some need a support ticket.
@@ -78,7 +78,7 @@ If your numbers are already in Twilio, connect the account and use them directly
 
 <Steps>
   <Step title="Add a Twilio provider">
-    **Phone Numbers → Providers → Add → Your Twilio Account**. Enter the **Account SID** and **Auth Token** from the Twilio Console. The token is encrypted at rest.
+    **Phone & WhatsApp → Add Provider → Your Twilio Account**. Enter the **Account SID** and **Auth Token** from the Twilio Console. The token is encrypted at rest.
   </Step>
   <Step title="Pick the numbers to bring">
     Talkif lists the voice-capable numbers on your Twilio account. Register the ones Talkif should answer or call from.

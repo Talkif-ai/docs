@@ -1,0 +1,13 @@
+---
+title: "Eleven v4 Turbo, model retirements, and updated prices"
+---
+
+{/* versions: api=0.1.285 app=0.1.62 voice=0.0.111 */}
+
+- **Models**: **Eleven v4 Turbo** (`eleven_v4_turbo`) is available — ElevenLabs' newest real-time voice, with Turkish and 90+ other languages and inline audio tags. It is now the default voice for new agents and templates. See [Choose models and voices](/build/choose-models-and-voices) and [Write prompts](/build/write-prompts#emotion-and-delivery-with-eleven-v4-turbo).
+- **Models**: model retirements are now announced in advance. Every model scheduled for retirement carries a `deprecation` object (`retiresOn`, `replacedBy`) in the [models endpoint](/api-reference/ai-models/list-providers-public). Until that date it works as before; from that date calls on it run on the named replacement from the same provider, without republishing. See [When a model is retired](/build/choose-models-and-voices#when-a-model-is-retired).
+- **Models**: scheduled retirements — ElevenLabs Flash v2.5, Turbo v2.5, Multilingual v2, Turbo v2 and v3 Conversational move to Eleven v4 Turbo on **13 October 2026**; Cartesia `sonic-2` and `sonic-turbo` move to `sonic-3` on 20 October; OpenAI `gpt-4.1-nano` moves to `gpt-5.6-luna` on 23 October; `gpt-5`, `gpt-5-mini` and `gpt-5-nano` move to the GPT-5.6 models on 11 December; `gpt-5.1` and `gpt-5.4-nano` retire on 1 April 2027. Models their providers already shut down (`gpt-5.2-chat-latest`, Grok 4.1 Fast, Rime Arcana) now run on `gpt-5.6-sol`, `grok-4.3` and Rime Coda.
+- **Models**: new in the catalog — `grok-4.3` and Rime **Coda**.
+- **Billing**: prices follow each provider's current public list price — ElevenLabs Flash, Turbo and v3 Conversational $0.04 per 1,000 characters (was $0.05), Multilingual v2 $0.08 (was $0.10); ElevenLabs Scribe v2 Realtime $0.0065/min; Deepgram Nova-3 $0.0077/min; Amazon Transcribe $0.010/min; Cartesia Sonic $0.038 per 1,000 characters. See [Credits and pricing](/concepts/credits-and-pricing).
+- **Account**: signing in with Google now opens every account you belong to, including organization accounts.
+- **Docs**: dashboard paths updated to the current menu — **Voice agents**, **Calls**, **Contacts**, **Campaigns**, **Schedules**, **Leads**, **Phone & WhatsApp**, **Settings → Compliance**, and the user menu for **Security** and **Sessions**.

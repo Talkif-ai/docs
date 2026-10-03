@@ -18677,6 +18677,17 @@
             "description": "Context window size (tokens)",
             "example": 128000
           },
+          "deprecation": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/ModelDeprecation",
+                "description": "Present when the model is scheduled for retirement."
+              }
+            ]
+          },
           "description": {
             "type": [
               "string",
@@ -19314,6 +19325,26 @@
           }
         },
         "additionalProperties": false
+      },
+      "ModelDeprecation": {
+        "type": "object",
+        "description": "Scheduled retirement of a model. Until `retiresOn` the model works as\nusual; from that day calls that name it run on `replacedBy` instead, so\npublished agents keep working without changes.",
+        "required": [
+          "retiresOn",
+          "replacedBy"
+        ],
+        "properties": {
+          "replacedBy": {
+            "type": "string",
+            "description": "Model from the same provider that runs instead.",
+            "example": "eleven_v4_turbo"
+          },
+          "retiresOn": {
+            "type": "string",
+            "description": "First day the model no longer runs (UTC date).",
+            "example": "2026-10-13"
+          }
+        }
       },
       "PaginatedResponse": {
         "allOf": [
@@ -20821,6 +20852,17 @@
             "$ref": "#/components/schemas/SttCapabilities",
             "description": "Model capabilities"
           },
+          "deprecation": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/ModelDeprecation",
+                "description": "Present when the model is scheduled for retirement."
+              }
+            ]
+          },
           "description": {
             "type": [
               "string",
@@ -22021,6 +22063,17 @@
           "capabilities": {
             "$ref": "#/components/schemas/TtsCapabilities",
             "description": "Model capabilities"
+          },
+          "deprecation": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/ModelDeprecation",
+                "description": "Present when the model is scheduled for retirement."
+              }
+            ]
           },
           "description": {
             "type": [

@@ -3,7 +3,7 @@ title: Transcripts and recordings
 description: Everything a finished call leaves behind — the transcript, the recording and its retention, the cost breakdown, conversation metrics, and AI insights — and how to get each from the dashboard or the API.
 ---
 
-A call ends and Talkif hands you five things about it. Together they answer the questions you'll actually ask: *what was said* (transcript), *how did it sound* (recording), *what did it cost and why* (cost breakdown), *how well did the agent perform* (metrics), and *what should happen next* (insights). All of them live on the call record in **Call Center → History**, and each is reachable by API.
+A call ends and Talkif hands you five things about it. Together they answer the questions you'll actually ask: *what was said* (transcript), *how did it sound* (recording), *what did it cost and why* (cost breakdown), *how well did the agent perform* (metrics), and *what should happen next* (insights). All of them live on the call record in **Calls**, and each is reachable by API.
 
 ## Transcript
 
@@ -19,7 +19,7 @@ Full-call audio, playable in the call view and downloadable. The recording cover
 
 <AccordionGroup>
   <Accordion title="Retention and storage cost">
-    Recordings are kept for the retention period set on your account (**Settings → Account**); when it expires the audio is deleted and the call record remains. Storage is billed per GB-month for the time a recording exists, with a one-day minimum — see [Credits and pricing](/concepts/credits-and-pricing#recording-storage). If your balance can't cover storage, recordings enter a 30-day grace period before deletion; topping up clears it.
+    Recordings are kept for the retention period set on your account (**Settings → Compliance**); when it expires the audio is deleted and the call record remains. Storage is billed per GB-month for the time a recording exists, with a one-day minimum — see [Credits and pricing](/concepts/credits-and-pricing#recording-storage). If your balance can't cover storage, recordings enter a 30-day grace period before deletion; topping up clears it.
   </Accordion>
   <Accordion title="Consent">
     Recording laws vary by jurisdiction and Talkif doesn't announce recording for you. The same goes for telling callers that a person may listen to or join the call. If you must announce it, put the line in the Main Agent's prompt, or use a **Say** pre-action so it's spoken verbatim every time — see [Transfer and end calls](/build/transfer-and-end-calls#scripted-lines-say). Use per-number overrides for lines that must never record.

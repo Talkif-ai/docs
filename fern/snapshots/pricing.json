@@ -4,11 +4,11 @@
       "provider": "sip",
       "model": null,
       "rates": {
-        "perMinuteInbound": {
+        "perMinuteOutbound": {
           "microcents": 4000,
           "display": "$0.0040"
         },
-        "perMinuteOutbound": {
+        "perMinuteInbound": {
           "microcents": 4000,
           "display": "$0.0040"
         }
