@@ -23,7 +23,7 @@ The outbound templates lean on `{{contact.*}}` variables — the contact's name,
 
 <Steps>
   <Step title="Create a flow from the template">
-    **Voice agents → New Flow**, pick the template (or **Blank Flow**), name it. The template is copied into a new draft — nodes, transitions, prompts, providers. Nothing links back; it's yours.
+    **Voice agents → New agent**, pick the template (or **Blank agent**), name it. The template is copied into a new draft — nodes, transitions, prompts, providers. Nothing links back; it's yours.
 
     From the API: [`POST /flows/from-template/{templateSlug}`](/api-reference/flow-templates/instantiate-template) with the slug from [`GET /flow-templates`](/api-reference/flow-templates/list-system-templates) (`appointment-reminder`, `customer-support`, `customer-survey`, `lead-qualification`, `payment-reminder`).
   </Step>
