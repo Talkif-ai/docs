@@ -95,8 +95,12 @@
             "volumeControl": false
           },
           "pricing": {
-            "ratePer1kCharsMicrocents": 37375,
-            "ratePer1kCharsDisplay": "$0.0374"
+            "ratePer1kCharsMicrocents": 38000,
+            "ratePer1kCharsDisplay": "$0.0380"
+          },
+          "deprecation": {
+            "retiresOn": "2026-10-20",
+            "replacedBy": "sonic-3"
           }
         },
         {
@@ -190,8 +194,12 @@
             "volumeControl": false
           },
           "pricing": {
-            "ratePer1kCharsMicrocents": 37375,
-            "ratePer1kCharsDisplay": "$0.0374"
+            "ratePer1kCharsMicrocents": 38000,
+            "ratePer1kCharsDisplay": "$0.0380"
+          },
+          "deprecation": {
+            "retiresOn": "2026-10-20",
+            "replacedBy": "sonic-3"
           }
         },
         {
@@ -420,8 +428,8 @@
             "volumeControl": false
           },
           "pricing": {
-            "ratePer1kCharsMicrocents": 37375,
-            "ratePer1kCharsDisplay": "$0.0374"
+            "ratePer1kCharsMicrocents": 38000,
+            "ratePer1kCharsDisplay": "$0.0380"
           }
         }
       ]
@@ -430,6 +438,376 @@
       "provider": "elevenlabs",
       "displayName": "ElevenLabs",
       "models": [
+        {
+          "modelId": "eleven_v4_turbo",
+          "name": "Eleven v4 Turbo",
+          "description": "ElevenLabs' newest realtime model (~100 ms), in 90+ languages. Most natural delivery, follows audio tags, and keeps cloned voices closest to the original.",
+          "languages": [
+            {
+              "code": "af",
+              "name": "Afrikaans",
+              "nativeName": "Afrikaans"
+            },
+            {
+              "code": "ar",
+              "name": "Arabic",
+              "nativeName": "العربية"
+            },
+            {
+              "code": "hy",
+              "name": "Armenian",
+              "nativeName": "Հայdelays"
+            },
+            {
+              "code": "as",
+              "name": "Assamese",
+              "nativeName": "অসমীয়া"
+            },
+            {
+              "code": "az",
+              "name": "Azerbaijani",
+              "nativeName": "Azərbaycan"
+            },
+            {
+              "code": "be",
+              "name": "Belarusian",
+              "nativeName": "Беларуская"
+            },
+            {
+              "code": "bn",
+              "name": "Bengali",
+              "nativeName": "বাংলা"
+            },
+            {
+              "code": "bs",
+              "name": "Bosnian",
+              "nativeName": "Bosanski"
+            },
+            {
+              "code": "bg",
+              "name": "Bulgarian",
+              "nativeName": "Български"
+            },
+            {
+              "code": "ca",
+              "name": "Catalan",
+              "nativeName": "Català"
+            },
+            {
+              "code": "ceb",
+              "name": "Cebuano",
+              "nativeName": "Cebuano"
+            },
+            {
+              "code": "zh",
+              "name": "Chinese",
+              "nativeName": "中文"
+            },
+            {
+              "code": "hr",
+              "name": "Croatian",
+              "nativeName": "Hrvatski"
+            },
+            {
+              "code": "cs",
+              "name": "Czech",
+              "nativeName": "Čeština"
+            },
+            {
+              "code": "da",
+              "name": "Danish",
+              "nativeName": "Dansk"
+            },
+            {
+              "code": "nl",
+              "name": "Dutch",
+              "nativeName": "Nederlands"
+            },
+            {
+              "code": "en",
+              "name": "English",
+              "nativeName": "English"
+            },
+            {
+              "code": "et",
+              "name": "Estonian",
+              "nativeName": "Eesti"
+            },
+            {
+              "code": "fil",
+              "name": "Filipino",
+              "nativeName": "Filipino"
+            },
+            {
+              "code": "fi",
+              "name": "Finnish",
+              "nativeName": "Suomi"
+            },
+            {
+              "code": "fr",
+              "name": "French",
+              "nativeName": "Français"
+            },
+            {
+              "code": "gl",
+              "name": "Galician",
+              "nativeName": "Galego"
+            },
+            {
+              "code": "ka",
+              "name": "Georgian",
+              "nativeName": "ქართული"
+            },
+            {
+              "code": "de",
+              "name": "German",
+              "nativeName": "Deutsch"
+            },
+            {
+              "code": "el",
+              "name": "Greek",
+              "nativeName": "Ελληνικά"
+            },
+            {
+              "code": "gu",
+              "name": "Gujarati",
+              "nativeName": "ગુજરાતી"
+            },
+            {
+              "code": "ha",
+              "name": "Hausa",
+              "nativeName": "Hausa"
+            },
+            {
+              "code": "he",
+              "name": "Hebrew",
+              "nativeName": "עברית"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "hu",
+              "name": "Hungarian",
+              "nativeName": "Magyar"
+            },
+            {
+              "code": "is",
+              "name": "Icelandic",
+              "nativeName": "Íslenska"
+            },
+            {
+              "code": "id",
+              "name": "Indonesian",
+              "nativeName": "Bahasa Indonesia"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "kn",
+              "name": "Kannada",
+              "nativeName": "ಕನ್ನಡ"
+            },
+            {
+              "code": "kk",
+              "name": "Kazakh",
+              "nativeName": "Қазақша"
+            },
+            {
+              "code": "ko",
+              "name": "Korean",
+              "nativeName": "한국어"
+            },
+            {
+              "code": "ky",
+              "name": "Kyrgyz",
+              "nativeName": "Kyrgyz"
+            },
+            {
+              "code": "ln",
+              "name": "Lingala",
+              "nativeName": "Lingála"
+            },
+            {
+              "code": "lt",
+              "name": "Lithuanian",
+              "nativeName": "Lietuvių"
+            },
+            {
+              "code": "lb",
+              "name": "Luxembourgish",
+              "nativeName": "Lëtzebuergesch"
+            },
+            {
+              "code": "mk",
+              "name": "Macedonian",
+              "nativeName": "Македонски"
+            },
+            {
+              "code": "ms",
+              "name": "Malay",
+              "nativeName": "Bahasa Melayu"
+            },
+            {
+              "code": "ml",
+              "name": "Malayalam",
+              "nativeName": "മലയാളം"
+            },
+            {
+              "code": "mr",
+              "name": "Marathi",
+              "nativeName": "मराठी"
+            },
+            {
+              "code": "ne",
+              "name": "Nepali",
+              "nativeName": "नेपाली"
+            },
+            {
+              "code": "no",
+              "name": "Norwegian",
+              "nativeName": "Norsk"
+            },
+            {
+              "code": "ps",
+              "name": "Pashto",
+              "nativeName": "پښتو"
+            },
+            {
+              "code": "fa",
+              "name": "Persian",
+              "nativeName": "فارسی"
+            },
+            {
+              "code": "pl",
+              "name": "Polish",
+              "nativeName": "Polski"
+            },
+            {
+              "code": "pt",
+              "name": "Portuguese",
+              "nativeName": "Português"
+            },
+            {
+              "code": "pa",
+              "name": "Punjabi",
+              "nativeName": "ਪੰਜਾਬੀ"
+            },
+            {
+              "code": "ro",
+              "name": "Romanian",
+              "nativeName": "Română"
+            },
+            {
+              "code": "ru",
+              "name": "Russian",
+              "nativeName": "Русский"
+            },
+            {
+              "code": "sr",
+              "name": "Serbian",
+              "nativeName": "Српски"
+            },
+            {
+              "code": "sd",
+              "name": "Sindhi",
+              "nativeName": "سنڌي"
+            },
+            {
+              "code": "sk",
+              "name": "Slovak",
+              "nativeName": "Slovenčina"
+            },
+            {
+              "code": "sl",
+              "name": "Slovenian",
+              "nativeName": "Slovenščina"
+            },
+            {
+              "code": "so",
+              "name": "Somali",
+              "nativeName": "Soomaali"
+            },
+            {
+              "code": "es",
+              "name": "Spanish",
+              "nativeName": "Español"
+            },
+            {
+              "code": "sw",
+              "name": "Swahili",
+              "nativeName": "Kiswahili"
+            },
+            {
+              "code": "sv",
+              "name": "Swedish",
+              "nativeName": "Svenska"
+            },
+            {
+              "code": "ta",
+              "name": "Tamil",
+              "nativeName": "தமிழ்"
+            },
+            {
+              "code": "te",
+              "name": "Telugu",
+              "nativeName": "తెలుగు"
+            },
+            {
+              "code": "th",
+              "name": "Thai",
+              "nativeName": "ไทย"
+            },
+            {
+              "code": "tr",
+              "name": "Turkish",
+              "nativeName": "Türkçe"
+            },
+            {
+              "code": "uk",
+              "name": "Ukrainian",
+              "nativeName": "Українська"
+            },
+            {
+              "code": "ur",
+              "name": "Urdu",
+              "nativeName": "اردو"
+            },
+            {
+              "code": "vi",
+              "name": "Vietnamese",
+              "nativeName": "Tiếng Việt"
+            },
+            {
+              "code": "cy",
+              "name": "Welsh",
+              "nativeName": "Cymraeg"
+            }
+          ],
+          "capabilities": {
+            "style": false,
+            "speakerBoost": false,
+            "voiceConversion": false,
+            "streaming": true,
+            "emotion": false,
+            "speedControl": false,
+            "volumeControl": false
+          },
+          "pricing": {
+            "ratePer1kCharsMicrocents": 40000,
+            "ratePer1kCharsDisplay": "$0.0400"
+          }
+        },
         {
           "modelId": "eleven_flash_v2_5",
           "name": "Flash v2.5",
@@ -606,8 +984,12 @@
             "volumeControl": false
           },
           "pricing": {
-            "ratePer1kCharsMicrocents": 50000,
-            "ratePer1kCharsDisplay": "$0.0500"
+            "ratePer1kCharsMicrocents": 40000,
+            "ratePer1kCharsDisplay": "$0.0400"
+          },
+          "deprecation": {
+            "retiresOn": "2026-10-13",
+            "replacedBy": "eleven_v4_turbo"
           }
         },
         {
@@ -996,8 +1378,12 @@
             "volumeControl": false
           },
           "pricing": {
-            "ratePer1kCharsMicrocents": 50000,
-            "ratePer1kCharsDisplay": "$0.0500"
+            "ratePer1kCharsMicrocents": 40000,
+            "ratePer1kCharsDisplay": "$0.0400"
+          },
+          "deprecation": {
+            "retiresOn": "2026-10-13",
+            "replacedBy": "eleven_v4_turbo"
           }
         },
         {
@@ -1176,8 +1562,12 @@
             "volumeControl": false
           },
           "pricing": {
-            "ratePer1kCharsMicrocents": 50000,
-            "ratePer1kCharsDisplay": "$0.0500"
+            "ratePer1kCharsMicrocents": 40000,
+            "ratePer1kCharsDisplay": "$0.0400"
+          },
+          "deprecation": {
+            "retiresOn": "2026-10-13",
+            "replacedBy": "eleven_v4_turbo"
           }
         }
       ]
@@ -1493,10 +1883,15 @@
           }
         },
         {
-          "modelId": "arcana",
-          "name": "Rime Arcana",
-          "description": "Rime's premium, ultra-expressive conversational model with natural prosody and English/Spanish/French/German voices. Higher latency than Mist v2; best when expressiveness matters more than speed.",
+          "modelId": "coda",
+          "name": "Rime Coda",
+          "description": "Rime's flagship expressive model, sub-100 ms. English, Spanish, French, German, Portuguese, Italian, Arabic, Hindi and Japanese (no Turkish).",
           "languages": [
+            {
+              "code": "ar",
+              "name": "Arabic",
+              "nativeName": "العربية"
+            },
             {
               "code": "en",
               "name": "English",
@@ -1511,6 +1906,26 @@
               "code": "de",
               "name": "German",
               "nativeName": "Deutsch"
+            },
+            {
+              "code": "hi",
+              "name": "Hindi",
+              "nativeName": "हिन्दी"
+            },
+            {
+              "code": "it",
+              "name": "Italian",
+              "nativeName": "Italiano"
+            },
+            {
+              "code": "ja",
+              "name": "Japanese",
+              "nativeName": "日本語"
+            },
+            {
+              "code": "pt",
+              "name": "Portuguese",
+              "nativeName": "Português"
             },
             {
               "code": "es",
@@ -1528,8 +1943,8 @@
             "volumeControl": false
           },
           "pricing": {
-            "ratePer1kCharsMicrocents": 40000,
-            "ratePer1kCharsDisplay": "$0.0400"
+            "ratePer1kCharsMicrocents": 50000,
+            "ratePer1kCharsDisplay": "$0.0500"
           }
         }
       ]
@@ -1795,8 +2210,8 @@
             "multilingual": true
           },
           "pricing": {
-            "ratePerMinuteMicrocents": 24000,
-            "ratePerMinuteDisplay": "$0.0240"
+            "ratePerMinuteMicrocents": 10000,
+            "ratePerMinuteDisplay": "$0.0100"
           }
         }
       ]
@@ -2314,8 +2729,8 @@
             "multilingual": false
           },
           "pricing": {
-            "ratePerMinuteMicrocents": 2167,
-            "ratePerMinuteDisplay": "$0.0022"
+            "ratePerMinuteMicrocents": 2280,
+            "ratePerMinuteDisplay": "$0.0023"
           }
         }
       ]
@@ -2708,8 +3123,8 @@
             "multilingual": false
           },
           "pricing": {
-            "ratePerMinuteMicrocents": 9200,
-            "ratePerMinuteDisplay": "$0.0092"
+            "ratePerMinuteMicrocents": 7700,
+            "ratePerMinuteDisplay": "$0.0077"
           }
         },
         {
@@ -3024,7 +3439,7 @@
             "multilingual": false
           },
           "pricing": {
-            "ratePerMinuteMicrocents": 5800,
+            "ratePerMinuteMicrocents": 5833,
             "ratePerMinuteDisplay": "$0.0058"
           }
         },
@@ -3072,7 +3487,7 @@
             "multilingual": false
           },
           "pricing": {
-            "ratePerMinuteMicrocents": 5800,
+            "ratePerMinuteMicrocents": 5833,
             "ratePerMinuteDisplay": "$0.0058"
           }
         },
@@ -3120,7 +3535,7 @@
             "multilingual": false
           },
           "pricing": {
-            "ratePerMinuteMicrocents": 5800,
+            "ratePerMinuteMicrocents": 5833,
             "ratePerMinuteDisplay": "$0.0058"
           }
         }
@@ -3514,8 +3929,8 @@
             "multilingual": true
           },
           "pricing": {
-            "ratePerMinuteMicrocents": 4167,
-            "ratePerMinuteDisplay": "$0.0042"
+            "ratePerMinuteMicrocents": 6500,
+            "ratePerMinuteDisplay": "$0.0065"
           }
         }
       ]
@@ -4219,6 +4634,28 @@
             "inputPer1mTokensDisplay": "$2.00",
             "outputPer1mTokensDisplay": "$6.00"
           }
+        },
+        {
+          "modelId": "grok-4.3",
+          "name": "Grok 4.3",
+          "description": "[DISABLED FOR VOICE] Reasoning cannot be reduced: ~900 reasoning tokens per call whether effort is omitted or set to minimal (both measured on live calls). That is dead air before every answer. Fast, cost-efficient Grok with 1M context. Strong price-performance for voice AI.",
+          "contextWindow": 1000000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": true,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": []
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 1250000,
+            "outputPer1mTokensMicrocents": 2500000,
+            "inputPer1mTokensDisplay": "$1.25",
+            "outputPer1mTokensDisplay": "$2.50"
+          }
         }
       ]
     },
@@ -4392,6 +4829,10 @@
             "outputPer1mTokensMicrocents": 1250000,
             "inputPer1mTokensDisplay": "$0.20",
             "outputPer1mTokensDisplay": "$1.25"
+          },
+          "deprecation": {
+            "retiresOn": "2027-04-01",
+            "replacedBy": "gpt-5.6-luna"
           }
         },
         {
@@ -4440,6 +4881,10 @@
             "outputPer1mTokensMicrocents": 10000000,
             "inputPer1mTokensDisplay": "$1.25",
             "outputPer1mTokensDisplay": "$10.00"
+          },
+          "deprecation": {
+            "retiresOn": "2027-04-01",
+            "replacedBy": "gpt-5.6-terra"
           }
         },
         {
@@ -4467,6 +4912,10 @@
             "outputPer1mTokensMicrocents": 10000000,
             "inputPer1mTokensDisplay": "$1.25",
             "outputPer1mTokensDisplay": "$10.00"
+          },
+          "deprecation": {
+            "retiresOn": "2026-12-11",
+            "replacedBy": "gpt-5.6-sol"
           }
         },
         {
@@ -4494,6 +4943,10 @@
             "outputPer1mTokensMicrocents": 2000000,
             "inputPer1mTokensDisplay": "$0.25",
             "outputPer1mTokensDisplay": "$2.00"
+          },
+          "deprecation": {
+            "retiresOn": "2026-12-11",
+            "replacedBy": "gpt-5.6-terra"
           }
         },
         {
@@ -4538,28 +4991,6 @@
             "outputPer1mTokensMicrocents": 1600000,
             "inputPer1mTokensDisplay": "$0.40",
             "outputPer1mTokensDisplay": "$1.60"
-          }
-        },
-        {
-          "modelId": "gpt-4.1-nano",
-          "name": "GPT-4.1 Nano",
-          "description": "Fastest GPT-4 variant. Ideal for simple voice interactions with minimal latency.",
-          "contextWindow": 128000,
-          "capabilities": {
-            "functionCalling": true,
-            "vision": false,
-            "streaming": true,
-            "jsonMode": false,
-            "temperature": true,
-            "hasPriorityTier": false,
-            "reasoning": false,
-            "reasoningEffort": []
-          },
-          "pricing": {
-            "inputPer1mTokensMicrocents": 100000,
-            "outputPer1mTokensMicrocents": 400000,
-            "inputPer1mTokensDisplay": "$0.10",
-            "outputPer1mTokensDisplay": "$0.40"
           }
         },
         {

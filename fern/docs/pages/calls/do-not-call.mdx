@@ -15,7 +15,7 @@ Inbound calls aren't affected: if someone on the list calls you, the agent answe
 
 Every entry records its **source**:
 
-<ParamField path="manual" type="source">Added in the dashboard, with an optional reason.</ParamField>
+<ParamField path="manual" type="source">Added from the dashboard — a lead marked **Do not call** on the **Leads** page — with an optional reason.</ParamField>
 <ParamField path="api" type="source">Added with <a href="/api-reference/do-not-call/add-dnc-entry"><code>POST /dnc</code></a> — from your CRM's unsubscribe flow, say.</ParamField>
 <ParamField path="call_opt_out" type="source">The person asked, during a call, not to be called again.</ParamField>
 <ParamField path="bulk_import" type="source">Loaded in bulk — up to 10,000 numbers per request.</ParamField>
@@ -26,7 +26,7 @@ The list is per account. If you operate several accounts in an organization, eac
 
 <Tabs>
   <Tab title="Dashboard">
-    **Call Center → Compliance → Do Not Call.** Add a number with a reason, remove one, search the list, or upload a file of numbers.
+    The dashboard has no screen for the list itself — add, remove, search and upload numbers through the API (see the API tab and the [Do Not Call endpoints](/api-reference/do-not-call/list-dnc-entries)). A lead can be added from the dashboard: on the **Leads** page, open the lead's action menu and choose **Do not call**.
   </Tab>
   <Tab title="API">
     <EndpointRequestSnippet endpoint="POST /api/v1/dnc" />

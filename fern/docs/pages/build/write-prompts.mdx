@@ -54,24 +54,27 @@ And what to leave out:
   In the Flow Tester, be the difficult caller: interrupt, give a wrong date of birth, ask something off-topic, go silent. A prompt is finished when those calls go well.
 </Tip>
 
-## Emotion and delivery with ElevenLabs v3
+## Emotion and delivery with Eleven v4 Turbo
 
-Most voices say exactly what the model writes, in one register. ElevenLabs **v3** (`eleven_v3`, `eleven_v3_conversational`) also reads **inline audio tags** — `[warmly]`, `[laughs]`, `[whispers]`, `[hesitates]`, `[excited]` — and performs them. On a v3 voice, your prompt can direct delivery as well as words:
+Most voices say exactly what the model writes, in one register. ElevenLabs **Eleven v4 Turbo** (`eleven_v4_turbo`) also reads **inline audio tags** — `[warmly]`, `[softly]`, `[laughs]`, `[sympathetic]`, `[curious]` — and performs them. On a v4 Turbo voice, your prompt can direct delivery as well as words:
 
-```text title="System Prompt excerpt (ElevenLabs v3 only)"
+```text title="System Prompt excerpt (Eleven v4 Turbo only)"
 Your speech is rendered by an expressive voice that understands bracketed delivery tags.
 Use at most one tag per reply, only where it changes meaning: [warmly] when greeting,
-[apologetic] when you can't help, [laughs] only if the caller made a joke. Never tag routine sentences.
+[sympathetic] when you can't help, [laughs] only if the caller made a joke. Never tag routine sentences.
 ```
 
-Rules that follow from how v3 works on Talkif:
+Rules that follow from how v4 Turbo works on Talkif:
 
-- **Only on v3 models.** On every other voice a tag is read aloud as text. If you switch the TTS node, remove the tag instruction from the prompt in the same publish.
+- **Only on tag-capable voices.** `eleven_v4_turbo` performs tags (and `eleven_v3_conversational` until it retires on 13 October 2026). On every other voice a tag is read aloud as text. If you switch the TTS node, remove the tag instruction from the prompt in the same publish.
+- **Describe the voice, not a sound.** v4 is trained on both vocal delivery and sound effects, so a vague tag can come out as a sound. Prefer tags that clearly describe how to speak — `[softly]`, `[warmly]`, `[calm, low voice]`.
+- **Pauses come from punctuation.** SSML `<break>` tags are not supported on v4; an ellipsis gives a beat, a comma a breath, one word in capitals stresses it.
+- **Pronunciation:** write the IPA between slashes inline, for example `"/ˈtɔːkɪf/"`. Test important names with your voice.
 - **Tags appear in the transcript** as written, so a reader sees `[warmly] Good morning`. Acceptable for most teams; if transcripts feed a downstream system, strip `[...]` there.
-- **Fewer voice sliders.** On v3 only *stability* applies; similarity, style and speaker boost are ignored.
+- **Fewer voice sliders.** On v4 Turbo only *stability* applies; similarity, style, speaker boost and speed are ignored.
 - Keep tags rare. One per reply at most — over-tagged speech sounds theatrical on a phone.
 
-ElevenLabs' own guide to v3 tags and phrasing: [Prompting Eleven v3](https://elevenlabs.io/docs/best-practices/prompting/eleven-v3).
+ElevenLabs' own guide to v4 tags and phrasing: [Prompting Eleven v4](https://elevenlabs.io/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4).
 
 ## Dynamic prompts
 
@@ -113,7 +116,7 @@ Truthiness is voice-friendly: empty strings, `"none"`, `"null"`, empty lists and
 
 ## The Prompts workspace
 
-**Flow Builder → Prompts** is a place to write and keep prompts outside any single flow: company-wide tone guidelines, a persona you reuse across lines, a booking step several flows share. It has the same editor with `{{` autocompletion, plus two things the node editor doesn't:
+**Prompts** in the sidebar is a place to write and keep prompts outside any single flow: company-wide tone guidelines, a persona you reuse across lines, a booking step several flows share. It has the same editor with `{{` autocompletion, plus two things the node editor doesn't:
 
 - **Preview with contact data** — pick a real contact and see the prompt exactly as the call would render it, variables filled in.
 - **AI generation** — describe what you want and iterate in chat; the generator knows your variables and helpers and produces a template that's ready to use.

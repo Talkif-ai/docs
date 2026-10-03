@@ -22,7 +22,7 @@ A single-agent support line: it greets the caller, asks what they need, answers 
 
 <Steps>
   <Step title="Create a flow and give the agent its instructions">
-    Open **Flow Builder** in the sidebar and choose **Create Flow**. You can start from a template or from an empty canvas; for this walkthrough start empty so you see every piece.
+    Open **Voice agents** in the sidebar and choose **New Flow**. You can start from a template or from an empty canvas; for this walkthrough start empty so you see every piece.
 
     The canvas opens with a **Main Agent** already placed. It's the entry point of every call and the only node that carries the call's persona. Select it and fill in the two prompts:
 
@@ -84,13 +84,13 @@ A single-agent support line: it greets the caller, asks what they need, answers 
   </Step>
 
   <Step title="Get a phone number">
-    Open **Phone Numbers** in the sidebar and choose **Purchase Number**. Pick a country, then search by area code or digit pattern. Each result shows its capabilities (voice, SMS) and its monthly price. Confirm to buy; the number is provisioned instantly.
+    Open **Phone & WhatsApp** in the sidebar and choose **Purchase**. Pick a country, then search by area code or digit pattern. Each result shows its capabilities (voice, SMS) and its monthly price. Confirm to buy; the number is provisioned instantly.
 
     Purchases and rental are paid from your *purchased* balance — add a payment method and top up under **Billing** if you haven't. Numbers renew monthly against the same balance; see [Buy a number](/telephony/buy-a-number) for pricing and what happens if renewal fails.
 
     <Tabs>
       <Tab title="Dashboard">
-        **Phone Numbers → Purchase Number**, choose country → search → buy.
+        **Phone & WhatsApp → Purchase**, choose country → search → buy.
       </Tab>
       <Tab title="API">
         The platform's own carrier is a *system provider* — list providers to get its `id`, then search and purchase through it.
@@ -108,7 +108,7 @@ A single-agent support line: it greets the caller, asks what they need, answers 
 
     <Tabs>
       <Tab title="Dashboard">
-        **Phone Numbers →** select the number **→ Select a published flow**. Leave the version on *latest published* unless you have a reason to pin.
+        **Phone & WhatsApp →** on the number's row, pick a published flow in the agent picker. Leave the version on *latest published* unless you have a reason to pin.
       </Tab>
       <Tab title="API">
         <EndpointRequestSnippet endpoint="PATCH /api/v1/phone/numbers/{phoneNumberId}/connect-flow" />
@@ -123,7 +123,7 @@ A single-agent support line: it greets the caller, asks what they need, answers 
 
     **Inbound** — dial the number from your own phone. This is the path your customers will take.
 
-    **Outbound** — have the agent call *you*. From the dashboard use **Start a call** on the home screen (or **Call Center → Calls**), pick the flow, the number to call from, and your mobile as the destination. From the API, the same thing is one request:
+    **Outbound** — have the agent call *you*. From the dashboard use **Start a call** on the home screen (or **Calls**), pick the flow, the number to call from, and your mobile as the destination. From the API, the same thing is one request:
 
     <Tabs>
       <Tab title="Dashboard">
@@ -140,7 +140,7 @@ A single-agent support line: it greets the caller, asks what they need, answers 
   </Step>
 
   <Step title="Read the result">
-    Open **Call Center → History** and select the call. You get three things for every call, test or real:
+    Open **Calls** and select the call. You get three things for every call, test or real:
 
     - the **transcript**, turn by turn, with who spoke and when
     - the **recording**, playable in place
