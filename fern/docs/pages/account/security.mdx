@@ -1,6 +1,6 @@
 ---
 title: Security
-description: Your profile and verification status, password and Google sign-in, two-factor authentication with backup codes, and ending sessions on other devices.
+description: Your profile and verification status, password, Google, Apple and passkey sign-in, two-factor authentication with backup codes, and ending sessions on other devices.
 ---
 
 Your user is the key to every account you belong to — including the organization's balance and its phone lines. Securing it is not optional for anyone with the Owner role, and it's cheap: two-factor authentication takes a minute to set up and is required on every sign-in afterwards.
@@ -11,14 +11,16 @@ Everything on this page is **per user**, not per account: it follows you across 
 
 Your name, email and phone number, and which are verified. Email is verified by a link at sign-up; the phone by a 6-digit SMS code (valid 10 minutes). Both are needed before an account can place calls, and the phone is what receives an SMS notification if you enable one.
 
-Changing your email or phone repeats the verification for the new value. **Connected accounts** shows whether Google sign-in is linked.
+Changing your email or phone repeats the verification for the new value. **Connected accounts** shows whether Google and Apple sign-in are linked.
 
 ## Signing in
 
-Two ways, and you can have both on one user:
+Several ways, and you can have any combination on one user:
 
-- **Email and password.** Change the password from Security; the current password is required to set a new one. A user created through Google can add a password here to sign in either way.
-- **Continue with Google.** Links your Google identity to the user. Google handles the credential; Talkif still applies your two-factor setting.
+- **Email and password.** Change the password from Security; the current password is required to set a new one. A user created through Google or Apple can add a password here to sign in either way.
+- **Continue with Google.** Links your Google identity to the user. Google handles the credential; if two-factor authentication is on, Talkif still asks for the code after Google.
+- **Continue with Apple.** Signs in with your Apple ID, optionally behind Hide My Email. Two-factor authentication applies the same way. See [Sign in with Apple](/account/passkeys-and-sign-in-with-apple#sign-in-with-apple).
+- **Passkey.** Unlocks with Touch ID, Face ID, Windows Hello or the device PIN, and skips the 2FA code because it already proves both the device and you. See [Passkeys](/account/passkeys-and-sign-in-with-apple#passkeys).
 
 Failed sign-ins are rate-limited per address — a handful of quick attempts, then a slow trickle — so a password can't be brute-forced, and you may briefly be locked out after several typos.
 
@@ -34,7 +36,7 @@ Time-based one-time passwords (TOTP), compatible with Google Authenticator, Auth
     You get **10 single-use backup codes** (8 characters each, shown as `XXXX-XXXX`). They're the only way back in if you lose the phone. Put them in a password manager now — they are not shown again.
   </Step>
   <Step title="Sign in with it">
-    From then on, every sign-in — password or Google — asks for the current code, or a backup code.
+    From then on, every password, Google or Apple sign-in asks for the current code, or a backup code. A passkey sign-in doesn't: the passkey is already a second factor.
   </Step>
 </Steps>
 
@@ -47,6 +49,9 @@ To disable, confirm with your current password. If you're an organization Owner,
 ## Next
 
 <CardGroup cols={2}>
+  <Card title="Passkeys and Sign in with Apple" href="/account/passkeys-and-sign-in-with-apple" icon="fa-regular fa-fingerprint">
+    Sign in without a password or 2FA code, or with your Apple ID.
+  </Card>
   <Card title="Members and roles" href="/account/members-and-roles" icon="fa-regular fa-users">
     Suspend a member whose account may be compromised.
   </Card>
