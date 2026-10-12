@@ -380,6 +380,9 @@ navigation:
           - page: Security
             slug: security
             path: docs/pages/account/security.mdx
+          - page: Passkeys and Sign in with Apple
+            slug: passkeys-and-sign-in-with-apple
+            path: docs/pages/account/passkeys-and-sign-in-with-apple.mdx
           - page: Notifications
             slug: notifications
             path: docs/pages/account/notifications.mdx

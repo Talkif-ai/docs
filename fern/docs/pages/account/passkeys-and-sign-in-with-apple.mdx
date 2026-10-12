@@ -1,0 +1,122 @@
+---
+title: Passkeys and Sign in with Apple
+description: Sign in with a passkey (Touch ID, Face ID, Windows Hello or device PIN) instead of a password and 2FA code, or with your Apple ID — including Hide My Email, linking Apple to an existing user, and recovery.
+max-toc-depth: 2
+---
+
+Passwords get reused, phished and forgotten, and a six-digit code on top of one makes every sign-in slower. A **passkey** replaces both: a key pair created on your device, unlocked by the same fingerprint, face or PIN you already use to unlock it. **Sign in with Apple** is for people who would rather not create another password at all and let their Apple ID vouch for them.
+
+Both are optional and live alongside what you already have. Like everything on the [Security](/account/security) page, they are **per user**: one passkey opens every account you belong to.
+
+## Passkeys
+
+### What a passkey is
+
+When you add a passkey, your device creates a key pair. Talkif stores only the **public** half. The private half stays in your passkey store — **iCloud Keychain**, **Google Password Manager**, or a password manager such as 1Password — and is unlocked with **Touch ID, Face ID, Windows Hello or the device PIN**.
+
+Your fingerprint or face never leaves the device and is never sent to Talkif. The device checks it locally, then signs a one-time challenge for talkif.ai. A passkey only works on the real Talkif site, so a look-alike phishing page can't capture it.
+
+### Why a passkey sign-in skips the 2FA code
+
+Two-factor authentication exists to prove two things: something you have (the phone with the authenticator app) and something you know (the password). A passkey already proves both in one step — **the device** holds the key, and **you** unlocked it with your biometric or PIN. So a passkey sign-in goes straight in, with no code prompt, even when two-factor authentication is on. Password, Google and Apple sign-ins still ask for the code.
+
+### Synced and device-only passkeys
+
+| Saved in | Synced? | What it means |
+|---|---|---|
+| iCloud Keychain, Google Password Manager, most password managers | Synced | Available on your other devices signed in to the same Apple ID, Google account or manager. Losing one device doesn't lose the passkey. |
+| A hardware security key, or a store that doesn't sync | This device only | Works only where it was created. Add a second passkey elsewhere, or keep your password. |
+
+The list under **Passkeys** shows each passkey's store and whether it is synced, when it was added and when it was last used — for example *iCloud Keychain · Synced* and *Added 3 days ago · Last used 2 hours ago*. A passkey you don't recognise, or one on a device you no longer have, should be removed.
+
+### Your other sign-in methods stay
+
+Adding a passkey doesn't remove your password or Google sign-in. They remain your **recovery path** if you lose every device holding a passkey. Keep at least one of them working.
+
+### Notifications
+
+You get an **email whenever a passkey is added to or removed from your user**. If you didn't make the change, remove the passkey, change your password and **Log out of other devices** from [Sessions](/account/security#sessions).
+
+### Add a passkey
+
+<Steps>
+  <Step title="Open the Passkeys section">
+    **User menu → Security → Passkeys → Add a passkey.**
+  </Step>
+  <Step title="Confirm it's you">
+    Adding a sign-in method is sensitive, so Talkif asks you to confirm first:
+    - with your **password**, if you have one;
+    - otherwise with your **two-factor code**;
+    - if you have neither (for example, you signed up with Google or Apple), with a **6-digit code emailed** to you.
+  </Step>
+  <Step title="Save it on your device">
+    Your browser or operating system asks where to save the passkey and to unlock it with Touch ID, Face ID, Windows Hello or the device PIN. The new passkey appears in the list.
+  </Step>
+</Steps>
+
+After a password sign-in, Talkif may also offer to save a passkey on the spot, and the dashboard shows the same offer to users without one. **Skip for now** hides the offer on that device for **30 days**.
+
+### Sign in with a passkey
+
+<Steps>
+  <Step title="Click the email field">
+    On the sign-in page, click the email field. If this device has a Talkif passkey, the browser offers it in the autofill list. Or click **Sign in with a passkey**.
+  </Step>
+  <Step title="Unlock it">
+    Confirm with your fingerprint, face or device PIN. You're signed in — no password, no 2FA code.
+  </Step>
+</Steps>
+
+### Rename or remove a passkey
+
+In **User menu → Security → Passkeys**, use **Rename** to give a passkey a name you'll recognise (*Work laptop*), or **Remove** to revoke it. Removing it in Talkif stops it working immediately; you can also delete the leftover entry from your passkey store.
+
+## Sign in with Apple
+
+**Continue with Apple** is on the sign-in and sign-up pages. The first time, Apple asks whether to share your email address or to use **Hide My Email**.
+
+### Hide My Email
+
+With Hide My Email, Talkif receives a private relay address ending in `@privaterelay.appleid.com` instead of your real one. Apple forwards mail sent to that address to your real inbox, so verification links, security emails and billing notices from Talkif still reach you. On the Security page the Apple connection then shows as *Connected (email hidden)*.
+
+If Apple doesn't share an email address when you sign up, Talkif asks you for one, sends a 6-digit code to it, and creates your account once you enter the code. If that email already has a Talkif account, sign in to it and connect Apple from **User menu → Security** instead.
+
+### Existing users are never merged automatically
+
+Talkif never attaches an Apple ID to an existing user just because the email addresses match — matching email alone isn't proof that the same person controls both. If you already have a Talkif user with the email Apple shares, **Continue with Apple** stops and asks you to sign in the usual way and connect Apple from there.
+
+<Steps>
+  <Step title="Sign in the usual way">
+    With your password, Google or a passkey.
+  </Step>
+  <Step title="Link Apple">
+    **User menu → Security → Connected Accounts → Apple → Link**, then approve in Apple's window. From then on, **Continue with Apple** opens this user.
+  </Step>
+</Steps>
+
+An Apple ID can be linked to only one Talkif user.
+
+<Warning title="Signed up with Hide My Email by mistake?">
+Hide My Email gives Talkif a relay address, not your real one, so Talkif can't recognise you as an existing user — choosing it with an Apple ID you hadn't linked creates a **second, separate user**. If that happened, [contact support](mailto:support@talkif.ai) and we'll sort it out. To avoid it, link Apple from the Security page of your existing user first.
+</Warning>
+
+### Two-factor authentication still applies
+
+Apple vouches for your Apple ID, not for your Talkif second factor. If your user has two-factor authentication on, Talkif asks for the code (or a backup code) after Apple, the same as after a password or Google sign-in.
+
+### Unlink Apple
+
+**User menu → Security → Connected Accounts → Apple → Unlink.** You can't unlink your only way to sign in — if Apple is the only method on your user, set a password (or connect Google) first. Unlinking also revokes Talkif's access in your Apple ID settings.
+
+Deleting your Talkif account also revokes Talkif's Sign in with Apple access when the deletion goes through. See [Data export and deletion](/account/data-export-and-deletion).
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Security" href="/account/security" icon="fa-regular fa-shield">
+    Password, Google sign-in, two-factor authentication and sessions.
+  </Card>
+  <Card title="Members and roles" href="/account/members-and-roles" icon="fa-regular fa-users">
+    Suspend a member whose account may be compromised.
+  </Card>
+</CardGroup>
