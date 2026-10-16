@@ -17,13 +17,13 @@ A finished call is priced as a set of line items, one per resource, each with it
 | **STT** | per minute, prorated to the second | Duration of the call, at the chosen speech-to-text model's rate |
 | **LLM** | per token, input and output priced separately | Every turn re-sends the prompts and transcript, so tokens grow with call length and prompt size |
 | **TTS** | per character synthesized | Only what the agent actually said |
-| **Infrastructure** | per minute, prorated to the second | The agent runtime itself — a flat platform rate |
+| **Infrastructure** | per minute: prorated to the second for calls that start until November 14, 2026; **rounded up** to the next whole minute for calls that start from November 15, 2026 (UTC) | The agent runtime itself — the platform fee, a flat platform rate |
 | **Function calls** | — | Calls to your own HTTP endpoints are **free**; you pay only the LLM tokens around them |
 | **LLM analysis** | per token | Post-call insights, if enabled — a separate line so you can see what analysis costs versus the conversation |
 
 Two consequences worth knowing before you design a flow:
 
-- **Telephony rounds up; nothing else does.** A 61-second call pays 2 telephony minutes but 61 seconds of STT and infrastructure. Short calls are proportionally more expensive on the telephony line — [WhatsApp calls](/telephony/whatsapp-business-calling) have no telephony line at all.
+- **Telephony rounds up, and from November 15, 2026 so does the platform fee.** A 61-second call pays 2 telephony minutes and 61 seconds of STT. Its infrastructure line (the platform fee) is 61 seconds for calls that start until November 14, 2026, and 2 minutes for calls that start from November 15, 2026 (UTC). At the standard platform rate of \$0.05 per minute that is \$0.0508 before and \$0.10 after; a call that ends on a whole minute costs the same either way, and no call pays more than one extra minute of platform fee. Short calls are proportionally more expensive on the rounded lines — [WhatsApp calls](/telephony/whatsapp-business-calling) have no telephony line at all.
 - **LLM cost is quadratic-ish in call length.** Each turn resends the whole context, so a long System Prompt is paid on every turn of every call. Keeping prompts short is a cost lever as well as a quality one — see [Write prompts](/build/write-prompts).
 
 ### Transferred calls
@@ -102,14 +102,15 @@ Available   $55.00
     ```
   </Step>
   <Step title="You make a 4 min 20 s test call">
-    Telephony is billed per started minute; STT, TTS and infrastructure per second; the LLM per token. Say the call comes to \$0.42:
+    Telephony is billed per started minute; STT per second; TTS per character; the LLM per token. Infrastructure is per second for calls that start until November 14, 2026, and per started minute from November 15, 2026. Say the call comes to \$0.42:
 
     ```text
     Telephony        5 min (started)  ×  $0.014/min   =  $0.07
     STT              4.33 min         ×  model rate
     LLM              ~2,800 tokens    ×  model rate
     TTS              ~1,900 chars     ×  model rate
-    Infrastructure   4.33 min         ×  platform rate
+    Infrastructure   4.33 min         ×  platform rate   (until Nov 14, 2026)
+                     5 min (started)  ×  platform rate   (from Nov 15, 2026: ~$0.03 more at $0.05/min)
     Call total                                        ≈  $0.42
     ```
 

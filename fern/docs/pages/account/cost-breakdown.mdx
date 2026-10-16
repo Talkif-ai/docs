@@ -47,7 +47,7 @@ Every balance movement, in order, with balance before and after. Types: `purchas
 | STT | seconds | per minute, prorated |
 | LLM input / output | tokens | per million tokens, by model |
 | TTS | characters | per thousand characters, by model |
-| Infrastructure | seconds | per minute, prorated |
+| Infrastructure | seconds | per minute: prorated for calls that start until November 14, 2026; per started minute from November 15, 2026 (UTC) |
 
 Every line carries the **rate that applied at the time**, so old charges don't change when prices do.
 
@@ -55,7 +55,7 @@ Every line carries the **rate that applied at the time**, so old charges don't c
 
 In rough order of impact for a typical flow:
 
-1. **Call length.** Everything is per-second or per-token; a 4-minute call costs about twice a 2-minute one. Tighter prompts and an explicit end condition are cost work, not just quality work.
+1. **Call length.** Every line grows with seconds, started minutes or tokens; a 4-minute call costs about twice a 2-minute one. Tighter prompts and an explicit end condition are cost work, not just quality work.
 2. **LLM choice and prompt size.** Tokens = (prompt + transcript) × turns. A 1,200-token System Prompt on a 20-turn call is 24,000 input tokens before the conversation is counted. The [Costs](#costs--the-trend) view will show LLM as the largest category if this is your problem.
 3. **TTS model.** Premium voices cost several times the flash tier per character. Listen to both before deciding the difference is worth it on every call.
 4. **Telephony rounding.** Very short calls (voicemail hang-ups, wrong numbers) pay a full minute. Voicemail detection on outbound flows reduces these.
