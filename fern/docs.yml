@@ -358,6 +358,9 @@ navigation:
           - page: Meta Lead Ads
             slug: meta-lead-ads
             path: docs/pages/integrate/meta-lead-ads.mdx
+          - page: Connectors (experimental)
+            slug: connectors
+            path: docs/pages/integrate/connectors.mdx
 
       - section: Account and billing
         slug: account
