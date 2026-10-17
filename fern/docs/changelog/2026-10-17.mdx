@@ -1,0 +1,6 @@
+---
+title: "Success rates reported as percentages"
+---
+
+- **API**: correction — [`GET /flows/{flowId}/stats`](/api-reference/analytics/get-flow-stats) now returns `rates.successRate` and `rates.failureRate` as percentages from 0 to 100, as documented. They were returned as fractions from 0 to 1, so a flow where every call completed reported `1` instead of `100`. If your integration multiplied these values by 100 to work around this, remove that step.
+- **Dashboard**: the **Success rate** figure on the overview shows the real percentage. It used to show 0% or 1% whatever the real rate was.
