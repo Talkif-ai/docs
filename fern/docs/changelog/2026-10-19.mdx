@@ -1,0 +1,15 @@
+---
+title: Owner verification and auto-reactivated numbers
+---
+
+{/* versions: api=0.1.340 app=0.1.101 voice=0.0.120 */}
+
+- **Account**: To buy a phone number, create an API key, or invite a teammate, the account owner now needs a verified email and phone number (signing up with Google or Apple counts). Verifying a phone number now also requires a verified email first.
+- **Account**: Sign-in, password reset, and verification code requests are now protected against automated abuse with Cloudflare Turnstile.
+- **Account**: The dashboard no longer shows a cookie banner. Whether Talkif may report your sign-up, first call, or payment to an ad platform for attribution is now an explicit, opt-in setting on your account, offered only where required by law.
+- **Telephony**: A number that falls behind on rental payments and stays unpaid is now released back to the pool after 14 days of suspension, with a notice 3 days before release — top up anytime before then and it reactivates automatically. See [Buy a number](/telephony/buy-a-number).
+- **Telephony**: New accounts (less than 30 days old) can hold at most 2 rented numbers at a time.
+- **Builder**: The assistant can now save changes to a flow from any page, not just the flow canvas, without overwriting edits made since it last read the flow. See [Assistant](/build/assistant).
+- **Builder**: The assistant can create and manage alert rules and escalate to support directly from chat. See [Assistant](/build/assistant) and [Notifications](/account/notifications).
+- **API**: Creating an API key now requires choosing at least one scope — keys no longer default to full access. See [Authentication](/integrate/authentication).
+- **API**: Browser-call endpoints used by the WebRTC SDK and the test-a-flow tool are now documented for API key access.
