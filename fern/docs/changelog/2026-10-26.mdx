@@ -1,0 +1,11 @@
+---
+title: Live team availability and a recording fix
+---
+
+{/* versions: api=0.1.343-direct.3 app=0.1.103 voice=0.0.120 */}
+
+- **Account**: Resend a pending team invitation, and see teammates' live availability — online or away, with an "away until" time — when transferring a call to someone. See [Members and roles](/account/members-and-roles).
+- **Calls**: Fixed a bug where some calls made through a connected SIP provider, including ones still waiting in the queue, weren't recorded even though recording was turned on.
+- **Calls**: Fixed a bug on the flow builder's test call where a denied or missing microphone permission left the test bot waiting with no explanation. The browser now asks for microphone access before the call is placed, and cancels it right away if setup fails or you hang up early. See [Test and publish](/build/test-and-publish).
+- **Telephony**: Fixed a display bug where some phone number providers showed as "undefined" instead of their name. See [Bring your own SIP trunk](/telephony/bring-your-own-sip-trunk).
+- **API**: The available-countries and pricing endpoints no longer include an internal routing field that could expose account-specific details.
