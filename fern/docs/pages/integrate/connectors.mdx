@@ -1,0 +1,60 @@
+---
+title: Connectors (experimental)
+description: Let a voice agent reach your coding sessions, knowledge sources and other agents during a call.
+---
+
+<Warning>
+  Connectors is an **experimental** feature. It has no uptime commitment and may change or be withdrawn at any time.
+</Warning>
+
+A **connector** is a tool you link to your Talkif account so your voice agent can use it during a call: your own coding assistant sessions, folders of knowledge, or other agents. On the call, the agent asks the connector questions, looks things up in it, or gives it tasks, and speaks the answers back.
+
+## Turn on Connectors for your account
+
+Connectors is off until an **owner or admin** turns it on. Go to **Developer → Integrations**, open the **Connectors** card, read what Connectors mean for the account, and select **Turn on Connectors**. The card then shows who turned it on and when. Other members see the card but cannot accept.
+
+If the Connectors terms change later, the card says so, and an owner or admin has to accept them again before agents can use Connectors.
+
+## Link a connector
+
+A connector links to your account with an API key you create under **Developer → Credentials** ([Authentication](/integrate/authentication)). Each connector has an audience that decides who can reach it on a call:
+
+| Audience | Who can use it on a call |
+|---|---|
+| **Private** | Only you, the connector's owner |
+| **Team** | Members of your organization can ask it questions |
+| **Public** | Anyone who calls the account's agent can look things up in it (lookup only) |
+
+A connector is **Team** unless you choose otherwise. Coding sessions are always **Private**. Only the owner can give a connector tasks.
+
+<Warning>
+  Never make a connector public if it can return personal data or confidential information. Anyone who calls your agent can reach it.
+</Warning>
+
+## Add a Connectors node to a flow
+
+In the flow builder, add a **Connectors** node and attach it to an agent. The node has four settings.
+
+**Who is it for?**
+
+| Option | What the agent reaches |
+|---|---|
+| **Each caller's own** | Each signed-in caller reaches only their own coding sessions and knowledge sources, never a teammate's. |
+| **My team** (default) | Your connectors and the ones teammates share. Teammates' connectors can only be asked questions. |
+| **Callers** | For anyone who calls: only this account's public connectors, and only to look things up. |
+
+**What can the AI do?** Choose at least one: **Answer questions**, **Look up facts in documents**, **Give tasks**. With **Callers**, only looking things up is available.
+
+**Call memory.** Off by default, and not available for **Callers**. When you switch on **Remember past calls**, the agent gets a short recap of this caller's earlier calls of the flow, and each call's summary is shared with their connected sessions. It applies to the whole flow: if any Connectors node in the flow has it on, every call's summary is shared.
+
+**Extra instructions.** Optional text added after the agent's own prompt, for example "Only use the support knowledge base." Leave it empty to use the default instructions.
+
+## Who counts as the owner
+
+A caller counts as a connector's owner only when they are **signed in** to the Talkif app, the dashboard or the desktop app, or when the call is placed from the owner's own connected session. **A phone number never proves who is calling.**
+
+## Data and retention
+
+What a connector returns is spoken to the caller through the speech-to-text, language model and text-to-speech providers of the call, and becomes part of the call's transcript and summary. Text that looks like a secret, such as a key or a password, is removed before it is spoken; this is best effort and does not catch every secret. You are responsible for what your connectors return.
+
+Connector answers follow your account's call content retention. Call memory and the log of what was sent to your sessions have their own limits. The details are in the [Privacy Policy](https://trust.talkif.ai/privacy) (Connector Data) and the [Data Processing Agreement](https://trust.talkif.ai/dpa).
