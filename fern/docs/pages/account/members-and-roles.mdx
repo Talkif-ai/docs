@@ -61,7 +61,7 @@ Inviting a member (or resending an invitation), creating an API key and buying a
 
 ### API keys and roles
 
-API keys belong to the account, not to a person: Owners and Admins create and revoke them, and a key acts with the [scopes](/integrate/authentication#scopes) it was given, whoever uses it. Give each integration only the scopes it needs.
+API keys belong to the account: Owners and Admins create and revoke them, and a key can do only what its [scopes](/integrate/authentication#scopes) allow, whoever uses it. A key also never does more than the person who created it may do *right now* — every request is checked against its creator's current role too. If that person is demoted or removed, their keys lose access to match, so create integration keys from an Owner or a long-standing Admin. Give each integration only the scopes it needs.
 
 ### Taking calls
 
