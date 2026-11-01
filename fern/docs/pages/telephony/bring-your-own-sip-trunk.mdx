@@ -88,11 +88,19 @@ If your numbers are already in Twilio, connect the account and use them directly
   </Step>
 </Steps>
 
-Registering never moves a number out of your Twilio account. Removing the provider later asks whether to **keep the numbers in Twilio** (Talkif simply forgets them) or **release** them from Twilio.
+Registering never moves a number out of your Twilio account, and Talkif never releases it from there.
 
 <Note>
   Talkif configures the voice webhook on each registered Twilio number so inbound calls reach it. If you also use that number with other Twilio applications, the webhook will now point at Talkif.
 </Note>
+
+### Removing your Twilio numbers from Talkif
+
+Only the Owner can remove numbers or the provider.
+
+- **Removing a number** (**Release Number** on the number) takes it out of Talkif. **The number stays in your Twilio account**, and Twilio keeps billing you for it. Talkif clears the voice URL and status callback it set, so calls stop reaching Talkif. A URL you changed yourself is left alone. Campaigns and schedules that dial from that number are cancelled.
+- **Deleting the provider** works only once no numbers, campaigns or schedules use it, so remove its numbers first. The **Keep numbers in Twilio** / **Release numbers** choice in its delete dialog changes nothing: by then no numbers are left, and Talkif doesn't release numbers from your Twilio account.
+- **Deleting your Talkif account** removes these numbers the same way: they stay in your Twilio account.
 
 ## Next
 
