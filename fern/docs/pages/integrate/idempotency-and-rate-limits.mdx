@@ -19,7 +19,7 @@ Talkif doesn't currently accept a client-supplied idempotency key on call creati
     A timeout means you don't know whether the call was created. Before re-issuing, list recent calls — [`GET /calls`](/api-reference/calls/list-calls) filtered by `contactId` (or `phoneNumber`) with `startDate` a few minutes back. A call created since your request → done. Nothing → retry.
   </Step>
   <Step title="Keep the SDK's retries for the rest">
-    The official [SDKs](/sdks/server) retry `408`, `429` and `5xx` twice with backoff. That's right for every endpoint except call creation; for `POST /calls`, pass `maxRetries: 0` and do the check above.
+    The official [SDKs](/sdks/server) retry `408`, `429` and `5xx` (Python also `409`) twice with backoff. That's right for every endpoint except call creation; for `POST /calls`, pass `maxRetries: 0` and do the check above.
   </Step>
 </Steps>
 
@@ -32,6 +32,7 @@ Campaigns are idempotent by construction: adding a contact who's already in the 
 | **Concurrent calls** | 10 | all calls in flight for the account — inbound, outbound, browser | outbound calls **queue** (HTTP `202`) instead of failing; queue depth 100, then `queue_full` |
 | **Call placements per minute** | 60 | `POST /calls`, campaign and schedule dials combined | `rate_limit_exceeded` — wait and retry |
 | **Assistant prompts** | 10 / minute | dashboard assistant | wait |
+| **MCP tool calls** | 60 / minute, fixed | per API key (per connected app for an app's token), on the [MCP server](/integrate/mcp) | the tool result is an error starting `rate_limit_exceeded`; the endpoint limits above still apply to each tool call |
 | **Authentication endpoints** | small bursts (e.g. 5 login attempts, then 20 per 15 min) | per IP | `429` |
 
 Defaults are per account and can be raised — contact support with your expected peak concurrency. The account's current values are shown in the dashboard's account settings, and [Limits](/reference/limits) explains how the queue prioritises when you're at the ceiling.

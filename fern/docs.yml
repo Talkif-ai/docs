@@ -346,6 +346,9 @@ navigation:
           - page: Authentication
             slug: authentication
             path: docs/pages/integrate/authentication.mdx
+          - page: MCP server
+            slug: mcp
+            path: docs/pages/integrate/mcp.mdx
           - page: Webhooks
             slug: webhooks
             path: docs/pages/integrate/webhooks.mdx

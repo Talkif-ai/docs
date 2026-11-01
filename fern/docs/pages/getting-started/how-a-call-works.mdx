@@ -107,7 +107,7 @@ When either side hangs up, the record reaches a terminal `status` and is finaliz
 - **End reason** — `endReason` on the call record says *why* it ended: `caller_hangup`, `agent_completed`, `no_answer`, `busy`, `canceled`, `agent_timeout`, `agent_error`, `telephony_error`, or `balance_depleted` for an inbound call refused at the balance gate. Set once; the first cause wins.
 - **Transcript** — every turn with speaker and timing. On the call page, or [`GET /calls/{callId}/transcript`](/api-reference/calls/get-call-transcript).
 - **Recording** — whether calls are recorded is an account setting, overridable per number. [`GET /calls/{callId}/recording`](/api-reference/calls/get-call-recording) returns a short-lived signed link.
-- **Cost breakdown** — one line item per resource (telephony seconds, STT seconds, LLM tokens in and out, TTS characters), each priced and totalled in USD. [`GET /billing/costs/calls/{callId}`](/api-reference/billing/get-billing-call-cost-breakdown).
+- **Cost breakdown** — one line item per resource (telephony seconds, STT seconds, LLM tokens in and out, TTS characters, and the AI decisions made during the call, such as when to take a turn), each priced and totalled in USD. [`GET /billing/costs/calls/{callId}`](/api-reference/billing/get-billing-call-cost-breakdown).
 - **Insights** — summary, sentiment, intents, topics, action items and outcome, generated from the transcript. Automatic when auto-analysis is on for the account; otherwise on demand with [`POST /calls/{callId}/analyze`](/api-reference/calls/analyze-call).
 
 <Info title="How billing settles">

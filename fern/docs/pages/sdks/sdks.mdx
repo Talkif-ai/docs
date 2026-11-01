@@ -91,31 +91,55 @@ The response is a union: `initiated` (HTTP 201, the call is being placed) or `qu
 
 ## Page through lists
 
-List endpoints (`calls.getCallHistory`, `contacts.listContacts`, `campaigns.listCampaigns`, …) use `limit`/`offset` and return a **pager**. (In the API the call list is `GET /calls`; the 0.1.x SDKs still expose it as `getCallHistory` / `get_call_history` until the next SDK release.) Iterate it and the client fetches the next page for you; you never handle `offset` yourself.
+List methods take `limit`/`offset`. Six of them return a **pager** — iterate it and the client fetches the next page for you: `contacts.listContacts`, `contacts.getContactCalls`, `campaigns.listCampaigns`, `campaigns.listCampaignContacts`, `schedules.listSchedules` and `doNotCall.listDncEntries` (snake_case in Python). The others — calls, flows, phone numbers, billing, transfers — return one page that you page through with `offset`, as shown for calls below.
 
 <CodeBlocks>
 ```typescript title="TypeScript"
-const history = await client.calls.getCallHistory({
-  status: "completed",
-  startDate: "2026-09-01T00:00:00Z",
-});
+const contacts = await client.contacts.listContacts({ tags: "vip" });
 
-for await (const call of history) {
-  console.log(call.id, call.direction, call.duration);
+for await (const contact of contacts) {
+  console.log(contact.id, contact.name, contact.primaryPhone);
 }
 ```
 ```python title="Python"
-history = client.calls.get_call_history(
-    status="completed",
-    start_date="2026-09-01T00:00:00Z",
-)
+contacts = client.contacts.list_contacts(tags="vip")
 
-for call in history:
-    print(call.id, call.direction, call.duration)
+for contact in contacts:
+    print(contact.id, contact.name, contact.primary_phone)
 ```
 </CodeBlocks>
 
-If you'd rather control paging — to show a page in a UI, say — pass `limit` and `offset` explicitly and read the page's items (`calls`, `contacts`, …) and `meta` (total count) without iterating.
+The call list, `calls.listCalls` (`GET /calls`), returns one page: the page's `calls` and `meta` with `limit`, `offset` and `total`.
+
+<CodeBlocks>
+```typescript title="TypeScript"
+const page = await client.calls.listCalls({
+  status: "completed",
+  startDate: "2026-10-01T00:00:00Z",
+  limit: 100,
+});
+
+for (const call of page.calls) {
+  console.log(call.id, call.direction, call.duration);
+}
+console.log(`${page.meta.total} calls in total`);
+```
+```python title="Python"
+from datetime import datetime, timezone
+
+page = client.calls.list_calls(
+    status="completed",
+    start_date=datetime(2026, 10, 1, tzinfo=timezone.utc),
+    limit=100,
+)
+
+for call in page.calls:
+    print(call.id, call.direction, call.duration)
+print(page.meta.total, "calls in total")
+```
+</CodeBlocks>
+
+`calls.listCalls` replaced `getActiveCalls` and `getCallHistory` in 0.2.0; for live calls pass `status: "inprogress"`.
 
 ## Handle errors
 
@@ -154,7 +178,7 @@ except ApiError as err:
 ```
 </CodeBlocks>
 
-Retries are built in: both clients retry on `408`, `429` and `5xx` responses with exponential backoff — twice by default (`maxRetries` / `max_retries`, per client or per call). Timeouts default to 60 seconds and are set the same way. Because a retried `POST /calls` could place a second call if the first actually succeeded, keep `maxRetries` at its default and check for the call in history before re-issuing a request that timed out.
+Retries are built in: both clients retry `408`, `429` and `5xx` responses with exponential backoff, and the Python client retries `409` too — twice by default (`maxRetries` / `max_retries`, per client or per call). Timeouts default to 60 seconds and are set the same way. Because a retried `POST /calls` could place a second call if the first actually succeeded, pass `maxRetries: 0` (`max_retries=0` in `request_options`) on `makeCall` and check for the call with `listCalls` before re-issuing a request that timed out — see [Retrying safely](/integrate/idempotency-and-rate-limits#retrying-safely).
 
 ## Async Python
 
@@ -162,20 +186,21 @@ Every method exists on `AsyncTalkif` with the same name and arguments.
 
 ```python title="Python (asyncio)"
 import asyncio
+import os
 from talkif import AsyncTalkif
 
 client = AsyncTalkif(token=os.environ["TALKIF_API_KEY"])
 
 async def main():
-    active = await client.calls.get_active_calls()
-    print(len(active.calls), "active")
+    live = await client.calls.list_calls(status="inprogress")
+    print(live.meta.total, "calls in progress")
 
 asyncio.run(main())
 ```
 
 ## Versioning
 
-SDK versions follow the API: a new endpoint or field is a minor release, a removed or renamed one is a major. Pin a minor range in production (`^0.1` / `~=0.1`) and read the release notes on the repo before moving majors. Both packages are published only from a tagged release, never from a branch.
+Both SDKs are at **0.3.0**. SDK versions follow the API, and while the version is below 1.0.0 a **minor** release may contain breaking changes — 0.2.0, for example, replaced `getCallHistory` with `listCalls`. Each repo's `CHANGELOG.md` lists them under *Removed* or *Changed*. Pin the minor in production (`~0.3.0` / `~=0.3.0`) and read the changelog before moving to the next one. Both packages are published only from a tagged release, never from a branch.
 
 ## What's next
 
