@@ -386,6 +386,9 @@ navigation:
           - page: Notifications
             slug: notifications
             path: docs/pages/account/notifications.mdx
+          - page: Talkif for iPhone and Mac
+            slug: iphone-and-mac-apps
+            path: docs/pages/account/iphone-and-mac-apps.mdx
           - page: Data export and deletion
             slug: data-export-and-deletion
             path: docs/pages/account/data-export-and-deletion.mdx
