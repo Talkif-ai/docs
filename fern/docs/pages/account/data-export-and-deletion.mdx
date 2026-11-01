@@ -1,9 +1,11 @@
 ---
 title: Data export and deletion
-description: Take everything out of Talkif as one JSON file, and close an account with an emailed confirmation and a seven-day grace period during which the account is read-only.
+description: Take everything out of Talkif as one JSON file, close an account with an emailed confirmation and a seven-day read-only grace period, or delete your own login.
 ---
 
 Two things you should be able to do with any service that holds your customers' calls: leave with your data, and leave for good. Both are self-service, both are done by the account **Owner**, and both are gated by an emailed confirmation so a stolen session can't trigger them. Deletion adds a week in which you can change your mind.
+
+Deleting an account removes that workspace — and deleting the personal account created when you signed up also ends your login (see [What deletion does](#what-deletion-does)). To remove *yourself* as a Talkif user on purpose, see [Deleting your login](#deleting-your-login).
 
 ## Exporting your data
 
@@ -160,6 +162,31 @@ A deletion waits while the account has an **unpaid or disputed charge**. Nothing
 <Warning>
   After the 7-day grace period, account deletion cannot be reversed. Make sure you've downloaded any data you need.
 </Warning>
+
+## Deleting your login
+
+**Delete my login** removes *you* as a Talkif user — including when you only belong to someone else's organization. It's in **User menu → Security → Delete my login**; the **Delete Account** section in a workspace's **Settings → General** deletes that workspace.
+
+<Steps>
+  <Step title="Check what goes with it">
+    Click **Delete my login**. The dialog lists **Deleted with your login**: your own workspaces, and organizations where you're the only member. Organizations with other members aren't deleted; what you created in them stays with the organization. Export data from those workspaces first if you need it.
+  </Step>
+  <Step title="Confirm it's you">
+    Click **Continue**, then enter your password — or your 2FA code, or a 6-digit code we email you if you have neither.
+  </Step>
+  <Step title="Seven days to change your mind">
+    The section shows **Login deletion scheduled** with the date, and **Cancel deletion**. You can still sign in. The workspaces that go with you are [read-only](#while-a-deletion-is-pending-the-account-is-read-only), and you can't add sign-in methods or create new workspaces or organizations. To get a workspace back, cancel the login deletion.
+  </Step>
+</Steps>
+
+**When it runs**, you're removed from every organization and signed out on every device; your password, passkeys, two-factor secrets and Google and Apple sign-in are removed (Talkif's access in your Apple ID is revoked); and your name, email address and phone number are erased. The workspaces listed are deleted as described [above](#what-deletion-does). Billing records are kept, as the law requires.
+
+**What stops it.** You can't start it while:
+
+- you own an organization that has other members and no other owner. The dialog lists them under **Before you can delete your login**. Make another member the owner (**Team → the member's row menu → Make owner**), or remove the other members, then try again;
+- a workspace that would be deleted with you has an unpaid or disputed charge, or a call in progress.
+
+If one of these appears during the seven days, nothing is deleted. The section says **Login deletion could not run** and why, and you get an email. Cancel, fix the reason, then ask again. Until you cancel, those workspaces stay read-only.
 
 ## After the account is closed
 
