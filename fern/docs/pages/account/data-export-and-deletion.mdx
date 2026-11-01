@@ -1,9 +1,9 @@
 ---
 title: Data export and deletion
-description: Take everything out of Talkif as one JSON file, and close an account with a confirmation step and a seven-day grace period.
+description: Take everything out of Talkif as one JSON file, and close an account with an emailed confirmation and a seven-day grace period during which the account is read-only.
 ---
 
-Two things you should be able to do with any service that holds your customers' calls: leave with your data, and leave for good. Both are self-service, both are gated by an emailed confirmation so a stolen session can't trigger them, and deletion adds a week in which you can change your mind.
+Two things you should be able to do with any service that holds your customers' calls: leave with your data, and leave for good. Both are self-service, both are done by the account **Owner**, and both are gated by an emailed confirmation so a stolen session can't trigger them. Deletion adds a week in which you can change your mind.
 
 ## Exporting your data
 
@@ -11,23 +11,26 @@ One request produces a single JSON file with every category of data the account 
 
 ## What's included
 
-The export covers 13 data categories:
+The export covers 16 data categories:
 
 | Category | Description |
 |----------|-------------|
 | **Account** | Account metadata (name, slug, type, status) |
-| **Users** | User profiles (passwords and MFA secrets excluded) |
+| **Users** | User profiles (passwords, MFA secrets and backup codes excluded) |
 | **Contacts** | Full contact records |
-| **Calls** | Call records with PII intact (scrubbed calls excluded) |
+| **Calls** | Call records with PII intact (calls already scrubbed by your retention settings excluded) |
 | **Flows** | AI conversation flows |
 | **Phone numbers** | Numbers owned by your account |
-| **VoIP providers** | Provider configurations (credentials excluded) |
+| **VoIP providers** | Your carrier connections (credentials and settings excluded) |
 | **Call schedules** | Recurring schedule definitions |
 | **Campaigns** | Bulk campaign records |
 | **Charges** | Billing history |
+| **Cost line items** | Detailed cost breakdown per charge |
 | **Balance transactions** | Balance change history |
 | **Notifications** | Notification history |
-| **Cost line items** | Detailed cost breakdown per charge |
+| **Connectors message log** | Messages exchanged through Connectors |
+| **Connectors call memory** | What Connectors kept from your calls |
+| **Connectors terms acceptance** | When the account accepted the Connectors terms |
 
 The output is a single JSON file structured by category:
 
@@ -47,88 +50,122 @@ The output is a single JSON file structured by category:
 
 ## How to request an export
 
-1. Go to **Settings → General → Data Export**
-2. Click **Request Export**
-3. Check your email for a confirmation link
-4. Click the link to start the export
-5. When processing completes, you'll receive an email with a download link
-
-<Info>
-  The confirmation link expires after 24 hours. If it expires, request a new export.
-</Info>
+<Steps>
+  <Step title="Request it">
+    **Settings → General → Data Export → Request export.** Only the Owner sees this section.
+  </Step>
+  <Step title="Confirm by email">
+    Click the link in the confirmation email. It expires after **24 hours**; if it does, request a new export.
+  </Step>
+  <Step title="Wait for it">
+    The section shows **Export in progress** and how many of the 16 categories are done. It usually takes a few minutes.
+  </Step>
+  <Step title="Download it">
+    You get an email when it's ready. Open **Settings → General → Data Export** and click **Download**.
+  </Step>
+</Steps>
 
 ## Download window
 
-Once the export is ready, the download link is valid for **24 hours**. After that, the file is permanently deleted. You can check the current status and download link at any time from the Data Export settings page.
+The file is available for **24 hours** after it's ready — the section shows *Download expires* with the time. Each click on **Download** creates a fresh link, so you can download it more than once in that window. After that, the file is permanently deleted.
 
 ## Limits
 
-- **One active export at a time** — you cannot request a new export while one is pending, processing, or available for download
-- **24-hour cooldown** — after a completed export, you must wait 24 hours before requesting another
+- **One active export at a time** — you can't request a new export while one is awaiting confirmation, in progress, or ready to download.
+- **One request per 24 hours** — counted from the previous request. A request that failed or expired doesn't count.
 
-## Export statuses
+## What the Data Export section shows
 
-| Status | Meaning |
+| It says | Meaning |
 |--------|---------|
-| **Pending** | Export requested, awaiting email confirmation |
-| **Confirmed** | Email confirmed, queued for processing |
-| **Processing** | Background job collecting and packaging data |
-| **Completed** | Ready for download |
-| **Expired** | Download window (24h) has passed |
-| **Failed** | Something went wrong — request a new export |
+| **Awaiting confirmation** · *Check email* | Requested; click the link in the email to start |
+| **Export in progress** | Collecting and packaging the data |
+| **Export ready** · **Download** | Ready; downloadable until *Download expires* |
+| **Retry export**, with the error | The export failed — request it again |
+| **Request export** | No export, or the last one expired |
 
 ## Security
 
 - Exports require email confirmation before processing starts
-- Sensitive fields (passwords, MFA secrets, provider credentials) are automatically excluded
-- Download links are time-limited and unique to your account
+- Sensitive fields (passwords, MFA secrets, carrier credentials) are automatically excluded
+- Download links are short-lived and unique to your account
 - Export files are encrypted at rest and deleted after the download window expires
 
 ## GDPR data portability
 
 This feature fulfills the right to data portability under [GDPR Article 20](https://trust.talkif.ai/privacy). Your data is provided in a structured, machine-readable JSON format suitable for transfer to another service.
 
-
 ## Deleting the account
 
-Account deletion is permanent. To prevent accidental data loss, deletion uses a two-step confirmation with a grace period.
+Account deletion is permanent. To prevent accidental data loss, deletion uses a two-step confirmation with a grace period. Only the Owner can request or cancel it.
 
 <Steps>
   <Step title="Request it">
-    **Settings → General → Delete account.** A confirmation link is emailed to you; it expires after **24 hours**.
+    **Settings → General → Delete Account → Delete account → Send confirmation email.** The link in the email expires after **24 hours**. Until you click it, the section says **Awaiting confirmation**, with a **Cancel** button.
   </Step>
   <Step title="Confirm it">
-    Clicking the link schedules the deletion and starts a **7-day grace period**. The account stays fully usable; you can cancel from Settings at any point; export your data now if you haven't.
+    Clicking the link schedules the deletion for **7 days** later and emails you the date. From now on the account is **read-only** — see below. Export your data now if you haven't.
   </Step>
   <Step title="After seven days">
-    Deletion executes and is irreversible: all account data is removed, phone numbers are released, running campaigns and schedules stop, and Talkif's Sign in with Apple access is revoked if you used it. Charges for usage before deletion still stand.
+    Deletion runs and can't be undone. You get a final email when it's done.
   </Step>
 </Steps>
 
+### While a deletion is pending, the account is read-only
+
+From the moment you confirm until the deletion runs or is cancelled, every page shows a banner: *"This account is scheduled for deletion on … Changes are paused until the deletion is canceled."*
+
+| Still works | Paused |
+|---|---|
+| Signing in and looking at everything | Every change: flows, contacts, settings, numbers, members, API keys |
+| Exporting your data | Calls of any kind, inbound included |
+| Cancelling the deletion | Campaigns and schedules |
+| | Top-ups and auto-recharge |
+
+A blocked change shows the same message. API requests that would change something are refused with `409 account_pending_deletion`.
+
 ### Cancelling a pending deletion
 
-You can cancel at any stage before the final deletion executes:
+You can cancel at any stage before the deletion runs:
 
-- **Before email confirmation** — the request simply expires after 24 hours
-- **During the grace period** — go to **Settings → General** and click **Cancel Deletion**
+- **Before you confirm** — click **Cancel** in **Settings → General**, or let the link expire after 24 hours.
+- **During the grace period** — click **Cancel deletion** in the banner or in **Settings → General**.
 
-Cancellation restores your account to its normal active state immediately.
+Cancellation restores the account to normal at once. Members who aren't the Owner see *"Ask an owner to cancel it."*
+
+### What deletion does
+
+- Active calls are hung up; campaigns and schedules are cancelled; carrier connections are switched off.
+- **Talkif numbers** are released and can't be recovered.
+- **Numbers in your own Twilio account stay in your Twilio account.** Talkif only removes its own call settings from them.
+- **Numbers on your own SIP trunk** stop being routed to Talkif.
+- Account data is removed from Talkif at once and permanently erased within **90 days**.
+- **Billing and tax records** — charges, cost line items, balance history, payments and refunds — are kept for **7 years**, as the law requires, and charges for usage before deletion still stand.
+
+<Warning title="Deleting a personal account also removes your ways to sign in">
+  When a **personal** account is deleted, Talkif also signs you out everywhere and removes your passkeys and your Google and Apple sign-in — even if you still belong to other accounts, such as an organization's. If you'll keep using Talkif, make sure you can still sign in with an email and password first (**User menu → Security → Password**).
+</Warning>
+
+### If the deletion can't run yet
+
+A deletion waits while the account has an **unpaid or disputed charge**. Nothing is deleted, the account stays read-only, and Talkif tries again every day. Settle the charge — [contact support](mailto:support@talkif.ai) if you need help — or cancel the deletion.
 
 ### Before you delete
 
-1. **Export your data** — the export above, before you confirm
-2. **Check billing** — outstanding balance obligations survive deletion
-3. **Notify your team** — if you're in an organization, coordinate with other members
+1. **Export your data** — the export above, before you confirm.
+2. **Check billing** — outstanding charges survive deletion, and an unpaid one holds it up.
+3. **Notify your team** — if this is an organization's account, every member loses access when it runs.
 
 <Warning>
   After the 7-day grace period, account deletion cannot be reversed. Make sure you've downloaded any data you need.
 </Warning>
 
-## Post-termination export
+## After the account is closed
 
-If you need your data after account deletion, contact legal@talkif.ai within 30 days of termination to request a final export.
+- **Final export.** Contact legal@talkif.ai within 30 days of closure to request one.
+- **Remaining balance.** Prepaid balance may be refunded on closure, less fees and outstanding charges, if you ask within 30 days. See the [Terms](https://trust.talkif.ai/terms), section 5.8.
 
-For an organization, deletion is requested by the Owner and removes the organization's account the same way. Members lose access when it executes.
+For an organization, the Owner deletes the organization's account the same way, from that account's **Settings → General**. Members lose access when it runs.
 
 ## Next
 
@@ -137,6 +174,6 @@ For an organization, deletion is requested by the Owner and removes the organiza
     Recording retention and per-call deletion, short of a full export.
   </Card>
   <Card title="Organizations" href="/account/organizations" icon="fa-regular fa-building">
-    Deleting an organization versus a personal account.
+    Closing an organization's account versus a personal account.
   </Card>
 </CardGroup>

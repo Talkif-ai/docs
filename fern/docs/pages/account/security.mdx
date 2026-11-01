@@ -1,50 +1,95 @@
 ---
 title: Security
-description: Your profile and verification status, password, Google, Apple and passkey sign-in, two-factor authentication with backup codes, and ending sessions on other devices.
+description: Your profile and verification, password, Google, Apple and passkey sign-in, the security check on sign-in pages, two-factor authentication with backup codes, signing out other devices, and the ad measurement setting.
 ---
 
 Your user is the key to every account you belong to — including the organization's balance and its phone lines. Securing it is not optional for anyone with the Owner role, and it's cheap: two-factor authentication takes a minute to set up and is required on every sign-in afterwards.
 
-Everything on this page is **per user**, not per account: it follows you across every account you can access. Find it in the user menu (top right): **Profile**, **Security** and **Sessions**.
+Everything on this page is **per user**, not per account: it follows you across every account you can access. Find it in the user menu (top right): **Profile**, **Preferences**, **Security** and **Sessions**.
 
 ## Profile
 
-Your name, email and phone number, and which are verified. Email is verified by a link at sign-up; the phone by a 6-digit SMS code (valid 10 minutes). Both are needed before an account can place calls, and the phone is what receives an SMS notification if you enable one.
+Your name, email address and phone number, and which are verified. You can change your name here; your email address can't be changed.
 
-Changing your email or phone repeats the verification for the new value. **Connected accounts** shows whether Google and Apple sign-in are linked.
+Verification goes in a fixed order — **email first, then phone**:
+
+1. **Email**: a 6-digit code sent to your address, valid for 10 minutes. If you signed up with Google or Apple, your email is already verified.
+2. **Phone**: a 6-digit code by SMS, valid for 10 minutes. Talkif sends it only after your email is verified.
+
+What verification unlocks, for the **account Owner**:
+
+| The Owner has verified | Then the account can |
+|---|---|
+| Email **or** phone | Place calls (browser calls included) and start campaigns and schedules |
+| Email **and** phone | Also buy phone numbers, create API keys and invite members |
+
+To change your phone number, click the edit button next to it on **Profile**. If a number is already set, Talkif asks for your current password first (set a password if you don't have one); then it sends a code to the new number.
 
 ## Signing in
 
-Several ways, and you can have any combination on one user:
+Several ways, and you can have any combination on one user. Google and Apple are linked or unlinked under **Security → Connected Accounts**.
 
-- **Email and password.** Change the password from Security; the current password is required to set a new one. A user created through Google or Apple can add a password here to sign in either way.
+- **Email and password.** Change it under **Security → Password**; the current password is required, and the new one needs at least 8 characters. Changing or resetting your password **signs you out on every other device** and in any app connected to your Talkif login. A user created through Google or Apple can set a password here to sign in either way.
 - **Continue with Google.** Links your Google identity to the user. Google handles the credential; if two-factor authentication is on, Talkif still asks for the code after Google.
-- **Continue with Apple.** Signs in with your Apple ID, optionally behind Hide My Email. Two-factor authentication applies the same way. See [Sign in with Apple](/account/passkeys-and-sign-in-with-apple#sign-in-with-apple).
+- **Continue with Apple.** Signs in with your Apple ID. Two-factor authentication applies the same way. See [Sign in with Apple](/account/passkeys-and-sign-in-with-apple#sign-in-with-apple).
 - **Passkey.** Unlocks with Touch ID, Face ID, Windows Hello or the device PIN, and skips the 2FA code because it already proves both the device and you. See [Passkeys](/account/passkeys-and-sign-in-with-apple#passkeys).
 
-Failed sign-ins are rate-limited per address — a handful of quick attempts, then a slow trickle — so a password can't be brute-forced, and you may briefly be locked out after several typos.
+If our Terms or Privacy Policy changed since you last accepted them, you're asked to accept the new version right after signing in, whichever way you signed in.
+
+### Limits that protect your login
+
+- **Wrong passwords.** After several wrong passwords in a row, sign-in pauses for 15 minutes. Wait, then try again — or reset the password.
+- **Confirming it's you.** Adding a passkey, turning off two-factor authentication and changing your password or phone ask you to confirm first. After several wrong attempts these pause for 15 minutes: *"Too many attempts. Try again later."*
+- **Codes and links by email.** Sign-up codes, password resets and other emailed codes are limited per address per hour. If you hit the limit, wait an hour before asking again.
+
+### The security check
+
+Sign-up, sign-in, password reset and the pages that send you a verification code run a short Cloudflare security check against automated abuse. Usually you don't notice it; sometimes it asks you to tick a box. If it can't load, the page says *"The security check could not run"*: allow `challenges.cloudflare.com` in your content blocker, or refresh the page, and try again.
 
 ## Two-factor authentication
 
-Time-based one-time passwords (TOTP), compatible with Google Authenticator, Authy, 1Password and any standard app.
+Time-based one-time passwords (TOTP), compatible with Google Authenticator, Authy, 1Password and any standard app. Your user needs a password first — without one, the setting says *"Set a password first to enable 2FA"*.
 
 <Steps>
   <Step title="Enable">
-    **User menu → Security → Two-Factor Authentication → Enable.** Scan the QR code with your app and enter the six-digit code it shows.
+    **User menu → Security → Two-Factor Authentication → Authenticator App → Enable.** Confirm with your password, scan the QR code with your app (or enter the code shown under *Can't scan?*), and enter the six-digit code it shows.
   </Step>
   <Step title="Save the backup codes">
-    You get **10 single-use backup codes** (8 characters each, shown as `XXXX-XXXX`). They're the only way back in if you lose the phone. Put them in a password manager now — they are not shown again.
+    You get **10 single-use backup codes** (8 characters each, shown as `XXXX-XXXX`). They're the only way back in if you lose the phone. Put them in a password manager now — they are not shown again. **Backup Codes** on the same page makes a new set (with your password); the old codes stop working.
   </Step>
   <Step title="Sign in with it">
     From then on, every password, Google or Apple sign-in asks for the current code, or a backup code. A passkey sign-in doesn't: the passkey is already a second factor.
   </Step>
 </Steps>
 
-To disable, confirm with your current password. If you're an organization Owner, consider it mandatory; you're the only person who can change the organization's billing.
+To disable, click **Disable** and confirm with your current password. If you're an organization Owner, consider it mandatory; you're the only person who can change the organization's billing.
 
 ## Sessions
 
-**User menu → Sessions** shows this device's session. **Log out of other devices** ends every session except the current one — the right response to a lost laptop or a suspected compromise. Changing your password does not by itself end other sessions; do both.
+Two buttons end your sign-ins:
+
+- **User menu → Sessions → Sign Out All Others**
+- **User menu → Security → Sign Out Everywhere → Sign Out All**
+
+Both end every sign-in of your user, **including the one in this browser**, and disconnect apps connected to your Talkif login; sign in again afterwards. Other devices are signed out once their current session expires, shortly after. The Sessions page shows this device; other sessions aren't listed. Use this after a lost laptop or a suspected compromise — and change your password too.
+
+## Ad measurement
+
+Talkif advertises on platforms such as ChatGPT. **Ad measurement** decides whether the dashboard tells the ad platform that brought you to Talkif about your sign-up and later steps such as calls, numbers and payments, with a hashed email address. The [Privacy Policy](https://trust.talkif.ai/privacy#144-advertising-measurement) lists exactly what is sent and to whom.
+
+It's a **personal setting**, not an account setting: it follows you into every account you open. Find it under **User menu → Preferences → Privacy → Ad measurement**.
+
+| Where you are | Until November 14, 2026 | From November 15, 2026 (UTC) |
+|---|---|---|
+| EU/EEA, the UK, Switzerland, Turkey | off unless you turn it on | off unless you turn it on |
+| Everywhere else | off unless you turn it on | **on by default**; turn it off any time |
+
+- In the regions where you must opt in, sign-up shows an unticked, optional checkbox. Ticking it is the only way sign-up turns it on.
+- A choice you've made — on or off — is kept and always wins over the default.
+- If your browser sends a Global Privacy Control signal, ad measurement stays off.
+- Under California law this may count as "sharing" personal information; you can opt out at any time with the same setting.
+
+The dashboard sets no analytics or advertising cookies of its own and shows no cookie banner. While ad measurement is on, the ad platform's tag can set its own cookies.
 
 ## Next
 
