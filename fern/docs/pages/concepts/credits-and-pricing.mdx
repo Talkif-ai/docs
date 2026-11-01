@@ -1,6 +1,6 @@
 ---
 title: Credits and pricing
-description: How Talkif charges — what a call costs and why, the four kinds of balance and the order they're spent in, what happens at zero, and a worked example.
+description: How Talkif charges — what a call costs and why, the kinds of balance and the order they're spent in, what happens at zero, and a worked example.
 ---
 
 Talkif is prepaid and usage-based. You keep a USD balance; every call, phone number and post-call analysis takes what it costs from that balance, itemised. There are no plans to pick and no per-seat fees — the price of a call is the sum of the resources it used, at the rates for the providers *you* chose in the flow.
@@ -13,12 +13,14 @@ A finished call is priced as a set of line items, one per resource, each with it
 
 | Line item | Unit | How it's measured |
 |---|---|---|
-| **Telephony** | per minute, **rounded up** to the next whole minute | Carrier time for the call. Rate depends on provider (Talkif number, your SIP trunk, WhatsApp) and direction |
+| **Telephony** | per minute, **rounded up** to the next whole minute | Carrier time for the call. Rate depends on provider (Talkif number, your SIP trunk, WhatsApp) and direction; on Talkif numbers, on the carrier's rate for the number called |
 | **STT** | per minute, prorated to the second | Duration of the call, at the chosen speech-to-text model's rate |
 | **LLM** | per token, input and output priced separately | Every turn re-sends the prompts and transcript, so tokens grow with call length and prompt size |
 | **TTS** | per character synthesized | Only what the agent actually said |
 | **Infrastructure** | per minute: prorated to the second for calls that start until November 14, 2026; **rounded up** to the next whole minute for calls that start from November 15, 2026 (UTC) | The agent runtime itself — the platform fee, a flat platform rate |
 | **Function calls** | — | Calls to your own HTTP endpoints are **free**; you pay only the LLM tokens around them |
+| **AI Decisions** | per token | Small model calls the agent makes during the call — noticing an interruption, picking up a cut-off reply, telling when the caller has finished — at the rate of the model that made them. A separate charge on the call; see [Cost breakdown](/account/cost-breakdown#ai-decisions) |
+| **Voicemail detection** | per token | Answering-machine detection and message composition on outbound calls |
 | **LLM analysis** | per token | Post-call insights, if enabled — a separate line so you can see what analysis costs versus the conversation |
 
 Two consequences worth knowing before you design a flow:
@@ -34,7 +36,7 @@ When an agent [transfers a call to a person](/build/transfer-calls-to-people), t
 - **Phone legs** are billed as **telephony**, at the rates below. The caller's leg is billed for the whole call, before and after the transfer. A transfer to a phone-number destination is an extra outgoing leg, billed from the moment it's answered at the rate of the **Call from** number's provider — ringing isn't billed.
 - Time your person spends on the call in the **dashboard** carries no platform fee of its own.
 
-Rates are published live. The current telephony and number prices are below; model rates are on [Models and voices](/reference/models-and-voices).
+Rates are published live. The current telephony and number prices are below; model rates are on [Models and voices](/reference/models-and-voices). On Talkif numbers the telephony table shows the US rate: a call is billed at the carrier's per-minute rate for the number called, so calls to or on numbers in other countries can cost more or less. The rate that applied is on the call's telephony line. AI Decisions rates aren't in these tables; the rate is shown on each AI Decisions line of a call.
 
 ### Telephony
 
@@ -48,18 +50,15 @@ Rates are published live. The current telephony and number prices are below; mod
 
 <Markdown src="/docs/snippets/generated/pricing-recording-storage.mdx" />
 
-## The four kinds of balance
+## Kinds of balance
 
 Your balance is made of *buckets*, and which bucket pays for what is the part that surprises people.
 
-<ParamField path="subscription" type="expires">
-  Granted monthly by a subscription plan; expires at the end of the period. Spent **first**.
-</ParamField>
 <ParamField path="promotional" type="may expire">
-  Credits from a promotion, usually with an expiry date. Spent **second**.
+  Credits from a promotion, usually with an expiry date. Spent **first**.
 </ParamField>
 <ParamField path="bonus" type="never expires">
-  Welcome credit, referral rewards and similar. Spent **third**.
+  The welcome credit, referral rewards and similar. Spent **second**.
 </ParamField>
 <ParamField path="purchased" type="never expires">
   Money you paid. Spent **last**, so it's never wasted while expiring credit exists.
@@ -68,22 +67,25 @@ Your balance is made of *buckets*, and which bucket pays for what is the part th
 Two rules sit on top of the order:
 
 1. **Calls and analysis can be paid from any bucket.** Expiring buckets go first so you lose as little as possible.
-2. **Phone number purchases and monthly rental can only be paid from purchased or subscription balance.** Bonus and promotional credit never buy or rent a number. This is why a new account with only its welcome credit can build and test but must top up before buying a line.
+2. **Until the account's first payment, phone numbers are paid only from purchased balance.** Bonus and promotional credit — including the welcome credit — can't buy or rent a number on an account that has never paid. After the first payment (a card top-up or auto-recharge that wasn't refunded, with no open or lost dispute on the account), every bucket pays for numbers too, in the usual order. This is why a new account with only its welcome credit can build and test but must top up before buying a line.
 
-`GET /billing/balance` reports `available` (everything usable), `purchasedBalance`, `bonusBalance` and the `earliestExpiration` across buckets.
+The **welcome credit** is \$5.00 of bonus balance for accounts created by signing up with an email address. It arrives when you verify your phone number.
+
+`GET /billing/balance` reports `available`, `purchasedBalance`, `bonusBalance` and the `earliestExpiration` across buckets.
 
 ## Admission, overdraft and suspension
 
 Talkif checks your balance **once per call, before it starts** — and never again during it.
 
-- To start any call (inbound, outbound, browser test) the account must be active and have at least **\$1.00** available. Below that: outbound requests fail with `insufficient_balance`, inbound calls are answered busy, campaigns and schedules hold.
+- To start any call (inbound, outbound, browser test) the account must be active and have at least **\$1.00** of balance, after anything it owes. Below that: outbound requests fail with `insufficient_balance`, inbound calls are answered busy, campaigns and schedules hold.
 - Once a call is running it is **never cut off for money**. It's metered to the end and settled as one charge, even if that takes the balance negative.
-- If the balance ends at or below zero, the account is **suspended**: no new calls until a top-up brings it positive. The dashboard, billing and your data stay fully accessible — suspension only blocks spending. A top-up reactivates the account automatically.
-- With **auto-recharge** on, the top-up happens instead of the suspension: the shortfall triggers a charge to your default card for your configured amount.
+- A negative balance is a debt: your next top-up pays it off first. Note that `available` in `GET /billing/balance` shows new credit without subtracting that debt — the \$1.00 check does subtract it.
+- If the balance ends at or below zero and **auto-recharge is off**, the account is **suspended**: no new calls until a top-up brings it positive. The dashboard, billing and your data stay fully accessible — suspension only blocks spending. A top-up reactivates the account automatically.
+- With **auto-recharge on**, the account isn't suspended: the shortfall triggers a charge to your card for your configured amount. If that charge fails, new calls wait until the balance is back above \$1.00 — see [Credits and payment](/account/credits-and-payment#auto-recharge).
 
 ## A worked example
 
-You sign up, get the **\$5.00 welcome credit** (bonus), and add **\$50.00** by card (purchased).
+You sign up with your email, verify your phone and get the **\$5.00 welcome credit** (bonus). Then you add **\$50.00** by card (purchased) — the account's first payment.
 
 ```text
 Purchased   $50.00
@@ -92,14 +94,16 @@ Available   $55.00
 ```
 
 <Steps>
-  <Step title="You buy a US local number at $1.15/month">
-    Number purchases can't use bonus, so the rental comes off *purchased* even though bonus is available.
+  <Step title="You buy a US local number at $1.15 per 30 days">
+    The account has paid, so the number can use any credit, in the usual order — bonus before purchased.
 
     ```text
-    Purchased   $50.00  −  $1.15   =  $48.85
-    Bonus        $5.00             =   $5.00
+    Purchased   $50.00             =  $50.00
+    Bonus        $5.00  −  $1.15   =   $3.85
     Available                      =  $53.85
     ```
+
+    Had you bought the number *before* adding the \$50, the purchase would have been refused: on an account that has never paid, bonus credit can't pay for a number.
   </Step>
   <Step title="You make a 4 min 20 s test call">
     Telephony is billed per started minute; STT per second; TTS per character; the LLM per token. Infrastructure is per second for calls that start until November 14, 2026, and per started minute from November 15, 2026. Say the call comes to \$0.42:
@@ -111,36 +115,39 @@ Available   $55.00
     TTS              ~1,900 chars     ×  model rate
     Infrastructure   4.33 min         ×  platform rate   (until Nov 14, 2026)
                      5 min (started)  ×  platform rate   (from Nov 15, 2026: ~$0.03 more at $0.05/min)
+    AI Decisions     tokens           ×  model rate      (separate charge on the call)
     Call total                                        ≈  $0.42
     ```
 
     Calls spend **expiring-first**, so the whole amount comes off bonus:
 
     ```text
-    Purchased   $48.85             =  $48.85
-    Bonus        $5.00  −  $0.42   =   $4.58
+    Purchased   $50.00             =  $50.00
+    Bonus        $3.85  −  $0.42   =   $3.43
     Available                      =  $53.43
     ```
   </Step>
-  <Step title="Twelve more calls use up the bonus">
-    Bonus hits \$0.00; the next call spends from purchased. Nothing else changes — you don't notice the bucket switch except in the transaction history, where each entry names its bucket.
+  <Step title="A few more calls use up the bonus">
+    Bonus hits \$0.00; the next call spends from purchased. Nothing else changes — you don't notice the bucket switch.
   </Step>
   <Step title="A long campaign runs the balance to –$0.80">
-    The last call was admitted with \$1.10 available, ran long, and settled at \$1.90. A running call is always billed to the end, so the balance goes negative and the account is **suspended**: existing calls finish normally, the queue holds.
+    Auto-recharge is off. The last call was admitted with \$1.10 available, ran long, and settled at \$1.90. A running call is always billed to the end, so the balance goes negative and the account is **suspended**: existing calls finish normally, the queue holds.
 
     ```text
-    Available    $1.10  −  $1.90   =  −$0.80   → suspended
+    Balance      $1.10  −  $1.90   =  −$0.80   → suspended
     Top-up      −$0.80  + $20.00   =  $19.20   → active, queue resumes
     ```
+
+    The \$0.80 is paid off first, so \$19.20 is what calls can use.
   </Step>
-  <Step title="Next month, rental renews">
-    \$1.15 is taken from purchased balance for the number. If the balance can't cover rental, the number's billing status moves to *past due* and eventually *suspended* — see [Buy a number](/telephony/buy-a-number).
+  <Step title="30 days later, rental renews">
+    \$1.15 is taken for the number, in the usual order. If the balance can't cover it, the number becomes *past due*, is *suspended* after 7 days and, if still unpaid, released 14 days after that — see [Buy a number](/telephony/buy-a-number#what-happens-when-rental-cant-be-paid).
   </Step>
 </Steps>
 
 ## Where the numbers come from
 
-Every line item on a bill records the **rate that applied at the time**, so historical bills don't change when prices do. Rates are per account — if you're on negotiated pricing, your rates apply automatically everywhere the public ones are shown here.
+Every line item on a bill records the **rate that applied at the time**, so historical bills don't change when prices do. A call is billed for the models it actually ran with — the version that took the call, or the draft you tested — not whatever the flow uses today. Rates are per account — if you're on negotiated pricing, your rates apply automatically everywhere the public ones are shown here.
 
 ## Next
 

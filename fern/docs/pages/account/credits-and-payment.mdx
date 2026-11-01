@@ -1,53 +1,54 @@
 ---
 title: Credits and payment
-description: Adding money to your balance, cards and their health, auto-recharge and its retry schedule, and what to do when a payment fails.
+description: Adding money to your balance, cards, auto-recharge and how it retries, and what to do when a payment fails.
 ---
 
 Talkif is prepaid: you add money, calls draw it down. This page is the mechanics of adding it and keeping it topped up. How the balance is *spent* — buckets, the $1.00 admission minimum, what happens at zero — is in [Credits and pricing](/concepts/credits-and-pricing); if you haven't read that, the rules below will feel arbitrary.
 
+Everything on this page is done by the account **Owner**. Admins and Members see the balance and the charges, but can't pay.
+
 ## Topping up
 
-**Billing → Overview → Add Balance.** Choose an amount between **\$10 and \$10,000**; pay with a saved card, or through a hosted checkout if you haven't saved one yet. The balance updates the moment the payment succeeds — no invoice cycle, no waiting.
+**Billing → Overview → Add Balance.** In **Add Funds**, pick an amount or type one between **\$10 and \$10,000**; pay with a saved card, or through a hosted checkout if you haven't saved one yet. The balance updates the moment the payment succeeds — no invoice cycle, no waiting.
 
-Purchased balance never expires and is spent last, after any subscription, promotional or bonus credit.
+Purchased balance never expires and is spent last, after any promotional or bonus credit.
+
+Your first payment also lifts the limits that apply to new accounts: free credit can then pay for phone numbers, and the account can hold more of them. See [Buy a number](/telephony/buy-a-number#paying-for-it).
 
 ## Payment methods
 
-Cards are handled by Stripe; Talkif stores only a reference and the card's last digits. **Billing → Payment Methods** lets you add cards and bank accounts, label them ("Corporate Visa"), and choose a **default** — the one used for manual top-ups by default and for auto-recharge. 3-D Secure is supported for cards that require it.
-
-Each method carries a health status from its last charge:
-
-<ParamField path="active" type="status">Healthy — the last charge succeeded, or it's never been charged.</ParamField>
-<ParamField path="declined" type="status">The last charge was declined; the specific decline reason is recorded. Try again, or ask the bank.</ParamField>
-<ParamField path="expired" type="status">Past its expiry date. Add a replacement.</ParamField>
-<ParamField path="blocked" type="status">Permanently unusable — reported lost, stolen or fraudulent. Remove it.</ParamField>
-
-A successful charge resets a method to `active`. Auto-recharge never attempts `expired` or `blocked` methods.
+Cards are handled by Stripe; Talkif stores only a reference and the card's last digits. **Billing → Payment Methods** lets you add cards, label them ("Corporate Visa"), and choose a **default** — the one used for manual top-ups by default and for auto-recharge. 3-D Secure is supported for cards that require it.
 
 ## Auto-recharge
 
-The single most useful thing to switch on. When the balance falls below a **threshold**, Talkif charges your default card for a fixed **amount** — so a busy campaign never stalls on an empty balance and a long call never suspends the account.
+The single most useful thing to switch on. When a charge leaves the balance below a **threshold**, Talkif charges your card for a fixed **amount** — so a busy campaign never stalls on an empty balance.
 
 | Setting | Range |
 |---|---|
-| Threshold — recharge when balance falls below | \$1 – \$1,000 |
-| Amount — how much to add | \$5 – \$1,000 |
-| Payment method | default, or a specific card |
+| **Threshold** — recharge when the balance falls below | \$1 – \$1,000 |
+| **Add Amount** — how much to add | \$5 – \$500 |
+| **Payment Method** | the default card, or a specific one |
 
-**Billing → Overview → Auto-Recharge.** Pick a threshold above your biggest plausible hour of spend and an amount that covers a day; you can always change both.
+Switch it on from **Billing → Overview** (the auto-recharge card); set the threshold, amount and card under **Manage**, in **Billing → Payment Methods → Auto-Recharge**. Pick a threshold above your biggest plausible hour of spend and an amount that covers a day; you can always change both.
+
+<Warning>
+  The amount field accepts up to \$1,000, but a recharge above **\$500** is never charged. Keep the amount at \$500 or less.
+</Warning>
+
+A recharge starts when a charge — a call, a number's rental — takes the balance below the threshold, not when you switch it on. If the balance is already below the threshold, the next charge triggers it; top up by hand if you need the money now.
 
 <AccordionGroup>
   <Accordion title="When a recharge fails" defaultOpen>
-    The charge is retried on a schedule — **immediately, then after 1, 3 and 5 days**. At most **5 recharge attempts run per day**, so a broken card can't be hammered. If every retry fails, auto-recharge stops trying for that shortfall and the balance behaves as if auto-recharge were off: calls are refused below $1.00 and the account is suspended if it goes negative. Fix the card (or top up manually) and it resumes.
+    A failed recharge is retried **1 day** later, then **3 days** after the next failure, then **5 days** after that — four attempts in all. Later charges can start a new attempt too, at most once an hour and at most **5 times in 24 hours**, so a broken card can't be hammered. If the bank asks for 3-D Secure, auto-recharge can't complete it for you: it stops and you're notified to top up by hand. You get an email when a recharge fails and when it stops trying.
   </Accordion>
   <Accordion title="Auto-recharge and suspension">
-    With auto-recharge on, a charge that takes the balance to zero triggers a recharge instead of a suspension. The recharge is what keeps you calling — which is why the retry schedule matters: if the card fails on the first attempt, the account *will* be suspended until a retry succeeds or you top up by hand.
+    While auto-recharge is switched on, the account is **never suspended** for a negative balance — the recharge is expected to cover it. Calls still need \$1.00 of balance to start, so if the card keeps failing, new calls and campaigns are refused until a recharge succeeds or you top up by hand. Keep an eye on the **Auto-recharge failed** email.
   </Accordion>
 </AccordionGroup>
 
 ## When a manual payment fails
 
-The balance simply doesn't change; nothing is charged twice. The method's status shows the decline reason. Common causes: a card limit, 3-D Secure not completed, a bank blocking an unfamiliar merchant. Retry with the same card after the bank clears it, or use another.
+The balance simply doesn't change; nothing is charged twice, and Talkif doesn't retry the payment for you. **Add Funds** shows the reason. Common causes: a card limit, 3-D Secure not completed, a bank blocking an unfamiliar merchant. Try again with the same card after the bank clears it, or use another.
 
 ## Disputes
 
