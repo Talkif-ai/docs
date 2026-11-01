@@ -121,7 +121,7 @@ There is no idempotency key on tool calls. An agent that retries `make_call` aft
 Some MCP clients take only a server URL and cannot send an API key. For those, the server supports **OAuth 2.1**: the client sends you to the Talkif dashboard, you approve it for one account, and the client gets a token of its own. In the dashboard these approvals are called **connected apps**.
 
 <Note title="A connected app reaches Connectors, not the API tools">
-  Sign in with Talkif gives an app one permission, `talkif`: it can see the connected sessions of the person who approved it, ask them questions and give them tasks. These are the **Connectors** tools (`talkif_sessions`, `talkif_send`, `talkif_inbox`, …), part of Talkif's experimental Connectors feature. A connected app does not get the API tools above, apart from the public reads anyone can make (models, pricing, system flow templates, error codes). For the API tools, connect with an API key.
+  Sign in with Talkif gives an app one permission, `talkif`: it acts for the person who approved it and can see the connected sessions that person's role reaches, ask them questions and give them tasks — see [What a connected app reaches](#what-a-connected-app-reaches). These are the **Connectors** tools (`talkif_sessions`, `talkif_send`, `talkif_inbox`, …), part of Talkif's experimental Connectors feature. A connected app does not get the API tools above, apart from the public reads anyone can make (models, pricing, system flow templates, error codes). For the API tools, connect with an API key.
 </Note>
 
 ### What you need
@@ -136,6 +136,18 @@ Some MCP clients take only a server URL and cannot send an API key. For those, t
 3. Choose the **account** the app works in (it works in that one account only), optionally name the connection, and select **Allow**. You're sent back to the app.
 
 A request you don't answer expires after 10 minutes; start again from the app.
+
+### What a connected app reaches
+
+The app acts as the person who approved it, with that person's **current** role in the account — not only their own sessions:
+
+| Account, and the approving person's role | The app reaches |
+|---|---|
+| Personal account | that person's own connected sessions and connectors |
+| Organization — **Owner** or **Admin** | every connected session and connector in the organization, for questions and tasks |
+| Organization — **Member** | their own; other people's sessions as far as each session's sharing allows (not at all, questions only, or questions and tasks); the organization's knowledge sources |
+
+Agents can't approve apps. A session whose client doesn't tell Talkif who is asking stays reachable by its owner only. The role is checked on every request: lowering someone's role narrows their apps at once, and removing them from the organization stops them. Approve an app as an owner or admin only when it should reach the whole organization.
 
 ### Connected apps
 
