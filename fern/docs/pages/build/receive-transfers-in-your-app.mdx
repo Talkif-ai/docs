@@ -1,6 +1,6 @@
 ---
 title: Receive transfers in your app
-description: Send live calls to your own server — a signed webhook for each transfer, accept it with an API key, and take the call audio over a websocket.
+description: Send live calls to your own server — a signed webhook for each transfer, accept it with an API key, and take the call audio over a websocket or WebRTC.
 max-toc-depth: 2
 ---
 
@@ -27,7 +27,7 @@ sequenceDiagram
     **Settings → People & numbers → Add destination → Your app.** Enter a name and your webhook URL (HTTPS, reachable from the internet). Copy the **signing secret** shown after you save — it is shown once.
   </Step>
   <Step title="Create an API key for accepting">
-    Create an API key with the scope **`transfer_offers:*`** (or `transfer_offers:read` + `transfer_offers:write`). It can view, accept and decline transfer offers — nothing else. A key created without scopes gets full access, so always set them. Keep your configuration keys (`transfers` scope) off the server that receives webhooks.
+    Create an API key with the scope **`transfer_offers:*`** (or `transfer_offers:read` + `transfer_offers:write`). It can view, accept and decline transfer offers — nothing else. Every key needs at least one scope and can do only what its scopes allow. Keep your configuration keys (`transfers` scope) off the server that receives webhooks.
   </Step>
   <Step title="Point a Transfer node at it">
     On the Transfer node, under **Who should get the call?**, choose **Your app** and pick the destination. You can also put it in a destination group to ring your app, phones and people together.
@@ -70,7 +70,7 @@ For each transfer Talkif sends a `POST` to your URL:
 
 - **Reply `2xx` within 3 seconds.** That means "ringing". Any other status, a timeout or a connection error counts as a decline for this call. Reply first, then accept — don't hold the webhook open while you decide.
 - **Accept before `acceptUntil`.** After that the offer can no longer be taken.
-- `caller.number` is the caller's number in E.164, or `null` when there is none (a browser test call, for example). `case` is `null` when the AI sent no handoff details.
+- `caller.number` is the caller's number in E.164, or `null` when there is none (a browser test call, for example). `caller.name` is the contact's name if the caller is a known contact, otherwise the name the caller gave. `case` is `null` when the AI sent no handoff details; on a transfer to a team, `case.fields` also carries `team`.
 - Webhooks are not retried: a call rings for seconds, so a retry would arrive after the caller is gone.
 
 ## Verify the signature
@@ -130,12 +130,12 @@ curl -X POST https://api.talkif.ai/api/v1/transfers/offers/$OFFER_ID/accept \
 - The first to accept gets the call. A later accept gets `409 offer_taken`; an accept after `acceptUntil` gets `409 offer_expired`.
 - Retrying an accept with the **same key** returns a fresh join for the same claim.
 - [`POST /transfers/offers/{offerId}/decline`](/api-reference/transfers/decline-offer) (204) lets the transfer move on without waiting for the ring timeout.
-- [`GET /transfers/offers/{offerId}`](/api-reference/transfers/get-offer) returns the offer as it was delivered.
+- [`GET /transfers/offers/{offerId}`](/api-reference/transfers/get-offer) returns the offer as it was delivered, while it's still ringing; after that it answers `409 offer_expired`.
 
 Full request and response shapes: [`POST /transfers/offers/{offerId}/accept`](/api-reference/transfers/accept-offer).
 
 <Note>
-  Join within 10 seconds of accepting. An accept that never joins counts as unanswered, and the agent carries on with the caller.
+  Join within 10 seconds of accepting (20 seconds over WebRTC). An accept that never joins counts as unanswered, and the agent carries on with the caller.
 </Note>
 
 ## Join the call audio
@@ -149,7 +149,20 @@ Open a websocket to `joinUrl` with the token as the `token` query parameter (add
 | You send | Your audio as binary frames; send silence frames when you have nothing to say |
 | Control | Text messages `{"type":"mute","muted":true}` and `{"type":"hangup"}` |
 
-The call ends when either side hangs up: you close the socket (or send `hangup`), or the caller leaves and Talkif closes it.
+The call ends when either side hangs up: you close the socket (or send `hangup`), or the caller leaves and Talkif closes it. If your side hangs up within 15 seconds of being connected, the agent comes back to the caller instead.
+
+### Join over WebRTC instead
+
+To take the audio over WebRTC rather than a websocket, send your SDP offer in the accept body:
+
+```bash
+curl -X POST https://api.talkif.ai/api/v1/transfers/offers/$OFFER_ID/accept \
+  -H "Authorization: Bearer $TALKIF_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"sdpOffer": "<your SDP offer>"}'
+```
+
+The reply carries `sdpAnswer` to apply to your peer connection, `iceServers` to connect through, `callId`, and `expiresAt` — when the TURN credentials stop working. Join within 20 seconds. An offer that isn't valid SDP is refused with `422 unprocessable_entity` (*"sdpOffer is not a valid WebRTC SDP offer"*).
 
 ## When an offer is withdrawn
 
@@ -169,7 +182,7 @@ If an offer ends before your app accepted or declined it, Talkif sends a best-ef
 
 ## Rotate the secret
 
-**Rotate secret** on the destination (or [`POST /transfers/destinations/{id}/rotate-secret`](/api-reference/transfers/rotate-secret)) returns a new secret once. The old one keeps working for 24 hours (`previousSecretExpiresAt`): deliveries are signed with both, so you can deploy the new secret without dropping calls.
+**Rotate secret** on the destination (or [`POST /transfers/destinations/{id}/rotate-secret`](/api-reference/transfers/rotate-secret)) returns a new secret once. Owners and Admins can rotate the secret and **Send test**. The old one keeps working for 24 hours (`previousSecretExpiresAt`): deliveries are signed with both, so you can deploy the new secret without dropping calls.
 
 ## Limits
 
