@@ -1,11 +1,14 @@
 ---
-title: Live team availability and a recording fix
+title: Invitation resend, recording fixes, and microphone checks before test calls
 ---
 
 {/* versions: api=0.1.343-direct.3 app=0.1.103 voice=0.0.120 */}
 
-- **Account**: Resend a pending team invitation, and see teammates' live availability — online or away, with an "away until" time — when transferring a call to someone. See [Members and roles](/account/members-and-roles).
-- **Calls**: Fixed a bug where some calls made through a connected SIP provider, including ones still waiting in the queue, weren't recorded even though recording was turned on.
-- **Calls**: Fixed a bug on the flow builder's test call where a denied or missing microphone permission left the test bot waiting with no explanation. The browser now asks for microphone access before the call is placed, and cancels it right away if setup fails or you hang up early. See [Test and publish](/build/test-and-publish).
-- **Telephony**: Fixed a display bug where some phone number providers showed as "undefined" instead of their name. See [Bring your own SIP trunk](/telephony/bring-your-own-sip-trunk).
-- **API**: The available-countries and pricing endpoints no longer include an internal routing field that could expose account-specific details.
+- **Account**: resend a pending invitation from the **Team** page. The team card on the **Overview** and the Team page update live, and show when an away or offline status ends (for example "Away · 14:30") and who set it. See [Members and roles](/account/members-and-roles).
+- **Calls**: fixed a bug where inbound calls to numbers from a connected SIP provider, and queued outbound calls through one, weren't recorded even with recording on.
+- **Builder**: the test call asks for microphone access before it books an agent. A blocked, missing or busy microphone shows how to fix it, and a test call that fails during setup or that you hang up early is cancelled at once. See [Test and publish](/build/test-and-publish).
+- **Telephony**: SIP provider addresses must be public. IP addresses, ranges and SIP domains that point to private, loopback or other internal addresses are refused when you add or change a provider. See [Bring your own SIP trunk](/telephony/bring-your-own-sip-trunk).
+- **Telephony**: provider names saved as a placeholder such as "undefined" were cleared and are refused from now on; the dashboard shows the provider type instead.
+- **API**: `DELETE /calls/webrtc/{callId}` cancels a browser call before its offer is sent. The agent reserved for the call is released at once, and an agent that never connected isn't billed.
+- **API**: the available-countries and number-pricing responses no longer include `uri` and `url`. Both pointed at the carrier's own API and contained a carrier account identifier.
+- **SDKs**: `@talkif/webrtc` 0.1.7 asks for the microphone before it creates the call. A denied, missing or busy microphone fails with `media-unavailable` before anything is created, instead of leaving an agent waiting for about a minute. See [Web calls](/sdks/browser).
