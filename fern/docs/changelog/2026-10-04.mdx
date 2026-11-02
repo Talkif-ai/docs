@@ -1,0 +1,9 @@
+---
+title: Flow builder refresh and voicemail detection pricing
+---
+
+{/* versions: api=0.1.288 app=0.1.65 voice=0.0.111 */}
+
+- **Builder**: the flow builder has a new colour palette, and nodes are grouped by what they do — **Voice**, **Transcriber** and **Model** — with the ElevenLabs, Deepgram and Google Gemini marks. See [Choose models and voices](/build/choose-models-and-voices).
+- **Calls**: fixed a bug where picking up a transferred call in the dashboard sometimes didn't connect you to the call.
+- **Billing**: voicemail detection on outbound calls was free and is now charged by the tokens it uses — about \$0.00001 per call. It is its own line in the cost breakdown. See [Cost breakdown](/account/cost-breakdown).
