@@ -30,7 +30,7 @@ The key point: the browser never holds your API key. A **publishable key** (`pk_
 | [`@talkif/webrtc`](https://www.npmjs.com/package/@talkif/webrtc) | Framework-agnostic core: `TalkifCall` class, events |
 | [`@talkif/webrtc-react`](https://www.npmjs.com/package/@talkif/webrtc-react) | `useTalkifCall` hook on top of the core (React ≥ 18) |
 
-Both are headless — no UI ships with them. Source: [Talkif-ai/webrtc-js](https://github.com/Talkif-ai/webrtc-js) (MIT).
+Both are headless — no UI ships with them, and both are versioned together. This page describes **0.1.7**. Source and changelog: [Talkif-ai/webrtc-js](https://github.com/Talkif-ai/webrtc-js) (MIT).
 
 ```bash
 npm install @talkif/webrtc @talkif/webrtc-react
@@ -124,6 +124,12 @@ npm install @talkif/webrtc @talkif/webrtc-react
 
 If the flow's bot gate is on, the SDK completes a Cloudflare Turnstile challenge invisibly — nothing to set up. To supply your own token, pass `turnstileToken: () => Promise<string>` in the config.
 
+## The microphone comes first
+
+`start()` asks for the microphone **before** it creates the call. If the visitor denies access, has no microphone, or another app holds it, `start()` fails with `media-unavailable` and nothing was created: no agent waits, nothing is billed. Browsers only offer the microphone on `https://` pages (and `localhost`), so a widget on a plain `http://` page always fails this way.
+
+If `start()` fails after the call was created — the relay servers can't be fetched, say — the SDK ends that call and releases the microphone itself. Earlier versions (0.1.6 and below) created the call first, so a denied microphone left an agent waiting about a minute; upgrade to 0.1.7.
+
 ## What you can render live
 
 Every call event arrives on the SDK instance (and as hook callbacks), so a page can show more than a spinner:
@@ -138,7 +144,20 @@ Every call event arrives on the SDK instance (and as hook callbacks), so a page 
 | `tick` | `{ durationSecs }` | a call timer |
 | `appmessage` | `{ message }` | JSON the agent sends over the data channel; `sendAppMessage(json)` goes the other way |
 | `ended` | `{ reason }` | `local-hangup`, `peer-left`, `terminal-status`, `external` |
-| `error` | `{ error }` | fatal; the call is torn down. `error.code` is the field to branch on |
+| `error` | `{ error }` | fatal; the call is torn down. `error.code` is the field to branch on — see below |
+
+### Error codes
+
+| `error.code` | What happened | What to show |
+|---|---|---|
+| `media-unavailable` | microphone denied, missing, busy, or the page isn't served over HTTPS | ask the visitor to allow the microphone |
+| `session-rejected` | the credential was refused: in public mode the publishable key, the page origin, the bot check or an expired visitor session; in authenticated mode your `auth` header | start a new call; if it keeps failing, check the key, the allowed origins or the token |
+| `call-active` | this visitor session already has a call (another tab) | finish the other call first |
+| `rate-limited` | a per-IP, per-key, per-session or concurrency limit was hit | try again later |
+| `no-agent` | no agent was free to take the call | try again shortly |
+| `connection-failed` | the audio connection could not be set up | try again; a network that blocks the relay (TURN) servers fails here every time |
+| `pipeline-dead` | the call ended on Talkif's side, or went silent with no sign of life | offer to call again |
+| `signaling-failed` | any other failed request while setting up the call | try again |
 
 The core also handles what you'd otherwise get wrong: relay-only ICE with fast first-candidate connect, the data-channel keepalive, a reconnecting events WebSocket with server-side replay after a gap, a liveness check before tearing down a silent call, and deterministic release of the microphone and peer connection on hangup, error or unmount. One active call per hook; starting another disposes the first.
 
@@ -157,6 +176,22 @@ An unauthenticated endpoint that spends your money needs guardrails. These apply
 | Kill switch | disabling web calls on the flow, or regenerating the key, stops new calls within one attempt |
 
 A public call is billed like any other call minus telephony — STT, LLM, TTS and infrastructure — and appears in history with `providerType: webrtc`.
+
+## Without the SDK
+
+You can also run a browser call with your own WebRTC code. With an API key (scope `calls`), these requests go through **your server**: the browser sends its SDP offer to your backend, your backend calls Talkif and returns the answer. The key never reaches the page. The SDK's authenticated mode makes the same requests:
+
+| Step | Request |
+|---|---|
+| 1. Relay servers | [`GET /calls/webrtc/ice-servers`](/api-reference/calls/get-ice-servers) — TURN servers for a relay-only peer connection |
+| 2. Create the call | [`POST /calls/webrtc`](/api-reference/calls/create-webrtc-call) for the published flow, or [`POST /calls/webrtc/test`](/api-reference/calls/create-webrtc-test-call) with a draft definition. An agent is reserved for the call |
+| 3. Send the offer | [`POST /calls/webrtc/{callId}/offer`](/api-reference/calls/relay-webrtc-offer) with your SDP offer; the reply is the agent's SDP answer |
+| 4. Hang up | [`POST /calls/{callId}/end`](/api-reference/calls/end-call) |
+
+Two rules matter when you write this yourself:
+
+- **Send the offer before `offerDeadlineAt`.** The create response says until when the reserved agent waits for your offer. After that the agent releases itself and the call can't start. Connecting still takes a few seconds after the offer, so send it well before.
+- **Cancel a call you won't connect.** If the visitor leaves before the offer is sent, [`DELETE /calls/webrtc/{callId}`](/api-reference/calls/cancel-webrtc-call) releases the agent at once and ends the call as `canceled`; an agent that never connected isn't billed. On a call that already started it hangs up, like ending it. Without a cancel, the agent waits until the deadline.
 
 ## Next
 

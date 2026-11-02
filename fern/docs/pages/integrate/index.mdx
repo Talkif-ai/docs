@@ -1,7 +1,7 @@
 ---
 title: Integrate
 subtitle: Drive Talkif from your own systems — place calls, receive what happens, and let agents reach your backend mid-conversation.
-description: The developer surface — API keys, SDKs, webhooks and signature verification, real-time events over WebSocket, idempotency and rate limits, and the Meta Lead Ads integration.
+description: The developer surface — API keys, SDKs, the MCP server for AI agents, webhooks and signature verification, real-time events over WebSocket, idempotency and rate limits, and the Meta Lead Ads integration.
 layout: overview
 ---
 
@@ -11,18 +11,21 @@ Three directions, three mechanisms:
 
 | Direction | Mechanism | Page |
 |---|---|---|
-| **You → Talkif** — place calls, manage contacts, read results | REST API with an API key; SDKs for TypeScript and Python | [Authentication](/integrate/authentication), [SDKs](/sdks/server) |
+| **You → Talkif** — place calls, manage contacts, read results | REST API with an API key; SDKs for TypeScript and Python; the same operations as tools for AI agents | [Authentication](/integrate/authentication), [SDKs](/sdks/server), [MCP server](/integrate/mcp) |
 | **Talkif → you, during a call** — the agent needs data or to act | Flow functions: signed HTTPS requests to your endpoint | [Call your backend](/build/call-your-backend), [Webhooks](/integrate/webhooks) |
 | **Talkif → you, as things happen** — status, transcript, ends | WebSocket event stream | [Real-time events](/integrate/real-time-events) |
 
 <CardGroup cols={2}>
   <Card title="Authentication" href="/integrate/authentication" icon="fa-regular fa-key">
-    API keys: scopes, IP allowlists, expiry, usage and error tracking, revocation.
+    API keys: what they reach, scopes, IP allowlists, refusals, usage and error tracking, revocation.
   </Card>
   <Card title="SDKs" href="/sdks/server" icon="fa-regular fa-cube">
     `@talkif/sdk` and `talkif` — install, auth, paging, errors.
   </Card>
-  <Card title="Build with AI agents" href="/skills/agent-skills" icon="fa-regular fa-robot">
+  <Card title="MCP server" href="/integrate/mcp" icon="fa-regular fa-robot">
+    The API as tools for Claude Code and other MCP clients, limited by the key's scopes.
+  </Card>
+  <Card title="Build with AI agents" href="/skills/agent-skills" icon="fa-regular fa-wand-magic-sparkles">
     Install the Talkif Agent Skills into Claude Code, Codex or Cursor.
   </Card>
   <Card title="Web calls" href="/sdks/browser" icon="fa-regular fa-globe">

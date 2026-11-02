@@ -1,9 +1,9 @@
 ---
 title: Assistant
-description: The in-dashboard AI assistant — chat about your account, build and edit flows, and get help with any part of the platform.
+description: The in-dashboard AI assistant — chat about your account, build and edit flows from any page, manage alerts, and get help with any part of the platform.
 ---
 
-The Talkif Assistant is an AI chat built into the dashboard. It answers questions about your account, proposes edits to your flows, and can build a complete flow from a plain-language description. It is available on every dashboard page and adapts to the page you're on.
+The Talkif Assistant is an AI chat built into the dashboard. It answers questions about your account, changes your flows, watches your alerts, and can build a complete flow from a plain-language description. It is available on every dashboard page and adapts to the page you're on.
 
 ## What it can do
 
@@ -12,46 +12,48 @@ The assistant is not one generalist — it is five specialists, and the dashboar
 | Page you're on | Specialist | Focus |
 |---|---|---|
 | Flows, flow canvas | **Flow** | Designing, editing, publishing and wiring flows to numbers |
-| Calls, Analytics | **Analysis** | What happened on calls and why |
+| Calls, Analytics, Alerts, Notifications | **Analysis** | What happened on calls and why; alerts |
 | Campaigns, Schedules, Contacts | **Outreach** | Running outbound: contacts, DNC, campaigns, schedules |
-| Support | **Support** | Account, balance and transaction questions; hand-off to the Talkif team |
+| Support | **Support** | Account, balance and transaction questions; alerts; hand-off to the Talkif team |
 | Dashboard, Phone numbers, Billing, everything else | **General** | Broad access across the platform |
 
-Routing is automatic and silent — open the relevant page and ask. If a specialist can't do something (Analysis can't publish a flow, for example), it can navigate you to the page where the right specialist lives.
+Routing is automatic and silent — open the relevant page and ask. Ask for a flow change on any page and the **Flow** specialist takes over that reply, so you don't have to open the flow first. For anything a specialist can't do from chat, it takes you to the page where you can.
 
 <AccordionGroup>
   <Accordion title="Flow — design, edit, publish, connect">
     **Looks up:** your flows and their full definitions, flow functions, variables, templates, available models and voices, phone numbers, available numbers to buy, contacts, the do-not-call list, balance, and — given a URL — your business website.
 
-    **Proposes:** create a flow, build a complete flow from a description, save or publish a flow, duplicate, roll back to a previous version, archive, save as template, delete; connect or disconnect a number; buy a number; place a test call.
+    **Proposes:** create a flow, build a complete flow from a description, save a change to a flow, publish a flow; connect or disconnect a number; buy a number; place a call.
 
-    Edits to an open flow arrive as an artifact with a visual diff — see [Editing existing flows](#editing-existing-flows).
+    Edits arrive as an artifact with a visual diff — see [Editing existing flows](#editing-existing-flows).
   </Accordion>
-  <Accordion title="Analysis — what happened on calls">
-    **Looks up:** recent calls with filters, the full record of a call (transcript, status, end reason, cost breakdown), analytics summaries, call outcomes, campaigns and their contacts.
+  <Accordion title="Analysis — what happened on calls, and alerts">
+    **Looks up:** recent calls with filters, the full record of a call (transcript, status, end reason, cost breakdown), analytics summaries, call outcomes, campaigns and their contacts, your alert rules and incidents, and the notifications you received in this account.
 
-    **Proposes:** run a post-call analysis on a call (a paid action — the price is on the confirm card); end a call that is in progress; publish a flow.
+    **Proposes:** publish a flow; connect a number to a flow; the [alert actions](#alerts).
 
-    Typical asks: *"Why did yesterday's campaign have so many `noanswer` results?"*, *"Which calls last week ended with `balance_depleted`?"*, *"Summarise the last ten calls on the receptionist flow."*
+    Typical asks: *"Why did yesterday's campaign have so many `noanswer` results?"*, *"Is anything wrong right now?"*, *"Summarise the last ten calls on the receptionist flow."*
   </Accordion>
   <Accordion title="Outreach — contacts, DNC, campaigns, schedules">
     **Looks up:** contacts, the do-not-call list, campaigns and their contacts, schedules, analytics summaries, balance, flows and numbers.
 
-    **Proposes:** create, update or delete a contact; add to or remove from the do-not-call list; create a campaign, add contacts to it, start, pause, resume, cancel or restart it; create, pause, resume or delete a schedule; place a single call; build a flow.
+    **Proposes:** start, pause, resume or cancel a campaign; place a call; connect a number to a flow; build a flow.
   </Accordion>
   <Accordion title="Support — account questions and hand-off">
-    **Looks up:** an account snapshot, balance, transaction history, recent calls and call details, and your website.
+    **Looks up:** an account snapshot, balance, transaction history, recent calls and call details, alert rules and incidents, and your website.
 
-    **Proposes:** contact support. On confirmation your message is sent to the Talkif team with your account and email attached; the team follows up by email.
+    **Proposes:** contact support — on confirmation your message is sent to the Talkif team with your account and email attached, and the team follows up by email; publish a flow; connect a number; the [alert actions](#alerts).
   </Accordion>
   <Accordion title="General — everywhere else">
-    Has nearly the full read surface above and can propose most of the same actions, plus releasing a phone number. Use it from the dashboard, phone-number or billing pages when your question doesn't fit one specialist.
+    Has nearly the full read surface above and can propose most of the same actions: building a flow, publishing, connecting and disconnecting numbers, buying a number, placing a call, running campaigns and the alert actions. Use it from the dashboard, phone-number or billing pages when your question doesn't fit one specialist.
   </Accordion>
 </AccordionGroup>
 
+Every specialist can also take you to a page and contact support. Some changes are made on their own page, not from chat: deleting, duplicating, archiving or rolling back a flow; creating a campaign or adding contacts to it; schedules; editing contacts and the do-not-call list; releasing a number. Ask, and the assistant takes you there.
+
 ## Nothing happens without you
 
-Two rules are enforced server-side, not by the prompt:
+Three rules are enforced server-side, not by the prompt:
 
 - **Look-ups are read-only.** No tool the assistant can call changes anything in your account.
 - **Every change is a proposal you confirm.** Each proposed action carries a risk class that decides what the confirm card looks like:
@@ -59,11 +61,13 @@ Two rules are enforced server-side, not by the prompt:
 | Class | Examples | Confirm card |
 |---|---|---|
 | Navigate | Open the campaigns page | None — it just takes you there |
-| Write | Publish a flow, connect a number, pause a campaign | Plain confirm |
-| Spend | Buy a number, place a call, analyse a call | Shows the price before you confirm |
-| Destructive | Delete a flow or contact, release a number | Heavy warning before you confirm |
+| Write | Save or publish a flow, connect a number, pause a campaign, create an alert rule | Plain confirm |
+| Spend | Buy a number, place a call | Shows the price before you confirm |
+| Destructive | Delete an alert rule | Heavy warning before you confirm |
 
-Adding credit, changing cards and other payment operations are deliberately **not** something the assistant can propose — those stay in the billing pages under your own hands. Confirmed actions run under your session with your permissions, so a member who can't publish a flow in the dashboard can't publish one through the assistant either.
+- **It works within your role.** The assistant reads only what your role can read and offers only the actions your role can run. Ask for something your role can't do and it tells you who can, instead of offering a card that would fail. Confirmed actions run under your session with your permissions, so a member who can't publish a flow in the dashboard can't publish one through the assistant either.
+
+Adding credit, changing cards and other payment operations are deliberately **not** something the assistant can propose — those stay in the billing pages under your own hands.
 
 ## Flow builds
 
@@ -83,6 +87,20 @@ One flow build runs per account at a time; starting a second while one is runnin
 ### Editing existing flows
 
 On a flow page, the assistant reads your current definition and proposes changes as an artifact — a complete updated flow with validation results and a visual diff. Apply it to update the canvas, or keep chatting to iterate. Proposals are validated before they reach you, and publish-level issues surface as warnings.
+
+From any other page, ask for the change by the flow's name — *"In the receptionist flow, offer 2 pm as well as 9 am"*. The assistant reads the flow's current draft and proposes the same artifact with a **save** card; confirming saves it to the flow's draft without opening the canvas. Saving changes the draft only — callers hear it after you publish. One flow per reply: for the same change on several flows, it does them one after another.
+
+A save never overwrites newer work. If anyone saved the flow after the assistant read it, the save is refused with *"This flow changed after the assistant read it"* — ask again and it applies the change to the latest draft.
+
+## Alerts
+
+The Analysis, Support and General specialists — on the Alerts, Notifications, Calls, Analytics, Support, Dashboard, Phone numbers and Billing pages — can answer *"is anything wrong right now?"* from the account's active alert incidents, explain an alert email you received, and manage alerts:
+
+- **Create an alert rule** for a metric and threshold. From chat, a rule can notify only people in this account — the owner and admins, the owner, or named members — by email. Webhooks and outside email addresses are added on the **Alerts** page.
+- **Pause, resume or delete** a rule.
+- **Acknowledge** a firing incident, or **resolve** it by hand.
+
+Each is a proposal you confirm, and each needs the role the Alerts page needs.
 
 ## Conversations
 
@@ -110,5 +128,6 @@ The dashboard shows your current tiers, active bonus grants, and the next reset 
 | Conversation history list | 50 most recent |
 | Flow build request length | 10–4,000 characters |
 | Concurrent flow builds | 1 per account |
+| Contact-support requests | 5 per person per hour |
 
 When something goes wrong mid-chat, the error message states the specific cause (for example, a conversation that outgrew its context window) and includes a request reference you can quote to support.

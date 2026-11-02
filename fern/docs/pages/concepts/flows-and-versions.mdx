@@ -97,6 +97,20 @@ Do it from the flow's version history in the dashboard, or with [`POST /flows/{f
 - [`POST /flows/{flowId}/validate`](/api-reference/flows/validate-flow) — run the publish checks without publishing.
 - [`GET /flows/{flowId}/stats`](/api-reference/analytics/get-flow-stats) — calls, outcomes and cost per flow.
 
+## Managing flows from the API
+
+The rest of the flow list's controls are API calls too (scope `flows`, except templates):
+
+| To | Call | Notes |
+|---|---|---|
+| Find a flow | [`GET /flows?search=…`](/api-reference/flows/list-flows) | case-insensitive match on name, description and tags, up to 100 characters; paged with `limit` / `offset` |
+| List only what can take calls | [`GET /flows/published`](/api-reference/flows/list-published-flows) | published flows with their connected numbers |
+| Save the draft safely | [`PUT /flows/{flowId}`](/api-reference/flows/update-flow) with `expectedUpdatedAt` | send the `updatedAt` from your last read; if anyone saved in between, `409 flow_version_conflict` and nothing changes. Omit it to save unconditionally |
+| Tag a flow | [`PATCH /flows/{flowId}/tags`](/api-reference/flows/update-tags) | replaces all tags; at most 10, stored lower-case without duplicates |
+| Archive or reactivate | [`PATCH /flows/{flowId}/status`](/api-reference/flows/change-status) | for archiving, reactivating, and moving a draft in and out of `TESTING`; a move that isn't allowed answers `422 business_rule_violation`. Never use it to publish: [`publish`](/api-reference/flows/publish-flow) validates the draft and creates the version calls run on |
+| Copy a flow | [`POST /flows/{flowId}/duplicate`](/api-reference/flows/duplicate-flow) | a new `DRAFT` named "… (Copy)" with the source's draft definition and no connected numbers |
+| Reuse a flow as a template | [`POST /flows/{flowId}/save-as-template`](/api-reference/flow-templates/save-flow-as-template) | saves the draft definition as a template private to the account (scope `flow_templates`); list them with [`GET /flow-templates/custom`](/api-reference/flow-templates/list-account-templates) |
+
 ## Next
 
 <CardGroup cols={2}>
