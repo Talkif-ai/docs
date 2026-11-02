@@ -9,7 +9,7 @@ The dashboard shows the same five steps as a checklist on your home screen until
 
 ## Before you start
 
-- **An account.** Sign up at [app.talkif.ai](https://app.talkif.ai) with email + password or **Continue with Google**. Email sign-ups get a verification link (valid 24 hours) and an SMS code for the phone number you register. Both must be confirmed before the account can place calls.
+- **An account.** Sign up at [app.talkif.ai](https://app.talkif.ai) with email + password, **Continue with Google** or **Continue with Apple**. Email sign-ups confirm the address with a 6-digit code sent by email, valid for 10 minutes; Google and Apple sign-ups arrive verified. The phone number is verified next, with an SMS code that is sent only once the email is verified. The account can place calls as soon as its Owner has verified email **or** phone; buying a phone number needs both — see [Security](/account/security).
 - **Credits.** New accounts receive a **\$5.00 welcome credit**. It's enough to build, test in the browser, and take a few short calls.
 
 <Warning title="The welcome credit can't buy a phone number">
@@ -86,17 +86,18 @@ A single-agent support line: it greets the caller, asks what they need, answers 
   <Step title="Get a phone number">
     Open **Phone & WhatsApp** in the sidebar and choose **Purchase**. Pick a country, then search by area code or digit pattern. Each result shows its capabilities (voice, SMS) and its monthly price. Confirm to buy; the number is provisioned instantly.
 
-    Purchases and rental are paid from your *purchased* balance — add a payment method and top up under **Billing** if you haven't. Numbers renew monthly against the same balance; see [Buy a number](/telephony/buy-a-number) for pricing and what happens if renewal fails.
+    Only the account Owner can buy, with both email and phone verified. Until your account's first payment, purchases and rental can't use welcome or other free credit — add a payment method and top up under **Billing** if you haven't. Numbers renew monthly against the balance; see [Buy a number](/telephony/buy-a-number) for pricing and what happens if renewal fails.
 
     <Tabs>
       <Tab title="Dashboard">
         **Phone & WhatsApp → Purchase**, choose country → search → buy.
       </Tab>
       <Tab title="API">
-        The platform's own carrier is a *system provider* — list providers to get its `id`, then search and purchase through it.
+        Search for numbers with an API key:
 
         <EndpointRequestSnippet endpoint="GET /api/v1/phone/numbers/twilio/available" />
-        <EndpointRequestSnippet endpoint="POST /api/v1/phone/numbers/twilio/purchase" />
+
+        Buying is the one step an API key can't do: it spends the balance, so it needs the Owner signed in to the dashboard (a key gets `403 api_key_not_allowed`). Buy in the dashboard, then continue with the API.
       </Tab>
     </Tabs>
 
