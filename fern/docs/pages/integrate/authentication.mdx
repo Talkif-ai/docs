@@ -20,7 +20,7 @@ curl "https://api.talkif.ai/api/v1/calls?status=inprogress" \
 
 ## What a key can reach
 
-A key reaches exactly the operations in the [API Reference](/api-reference), plus the [MCP server](/integrate/mcp) that exposes the same operations as tools (and, with the `session_bridge` scope, the experimental Connectors). Everything else in the dashboard — managing API keys, members and invitations, payment methods, your own profile and sign-in methods — needs a person signed in, and answers a key with `403 api_key_not_allowed`.
+A key reaches the operations in the [API Reference](/api-reference), plus the [MCP server](/integrate/mcp) that exposes the same operations as tools (and, with the `session_bridge` scope, the experimental Connectors). One operation in the reference is an exception: **buying a phone number** ([`POST /phone/numbers/twilio/purchase`](/api-reference/phone-numbers/purchase-phone-number)) needs the account Owner signed in to the dashboard, because it spends the balance; a key gets `403 api_key_not_allowed`. Searching for numbers and releasing them work with a key. Everything else in the dashboard — managing API keys, members and invitations, payment methods, your own profile and sign-in methods — needs a person signed in, and answers a key with `403 api_key_not_allowed`.
 
 ## Creating a key
 
@@ -52,7 +52,7 @@ A scope is `resource:action`. Actions are `read` (`GET` requests), `write` (ever
 | `flow_functions` | The account's reusable flow functions |
 | `flow_templates` | Account templates, creating a flow from a template, saving a flow as a template |
 | `contacts` | Contacts, import and export, tags |
-| `phones` | Phone numbers and providers, buying and releasing numbers |
+| `phones` | Phone numbers and providers, searching for and releasing numbers (buying needs the Owner in the dashboard) |
 | `billing` | Balance, charges, costs, invoices, transactions (read-only by nature) |
 | `analytics` | Flow and campaign analytics |
 | `schedules` | Schedules **and campaigns**, with the campaigns' contacts |

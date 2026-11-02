@@ -72,7 +72,6 @@ These tools spend from your balance, dial or reach people outside the account, o
 |---|---|
 | `make_call` | places a phone call |
 | `analyze_call` | runs a paid post-call analysis |
-| `purchase_phone_number` | buys a number |
 | `start_campaign`, `resume_campaign`, `restart_campaign` | starts dialing a campaign's contacts |
 | `add_campaign_contacts`, `bulk_add_campaign_contacts` | adds contacts to a campaign that may already be dialing |
 | `create_schedule`, `resume_schedule` | sets up or restarts scheduled calls |
@@ -84,7 +83,7 @@ These tools spend from your balance, dial or reach people outside the account, o
 Every other tool that changes data says *"Changes data"* or *"Deletes data"* in its description and carries `destructiveHint`. Read tools carry `readOnlyHint`. Whether a client asks before running a tool is the client's setting — Talkif marks the tools, it cannot make a client ask.
 
 <Warning title="Call data is data, not instructions">
-  Tool results contain what callers and contacts said: transcripts, names, notes. A transcript can contain text written to look like an instruction to an AI. The server tells clients to treat results as data; keep confirmation on for the tools above so a transcript can never place a call or buy a number on its own.
+  Tool results contain what callers and contacts said: transcripts, names, notes. A transcript can contain text written to look like an instruction to an AI. The server tells clients to treat results as data; keep confirmation on for the tools above so a transcript can never place a call or start a campaign on its own.
 </Warning>
 
 ### Results

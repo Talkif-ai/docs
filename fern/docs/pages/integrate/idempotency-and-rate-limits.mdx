@@ -37,17 +37,19 @@ Campaigns are idempotent by construction: adding a contact who's already in the 
 
 Defaults are per account and can be raised — contact support with your expected peak concurrency. The account's current values are shown in the dashboard's account settings, and [Limits](/reference/limits) explains how the queue prioritises when you're at the ceiling.
 
-A limited request gets a `429` (or a `4xx` with the error code above) and a JSON error body:
+A limited request gets a `429` with `code: "rate_limit_exceeded"` (or another `4xx` with the error code in the table above) and a JSON error body:
 
 ```json
 {
-  "code": "rate_limit",
+  "code": "rate_limit_exceeded",
   "title": "Rate Limit Exceeded",
   "status": 429,
-  "detail": "Call rate limit exceeded",
+  "detail": "Rate limit exceeded - too many calls per minute",
   "requestId": "550e8400-e29b-41d4-a716-446655440000"
 }
 ```
+
+Some limits also say how long to wait, in `meta.retryAfterSecs` (for example `"meta": { "retryAfterSecs": 60 }`). When it's there, wait at least that long; when it isn't, back off as below.
 
 Every API error has this shape — `code` is the field to branch on, `requestId` is what to quote to support. The full catalogue is on [Error codes](/api-reference/errors).
 
