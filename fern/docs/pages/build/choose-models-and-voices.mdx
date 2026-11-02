@@ -66,7 +66,9 @@ If you have no constraints yet: **Deepgram `nova-3-general`** → a small, fast 
 
 ## When a model is retired
 
-Providers retire models on their own schedule. Talkif announces each retirement ahead of time: the model keeps working until its retirement date, and from that day calls on it run on a named replacement from the same provider, with your voice and settings unchanged. You don't need to republish. To choose a different model yourself, change the node and publish before the date.
+Providers retire models on their own schedule. Talkif announces each retirement ahead of time: the model keeps working until its retirement date, and from that day calls on it run on a named replacement from the same provider, with your voice and settings unchanged. Calls keep working without any change from you.
+
+Editing is different: a retired model is no longer accepted. While any node still names one, saving a draft, test calls in the builder, publishing and the assistant's edits are refused with `validation_failed` (field error `invalid_model`, *"Model '…' is not valid for provider '…'"*). To edit such a flow, pick a current model on every node that names a retired one, then save and publish. To choose a different model before a retirement date, change the node and publish before that date.
 
 The [models endpoint](/api-reference/ai-models/list-providers-public) marks every model that is scheduled for retirement with a `deprecation` object carrying `retiresOn` and `replacedBy`, and account owners and admins get an email before a change that affects their agents.
 

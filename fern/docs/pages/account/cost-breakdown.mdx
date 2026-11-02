@@ -77,7 +77,7 @@ In rough order of impact for a typical flow:
 
 1. **Call length.** Every line grows with seconds, started minutes or tokens; a 4-minute call costs about twice a 2-minute one. Tighter prompts and an explicit end condition are cost work, not just quality work.
 2. **LLM choice and prompt size.** Tokens = (prompt + transcript) × turns. A 1,200-token System Prompt on a 20-turn call is 24,000 input tokens before the conversation is counted. The [Costs](#costs--what-you-spend-on) view will show the LLM as the largest category if this is your problem.
-3. **TTS model.** Premium voices cost several times the flash tier per character. Listen to both before deciding the difference is worth it on every call.
+3. **TTS model.** Per-character rates differ a lot between TTS models — see [Models and voices](/reference/models-and-voices). Listen to the options before deciding the difference is worth it on every call.
 4. **Telephony rounding and destination.** Very short calls (voicemail hang-ups, wrong numbers) pay a full minute, and calls to other countries can cost more per minute. Voicemail detection on outbound flows reduces the short ones.
 5. **Analysis.** Turn it off for flows where you don't read insights, or set a minimum call length for analysis in **Settings → Hooks** so 8-second hang-ups aren't analysed.
 
