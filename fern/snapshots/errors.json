@@ -41,6 +41,46 @@
       "description": "This account has been suspended by an administrator. Contact support to resolve the suspension."
     },
     {
+      "code": "account_pending_deletion",
+      "status": 409,
+      "title": "Account Pending Deletion",
+      "category": "conflict",
+      "categoryTitle": "Conflicts",
+      "description": "This account is scheduled for deletion and is read-only until then. Cancel the deletion to make changes again. `meta.scheduledDeletionAt` says when it runs."
+    },
+    {
+      "code": "login_pending_deletion",
+      "status": 409,
+      "title": "Login Pending Deletion",
+      "category": "conflict",
+      "categoryTitle": "Conflicts",
+      "description": "Your login is scheduled for deletion. You can still sign in and cancel it; until then you cannot add sign-in methods, workspaces or organizations. `meta.scheduledDeletionAt` says when it runs."
+    },
+    {
+      "code": "owns_organization_with_members",
+      "status": 409,
+      "title": "Owns Organization With Members",
+      "category": "conflict",
+      "categoryTitle": "Conflicts",
+      "description": "You own an organization that other people are members of. Transfer ownership or delete the organization before deleting your login. `meta.organizations` lists them."
+    },
+    {
+      "code": "account_deletion_blocked",
+      "status": 409,
+      "title": "Account Deletion Blocked",
+      "category": "conflict",
+      "categoryTitle": "Conflicts",
+      "description": "A workspace that would be deleted with your login has an unpaid or disputed charge, or a balance hold for a call in progress. Settle it, then try again. `meta.accountId` names the workspace."
+    },
+    {
+      "code": "client_update_required",
+      "status": 426,
+      "title": "App Update Required",
+      "category": "business_rules",
+      "categoryTitle": "Business Rules",
+      "description": "This version of the Talkif app is no longer supported. Update the app, then try again. `meta.minimumVersion` is the oldest supported version."
+    },
+    {
       "code": "account_access_denied",
       "status": 403,
       "title": "Account Access Denied",
@@ -145,6 +185,14 @@
       "description": "The phone verification code is incorrect. Check the code and try again, or request a new one."
     },
     {
+      "code": "bot_check_failed",
+      "status": 400,
+      "title": "Bot Check Failed",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "The security check did not pass or was missing. Complete the check again and retry the request."
+    },
+    {
       "code": "phone_verification_code_expired",
       "status": 400,
       "title": "Phone Verification Code Expired",
@@ -167,6 +215,38 @@
       "category": "authentication",
       "categoryTitle": "Authentication",
       "description": "No phone number is associated with this account. Add a phone number before attempting verification."
+    },
+    {
+      "code": "email_not_verified",
+      "status": 400,
+      "title": "Email Not Verified",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "Verify your email address first, then request the phone verification code again. Request a new email code if the first one did not arrive."
+    },
+    {
+      "code": "disposable_email_not_allowed",
+      "status": 400,
+      "title": "Disposable Email Not Allowed",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "This email address belongs to a throwaway inbox service. Sign up with a permanent email address."
+    },
+    {
+      "code": "request_blocked",
+      "status": 400,
+      "title": "Request Blocked",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "This request can't be accepted. If you think this is a mistake, contact support@talkif.ai."
+    },
+    {
+      "code": "phone_verification_refused",
+      "status": 400,
+      "title": "Phone Verification Refused",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "We can't send a verification code for this request. If you think this is a mistake, contact support@talkif.ai."
     },
     {
       "code": "sms_service_unavailable",
@@ -207,6 +287,14 @@
       "category": "authentication",
       "categoryTitle": "Authentication",
       "description": "The MFA code is incorrect or has expired. Enter the current code from your authenticator app."
+    },
+    {
+      "code": "passkey_not_found",
+      "status": 401,
+      "title": "Passkey Not Found",
+      "category": "authentication",
+      "categoryTitle": "Authentication",
+      "description": "This passkey is not registered to any account. It was removed or its account was deleted. Delete it from your password manager and sign in another way."
     },
     {
       "code": "password_reset_token_invalid",
@@ -313,6 +401,14 @@
       "description": "The request is malformed or contains invalid parameters. Check the request body and query parameters."
     },
     {
+      "code": "ring_target_required",
+      "status": 400,
+      "title": "Say Whose Phone Rings",
+      "category": "validation",
+      "categoryTitle": "Validation",
+      "description": "More than one person in this account can take the call. List them with GET /api/v1/session-bridge/ring-targets and send the chosen person's userId as ringUserId."
+    },
+    {
       "code": "invalid_json",
       "status": 400,
       "title": "Invalid JSON",
@@ -351,6 +447,30 @@
       "category": "authorization",
       "categoryTitle": "Authorization",
       "description": "Your role does not have sufficient permissions for this action. Contact your organization owner or admin."
+    },
+    {
+      "code": "connectors_consent_required",
+      "status": 403,
+      "title": "Connectors Not Turned On",
+      "category": "authorization",
+      "categoryTitle": "Authorization",
+      "description": "Connectors are not turned on for this account. An owner or admin of the account must accept Connectors in the dashboard (Developer > Integrations), then connect again."
+    },
+    {
+      "code": "already_answered",
+      "status": 409,
+      "title": "Already Answered",
+      "category": "connectors",
+      "categoryTitle": "Connectors",
+      "description": "This question or task was already answered. Only the first answer counts; nothing more to send."
+    },
+    {
+      "code": "expired",
+      "status": 410,
+      "title": "Expired",
+      "category": "connectors",
+      "categoryTitle": "Connectors",
+      "description": "This question or task can no longer be answered: its lifetime is over and the sender was told it got no answer."
     },
     {
       "code": "conflict",
@@ -457,6 +577,14 @@
       "description": "Your assistant usage allowance for this period is exhausted. It resets at meta.resetsAt; topping up your balance also earns extra assistant allowance."
     },
     {
+      "code": "phone_purchase_rate_limited",
+      "status": 429,
+      "title": "Phone Purchase Rate Limited",
+      "category": "rate_limiting",
+      "categoryTitle": "Rate Limiting",
+      "description": "Too many phone numbers were bought in the last 24 hours (meta.limit, released numbers included). Try again after meta.retryAfterSecs seconds."
+    },
+    {
       "code": "user_phone_not_verified",
       "status": 403,
       "title": "Phone Verification Required",
@@ -471,6 +599,14 @@
       "category": "calls",
       "categoryTitle": "Calls",
       "description": "Verify your email address or phone number before starting calls. Complete verification in profile settings."
+    },
+    {
+      "code": "owner_verification_required",
+      "status": 403,
+      "title": "Owner Verification Required",
+      "category": "authorization",
+      "categoryTitle": "Authorization",
+      "description": "The account owner must verify both their email address and their phone number before buying phone numbers, creating API keys or inviting team members. meta.missing lists what is still unverified; complete it in profile settings."
     },
     {
       "code": "payment_method_required",
@@ -681,6 +817,14 @@
       "description": "System-managed providers cannot be deleted. Only user-created SIP and BYOC providers can be removed."
     },
     {
+      "code": "phone_number_type_unavailable",
+      "status": 422,
+      "title": "Phone Number Type Unavailable",
+      "category": "business_rules",
+      "categoryTitle": "Business Rules",
+      "description": "No numbers of this type (meta.numberType) can be bought in this country (meta.countryCode). Pick a type the country lists in number_types, or another country."
+    },
+    {
       "code": "flow_name_already_exists",
       "status": 409,
       "title": "Flow Name Already Exists",
@@ -753,6 +897,30 @@
       "description": "Only card payment methods are currently supported. Add a credit or debit card to proceed."
     },
     {
+      "code": "apple_transaction_invalid",
+      "status": 400,
+      "title": "App Store Purchase Invalid",
+      "category": "payment",
+      "categoryTitle": "Payment",
+      "description": "The App Store purchase could not be verified, or it is not a Talkif credit pack. No credit was added."
+    },
+    {
+      "code": "apple_transaction_account_mismatch",
+      "status": 403,
+      "title": "App Store Purchase For Another Account",
+      "category": "payment",
+      "categoryTitle": "Payment",
+      "description": "The App Store purchase was made for a different Talkif account. Select that account and send the purchase again."
+    },
+    {
+      "code": "sandbox_purchase_not_allowed",
+      "status": 403,
+      "title": "Test Purchase Not Allowed",
+      "category": "payment",
+      "categoryTitle": "Payment",
+      "description": "Test (sandbox) App Store purchases do not add credit to this account. Buy from the App Store version of the app."
+    },
+    {
       "code": "template_variable_resolution_failed",
       "status": 400,
       "title": "Template Variable Resolution Failed",
@@ -767,6 +935,14 @@
       "category": "phones",
       "categoryTitle": "Phone Numbers",
       "description": "This phone number is already in use by another user. Use a different phone number."
+    },
+    {
+      "code": "phone_number_limit_reached",
+      "status": 403,
+      "title": "Phone Number Limit Reached",
+      "category": "phones",
+      "categoryTitle": "Phone Numbers",
+      "description": "The account already holds the maximum number of rented phone numbers (meta.limit). Release a number you no longer need, or contact support to raise the limit. When meta.topUpRaisesLimit is true, adding funds to the balance raises it."
     },
     {
       "code": "mfa_token_invalid",

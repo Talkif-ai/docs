@@ -4,11 +4,11 @@
       "provider": "sip",
       "model": null,
       "rates": {
-        "perMinuteOutbound": {
+        "perMinuteInbound": {
           "microcents": 4000,
           "display": "$0.0040"
         },
-        "perMinuteInbound": {
+        "perMinuteOutbound": {
           "microcents": 4000,
           "display": "$0.0040"
         }
@@ -32,11 +32,11 @@
       "provider": "whatsapp",
       "model": null,
       "rates": {
-        "perMinuteInbound": {
+        "perMinuteOutbound": {
           "microcents": 0,
           "display": "$0.0000"
         },
-        "perMinuteOutbound": {
+        "perMinuteInbound": {
           "microcents": 0,
           "display": "$0.0000"
         }

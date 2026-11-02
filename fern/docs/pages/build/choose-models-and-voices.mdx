@@ -42,7 +42,7 @@ The trade is **language coverage and robustness against price**.
 - **Numbers and names.** The newer conversational models (Deepgram `nova-3-general`, for example) handle spelled names and digit strings noticeably better — relevant for reference numbers, postcodes, dates of birth. Test with your own data.
 - **Telephony audio is 8 kHz.** Every model in the catalogue works with it; the ones that advertise telephony support (xAI, Amazon Transcribe) were tuned on it.
 
-**Settings on the STT nodes** — each takes a **Model** and, where the model supports several, a **Language** (Deepgram, Google, Amazon Transcribe, Cartesia; a language *hint* for ElevenLabs). Soniox and xAI models detect language automatically and expose only the model choice.
+**Settings on the STT nodes** — each takes a **Model** and, where the model supports several, a **Language** (Deepgram, Amazon Transcribe, Cartesia; a language *hint* for ElevenLabs). Soniox and xAI models detect language automatically and expose only the model choice.
 
 ## Choosing TTS
 
@@ -57,10 +57,8 @@ The trade is **naturalness against latency**, and it's the most subjective choic
 | Provider | Settings |
 |---|---|
 | **ElevenLabs** | Voice; Stability 0–1 (higher = steadier, lower = more expressive); Similarity 0–1; Style 0–1; Speaker Boost; Speed 0.7–1.2. On **Eleven v4 Turbo** only Stability applies, and the prompt can use inline delivery tags — see [Write prompts](/build/write-prompts#emotion-and-delivery-with-eleven-v4-turbo) |
-| **Cartesia** | Voice; Emotion (on `sonic-3`); Speed 0.6–1.5; Volume 0.5–2.0 |
-| **Rime** | Voice; Emotion; Speed; Volume |
+| **Cartesia** | Voice; Emotion; Speed 0.6–1.5; Volume 0.5–2.0 |
 | **xAI** | Voice; Speed 0.7–1.5 |
-| **Google** | Voice only |
 
 ## A default that works
 
