@@ -17,7 +17,7 @@ Both regions run the full platform: the API, the agents, and the media path. `ap
 ## Which region serves a call
 
 - **Purchased numbers** are served through the carrier edge recorded on the number (`twilioEdge` / `twilioRegion` on the record), chosen when the number is bought.
-- **SIP trunks**: when you create a SIP provider, Talkif looks at your carrier's IP addresses and picks the closer of the two edges. All numbers on that provider inherit it. If your carrier is in neither continent, the geographically nearer edge is used.
+- **SIP trunks**: when you create a SIP provider, Talkif looks at your carrier's IP addresses and picks the nearer region; if their location can't be determined, the US. Outbound calls on that provider's numbers are placed from that region. Inbound calls are handled in the region of the SIP address your carrier sends them to — see [Bring your own SIP trunk](/telephony/bring-your-own-sip-trunk#which-address-your-carrier-sees).
 - **Your own Twilio account** numbers follow Twilio's edge for that number.
 - **WhatsApp** calls arrive from Meta and are served from the nearer region.
 - **Browser (WebRTC) test calls** connect to the nearer region from the browser's location.
@@ -30,10 +30,10 @@ If your carrier or network filters traffic, these are the addresses involved. Th
 
 <AccordionGroup>
   <Accordion title="SIP signalling — your carrier ↔ Talkif" defaultOpen>
-    Talkif's SIP address is **`sip.talkif.ai`**, currently **`63.176.211.13`**, port **5060** (UDP, TCP or TLS as configured on your provider). Outbound INVITEs come *from* this address; inbound calls should be sent *to* it. Allowlist it on your carrier's trunk. Talkif accepts inbound SIP only from the carrier IPs listed on your provider.
+    Talkif has one SIP address per region, port **5060** (UDP, TCP or TLS as configured on your provider): **`sip.talkif.ai`** = **`63.176.211.13`** in the EU and **`sip.us.talkif.ai`** = **`44.218.212.38`** in the US. Outbound INVITEs come *from* the address of your provider's region; inbound calls can be sent *to* either. Allowlist both on your carrier's trunk if you're not sure which region your provider is in. Talkif accepts inbound SIP only from the carrier IPs listed on your provider.
   </Accordion>
-  <Accordion title="Media (RTP) — your carrier ↔ the carrier edge">
-    Media doesn't flow through the signalling address. Talkif bridges SIP trunks through its carrier's edges (Frankfurt and Ashburn), and RTP is exchanged with that edge's media ranges. If your carrier restricts RTP by source, allow the published media IP ranges for those two edges — see [Twilio's SIP IP address list](https://www.twilio.com/docs/sip-trunking/ip-addresses) for the current ranges. One-way or no audio with working signalling is almost always this.
+  <Accordion title="Media (RTP) — your carrier ↔ Talkif">
+    Media doesn't flow through the signalling address. On a SIP trunk, audio is exchanged with Talkif's media servers in the region that handles the call, on UDP ports **40000–49999**; each call's SDP gives the address to send it to. These addresses aren't fixed, and a region can use more than one, so don't limit RTP to a fixed list of Talkif addresses — let your carrier send media to the address in the SDP. Symptom of getting this wrong: calls connect, nobody hears anything (or only one side does).
   </Accordion>
   <Accordion title="Webhooks and flow functions — Talkif → your servers">
     HTTPS requests from Talkif to your endpoints (flow functions, webhooks) leave from a fixed set of egress addresses per region. See [Network and IP allowlists](/reference/network-and-ip-allowlists) for the current list — and verify the `Talkif-Signature` header rather than relying on source IP alone.

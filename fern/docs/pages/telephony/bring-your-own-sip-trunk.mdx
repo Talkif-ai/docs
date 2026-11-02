@@ -1,6 +1,6 @@
 ---
 title: Bring your own SIP trunk
-description: Keep your existing numbers and carrier — connect a SIP trunk to Talkif. The IP to allowlist, the credentials, the inbound and outbound call paths, protocol and port options, and how to bring numbers from your own Twilio account instead.
+description: Keep your existing numbers and carrier — connect a SIP trunk to Talkif. The two SIP addresses to allowlist, the credentials, the inbound and outbound call paths, protocol and port options, and how to bring numbers from your own Twilio account instead.
 ---
 
 If your business already has phone numbers with a carrier, you don't have to move them. Talkif connects to your carrier's SIP trunk: inbound calls to your numbers reach Talkif's agents, and outbound calls go out through your carrier under your caller IDs. You keep your carrier contract, your rates for the PSTN leg, and your numbers; Talkif charges only its per-minute SIP rate for the AI leg.
@@ -12,19 +12,31 @@ There's a second, simpler path if your numbers are in **Twilio**: connect your T
 ```mermaid
 flowchart LR
   P[PSTN] <--> C[Your carrier]
-  C <-->|"SIP · sip.talkif.ai"| T[Talkif]
+  C <-->|"SIP · sip.talkif.ai (EU) or sip.us.talkif.ai (US)"| T[Talkif]
   T <--> A[Your agent]
 ```
 
-- **Inbound**: your carrier sends calls for your numbers to Talkif's SIP address. Talkif answers with the flow connected to that number.
-- **Outbound**: Talkif sends the call to your carrier's SIP host with the credentials you provide; the carrier terminates it to the PSTN.
+- **Inbound**: your carrier sends calls for your numbers to one of Talkif's two SIP addresses. Talkif answers with the flow connected to that number, in the region of the address the call reached.
+- **Outbound**: Talkif sends the call to your carrier's SIP host with the credentials you provide, from the SIP address of the provider's region; the carrier terminates it to the PSTN.
 - **Talkif does not register** with your carrier. There's no SIP REGISTER; traffic is authenticated by **IP allowlist** in both directions plus the trunk username/password for outbound.
 
 That last point is the one that causes most setup failures, so:
 
-<Warning title="Add Talkif's SIP address to your carrier's IP allowlist">
-  Outbound calls from Talkif arrive at your carrier from **`sip.talkif.ai` = `63.176.211.13`**, port 5060. Your carrier must accept SIP from that address, or every outbound call fails at INVITE. Inbound works the other way: Talkif only accepts SIP from the carrier IPs you list on the provider.
+<Warning title="Add Talkif's SIP addresses to your carrier's IP allowlist">
+  Talkif has one SIP address per region, both on port 5060:
+
+  | Region | Host | IP address |
+  |---|---|---|
+  | EU (Frankfurt) | `sip.talkif.ai` | `63.176.211.13` |
+  | US (Virginia) | `sip.us.talkif.ai` | `44.218.212.38` |
+
+  Your carrier must accept SIP from the address outbound calls come from, or every outbound call fails at INVITE. **If you're not sure which region your provider is in, have the carrier allow both.** Inbound works the other way: Talkif only accepts SIP from the carrier IPs you list on the provider.
 </Warning>
+
+### Which address your carrier sees
+
+- **Outbound calls** leave from the address of the **provider's region**. Talkif picks it when you create the SIP provider, from where your carrier's IP addresses are: the nearer of Frankfurt (EU) and Virginia (US). If their location can't be determined, the provider is placed in the US.
+- **Inbound calls** can be sent to either address. Talkif accepts calls for any of your numbers at both, and handles each call in the region of the address it reached. Send them to the region nearer your carrier and callers — that's where the agent will run.
 
 ## Before you start
 
@@ -36,19 +48,21 @@ Have these from your carrier:
 | Port | `5060` | Default 5060; TLS trunks commonly use 5061 |
 | Protocol | `UDP`, `TCP` or `TLS` | Whatever the trunk is provisioned for |
 | Trunk username and password | | Used by Talkif to authenticate outbound INVITEs |
-| Carrier source IPs or CIDR | `185.45.12.34` or `185.45.12.0/24` | The addresses your carrier sends inbound calls **from**. Required for inbound |
+| Carrier source IPs or CIDR | `185.45.12.34` or `185.45.12.0/24` | The addresses your carrier sends inbound calls **from**. If you leave them out, Talkif uses the addresses your SIP host resolves to — often not where the carrier signals from |
 | Your numbers | `+15551234567` | E.164 |
 
-And on the carrier side, ask them to (1) allowlist `63.176.211.13`, and (2) route inbound calls for your numbers to `sip.talkif.ai:5060`.
+And on the carrier side, ask them to (1) allow SIP from `63.176.211.13` and `44.218.212.38`, and (2) route inbound calls for your numbers to `sip.talkif.ai:5060` (EU) or `sip.us.talkif.ai:5060` (US).
 
 ## Setting it up
 
 <Steps>
   <Step title="Create the SIP provider">
     **Phone & WhatsApp → Add Provider → SIP Provider**. Enter the SIP host, port, protocol, username and password, and the carrier's IP addresses or CIDR. Give it a name you'll recognise. Providers are set up in the dashboard; the API can list them but not create them.
+
+    Both must be on the public internet. The SIP host must be a public host name or address that resolves to public addresses, and each IP or CIDR must be a public address. Private, loopback, link-local and other internal ranges are refused, and so are catch-all ranges such as `0.0.0.0/0` — for example *"SIP provider IP/CIDR '10.0.0.5' is not a public internet address; specify the carrier's public address(es)"*.
   </Step>
   <Step title="Point your carrier at Talkif">
-    Have the carrier send inbound calls for your numbers to `sip.talkif.ai` on port 5060, and allow SIP from `63.176.211.13`. Most carriers do this in a "trunk" or "DID routing" screen; some need a support ticket.
+    Have the carrier send inbound calls for your numbers to `sip.talkif.ai` (EU) or `sip.us.talkif.ai` (US) on port 5060, and allow SIP from both `63.176.211.13` and `44.218.212.38`. Most carriers do this in a "trunk" or "DID routing" screen; some need a support ticket.
   </Step>
   <Step title="Register your numbers">
     Under the provider, add each number in E.164 form. SIP numbers are **Active immediately** — there's no verification call.
@@ -62,9 +76,9 @@ And on the carrier side, ask them to (1) allowlist `63.176.211.13`, and (2) rout
 
 | Symptom | Almost always |
 |---|---|
-| Inbound: your number rings out or the carrier reports "unreachable" | The carrier isn't routing to `sip.talkif.ai:5060`, or the carrier's *source* IP isn't in the provider's IP list — check the carrier's actual signalling IPs, which are often not the SIP host's address |
+| Inbound: your number rings out or the carrier reports "unreachable" | The carrier isn't routing to `sip.talkif.ai:5060` or `sip.us.talkif.ai:5060`, or the carrier's *source* IP isn't in the provider's IP list — check the carrier's actual signalling IPs, which are often not the SIP host's address |
 | Inbound: answered busy, a failed call appears in History | Talkif got the call; no flow is connected to the number, or your balance is below the minimum. See [How a call works](/getting-started/how-a-call-works#2-admission--the-two-gates-every-call-passes) |
-| Outbound: fails immediately, `provider_error` | The carrier rejected the INVITE — `63.176.211.13` isn't allowlisted, or the username/password is wrong |
+| Outbound: fails immediately, `provider_error` | The carrier rejected the INVITE — the provider region's address (`63.176.211.13` for EU, `44.218.212.38` for US) isn't allowlisted, or the username/password is wrong |
 | Outbound: connects but no audio, or one-way audio | Firewall on the carrier side blocking RTP. Media doesn't come from the signalling address — see [Regions and edges](/telephony/regions-and-edges) |
 | Caller sees the wrong caller ID | The carrier is overriding the From header; ask them to pass it through |
 
