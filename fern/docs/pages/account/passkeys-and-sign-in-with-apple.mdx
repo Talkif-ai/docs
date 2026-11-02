@@ -35,7 +35,7 @@ Adding a passkey doesn't remove your password or Google sign-in. They remain you
 
 ### Notifications
 
-You get an **email whenever a passkey is added to or removed from your user**. If you didn't make the change, remove the passkey, change your password and **Log out of other devices** from [Sessions](/account/security#sessions).
+You get an **email whenever a passkey is added to or removed from your user**. If you didn't make the change, remove the passkey and change your password — that also signs you out on your other devices. See [Sessions](/account/security#sessions).
 
 ### Add a passkey
 
@@ -48,6 +48,8 @@ You get an **email whenever a passkey is added to or removed from your user**. I
     - with your **password**, if you have one;
     - otherwise with your **two-factor code**;
     - if you have neither (for example, you signed up with Google or Apple), with a **6-digit code emailed** to you.
+
+    After several wrong attempts, confirming pauses for 15 minutes.
   </Step>
   <Step title="Save it on your device">
     Your browser or operating system asks where to save the passkey and to unlock it with Touch ID, Face ID, Windows Hello or the device PIN. The new passkey appears in the list.
@@ -77,9 +79,11 @@ In **User menu → Security → Passkeys**, use **Rename** to give a passkey a n
 
 ### Hide My Email
 
-With Hide My Email, Talkif receives a private relay address ending in `@privaterelay.appleid.com` instead of your real one. Apple forwards mail sent to that address to your real inbox, so verification links, security emails and billing notices from Talkif still reach you. On the Security page the Apple connection then shows as *Connected (email hidden)*.
+With Hide My Email, Apple gives Talkif a private relay address ending in `@privaterelay.appleid.com` instead of your real one, and forwards mail sent to it to your real inbox.
 
-If Apple doesn't share an email address when you sign up, Talkif asks you for one, sends a 6-digit code to it, and creates your account once you enter the code. If that email already has a Talkif account, sign in to it and connect Apple from **User menu → Security** instead.
+**Signing up on the web needs a real email address.** If Apple shares a relay address, or no address at all, Talkif shows **Add your email**: enter an address you read directly — not an Apple forwarding address — click **Send code**, enter the 6-digit code (valid 15 minutes) and click **Create account**. If that email already has a Talkif account, Talkif doesn't create a second one: sign in to the existing account and connect Apple from **User menu → Security** instead.
+
+When you link Apple to an existing user with Hide My Email, the Apple connection shows on the Security page as *Connected (email hidden)*; your Talkif email stays the one you already had.
 
 ### Existing users are never merged automatically
 
@@ -96,8 +100,8 @@ Talkif never attaches an Apple ID to an existing user just because the email add
 
 An Apple ID can be linked to only one Talkif user.
 
-<Warning title="Signed up with Hide My Email by mistake?">
-Hide My Email gives Talkif a relay address, not your real one, so Talkif can't recognise you as an existing user — choosing it with an Apple ID you hadn't linked creates a **second, separate user**. If that happened, [contact support](mailto:support@talkif.ai) and we'll sort it out. To avoid it, link Apple from the Security page of your existing user first.
+<Warning title="Ended up with two users?">
+If you sign up with an Apple ID you hadn't linked and give a different email address from the one on your existing Talkif user, Talkif can't tell they're the same person and creates a **second, separate user**. Users can't be merged in the dashboard: [contact support](mailto:support@talkif.ai) and we'll sort it out. To avoid it, link Apple from the Security page of your existing user first.
 </Warning>
 
 ### Two-factor authentication still applies
@@ -108,7 +112,7 @@ Apple vouches for your Apple ID, not for your Talkif second factor. If your user
 
 **User menu → Security → Connected Accounts → Apple → Unlink.** You can't unlink your only way to sign in — if Apple is the only method on your user, set a password (or connect Google) first. Unlinking also revokes Talkif's access in your Apple ID settings.
 
-Deleting your Talkif account also revokes Talkif's Sign in with Apple access when the deletion goes through. See [Data export and deletion](/account/data-export-and-deletion).
+Deleting your personal Talkif account, or [your login](/account/data-export-and-deletion#deleting-your-login), also revokes Talkif's Sign in with Apple access when the deletion goes through. See [Data export and deletion](/account/data-export-and-deletion).
 
 ## Next
 

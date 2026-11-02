@@ -1,38 +1,147 @@
 ---
 title: Notifications
-description: What Talkif tells you about — billing, calls, security, organization — where it appears, and the low-balance threshold you should set.
+description: What Talkif tells you about and who gets it, the inbox, email and quiet hours, the balance warning, and alert rules that watch your calls, costs and balance and email people or call your webhook.
+max-toc-depth: 2
 ---
 
-Most of what happens in Talkif is visible on the dashboard as it happens; notifications are for the things you'd want to know about even when you're not looking: money running low, a card failing, a number suspended, a campaign pausing itself, someone inviting you to an organization.
+Most of what happens in Talkif is visible on the dashboard as it happens; notifications are for the things you'd want to know about even when you're not looking: money running low, a card failing, a number about to be released, a campaign pausing itself, calls starting to fail.
+
+There are two kinds:
+
+- **Notifications** that Talkif sends by itself — billing, numbers, campaigns, team invitations.
+- **Alerts** from rules you set — "tell me when more than 20% of calls fail", "when today's spend passes \$50". Every account starts with one rule already on. See [Alerts](#alerts).
 
 ## Where they appear
 
-In the **bell** in the dashboard header, instantly — the notification inbox is pushed over the same live connection as call status. Unread counts, mark read/unread, delete. Notifications are per user within an account; each member of an organization has their own inbox.
+- **The bell** in the dashboard header shows the newest notifications, with **Mark all read**, **Clear read** and **View all notifications**. A new one also pops up briefly on any open dashboard tab.
+- **The Notifications page** has the full list, filtered by **All / Unread** and by category (Calls, Billing, Usage, Security, System and alerts, Team).
+- **Email**, for the notifications that are emailed (see the table below).
+
+Your inbox is **one per person, across every account you belong to**. Opening a notification takes you to the right page in the account it came from. Links in emails do the same: they open the right page in the right account, even if you were working in another one, and bring you back to it after you sign in.
+
+Read notifications are cleaned up after 30 days (warnings and critical ones after 90), unread ones after 180 days.
 
 ## What you're told about
 
-| Category | Examples |
+"Owner and admins" means the account's Owner, and on a team account every Admin too.
+
+| Category | Notification | Who gets it | Emailed |
+|---|---|---|:-:|
+| Billing | Low balance (below your [balance warning](#the-balance-warning)) | Owner and admins | ✓ |
+| Billing | Balance almost gone (below \$2); balance used up (\$0) | Owner and admins | always |
+| Billing | Account suspended | Owner and admins | always |
+| Billing | Auto-recharge failed; auto-recharge needs confirmation (3-D Secure) | Owner and admins | ✓ |
+| Billing | Auto-recharge stopped (every retry failed) | Owner and admins | always |
+| Billing | Auto-recharge succeeded | Owner and admins | — |
+| Billing | Payment disputed | Owner | always |
+| Billing | Dispute evidence due | Owner | ✓ |
+| Billing | Dispute closed | Owner | — |
+| Billing | Phone number suspended; phone number release coming | Owner and admins | always |
+| Billing | Phone number released; phone number release held (kept for a lead form) | Owner and admins | ✓ |
+| Calls | Campaign paused by Talkif (low balance, a full call queue, or a provider error — never a pause you made yourself) | Owner and admins | ✓ |
+| Calls | Campaign finished | Owner and admins | — |
+| Calls | New booking / new sale, found by post-call analysis | Owner and admins | — |
+| Calls | Call taken by a teammate (a transfer that rang you was answered elsewhere) | The person rung | — |
+| Calls | WhatsApp call rejected | Owner and admins | — |
+| System and alerts | Integration error, such as a Meta lead ads connection that needs attention | Owner and admins | ✓ |
+| System and alerts | Agent setting adjusted — a model setting an agent used, such as reasoning effort, was changed to one the model supports | Owner and admins | — |
+| System and alerts | Alert fired / alert resolved | The rule's recipients | the rule's choice |
+| System and alerts | Alert rule switched off (it kept failing) | Owner and admins | ✓ |
+| Team | Team invitation; invitation accepted, declined or withdrawn | The person concerned | — |
+
+Every notification lands in the inbox. **Always** means it's emailed even if you've switched email off or muted that kind — payment, security and suspension notices can't be turned off. A dash means inbox only.
+
+### Once per change, not every few minutes
+
+Balance notices are sent once when the balance falls into each level — below your warning amount, below \$2, \$0 — plus one reminder three days after it hits \$0. They re-arm when the balance is back above your warning amount. While auto-recharge is working, the low-balance and below-\$2 notices stay in the inbox; reaching \$0 is always emailed. Auto-recharge failure emails are sent at most once a week while the card keeps failing.
+
+## Your delivery settings
+
+**User menu → Notifications** applies to you, in every account:
+
+- **Email** — switch notification emails off. Payment, security and suspension notices ignore this switch.
+- **Quiet hours** — **From**, **Until** and **Timezone**. Warnings and information wait until the window ends; critical notices are never held.
+
+To stop emails for one kind of notification in one account, use the bell button on that notification in the inbox — **Stop email and push for these** (and **Email and push me these again** to undo). The inbox copy stays. It isn't offered for notices that can't be turned off, or for alerts — those are set on the rule.
+
+Reading a notification in the dashboard cancels an email for it that hasn't gone out yet, such as one waiting for quiet hours to end.
+
+## The balance warning
+
+**Billing → Overview → Balance warning**: *"Warn the owner and admins when the balance falls below \$…"*. It's per account, defaults to **\$5.00**, and the Owner or an Admin can change it. Below \$2 and at \$0 they're always told, whatever it's set to.
+
+Set it to roughly a day of spend at your busiest — high enough that a warning at 5 pm still leaves time to top up before the morning's campaign. With [auto-recharge](/account/credits-and-payment#auto-recharge) on, a failing card sends its own **Auto-recharge failed** email, so you hear about it without the low-balance warning.
+
+## Alerts
+
+**Alerts** in the sidebar (under **Account**) watches your calls, costs and balance and tells you when a number crosses a threshold. It has four tabs: **Rules**, **Incident history**, **Email addresses** and **Webhooks**.
+
+Members can see rules and incidents and acknowledge an incident. Owners and Admins create, change, test and delete rules, resolve incidents, and manage email addresses and webhooks.
+
+### The rule every account starts with
+
+**Calls are failing** fires when more than 20% of finished calls fail over 15 minutes, with at least 10 calls in that window. It's checked every 5 minutes, is *Critical*, emails the Owner and admins, and resolves after two clean checks. Talkif adds it once the account has placed its first call. It's an ordinary rule: edit it, switch it off or delete it — a deleted one doesn't come back.
+
+### Making a rule
+
+**Rules → New rule** offers ready-made rules — *Calls are failing*, *Phone carrier trouble*, *Agent is not picking up*, *Agent is slow to speak*, *Function calls are slow*, *Calls hitting limits*, *Balance below \$10*, *Spending a lot in a day*, *No calls for 6 hours* — or **Blank rule**.
+
+| Part of the rule | Choices |
 |---|---|
-| **Billing** | Balance below your threshold; auto-recharge failed; a number's rental couldn't be paid; a number suspended for non-payment; the account suspended for a negative balance, and reactivated |
-| **Calls** | A high failure rate across recent calls; a WhatsApp call declined |
-| **Usage** | The concurrent-call limit was hit and calls queued |
-| **System** | A phone number went inactive; a model you use was retired and the flow's setting adjusted; a Meta connection needs re-authorisation; maintenance |
-| **Organization** | You were invited; your role changed; a member joined or left |
-| **Security** | Sign-in security events on your user |
+| **Metric** | Calls, Call failure rate, Call success rate, Call cost, Time to first speech (p95), Function calls, Function call latency (p95), Calls in progress, Balance |
+| **Only count some calls** | By direction, flow or campaign; by failure codes or end reasons. **Only one function** narrows function metrics to one function |
+| **Open an incident for** | the whole account, or each flow, campaign or provider separately |
+| **When to alert** | an absolute value or a % change against the previous window; greater than, at least, less than, at most a **Threshold** |
+| **Look-back window** | 1, 5, 15, 30 or 60 minutes, 6 hours, 1 day or 7 days |
+| **Check** | every 1, 5, 15, 30 or 60 minutes, 6 hours or 24 hours — never less often than the window is long |
+| **Severity** | Info, Warning (default) or Critical |
+| **Channels** | **Email** (on by default; a rule needs at least one channel) |
+| **Recipients** | the Account owner, the Account admins, individual people on a team account, outside email addresses, webhooks |
+| **Fine-tune sensitivity** | **Minimum sample size** (so three calls don't make a failure rate); **Resolve after clean checks** (1–10, default 2) |
 
-## The one setting worth changing
+A rule needs at least one person or role among its recipients. **Send test** sends a test alert to the rule's recipients, up to 5 times an hour.
 
-**Settings → Notifications → Alert thresholds → Low balance warning.** Talkif warns when the balance drops below the amount you set. Set it to roughly a day of spend at your busiest — high enough that a warning at 5 pm still leaves time to top up before the morning's campaign, and above the [auto-recharge threshold](/account/credits-and-payment#auto-recharge) if you use it, so you hear about a failing card before the account is suspended.
+### Incidents
 
-<Note>
-  Some emails are transactional rather than notifications and are always sent: sign-up and email-change verification, data-export and account-deletion confirmations, organization invitations.
-</Note>
+When a rule's condition is met, Talkif opens an **incident** and notifies the recipients once — *Alert: …*. It doesn't repeat while the incident stays open. When the value is back to normal for the number of clean checks you chose, the incident resolves and the recipients get *Resolved: …*. A window without enough data neither opens nor resolves an incident.
+
+**Incident history** shows **Active** and **Resolved** incidents with the reason they ended: recovered, rule edited, switched off or deleted, resolved by hand, or no data for too long. Resolving by hand while the value is still over the threshold opens a new incident at the next check.
+
+**Snooze for 1 hour / 8 hours / 24 hours** in a rule's menu keeps it recording incidents without notifying anyone; **Clear snooze** ends it. A rule that fails to evaluate five times in a row is switched off, and the Owner and admins are told.
+
+Your own email switch and quiet hours apply to alerts sent to you: a Warning waits out your quiet hours, a Critical one doesn't.
+
+### Outside email addresses
+
+To alert someone without a Talkif login — an on-call inbox, a client — add them under **Email addresses → Add an email address**. Talkif emails them a confirmation link, valid for 24 hours, and sends nothing until they confirm; every alert email carries an unsubscribe link. Their status shows as *Waiting for confirmation*, *Confirmed* or *Opted out*. Up to 10 addresses per account. Then pick the address as a recipient on a rule that uses email.
+
+### Webhooks
+
+To send alerts to your own system, add an endpoint under **Webhooks → Add webhook endpoint** (name and HTTPS URL on a public host; up to 10 per account) and pick it as a recipient on a rule.
+
+Each delivery is a `POST` with JSON and these headers:
+
+| Header | Value |
+|---|---|
+| `Talkif-Event` | `alert.triggered`, `alert.resolved` or `alert.test` |
+| `Talkif-Delivery-Id` | Unique id of this delivery (also `deliveryId` in the body) |
+| `Talkif-Signature` | `t=<unix seconds>,v1=<hex HMAC-SHA256 of "<t>.<raw body>">`, signed with the account's webhook signing secret |
+
+The signing secret is the one that signs all your Talkif webhooks. If the account doesn't have one yet, it's created and shown once when you add the first endpoint; rotate it under **Developer → Credentials**.
+
+The body carries `event`, `deliveryId`, `occurredAt`, `accountId`, a `notification` object (`type`, `category`, `severity`, `title`, `message`) and an `alert` object (`ruleId`, `incidentId`, `metric`, `subjectKey`, `value`, `test`). Verify the signature the same way as for [transfer webhooks](/build/receive-transfers-in-your-app#verify-the-signature).
+
+Answer within 10 seconds. A `5xx`, `408`, `429` or no answer is retried; after 50 failures in a row the endpoint is switched off and shows *Switched off: kept failing*.
+
+## Emails that are always sent
+
+Some emails are part of an action you took rather than notifications, and are sent whatever your settings: email verification codes, password resets, two-factor and passkey codes and changes, account and organization deletion messages, data-export messages, organization invitations, and the confirmation for an outside alert address.
 
 ## Next
 
 <CardGroup cols={2}>
   <Card title="Credits and payment" href="/account/credits-and-payment" icon="fa-regular fa-credit-card">
-    Auto-recharge, so the low-balance warning is rarely needed.
+    Auto-recharge, so the balance warning is rarely needed.
   </Card>
   <Card title="Real-time events" href="/integrate/real-time-events" icon="fa-regular fa-bolt">
     For your own systems: call events over WebSocket.

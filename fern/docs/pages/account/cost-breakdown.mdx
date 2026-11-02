@@ -1,71 +1,87 @@
 ---
 title: Cost breakdown
-description: Reading what you were charged and why — the Costs view, charges and their statuses, balance transactions, per-call line items — and the handful of levers that actually move the bill.
+description: Reading what you were charged and why — the Costs view, charge history and its export, balance transactions, per-call line items including AI Decisions — and the handful of levers that actually move the bill.
 ---
 
-Every cent leaving your balance is attributable: to a call, a number, an analysis, a recording. The dashboard shows this at three zoom levels — totals over time, individual charges, and the line items inside a charge — and the API exposes all three. Knowing which level to look at is most of the skill.
+Every cent leaving your balance is attributable: to a call, a number, an analysis, a recording. The dashboard shows this at two zoom levels — totals over a period, and individual charges with the line items inside them — and the API adds a third, the balance ledger. Knowing which level to look at is most of the skill.
 
 ## Three levels
 
 | Level | Question it answers | Where |
 |---|---|---|
-| **Costs** | "What are we spending, on what, and is it going up?" | **Billing → Costs**; [`GET /billing/costs`](/api-reference/billing/get-billing-cost-breakdown) |
+| **Costs** | "What are we spending, on what?" | **Billing → Costs**; [`GET /billing/costs`](/api-reference/billing/get-billing-cost-breakdown) |
 | **Charges** | "What exactly was this $0.47 for?" | **Billing → History**; [`GET /billing/charges`](/api-reference/billing/list-charges) |
-| **Transactions** | "How did the balance get from \$52.10 to \$51.63?" | **Billing → History**; [`GET /billing/transactions`](/api-reference/billing/get-transaction-history) |
+| **Transactions** | "How did the balance get from \$52.10 to \$51.63?" | API only: [`GET /billing/transactions`](/api-reference/billing/get-transaction-history) |
 
-### Costs — the trend
+### Costs — what you spend on
 
-Totals for today, the last 7 days and the current month, split into four categories — **LLM** (conversation + analysis), **STT**, **TTS**, **Telephony** — with period-over-period comparison. This is where a model change shows up: switch the LLM on Tuesday and the LLM category moves from Wednesday.
+**Billing → Costs** covers **Today**, **This Week** (the last 7 days) or **This Month** (the last 30 days), counted in UTC:
+
+- **Total**, **Calls**, **Avg / Call** and **Total Duration** for the period.
+- **Cost Distribution** — how the total splits across categories: the conversation's LLM, STT, TTS, telephony, infrastructure, AI Decisions, function calls, analysis, voicemail detection and the rest.
+- **Calls by Cost** — the most recent calls of the period, most expensive first. Expand one to see each line: service, provider, model, usage, rate and cost.
+
+This is where a model change shows up: switch the LLM on Tuesday and its share of the distribution moves from Wednesday.
 
 ### Charges — the events
 
-A charge is one billable event. Its type says what kind:
+**Billing → History** (*Charge History*) lists every charge on the balance:
+
+- Columns: **Date**, **Charge type**, **Reference** (the call, linked, or the phone number), **Description** (with the voice agent and contact) and **Amount**.
+- Filters: a date range (**Last 7 days**, **Last 30 days**, **Last 90 days**, **This month**, **Last month**, **All time**, or dates you pick), **All charge types** and **All statuses**.
+- Expand a row to see what it was made of — for example *Telephony 3m 12s at \$0.05 / min* — or use **Expand all**. **Charge details →** opens the full charge: subtotal, refunds, total, the call, voice agent, contact and phone, and its cost breakdown.
+- **Export all** downloads every charge that matches your filters — not just the page you see — as a CSV file (`Date, Type, Reference, Description, Amount (USD), Status, Phone, Voice agent, Contact`).
+
+A charge's type says what kind of event it was:
 
 <ParamField path="call_usage" type="charge type">One call: telephony, STT, LLM, TTS and infrastructure line items.</ParamField>
+<ParamField path="ai_decisions" type="charge type">The AI Decisions made during one call — see [below](#ai-decisions).</ParamField>
 <ParamField path="call_analysis" type="charge type">Post-call insights for one call — separate, so you can see what analysis costs.</ParamField>
 <ParamField path="voicemail_classification" type="charge type">Answering-machine detection and message composition on an outbound call.</ParamField>
-<ParamField path="phone_purchase" type="charge type">Buying a number.</ParamField>
-<ParamField path="phone_rental" type="charge type">A number's monthly renewal.</ParamField>
+<ParamField path="phone_purchase" type="charge type">Buying a number — its first 30 days of rental.</ParamField>
+<ParamField path="phone_rental" type="charge type">A number's rental renewal, every 30 days.</ParamField>
 <ParamField path="recording_storage" type="charge type">Storage for a recording, billed when it's deleted or expires, for the time it existed.</ParamField>
 <ParamField path="assistant_usage" type="charge type">Dashboard assistant tokens beyond the free allowance.</ParamField>
-<ParamField path="reservation" type="charge type">A pre-authorisation hold placed when a call starts, released when it settles.</ParamField>
 <ParamField path="adjustment" type="charge type">A manual credit or debit — a refund, a goodwill credit, a correction.</ParamField>
 
-And a status: `pending` → `completed`, or `failed`, `refunded` / `partially_refunded`, `disputed`, `voided`. A call's charge is `pending` while the call runs and `completed` at finalization.
+A call's charges are created when the call ends, with the status `completed`. A charge that couldn't be taken shows `failed`, with the reason on its details page.
 
 ### Transactions — the ledger
 
-Every balance movement, in order, with balance before and after. Types: `purchase` (including auto-recharge), `usage`, `refund`, `refund_deduction`, `adjustment`, `expiration` (expiring credit that lapsed), `subscription_grant`, and the dispute entries (`dispute_hold`, `dispute_release`, `dispute_loss`). Each names the bucket it touched — this is where you see bonus credit being spent before purchased.
+Every balance movement, in order, with balance before and after. Types: `purchase` (including auto-recharge), `usage`, `refund`, `refund_deduction`, `adjustment`, `expiration` (expiring credit that lapsed), `subscription_grant`, and the dispute entries (`dispute_hold`, `dispute_release`, `dispute_loss`). The dashboard doesn't show this ledger; read it with the API.
 
-## Inside one call's charge
+## Inside one call's costs
 
-[`GET /billing/costs/calls/{callId}`](/api-reference/billing/get-billing-call-cost-breakdown), or open the call's charge:
+[`GET /billing/costs/calls/{callId}`](/api-reference/billing/get-billing-call-cost-breakdown), or expand the call under **Billing → Costs** or **Billing → History**:
 
 | Line item | Quantity | Unit |
 |---|---|---|
-| Telephony | minutes, rounded up | per minute, by provider and direction |
-| STT | seconds | per minute, prorated |
+| Telephony | minutes, rounded up | per minute — on Talkif numbers, the carrier's rate for the number called; otherwise by provider and direction |
+| STT | seconds | per minute, prorated; includes Deepgram's keyterm add-on when a Nova-3 flow has keywords |
 | LLM input / output | tokens | per million tokens, by model |
 | TTS | characters | per thousand characters, by model |
 | Infrastructure | seconds | per minute: prorated for calls that start until November 14, 2026; per started minute from November 15, 2026 (UTC) |
+| AI Decisions | tokens | per thousand tokens, by the model that made the decisions |
 
-Every line carries the **rate that applied at the time**, so old charges don't change when prices do.
+The same view also lists the call's other charges: post-call analysis, voicemail detection and recording storage.
+
+Every line carries the **rate that applied at the time**, so old charges don't change when prices do. A call is billed for the models it actually ran with — the published version that took the call, or the draft you tested — even if you've changed the flow since. If a model in that version has been retired, the call runs on its replacement and is billed for the replacement.
+
+### AI Decisions
+
+During a call the agent makes small, fast model calls to manage the conversation: noticing when the caller interrupts, picking up a reply that was cut off, and telling when the caller has finished speaking. These are billed per call as one **AI Decisions** charge, by tokens, at the rate of the model that made them. The rate is shown on each AI Decisions line — in the expanded row, in **Charge details →**, and in the call's cost breakdown.
 
 ## What actually moves the bill
 
 In rough order of impact for a typical flow:
 
 1. **Call length.** Every line grows with seconds, started minutes or tokens; a 4-minute call costs about twice a 2-minute one. Tighter prompts and an explicit end condition are cost work, not just quality work.
-2. **LLM choice and prompt size.** Tokens = (prompt + transcript) × turns. A 1,200-token System Prompt on a 20-turn call is 24,000 input tokens before the conversation is counted. The [Costs](#costs--the-trend) view will show LLM as the largest category if this is your problem.
+2. **LLM choice and prompt size.** Tokens = (prompt + transcript) × turns. A 1,200-token System Prompt on a 20-turn call is 24,000 input tokens before the conversation is counted. The [Costs](#costs--what-you-spend-on) view will show the LLM as the largest category if this is your problem.
 3. **TTS model.** Premium voices cost several times the flash tier per character. Listen to both before deciding the difference is worth it on every call.
-4. **Telephony rounding.** Very short calls (voicemail hang-ups, wrong numbers) pay a full minute. Voicemail detection on outbound flows reduces these.
+4. **Telephony rounding and destination.** Very short calls (voicemail hang-ups, wrong numbers) pay a full minute, and calls to other countries can cost more per minute. Voicemail detection on outbound flows reduces the short ones.
 5. **Analysis.** Turn it off for flows where you don't read insights, or set a minimum call length for analysis in **Settings → Hooks** so 8-second hang-ups aren't analysed.
 
 Compare per-version: the flow's stats page shows average cost per call by version, so a prompt or model change can be judged in money as well as in quality.
-
-## Invoices
-
-For a paid top-up, a receipt is available from **Billing → History**; [`GET /billing/invoices`](/api-reference/billing/list-invoices) lists them.
 
 ## Next
 

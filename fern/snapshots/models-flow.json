@@ -5,207 +5,9 @@
       "displayName": "Cartesia",
       "models": [
         {
-          "modelId": "sonic-turbo",
-          "name": "Sonic Turbo",
-          "description": "All the power of Sonic with half the latency (as low as 40ms). Best for real-time conversational AI.",
-          "languages": [
-            {
-              "code": "zh",
-              "name": "Chinese",
-              "nativeName": "中文"
-            },
-            {
-              "code": "nl",
-              "name": "Dutch",
-              "nativeName": "Nederlands"
-            },
-            {
-              "code": "en",
-              "name": "English",
-              "nativeName": "English"
-            },
-            {
-              "code": "fr",
-              "name": "French",
-              "nativeName": "Français"
-            },
-            {
-              "code": "de",
-              "name": "German",
-              "nativeName": "Deutsch"
-            },
-            {
-              "code": "hi",
-              "name": "Hindi",
-              "nativeName": "हिन्दी"
-            },
-            {
-              "code": "it",
-              "name": "Italian",
-              "nativeName": "Italiano"
-            },
-            {
-              "code": "ja",
-              "name": "Japanese",
-              "nativeName": "日本語"
-            },
-            {
-              "code": "ko",
-              "name": "Korean",
-              "nativeName": "한국어"
-            },
-            {
-              "code": "pl",
-              "name": "Polish",
-              "nativeName": "Polski"
-            },
-            {
-              "code": "pt",
-              "name": "Portuguese",
-              "nativeName": "Português"
-            },
-            {
-              "code": "ru",
-              "name": "Russian",
-              "nativeName": "Русский"
-            },
-            {
-              "code": "es",
-              "name": "Spanish",
-              "nativeName": "Español"
-            },
-            {
-              "code": "sv",
-              "name": "Swedish",
-              "nativeName": "Svenska"
-            },
-            {
-              "code": "tr",
-              "name": "Turkish",
-              "nativeName": "Türkçe"
-            }
-          ],
-          "capabilities": {
-            "style": false,
-            "speakerBoost": false,
-            "voiceConversion": false,
-            "streaming": true,
-            "emotion": false,
-            "speedControl": false,
-            "volumeControl": false
-          },
-          "pricing": {
-            "ratePer1kCharsMicrocents": 38000,
-            "ratePer1kCharsDisplay": "$0.0380"
-          },
-          "deprecation": {
-            "retiresOn": "2026-10-20",
-            "replacedBy": "sonic-3"
-          }
-        },
-        {
-          "modelId": "sonic-2",
-          "name": "Sonic 2",
-          "description": "Ultra-realistic speech with accurate transcript following, minimal hallucinations, and excellent voice cloning.",
-          "languages": [
-            {
-              "code": "zh",
-              "name": "Chinese",
-              "nativeName": "中文"
-            },
-            {
-              "code": "nl",
-              "name": "Dutch",
-              "nativeName": "Nederlands"
-            },
-            {
-              "code": "en",
-              "name": "English",
-              "nativeName": "English"
-            },
-            {
-              "code": "fr",
-              "name": "French",
-              "nativeName": "Français"
-            },
-            {
-              "code": "de",
-              "name": "German",
-              "nativeName": "Deutsch"
-            },
-            {
-              "code": "hi",
-              "name": "Hindi",
-              "nativeName": "हिन्दी"
-            },
-            {
-              "code": "it",
-              "name": "Italian",
-              "nativeName": "Italiano"
-            },
-            {
-              "code": "ja",
-              "name": "Japanese",
-              "nativeName": "日本語"
-            },
-            {
-              "code": "ko",
-              "name": "Korean",
-              "nativeName": "한국어"
-            },
-            {
-              "code": "pl",
-              "name": "Polish",
-              "nativeName": "Polski"
-            },
-            {
-              "code": "pt",
-              "name": "Portuguese",
-              "nativeName": "Português"
-            },
-            {
-              "code": "ru",
-              "name": "Russian",
-              "nativeName": "Русский"
-            },
-            {
-              "code": "es",
-              "name": "Spanish",
-              "nativeName": "Español"
-            },
-            {
-              "code": "sv",
-              "name": "Swedish",
-              "nativeName": "Svenska"
-            },
-            {
-              "code": "tr",
-              "name": "Turkish",
-              "nativeName": "Türkçe"
-            }
-          ],
-          "capabilities": {
-            "style": false,
-            "speakerBoost": false,
-            "voiceConversion": false,
-            "streaming": true,
-            "emotion": false,
-            "speedControl": false,
-            "volumeControl": false
-          },
-          "pricing": {
-            "ratePer1kCharsMicrocents": 38000,
-            "ratePer1kCharsDisplay": "$0.0380"
-          },
-          "deprecation": {
-            "retiresOn": "2026-10-20",
-            "replacedBy": "sonic-3"
-          }
-        },
-        {
-          "modelId": "sonic-3",
-          "name": "Sonic 3",
-          "description": "Latest streaming TTS with emotion, laughter, speed, volume controls. 42 languages supported.",
+          "modelId": "sonic-3.6",
+          "name": "Sonic 3.6",
+          "description": "Cartesia's newest and fastest Sonic model, 44 languages. Same price as Sonic 3.",
           "languages": [
             {
               "code": "ar",
@@ -341,6 +143,11 @@
               "code": "no",
               "name": "Norwegian",
               "nativeName": "Norsk"
+            },
+            {
+              "code": "or",
+              "name": "Odia",
+              "nativeName": "Odia"
             },
             {
               "code": "pl",
@@ -413,6 +220,11 @@
               "nativeName": "Українська"
             },
             {
+              "code": "ur",
+              "name": "Urdu",
+              "nativeName": "اردو"
+            },
+            {
               "code": "vi",
               "name": "Vietnamese",
               "nativeName": "Tiếng Việt"
@@ -423,9 +235,257 @@
             "speakerBoost": false,
             "voiceConversion": false,
             "streaming": true,
-            "emotion": false,
-            "speedControl": false,
-            "volumeControl": false
+            "emotion": true,
+            "speedControl": true,
+            "volumeControl": true,
+            "emotionOptions": [
+              {
+                "value": "neutral",
+                "label": "Neutral"
+              },
+              {
+                "value": "happy",
+                "label": "Happy"
+              },
+              {
+                "value": "excited",
+                "label": "Excited"
+              },
+              {
+                "value": "enthusiastic",
+                "label": "Enthusiastic"
+              },
+              {
+                "value": "elated",
+                "label": "Elated"
+              },
+              {
+                "value": "euphoric",
+                "label": "Euphoric"
+              },
+              {
+                "value": "triumphant",
+                "label": "Triumphant"
+              },
+              {
+                "value": "amazed",
+                "label": "Amazed"
+              },
+              {
+                "value": "surprised",
+                "label": "Surprised"
+              },
+              {
+                "value": "flirtatious",
+                "label": "Flirtatious"
+              },
+              {
+                "value": "curious",
+                "label": "Curious"
+              },
+              {
+                "value": "content",
+                "label": "Content"
+              },
+              {
+                "value": "peaceful",
+                "label": "Peaceful"
+              },
+              {
+                "value": "serene",
+                "label": "Serene"
+              },
+              {
+                "value": "calm",
+                "label": "Calm"
+              },
+              {
+                "value": "grateful",
+                "label": "Grateful"
+              },
+              {
+                "value": "affectionate",
+                "label": "Affectionate"
+              },
+              {
+                "value": "trust",
+                "label": "Trust"
+              },
+              {
+                "value": "sympathetic",
+                "label": "Sympathetic"
+              },
+              {
+                "value": "anticipation",
+                "label": "Anticipation"
+              },
+              {
+                "value": "mysterious",
+                "label": "Mysterious"
+              },
+              {
+                "value": "angry",
+                "label": "Angry"
+              },
+              {
+                "value": "mad",
+                "label": "Mad"
+              },
+              {
+                "value": "outraged",
+                "label": "Outraged"
+              },
+              {
+                "value": "frustrated",
+                "label": "Frustrated"
+              },
+              {
+                "value": "agitated",
+                "label": "Agitated"
+              },
+              {
+                "value": "threatened",
+                "label": "Threatened"
+              },
+              {
+                "value": "disgusted",
+                "label": "Disgusted"
+              },
+              {
+                "value": "contempt",
+                "label": "Contempt"
+              },
+              {
+                "value": "envious",
+                "label": "Envious"
+              },
+              {
+                "value": "sarcastic",
+                "label": "Sarcastic"
+              },
+              {
+                "value": "ironic",
+                "label": "Ironic"
+              },
+              {
+                "value": "sad",
+                "label": "Sad"
+              },
+              {
+                "value": "dejected",
+                "label": "Dejected"
+              },
+              {
+                "value": "melancholic",
+                "label": "Melancholic"
+              },
+              {
+                "value": "disappointed",
+                "label": "Disappointed"
+              },
+              {
+                "value": "hurt",
+                "label": "Hurt"
+              },
+              {
+                "value": "guilty",
+                "label": "Guilty"
+              },
+              {
+                "value": "bored",
+                "label": "Bored"
+              },
+              {
+                "value": "tired",
+                "label": "Tired"
+              },
+              {
+                "value": "rejected",
+                "label": "Rejected"
+              },
+              {
+                "value": "nostalgic",
+                "label": "Nostalgic"
+              },
+              {
+                "value": "wistful",
+                "label": "Wistful"
+              },
+              {
+                "value": "apologetic",
+                "label": "Apologetic"
+              },
+              {
+                "value": "hesitant",
+                "label": "Hesitant"
+              },
+              {
+                "value": "insecure",
+                "label": "Insecure"
+              },
+              {
+                "value": "confused",
+                "label": "Confused"
+              },
+              {
+                "value": "resigned",
+                "label": "Resigned"
+              },
+              {
+                "value": "anxious",
+                "label": "Anxious"
+              },
+              {
+                "value": "panicked",
+                "label": "Panicked"
+              },
+              {
+                "value": "alarmed",
+                "label": "Alarmed"
+              },
+              {
+                "value": "scared",
+                "label": "Scared"
+              },
+              {
+                "value": "proud",
+                "label": "Proud"
+              },
+              {
+                "value": "confident",
+                "label": "Confident"
+              },
+              {
+                "value": "distant",
+                "label": "Distant"
+              },
+              {
+                "value": "skeptical",
+                "label": "Skeptical"
+              },
+              {
+                "value": "contemplative",
+                "label": "Contemplative"
+              },
+              {
+                "value": "determined",
+                "label": "Determined"
+              }
+            ],
+            "generationConfigSchema": {
+              "volume": {
+                "min": 0.5,
+                "max": 2,
+                "default": 1,
+                "step": 0.1
+              },
+              "speed": {
+                "min": 0.6,
+                "max": 1.5,
+                "default": 1,
+                "step": 0.1
+              }
+            }
           },
           "pricing": {
             "ratePer1kCharsMicrocents": 38000,
@@ -449,6 +509,11 @@
               "nativeName": "Afrikaans"
             },
             {
+              "code": "am",
+              "name": "Amharic",
+              "nativeName": "አማርኛ"
+            },
+            {
               "code": "ar",
               "name": "Arabic",
               "nativeName": "العربية"
@@ -462,6 +527,11 @@
               "code": "as",
               "name": "Assamese",
               "nativeName": "অসমীয়া"
+            },
+            {
+              "code": "ast",
+              "name": "Asturian",
+              "nativeName": "Asturian"
             },
             {
               "code": "az",
@@ -489,558 +559,14 @@
               "nativeName": "Български"
             },
             {
-              "code": "ca",
-              "name": "Catalan",
-              "nativeName": "Català"
+              "code": "my",
+              "name": "Burmese",
+              "nativeName": "Burmese"
             },
             {
-              "code": "ceb",
-              "name": "Cebuano",
-              "nativeName": "Cebuano"
-            },
-            {
-              "code": "zh",
-              "name": "Chinese",
-              "nativeName": "中文"
-            },
-            {
-              "code": "hr",
-              "name": "Croatian",
-              "nativeName": "Hrvatski"
-            },
-            {
-              "code": "cs",
-              "name": "Czech",
-              "nativeName": "Čeština"
-            },
-            {
-              "code": "da",
-              "name": "Danish",
-              "nativeName": "Dansk"
-            },
-            {
-              "code": "nl",
-              "name": "Dutch",
-              "nativeName": "Nederlands"
-            },
-            {
-              "code": "en",
-              "name": "English",
-              "nativeName": "English"
-            },
-            {
-              "code": "et",
-              "name": "Estonian",
-              "nativeName": "Eesti"
-            },
-            {
-              "code": "fil",
-              "name": "Filipino",
-              "nativeName": "Filipino"
-            },
-            {
-              "code": "fi",
-              "name": "Finnish",
-              "nativeName": "Suomi"
-            },
-            {
-              "code": "fr",
-              "name": "French",
-              "nativeName": "Français"
-            },
-            {
-              "code": "gl",
-              "name": "Galician",
-              "nativeName": "Galego"
-            },
-            {
-              "code": "ka",
-              "name": "Georgian",
-              "nativeName": "ქართული"
-            },
-            {
-              "code": "de",
-              "name": "German",
-              "nativeName": "Deutsch"
-            },
-            {
-              "code": "el",
-              "name": "Greek",
-              "nativeName": "Ελληνικά"
-            },
-            {
-              "code": "gu",
-              "name": "Gujarati",
-              "nativeName": "ગુજરાતી"
-            },
-            {
-              "code": "ha",
-              "name": "Hausa",
-              "nativeName": "Hausa"
-            },
-            {
-              "code": "he",
-              "name": "Hebrew",
-              "nativeName": "עברית"
-            },
-            {
-              "code": "hi",
-              "name": "Hindi",
-              "nativeName": "हिन्दी"
-            },
-            {
-              "code": "hu",
-              "name": "Hungarian",
-              "nativeName": "Magyar"
-            },
-            {
-              "code": "is",
-              "name": "Icelandic",
-              "nativeName": "Íslenska"
-            },
-            {
-              "code": "id",
-              "name": "Indonesian",
-              "nativeName": "Bahasa Indonesia"
-            },
-            {
-              "code": "it",
-              "name": "Italian",
-              "nativeName": "Italiano"
-            },
-            {
-              "code": "ja",
-              "name": "Japanese",
-              "nativeName": "日本語"
-            },
-            {
-              "code": "kn",
-              "name": "Kannada",
-              "nativeName": "ಕನ್ನಡ"
-            },
-            {
-              "code": "kk",
-              "name": "Kazakh",
-              "nativeName": "Қазақша"
-            },
-            {
-              "code": "ko",
-              "name": "Korean",
-              "nativeName": "한국어"
-            },
-            {
-              "code": "ky",
-              "name": "Kyrgyz",
-              "nativeName": "Kyrgyz"
-            },
-            {
-              "code": "ln",
-              "name": "Lingala",
-              "nativeName": "Lingála"
-            },
-            {
-              "code": "lt",
-              "name": "Lithuanian",
-              "nativeName": "Lietuvių"
-            },
-            {
-              "code": "lb",
-              "name": "Luxembourgish",
-              "nativeName": "Lëtzebuergesch"
-            },
-            {
-              "code": "mk",
-              "name": "Macedonian",
-              "nativeName": "Македонски"
-            },
-            {
-              "code": "ms",
-              "name": "Malay",
-              "nativeName": "Bahasa Melayu"
-            },
-            {
-              "code": "ml",
-              "name": "Malayalam",
-              "nativeName": "മലയാളം"
-            },
-            {
-              "code": "mr",
-              "name": "Marathi",
-              "nativeName": "मराठी"
-            },
-            {
-              "code": "ne",
-              "name": "Nepali",
-              "nativeName": "नेपाली"
-            },
-            {
-              "code": "no",
-              "name": "Norwegian",
-              "nativeName": "Norsk"
-            },
-            {
-              "code": "ps",
-              "name": "Pashto",
-              "nativeName": "پښتو"
-            },
-            {
-              "code": "fa",
-              "name": "Persian",
-              "nativeName": "فارسی"
-            },
-            {
-              "code": "pl",
-              "name": "Polish",
-              "nativeName": "Polski"
-            },
-            {
-              "code": "pt",
-              "name": "Portuguese",
-              "nativeName": "Português"
-            },
-            {
-              "code": "pa",
-              "name": "Punjabi",
-              "nativeName": "ਪੰਜਾਬੀ"
-            },
-            {
-              "code": "ro",
-              "name": "Romanian",
-              "nativeName": "Română"
-            },
-            {
-              "code": "ru",
-              "name": "Russian",
-              "nativeName": "Русский"
-            },
-            {
-              "code": "sr",
-              "name": "Serbian",
-              "nativeName": "Српски"
-            },
-            {
-              "code": "sd",
-              "name": "Sindhi",
-              "nativeName": "سنڌي"
-            },
-            {
-              "code": "sk",
-              "name": "Slovak",
-              "nativeName": "Slovenčina"
-            },
-            {
-              "code": "sl",
-              "name": "Slovenian",
-              "nativeName": "Slovenščina"
-            },
-            {
-              "code": "so",
-              "name": "Somali",
-              "nativeName": "Soomaali"
-            },
-            {
-              "code": "es",
-              "name": "Spanish",
-              "nativeName": "Español"
-            },
-            {
-              "code": "sw",
-              "name": "Swahili",
-              "nativeName": "Kiswahili"
-            },
-            {
-              "code": "sv",
-              "name": "Swedish",
-              "nativeName": "Svenska"
-            },
-            {
-              "code": "ta",
-              "name": "Tamil",
-              "nativeName": "தமிழ்"
-            },
-            {
-              "code": "te",
-              "name": "Telugu",
-              "nativeName": "తెలుగు"
-            },
-            {
-              "code": "th",
-              "name": "Thai",
-              "nativeName": "ไทย"
-            },
-            {
-              "code": "tr",
-              "name": "Turkish",
-              "nativeName": "Türkçe"
-            },
-            {
-              "code": "uk",
-              "name": "Ukrainian",
-              "nativeName": "Українська"
-            },
-            {
-              "code": "ur",
-              "name": "Urdu",
-              "nativeName": "اردو"
-            },
-            {
-              "code": "vi",
-              "name": "Vietnamese",
-              "nativeName": "Tiếng Việt"
-            },
-            {
-              "code": "cy",
-              "name": "Welsh",
-              "nativeName": "Cymraeg"
-            }
-          ],
-          "capabilities": {
-            "style": false,
-            "speakerBoost": false,
-            "voiceConversion": false,
-            "streaming": true,
-            "emotion": false,
-            "speedControl": false,
-            "volumeControl": false
-          },
-          "pricing": {
-            "ratePer1kCharsMicrocents": 40000,
-            "ratePer1kCharsDisplay": "$0.0400"
-          }
-        },
-        {
-          "modelId": "eleven_flash_v2_5",
-          "name": "Flash v2.5",
-          "description": "Our ultra low latency model in 32 languages. Ideal for conversational use cases.",
-          "languages": [
-            {
-              "code": "ar",
-              "name": "Arabic",
-              "nativeName": "العربية"
-            },
-            {
-              "code": "bg",
-              "name": "Bulgarian",
-              "nativeName": "Български"
-            },
-            {
-              "code": "zh",
-              "name": "Chinese",
-              "nativeName": "中文"
-            },
-            {
-              "code": "hr",
-              "name": "Croatian",
-              "nativeName": "Hrvatski"
-            },
-            {
-              "code": "cs",
-              "name": "Czech",
-              "nativeName": "Čeština"
-            },
-            {
-              "code": "da",
-              "name": "Danish",
-              "nativeName": "Dansk"
-            },
-            {
-              "code": "nl",
-              "name": "Dutch",
-              "nativeName": "Nederlands"
-            },
-            {
-              "code": "en",
-              "name": "English",
-              "nativeName": "English"
-            },
-            {
-              "code": "fil",
-              "name": "Filipino",
-              "nativeName": "Filipino"
-            },
-            {
-              "code": "fi",
-              "name": "Finnish",
-              "nativeName": "Suomi"
-            },
-            {
-              "code": "fr",
-              "name": "French",
-              "nativeName": "Français"
-            },
-            {
-              "code": "de",
-              "name": "German",
-              "nativeName": "Deutsch"
-            },
-            {
-              "code": "el",
-              "name": "Greek",
-              "nativeName": "Ελληνικά"
-            },
-            {
-              "code": "hi",
-              "name": "Hindi",
-              "nativeName": "हिन्दी"
-            },
-            {
-              "code": "hu",
-              "name": "Hungarian",
-              "nativeName": "Magyar"
-            },
-            {
-              "code": "id",
-              "name": "Indonesian",
-              "nativeName": "Bahasa Indonesia"
-            },
-            {
-              "code": "it",
-              "name": "Italian",
-              "nativeName": "Italiano"
-            },
-            {
-              "code": "ja",
-              "name": "Japanese",
-              "nativeName": "日本語"
-            },
-            {
-              "code": "ko",
-              "name": "Korean",
-              "nativeName": "한국어"
-            },
-            {
-              "code": "ms",
-              "name": "Malay",
-              "nativeName": "Bahasa Melayu"
-            },
-            {
-              "code": "no",
-              "name": "Norwegian",
-              "nativeName": "Norsk"
-            },
-            {
-              "code": "pl",
-              "name": "Polish",
-              "nativeName": "Polski"
-            },
-            {
-              "code": "pt",
-              "name": "Portuguese",
-              "nativeName": "Português"
-            },
-            {
-              "code": "ro",
-              "name": "Romanian",
-              "nativeName": "Română"
-            },
-            {
-              "code": "ru",
-              "name": "Russian",
-              "nativeName": "Русский"
-            },
-            {
-              "code": "sk",
-              "name": "Slovak",
-              "nativeName": "Slovenčina"
-            },
-            {
-              "code": "es",
-              "name": "Spanish",
-              "nativeName": "Español"
-            },
-            {
-              "code": "sv",
-              "name": "Swedish",
-              "nativeName": "Svenska"
-            },
-            {
-              "code": "ta",
-              "name": "Tamil",
-              "nativeName": "தமிழ்"
-            },
-            {
-              "code": "tr",
-              "name": "Turkish",
-              "nativeName": "Türkçe"
-            },
-            {
-              "code": "uk",
-              "name": "Ukrainian",
-              "nativeName": "Українська"
-            },
-            {
-              "code": "vi",
-              "name": "Vietnamese",
-              "nativeName": "Tiếng Việt"
-            }
-          ],
-          "capabilities": {
-            "style": false,
-            "speakerBoost": false,
-            "voiceConversion": false,
-            "streaming": true,
-            "emotion": false,
-            "speedControl": false,
-            "volumeControl": false
-          },
-          "pricing": {
-            "ratePer1kCharsMicrocents": 40000,
-            "ratePer1kCharsDisplay": "$0.0400"
-          },
-          "deprecation": {
-            "retiresOn": "2026-10-13",
-            "replacedBy": "eleven_v4_turbo"
-          }
-        },
-        {
-          "modelId": "eleven_v3_conversational",
-          "name": "Conversational v3",
-          "description": "Our most expressive realtime speech synthesis model (~280ms), in 70+ languages. Best for natural conversational delivery.",
-          "languages": [
-            {
-              "code": "af",
-              "name": "Afrikaans",
-              "nativeName": "Afrikaans"
-            },
-            {
-              "code": "ar",
-              "name": "Arabic",
-              "nativeName": "العربية"
-            },
-            {
-              "code": "hy",
-              "name": "Armenian",
-              "nativeName": "Հայdelays"
-            },
-            {
-              "code": "as",
-              "name": "Assamese",
-              "nativeName": "অসমীয়া"
-            },
-            {
-              "code": "az",
-              "name": "Azerbaijani",
-              "nativeName": "Azərbaycan"
-            },
-            {
-              "code": "be",
-              "name": "Belarusian",
-              "nativeName": "Беларуская"
-            },
-            {
-              "code": "bn",
-              "name": "Bengali",
-              "nativeName": "বাংলা"
-            },
-            {
-              "code": "bs",
-              "name": "Bosnian",
-              "nativeName": "Bosanski"
-            },
-            {
-              "code": "bg",
-              "name": "Bulgarian",
-              "nativeName": "Български"
+              "code": "yue",
+              "name": "Cantonese",
+              "nativeName": "粵語"
             },
             {
               "code": "ca",
@@ -1108,9 +634,19 @@
               "nativeName": "Français"
             },
             {
+              "code": "ff",
+              "name": "Fulah",
+              "nativeName": "Fulah"
+            },
+            {
               "code": "gl",
               "name": "Galician",
               "nativeName": "Galego"
+            },
+            {
+              "code": "lg",
+              "name": "Ganda",
+              "nativeName": "Ganda"
             },
             {
               "code": "ka",
@@ -1203,6 +739,11 @@
               "nativeName": "Kyrgyz"
             },
             {
+              "code": "lo",
+              "name": "Lao",
+              "nativeName": "Lao"
+            },
+            {
               "code": "lv",
               "name": "Latvian",
               "nativeName": "Latviešu"
@@ -1238,9 +779,24 @@
               "nativeName": "മലയാളം"
             },
             {
+              "code": "mt",
+              "name": "Maltese",
+              "nativeName": "Maltese"
+            },
+            {
+              "code": "mi",
+              "name": "Maori",
+              "nativeName": "Maori"
+            },
+            {
               "code": "mr",
               "name": "Marathi",
               "nativeName": "मराठी"
+            },
+            {
+              "code": "mn",
+              "name": "Mongolian",
+              "nativeName": "Mongolian"
             },
             {
               "code": "ne",
@@ -1251,6 +807,16 @@
               "code": "no",
               "name": "Norwegian",
               "nativeName": "Norsk"
+            },
+            {
+              "code": "oc",
+              "name": "Occitan",
+              "nativeName": "Occitan"
+            },
+            {
+              "code": "or",
+              "name": "Odia",
+              "nativeName": "Odia"
             },
             {
               "code": "ps",
@@ -1293,6 +859,11 @@
               "nativeName": "Српски"
             },
             {
+              "code": "sn",
+              "name": "Shona",
+              "nativeName": "Shona"
+            },
+            {
               "code": "sd",
               "name": "Sindhi",
               "nativeName": "سنڌي"
@@ -1328,6 +899,11 @@
               "nativeName": "Svenska"
             },
             {
+              "code": "tg",
+              "name": "Tajik",
+              "nativeName": "Tajik"
+            },
+            {
               "code": "ta",
               "name": "Tamil",
               "nativeName": "தமிழ்"
@@ -1358,6 +934,11 @@
               "nativeName": "اردو"
             },
             {
+              "code": "uz",
+              "name": "Uzbek",
+              "nativeName": "Uzbek"
+            },
+            {
               "code": "vi",
               "name": "Vietnamese",
               "nativeName": "Tiếng Việt"
@@ -1366,190 +947,21 @@
               "code": "cy",
               "name": "Welsh",
               "nativeName": "Cymraeg"
-            }
-          ],
-          "capabilities": {
-            "style": true,
-            "speakerBoost": true,
-            "voiceConversion": false,
-            "streaming": true,
-            "emotion": false,
-            "speedControl": false,
-            "volumeControl": false
-          },
-          "pricing": {
-            "ratePer1kCharsMicrocents": 40000,
-            "ratePer1kCharsDisplay": "$0.0400"
-          },
-          "deprecation": {
-            "retiresOn": "2026-10-13",
-            "replacedBy": "eleven_v4_turbo"
-          }
-        },
-        {
-          "modelId": "eleven_turbo_v2_5",
-          "name": "Turbo v2.5",
-          "description": "Our high quality, low latency model in 32 languages. Best for developer use cases where speed matters.",
-          "languages": [
-            {
-              "code": "ar",
-              "name": "Arabic",
-              "nativeName": "العربية"
             },
             {
-              "code": "bg",
-              "name": "Bulgarian",
-              "nativeName": "Български"
+              "code": "wo",
+              "name": "Wolof",
+              "nativeName": "Wolof"
             },
             {
-              "code": "zh",
-              "name": "Chinese",
-              "nativeName": "中文"
+              "code": "yo",
+              "name": "Yoruba",
+              "nativeName": "Yoruba"
             },
             {
-              "code": "hr",
-              "name": "Croatian",
-              "nativeName": "Hrvatski"
-            },
-            {
-              "code": "cs",
-              "name": "Czech",
-              "nativeName": "Čeština"
-            },
-            {
-              "code": "da",
-              "name": "Danish",
-              "nativeName": "Dansk"
-            },
-            {
-              "code": "nl",
-              "name": "Dutch",
-              "nativeName": "Nederlands"
-            },
-            {
-              "code": "en",
-              "name": "English",
-              "nativeName": "English"
-            },
-            {
-              "code": "fil",
-              "name": "Filipino",
-              "nativeName": "Filipino"
-            },
-            {
-              "code": "fi",
-              "name": "Finnish",
-              "nativeName": "Suomi"
-            },
-            {
-              "code": "fr",
-              "name": "French",
-              "nativeName": "Français"
-            },
-            {
-              "code": "de",
-              "name": "German",
-              "nativeName": "Deutsch"
-            },
-            {
-              "code": "el",
-              "name": "Greek",
-              "nativeName": "Ελληνικά"
-            },
-            {
-              "code": "hi",
-              "name": "Hindi",
-              "nativeName": "हिन्दी"
-            },
-            {
-              "code": "hu",
-              "name": "Hungarian",
-              "nativeName": "Magyar"
-            },
-            {
-              "code": "id",
-              "name": "Indonesian",
-              "nativeName": "Bahasa Indonesia"
-            },
-            {
-              "code": "it",
-              "name": "Italian",
-              "nativeName": "Italiano"
-            },
-            {
-              "code": "ja",
-              "name": "Japanese",
-              "nativeName": "日本語"
-            },
-            {
-              "code": "ko",
-              "name": "Korean",
-              "nativeName": "한국어"
-            },
-            {
-              "code": "ms",
-              "name": "Malay",
-              "nativeName": "Bahasa Melayu"
-            },
-            {
-              "code": "no",
-              "name": "Norwegian",
-              "nativeName": "Norsk"
-            },
-            {
-              "code": "pl",
-              "name": "Polish",
-              "nativeName": "Polski"
-            },
-            {
-              "code": "pt",
-              "name": "Portuguese",
-              "nativeName": "Português"
-            },
-            {
-              "code": "ro",
-              "name": "Romanian",
-              "nativeName": "Română"
-            },
-            {
-              "code": "ru",
-              "name": "Russian",
-              "nativeName": "Русский"
-            },
-            {
-              "code": "sk",
-              "name": "Slovak",
-              "nativeName": "Slovenčina"
-            },
-            {
-              "code": "es",
-              "name": "Spanish",
-              "nativeName": "Español"
-            },
-            {
-              "code": "sv",
-              "name": "Swedish",
-              "nativeName": "Svenska"
-            },
-            {
-              "code": "ta",
-              "name": "Tamil",
-              "nativeName": "தமிழ்"
-            },
-            {
-              "code": "tr",
-              "name": "Turkish",
-              "nativeName": "Türkçe"
-            },
-            {
-              "code": "uk",
-              "name": "Ukrainian",
-              "nativeName": "Українська"
-            },
-            {
-              "code": "vi",
-              "name": "Vietnamese",
-              "nativeName": "Tiếng Việt"
+              "code": "zu",
+              "name": "Zulu",
+              "nativeName": "Zulu"
             }
           ],
           "capabilities": {
@@ -1564,387 +976,6 @@
           "pricing": {
             "ratePer1kCharsMicrocents": 40000,
             "ratePer1kCharsDisplay": "$0.0400"
-          },
-          "deprecation": {
-            "retiresOn": "2026-10-13",
-            "replacedBy": "eleven_v4_turbo"
-          }
-        }
-      ]
-    },
-    {
-      "provider": "google",
-      "displayName": "Google",
-      "models": [
-        {
-          "modelId": "gemini-2.5-flash-tts",
-          "name": "Gemini 2.5 Flash TTS",
-          "description": "Low-latency Gemini TTS with natural, promptable voice control. 30 named voices, 23 languages.",
-          "languages": [
-            {
-              "code": "ar",
-              "name": "Arabic",
-              "nativeName": "العربية"
-            },
-            {
-              "code": "bn",
-              "name": "Bengali",
-              "nativeName": "বাংলা"
-            },
-            {
-              "code": "nl",
-              "name": "Dutch",
-              "nativeName": "Nederlands"
-            },
-            {
-              "code": "en",
-              "name": "English",
-              "nativeName": "English"
-            },
-            {
-              "code": "fr",
-              "name": "French",
-              "nativeName": "Français"
-            },
-            {
-              "code": "de",
-              "name": "German",
-              "nativeName": "Deutsch"
-            },
-            {
-              "code": "hi",
-              "name": "Hindi",
-              "nativeName": "हिन्दी"
-            },
-            {
-              "code": "id",
-              "name": "Indonesian",
-              "nativeName": "Bahasa Indonesia"
-            },
-            {
-              "code": "it",
-              "name": "Italian",
-              "nativeName": "Italiano"
-            },
-            {
-              "code": "ja",
-              "name": "Japanese",
-              "nativeName": "日本語"
-            },
-            {
-              "code": "ko",
-              "name": "Korean",
-              "nativeName": "한국어"
-            },
-            {
-              "code": "mr",
-              "name": "Marathi",
-              "nativeName": "मराठी"
-            },
-            {
-              "code": "pl",
-              "name": "Polish",
-              "nativeName": "Polski"
-            },
-            {
-              "code": "pt",
-              "name": "Portuguese",
-              "nativeName": "Português"
-            },
-            {
-              "code": "ro",
-              "name": "Romanian",
-              "nativeName": "Română"
-            },
-            {
-              "code": "ru",
-              "name": "Russian",
-              "nativeName": "Русский"
-            },
-            {
-              "code": "es",
-              "name": "Spanish",
-              "nativeName": "Español"
-            },
-            {
-              "code": "ta",
-              "name": "Tamil",
-              "nativeName": "தமிழ்"
-            },
-            {
-              "code": "te",
-              "name": "Telugu",
-              "nativeName": "తెలుగు"
-            },
-            {
-              "code": "th",
-              "name": "Thai",
-              "nativeName": "ไทย"
-            },
-            {
-              "code": "tr",
-              "name": "Turkish",
-              "nativeName": "Türkçe"
-            },
-            {
-              "code": "uk",
-              "name": "Ukrainian",
-              "nativeName": "Українська"
-            },
-            {
-              "code": "vi",
-              "name": "Vietnamese",
-              "nativeName": "Tiếng Việt"
-            }
-          ],
-          "capabilities": {
-            "style": false,
-            "speakerBoost": false,
-            "voiceConversion": false,
-            "streaming": true,
-            "emotion": false,
-            "speedControl": false,
-            "volumeControl": false
-          },
-          "pricing": {
-            "ratePer1kCharsMicrocents": 17000,
-            "ratePer1kCharsDisplay": "$0.0170"
-          }
-        },
-        {
-          "modelId": "gemini-2.5-pro-tts",
-          "name": "Gemini 2.5 Pro TTS",
-          "description": "Highest-quality Gemini TTS for expressive, style-prompted speech. 30 named voices, 23 languages.",
-          "languages": [
-            {
-              "code": "ar",
-              "name": "Arabic",
-              "nativeName": "العربية"
-            },
-            {
-              "code": "bn",
-              "name": "Bengali",
-              "nativeName": "বাংলা"
-            },
-            {
-              "code": "nl",
-              "name": "Dutch",
-              "nativeName": "Nederlands"
-            },
-            {
-              "code": "en",
-              "name": "English",
-              "nativeName": "English"
-            },
-            {
-              "code": "fr",
-              "name": "French",
-              "nativeName": "Français"
-            },
-            {
-              "code": "de",
-              "name": "German",
-              "nativeName": "Deutsch"
-            },
-            {
-              "code": "hi",
-              "name": "Hindi",
-              "nativeName": "हिन्दी"
-            },
-            {
-              "code": "id",
-              "name": "Indonesian",
-              "nativeName": "Bahasa Indonesia"
-            },
-            {
-              "code": "it",
-              "name": "Italian",
-              "nativeName": "Italiano"
-            },
-            {
-              "code": "ja",
-              "name": "Japanese",
-              "nativeName": "日本語"
-            },
-            {
-              "code": "ko",
-              "name": "Korean",
-              "nativeName": "한국어"
-            },
-            {
-              "code": "mr",
-              "name": "Marathi",
-              "nativeName": "मराठी"
-            },
-            {
-              "code": "pl",
-              "name": "Polish",
-              "nativeName": "Polski"
-            },
-            {
-              "code": "pt",
-              "name": "Portuguese",
-              "nativeName": "Português"
-            },
-            {
-              "code": "ro",
-              "name": "Romanian",
-              "nativeName": "Română"
-            },
-            {
-              "code": "ru",
-              "name": "Russian",
-              "nativeName": "Русский"
-            },
-            {
-              "code": "es",
-              "name": "Spanish",
-              "nativeName": "Español"
-            },
-            {
-              "code": "ta",
-              "name": "Tamil",
-              "nativeName": "தமிழ்"
-            },
-            {
-              "code": "te",
-              "name": "Telugu",
-              "nativeName": "తెలుగు"
-            },
-            {
-              "code": "th",
-              "name": "Thai",
-              "nativeName": "ไทย"
-            },
-            {
-              "code": "tr",
-              "name": "Turkish",
-              "nativeName": "Türkçe"
-            },
-            {
-              "code": "uk",
-              "name": "Ukrainian",
-              "nativeName": "Українська"
-            },
-            {
-              "code": "vi",
-              "name": "Vietnamese",
-              "nativeName": "Tiếng Việt"
-            }
-          ],
-          "capabilities": {
-            "style": false,
-            "speakerBoost": false,
-            "voiceConversion": false,
-            "streaming": true,
-            "emotion": false,
-            "speedControl": false,
-            "volumeControl": false
-          },
-          "pricing": {
-            "ratePer1kCharsMicrocents": 34000,
-            "ratePer1kCharsDisplay": "$0.0340"
-          }
-        }
-      ]
-    },
-    {
-      "provider": "rime",
-      "displayName": "Rime",
-      "models": [
-        {
-          "modelId": "mistv2",
-          "name": "Rime Mist v2",
-          "description": "Rime's low-latency streaming TTS, purpose-built for real-time voice agents and telephony. WebSocket synthesis emits word-level timestamps. 300+ voices.",
-          "languages": [
-            {
-              "code": "en",
-              "name": "English",
-              "nativeName": "English"
-            },
-            {
-              "code": "es",
-              "name": "Spanish",
-              "nativeName": "Español"
-            }
-          ],
-          "capabilities": {
-            "style": false,
-            "speakerBoost": false,
-            "voiceConversion": false,
-            "streaming": true,
-            "emotion": false,
-            "speedControl": false,
-            "volumeControl": false
-          },
-          "pricing": {
-            "ratePer1kCharsMicrocents": 30000,
-            "ratePer1kCharsDisplay": "$0.0300"
-          }
-        },
-        {
-          "modelId": "coda",
-          "name": "Rime Coda",
-          "description": "Rime's flagship expressive model, sub-100 ms. English, Spanish, French, German, Portuguese, Italian, Arabic, Hindi and Japanese (no Turkish).",
-          "languages": [
-            {
-              "code": "ar",
-              "name": "Arabic",
-              "nativeName": "العربية"
-            },
-            {
-              "code": "en",
-              "name": "English",
-              "nativeName": "English"
-            },
-            {
-              "code": "fr",
-              "name": "French",
-              "nativeName": "Français"
-            },
-            {
-              "code": "de",
-              "name": "German",
-              "nativeName": "Deutsch"
-            },
-            {
-              "code": "hi",
-              "name": "Hindi",
-              "nativeName": "हिन्दी"
-            },
-            {
-              "code": "it",
-              "name": "Italian",
-              "nativeName": "Italiano"
-            },
-            {
-              "code": "ja",
-              "name": "Japanese",
-              "nativeName": "日本語"
-            },
-            {
-              "code": "pt",
-              "name": "Portuguese",
-              "nativeName": "Português"
-            },
-            {
-              "code": "es",
-              "name": "Spanish",
-              "nativeName": "Español"
-            }
-          ],
-          "capabilities": {
-            "style": false,
-            "speakerBoost": false,
-            "voiceConversion": false,
-            "streaming": true,
-            "emotion": false,
-            "speedControl": false,
-            "volumeControl": false
-          },
-          "pricing": {
-            "ratePer1kCharsMicrocents": 50000,
-            "ratePer1kCharsDisplay": "$0.0500"
           }
         }
       ]
@@ -3108,11 +2139,6 @@
               "code": "vi",
               "name": "Vietnamese",
               "nativeName": "Tiếng Việt"
-            },
-            {
-              "code": "multi",
-              "name": "multi",
-              "nativeName": "multi"
             }
           ],
           "capabilities": {
@@ -3183,360 +2209,6 @@
           "pricing": {
             "ratePerMinuteMicrocents": 7700,
             "ratePerMinuteDisplay": "$0.0077"
-          }
-        },
-        {
-          "modelId": "nova-2-general",
-          "name": "Nova 2",
-          "description": "High accuracy speech recognition across 40+ languages. Good balance of speed and accuracy.",
-          "languages": [
-            {
-              "code": "bg",
-              "name": "Bulgarian",
-              "nativeName": "Български"
-            },
-            {
-              "code": "ca",
-              "name": "Catalan",
-              "nativeName": "Català"
-            },
-            {
-              "code": "zh",
-              "name": "Chinese",
-              "nativeName": "中文"
-            },
-            {
-              "code": "zh-CN",
-              "name": "Chinese (China)",
-              "nativeName": "中文"
-            },
-            {
-              "code": "zh-HK",
-              "name": "Chinese (Hong Kong)",
-              "nativeName": "中文"
-            },
-            {
-              "code": "zh-Hans",
-              "name": "Chinese (Simplified)",
-              "nativeName": "中文"
-            },
-            {
-              "code": "zh-TW",
-              "name": "Chinese (Taiwan)",
-              "nativeName": "中文"
-            },
-            {
-              "code": "zh-Hant",
-              "name": "Chinese (Traditional)",
-              "nativeName": "中文"
-            },
-            {
-              "code": "cs",
-              "name": "Czech",
-              "nativeName": "Čeština"
-            },
-            {
-              "code": "da-DK",
-              "name": "Danish",
-              "nativeName": "Dansk"
-            },
-            {
-              "code": "nl",
-              "name": "Dutch",
-              "nativeName": "Nederlands"
-            },
-            {
-              "code": "nl-BE",
-              "name": "Dutch (Belgium)",
-              "nativeName": "Nederlands"
-            },
-            {
-              "code": "en",
-              "name": "English",
-              "nativeName": "English"
-            },
-            {
-              "code": "en-AU",
-              "name": "English (Australia)",
-              "nativeName": "English"
-            },
-            {
-              "code": "en-IN",
-              "name": "English (India)",
-              "nativeName": "English"
-            },
-            {
-              "code": "en-NZ",
-              "name": "English (New Zealand)",
-              "nativeName": "English"
-            },
-            {
-              "code": "en-GB",
-              "name": "English (United Kingdom)",
-              "nativeName": "English"
-            },
-            {
-              "code": "en-US",
-              "name": "English (United States)",
-              "nativeName": "English"
-            },
-            {
-              "code": "et",
-              "name": "Estonian",
-              "nativeName": "Eesti"
-            },
-            {
-              "code": "fi",
-              "name": "Finnish",
-              "nativeName": "Suomi"
-            },
-            {
-              "code": "fr",
-              "name": "French",
-              "nativeName": "Français"
-            },
-            {
-              "code": "fr-CA",
-              "name": "French (Canada)",
-              "nativeName": "Français"
-            },
-            {
-              "code": "de",
-              "name": "German",
-              "nativeName": "Deutsch"
-            },
-            {
-              "code": "de-CH",
-              "name": "German (Switzerland)",
-              "nativeName": "Deutsch"
-            },
-            {
-              "code": "el",
-              "name": "Greek",
-              "nativeName": "Ελληνικά"
-            },
-            {
-              "code": "hi",
-              "name": "Hindi",
-              "nativeName": "हिन्दी"
-            },
-            {
-              "code": "hu",
-              "name": "Hungarian",
-              "nativeName": "Magyar"
-            },
-            {
-              "code": "id",
-              "name": "Indonesian",
-              "nativeName": "Bahasa Indonesia"
-            },
-            {
-              "code": "it",
-              "name": "Italian",
-              "nativeName": "Italiano"
-            },
-            {
-              "code": "ja",
-              "name": "Japanese",
-              "nativeName": "日本語"
-            },
-            {
-              "code": "ko-KR",
-              "name": "Korean",
-              "nativeName": "한국어"
-            },
-            {
-              "code": "lv",
-              "name": "Latvian",
-              "nativeName": "Latviešu"
-            },
-            {
-              "code": "lt",
-              "name": "Lithuanian",
-              "nativeName": "Lietuvių"
-            },
-            {
-              "code": "ms",
-              "name": "Malay",
-              "nativeName": "Bahasa Melayu"
-            },
-            {
-              "code": "no",
-              "name": "Norwegian",
-              "nativeName": "Norsk"
-            },
-            {
-              "code": "pl",
-              "name": "Polish",
-              "nativeName": "Polski"
-            },
-            {
-              "code": "pt-PT",
-              "name": "Portuguese",
-              "nativeName": "Português"
-            },
-            {
-              "code": "pt-BR",
-              "name": "Portuguese (Brazil)",
-              "nativeName": "Português"
-            },
-            {
-              "code": "ro",
-              "name": "Romanian",
-              "nativeName": "Română"
-            },
-            {
-              "code": "ru",
-              "name": "Russian",
-              "nativeName": "Русский"
-            },
-            {
-              "code": "sk",
-              "name": "Slovak",
-              "nativeName": "Slovenčina"
-            },
-            {
-              "code": "es",
-              "name": "Spanish",
-              "nativeName": "Español"
-            },
-            {
-              "code": "es-419",
-              "name": "Spanish (Latin America)",
-              "nativeName": "Español"
-            },
-            {
-              "code": "sv-SE",
-              "name": "Swedish",
-              "nativeName": "Svenska"
-            },
-            {
-              "code": "th-TH",
-              "name": "Thai",
-              "nativeName": "ไทย"
-            },
-            {
-              "code": "tr",
-              "name": "Turkish",
-              "nativeName": "Türkçe"
-            },
-            {
-              "code": "uk",
-              "name": "Ukrainian",
-              "nativeName": "Українська"
-            },
-            {
-              "code": "vi",
-              "name": "Vietnamese",
-              "nativeName": "Tiếng Việt"
-            }
-          ],
-          "capabilities": {
-            "streaming": true,
-            "diarization": false,
-            "telephony": false,
-            "noiseHandling": false,
-            "multilingual": false
-          },
-          "pricing": {
-            "ratePerMinuteMicrocents": 5833,
-            "ratePerMinuteDisplay": "$0.0058"
-          }
-        },
-        {
-          "modelId": "nova-2-conversationalai",
-          "name": "Nova 2 Conversational AI",
-          "description": "Optimized for conversational AI applications. Low latency for voice assistants and chatbots.",
-          "languages": [
-            {
-              "code": "en",
-              "name": "English",
-              "nativeName": "English"
-            },
-            {
-              "code": "en-AU",
-              "name": "English (Australia)",
-              "nativeName": "English"
-            },
-            {
-              "code": "en-IN",
-              "name": "English (India)",
-              "nativeName": "English"
-            },
-            {
-              "code": "en-NZ",
-              "name": "English (New Zealand)",
-              "nativeName": "English"
-            },
-            {
-              "code": "en-GB",
-              "name": "English (United Kingdom)",
-              "nativeName": "English"
-            },
-            {
-              "code": "en-US",
-              "name": "English (United States)",
-              "nativeName": "English"
-            }
-          ],
-          "capabilities": {
-            "streaming": true,
-            "diarization": false,
-            "telephony": false,
-            "noiseHandling": false,
-            "multilingual": false
-          },
-          "pricing": {
-            "ratePerMinuteMicrocents": 5833,
-            "ratePerMinuteDisplay": "$0.0058"
-          }
-        },
-        {
-          "modelId": "nova-2-phonecall",
-          "name": "Nova 2 Phone Call",
-          "description": "Optimized for phone call audio. Handles telephony-quality audio with background noise.",
-          "languages": [
-            {
-              "code": "en",
-              "name": "English",
-              "nativeName": "English"
-            },
-            {
-              "code": "en-AU",
-              "name": "English (Australia)",
-              "nativeName": "English"
-            },
-            {
-              "code": "en-IN",
-              "name": "English (India)",
-              "nativeName": "English"
-            },
-            {
-              "code": "en-NZ",
-              "name": "English (New Zealand)",
-              "nativeName": "English"
-            },
-            {
-              "code": "en-GB",
-              "name": "English (United Kingdom)",
-              "nativeName": "English"
-            },
-            {
-              "code": "en-US",
-              "name": "English (United States)",
-              "nativeName": "English"
-            }
-          ],
-          "capabilities": {
-            "streaming": true,
-            "diarization": false,
-            "telephony": true,
-            "noiseHandling": false,
-            "multilingual": false
-          },
-          "pricing": {
-            "ratePerMinuteMicrocents": 5833,
-            "ratePerMinuteDisplay": "$0.0058"
           }
         }
       ]
@@ -4264,8 +2936,8 @@
       "displayName": "xAI",
       "models": [
         {
-          "modelId": "grok-stt",
-          "name": "Grok STT",
+          "modelId": "grok-voice-transcribe-2.0",
+          "name": "Grok Voice Transcribe 2.0",
           "description": "Real-time speech-to-text with word-level timestamps, speaker diarization, and telephony (µ-law) support. Top accuracy on phone-call benchmarks across 25 languages.",
           "languages": [
             {
@@ -4410,9 +3082,9 @@
       "displayName": "Anthropic",
       "models": [
         {
-          "modelId": "claude-opus-5",
-          "name": "Claude Opus 5",
-          "description": "Most capable Claude. Best for complex reasoning, agentic work, and coding.",
+          "modelId": "claude-opus-5-5",
+          "name": "Claude Opus 5.5",
+          "description": "Most capable Claude for voice agents. Best for complex reasoning, multi-step tool use, and demanding conversations.",
           "contextWindow": 1000000,
           "capabilities": {
             "functionCalling": true,
@@ -4423,7 +3095,6 @@
             "hasPriorityTier": false,
             "reasoning": true,
             "reasoningEffort": [
-              "off",
               "low",
               "medium",
               "high",
@@ -4432,15 +3103,15 @@
             ]
           },
           "pricing": {
-            "inputPer1mTokensMicrocents": 5000000,
-            "outputPer1mTokensMicrocents": 25000000,
-            "inputPer1mTokensDisplay": "$5.00",
-            "outputPer1mTokensDisplay": "$25.00"
+            "inputPer1mTokensMicrocents": 4000000,
+            "outputPer1mTokensMicrocents": 20000000,
+            "inputPer1mTokensDisplay": "$4.00",
+            "outputPer1mTokensDisplay": "$20.00"
           }
         },
         {
-          "modelId": "claude-sonnet-5",
-          "name": "Claude Sonnet 5",
+          "modelId": "claude-sonnet-5-5",
+          "name": "Claude Sonnet 5.5",
           "description": "Best combination of speed and intelligence for voice AI.",
           "contextWindow": 1000000,
           "capabilities": {
@@ -4452,7 +3123,6 @@
             "hasPriorityTier": false,
             "reasoning": true,
             "reasoningEffort": [
-              "off",
               "low",
               "medium",
               "high",
@@ -4468,138 +3138,32 @@
           }
         },
         {
-          "modelId": "claude-haiku-4-5",
-          "name": "Claude Haiku 4.5",
-          "description": "Fastest and most cost-effective Claude for simple, latency-sensitive tasks.",
-          "contextWindow": 200000,
-          "capabilities": {
-            "functionCalling": true,
-            "vision": true,
-            "streaming": true,
-            "jsonMode": false,
-            "temperature": true,
-            "hasPriorityTier": false,
-            "reasoning": false,
-            "reasoningEffort": []
-          },
-          "pricing": {
-            "inputPer1mTokensMicrocents": 1000000,
-            "outputPer1mTokensMicrocents": 5000000,
-            "inputPer1mTokensDisplay": "$1.00",
-            "outputPer1mTokensDisplay": "$5.00"
-          }
-        }
-      ]
-    },
-    {
-      "provider": "google",
-      "displayName": "Google",
-      "models": [
-        {
-          "modelId": "gemini-3.5-flash",
-          "name": "Gemini 3.5 Flash",
-          "description": "Most intelligent Gemini built for speed. Frontier intelligence with superior grounding.",
+          "modelId": "claude-haiku-5-5",
+          "name": "Claude Haiku 5.5",
+          "description": "Fastest and most cost-effective Claude for simple, latency-sensitive conversations.",
           "contextWindow": 1000000,
           "capabilities": {
             "functionCalling": true,
             "vision": true,
             "streaming": true,
             "jsonMode": false,
-            "temperature": true,
+            "temperature": false,
             "hasPriorityTier": false,
             "reasoning": true,
             "reasoningEffort": [
-              "minimal",
+              "off",
               "low",
               "medium",
-              "high"
+              "high",
+              "xhigh",
+              "max"
             ]
           },
           "pricing": {
-            "inputPer1mTokensMicrocents": 1500000,
-            "outputPer1mTokensMicrocents": 9000000,
-            "inputPer1mTokensDisplay": "$1.50",
-            "outputPer1mTokensDisplay": "$9.00"
-          }
-        },
-        {
-          "modelId": "gemini-3.1-pro-preview",
-          "name": "Gemini 3.1 Pro Preview",
-          "description": "Most powerful Gemini model. Best for multimodal understanding and complex agentic tasks.",
-          "contextWindow": 1000000,
-          "capabilities": {
-            "functionCalling": true,
-            "vision": true,
-            "streaming": true,
-            "jsonMode": false,
-            "temperature": true,
-            "hasPriorityTier": false,
-            "reasoning": true,
-            "reasoningEffort": [
-              "low",
-              "medium",
-              "high"
-            ]
-          },
-          "pricing": {
-            "inputPer1mTokensMicrocents": 2000000,
-            "outputPer1mTokensMicrocents": 12000000,
-            "inputPer1mTokensDisplay": "$2.00",
-            "outputPer1mTokensDisplay": "$12.00"
-          }
-        },
-        {
-          "modelId": "gemini-3.1-flash-lite",
-          "name": "Gemini 3.1 Flash Lite",
-          "description": "Small, cost-effective Gemini 3 tier. Ideal for high-volume voice applications.",
-          "contextWindow": 1000000,
-          "capabilities": {
-            "functionCalling": true,
-            "vision": true,
-            "streaming": true,
-            "jsonMode": false,
-            "temperature": true,
-            "hasPriorityTier": false,
-            "reasoning": true,
-            "reasoningEffort": [
-              "minimal",
-              "low",
-              "medium",
-              "high"
-            ]
-          },
-          "pricing": {
-            "inputPer1mTokensMicrocents": 250000,
-            "outputPer1mTokensMicrocents": 1500000,
-            "inputPer1mTokensDisplay": "$0.25",
-            "outputPer1mTokensDisplay": "$1.50"
-          }
-        },
-        {
-          "modelId": "gemini-3-flash-preview",
-          "name": "Gemini 3 Flash Preview",
-          "description": "Fast and intelligent. Excellent for voice AI with superior search and grounding.",
-          "contextWindow": 1000000,
-          "capabilities": {
-            "functionCalling": true,
-            "vision": true,
-            "streaming": true,
-            "jsonMode": false,
-            "temperature": true,
-            "hasPriorityTier": false,
-            "reasoning": true,
-            "reasoningEffort": [
-              "minimal",
-              "low",
-              "medium",
-              "high"
-            ]
-          },
-          "pricing": {
-            "inputPer1mTokensMicrocents": 500000,
-            "outputPer1mTokensMicrocents": 3000000,
-            "inputPer1mTokensDisplay": "$0.50",
-            "outputPer1mTokensDisplay": "$3.00"
+            "inputPer1mTokensMicrocents": 100000,
+            "outputPer1mTokensMicrocents": 500000,
+            "inputPer1mTokensDisplay": "$0.10",
+            "outputPer1mTokensDisplay": "$0.50"
           }
         }
       ]
@@ -4625,7 +3189,8 @@
               "minimal",
               "low",
               "medium",
-              "high"
+              "high",
+              "xhigh"
             ]
           },
           "pricing": {
@@ -4638,7 +3203,7 @@
         {
           "modelId": "grok-4.3",
           "name": "Grok 4.3",
-          "description": "[DISABLED FOR VOICE] Reasoning cannot be reduced: ~900 reasoning tokens per call whether effort is omitted or set to minimal (both measured on live calls). That is dead air before every answer. Fast, cost-efficient Grok with 1M context. Strong price-performance for voice AI.",
+          "description": "Fast, cost-efficient Grok with 1M context, run with reasoning off: effort 'none' returned 0 reasoning tokens on a live call (2026-11-01).",
           "contextWindow": 1000000,
           "capabilities": {
             "functionCalling": true,
@@ -4648,7 +3213,13 @@
             "temperature": true,
             "hasPriorityTier": false,
             "reasoning": true,
-            "reasoningEffort": []
+            "reasoningEffort": [
+              "none",
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
           },
           "pricing": {
             "inputPer1mTokensMicrocents": 1250000,
@@ -4664,10 +3235,10 @@
       "displayName": "OpenAI",
       "models": [
         {
-          "modelId": "gpt-5.6-sol",
-          "name": "GPT-5.6 Sol",
-          "description": "Flagship GPT-5.6 tier. Best for complex reasoning, coding, and creative tasks.",
-          "contextWindow": 1048576,
+          "modelId": "gpt-6-sol",
+          "name": "GPT-6 Sol",
+          "description": "Flagship GPT-6 tier. Strongest reasoning and instruction following for complex calls.",
+          "contextWindow": 922000,
           "capabilities": {
             "functionCalling": true,
             "vision": true,
@@ -4681,17 +3252,65 @@
             ]
           },
           "pricing": {
-            "inputPer1mTokensMicrocents": 5000000,
-            "outputPer1mTokensMicrocents": 30000000,
-            "inputPer1mTokensDisplay": "$5.00",
-            "outputPer1mTokensDisplay": "$30.00"
+            "inputPer1mTokensMicrocents": 2000000,
+            "outputPer1mTokensMicrocents": 10000000,
+            "inputPer1mTokensDisplay": "$2.00",
+            "outputPer1mTokensDisplay": "$10.00"
+          }
+        },
+        {
+          "modelId": "gpt-6-luna",
+          "name": "GPT-6 Luna",
+          "description": "Fast, low-cost GPT-6 tier. OpenAI's named successor to the GPT-4 and GPT-5.4 Nano models.",
+          "contextWindow": 922000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": false,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "none"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 100000,
+            "outputPer1mTokensMicrocents": 500000,
+            "inputPer1mTokensDisplay": "$0.10",
+            "outputPer1mTokensDisplay": "$0.50"
+          }
+        },
+        {
+          "modelId": "gpt-5.6-sol",
+          "name": "GPT-5.6 Sol",
+          "description": "Flagship GPT-5.6 tier. Best for complex reasoning, coding, and creative tasks.",
+          "contextWindow": 922000,
+          "capabilities": {
+            "functionCalling": true,
+            "vision": true,
+            "streaming": true,
+            "jsonMode": false,
+            "temperature": false,
+            "hasPriorityTier": false,
+            "reasoning": true,
+            "reasoningEffort": [
+              "none"
+            ]
+          },
+          "pricing": {
+            "inputPer1mTokensMicrocents": 4000000,
+            "outputPer1mTokensMicrocents": 20000000,
+            "inputPer1mTokensDisplay": "$4.00",
+            "outputPer1mTokensDisplay": "$20.00"
           }
         },
         {
           "modelId": "gpt-5.6-terra",
           "name": "GPT-5.6 Terra",
           "description": "Balanced GPT-5.6 tier. Strong intelligence at mid-tier cost and latency.",
-          "contextWindow": 1048576,
+          "contextWindow": 922000,
           "capabilities": {
             "functionCalling": true,
             "vision": true,
@@ -4715,7 +3334,7 @@
           "modelId": "gpt-5.6-luna",
           "name": "GPT-5.6 Luna",
           "description": "Fast, cost-efficient GPT-5.6 tier. Great fit for low-latency voice AI.",
-          "contextWindow": 1048576,
+          "contextWindow": 922000,
           "capabilities": {
             "functionCalling": true,
             "vision": true,
@@ -4733,308 +3352,6 @@
             "outputPer1mTokensMicrocents": 1200000,
             "inputPer1mTokensDisplay": "$0.20",
             "outputPer1mTokensDisplay": "$1.20"
-          }
-        },
-        {
-          "modelId": "gpt-5.5",
-          "name": "GPT-5.5",
-          "description": "Previous flagship generation with excellent reasoning and instruction following.",
-          "contextWindow": 400000,
-          "capabilities": {
-            "functionCalling": true,
-            "vision": true,
-            "streaming": true,
-            "jsonMode": false,
-            "temperature": false,
-            "hasPriorityTier": false,
-            "reasoning": true,
-            "reasoningEffort": [
-              "none"
-            ]
-          },
-          "pricing": {
-            "inputPer1mTokensMicrocents": 5000000,
-            "outputPer1mTokensMicrocents": 30000000,
-            "inputPer1mTokensDisplay": "$5.00",
-            "outputPer1mTokensDisplay": "$30.00"
-          }
-        },
-        {
-          "modelId": "gpt-5.4",
-          "name": "GPT-5.4",
-          "description": "Capable general-purpose model with strong reasoning at mid-tier cost.",
-          "contextWindow": 400000,
-          "capabilities": {
-            "functionCalling": true,
-            "vision": true,
-            "streaming": true,
-            "jsonMode": false,
-            "temperature": false,
-            "hasPriorityTier": false,
-            "reasoning": true,
-            "reasoningEffort": [
-              "none"
-            ]
-          },
-          "pricing": {
-            "inputPer1mTokensMicrocents": 2500000,
-            "outputPer1mTokensMicrocents": 15000000,
-            "inputPer1mTokensDisplay": "$2.50",
-            "outputPer1mTokensDisplay": "$15.00"
-          }
-        },
-        {
-          "modelId": "gpt-5.4-mini",
-          "name": "GPT-5.4 Mini",
-          "description": "Fast, affordable small model. Good balance of speed and capability for voice AI.",
-          "contextWindow": 400000,
-          "capabilities": {
-            "functionCalling": true,
-            "vision": true,
-            "streaming": true,
-            "jsonMode": false,
-            "temperature": false,
-            "hasPriorityTier": false,
-            "reasoning": true,
-            "reasoningEffort": [
-              "none"
-            ]
-          },
-          "pricing": {
-            "inputPer1mTokensMicrocents": 750000,
-            "outputPer1mTokensMicrocents": 4500000,
-            "inputPer1mTokensDisplay": "$0.75",
-            "outputPer1mTokensDisplay": "$4.50"
-          }
-        },
-        {
-          "modelId": "gpt-5.4-nano",
-          "name": "GPT-5.4 Nano",
-          "description": "Cheapest, lowest-latency GPT tier. High-volume, simple conversational tasks.",
-          "contextWindow": 400000,
-          "capabilities": {
-            "functionCalling": true,
-            "vision": true,
-            "streaming": true,
-            "jsonMode": false,
-            "temperature": false,
-            "hasPriorityTier": false,
-            "reasoning": true,
-            "reasoningEffort": [
-              "none"
-            ]
-          },
-          "pricing": {
-            "inputPer1mTokensMicrocents": 200000,
-            "outputPer1mTokensMicrocents": 1250000,
-            "inputPer1mTokensDisplay": "$0.20",
-            "outputPer1mTokensDisplay": "$1.25"
-          },
-          "deprecation": {
-            "retiresOn": "2027-04-01",
-            "replacedBy": "gpt-5.6-luna"
-          }
-        },
-        {
-          "modelId": "gpt-5.2",
-          "name": "GPT-5.2",
-          "description": "Highly capable GPT model for complex reasoning, coding, and creative tasks.",
-          "contextWindow": 128000,
-          "capabilities": {
-            "functionCalling": true,
-            "vision": true,
-            "streaming": true,
-            "jsonMode": false,
-            "temperature": false,
-            "hasPriorityTier": false,
-            "reasoning": true,
-            "reasoningEffort": [
-              "none"
-            ]
-          },
-          "pricing": {
-            "inputPer1mTokensMicrocents": 1750000,
-            "outputPer1mTokensMicrocents": 14000000,
-            "inputPer1mTokensDisplay": "$1.75",
-            "outputPer1mTokensDisplay": "$14.00"
-          }
-        },
-        {
-          "modelId": "gpt-5.1",
-          "name": "GPT-5.1",
-          "description": "High capability model with excellent reasoning and instruction following.",
-          "contextWindow": 128000,
-          "capabilities": {
-            "functionCalling": true,
-            "vision": true,
-            "streaming": true,
-            "jsonMode": false,
-            "temperature": false,
-            "hasPriorityTier": false,
-            "reasoning": true,
-            "reasoningEffort": [
-              "none"
-            ]
-          },
-          "pricing": {
-            "inputPer1mTokensMicrocents": 1250000,
-            "outputPer1mTokensMicrocents": 10000000,
-            "inputPer1mTokensDisplay": "$1.25",
-            "outputPer1mTokensDisplay": "$10.00"
-          },
-          "deprecation": {
-            "retiresOn": "2027-04-01",
-            "replacedBy": "gpt-5.6-terra"
-          }
-        },
-        {
-          "modelId": "gpt-5",
-          "name": "GPT-5",
-          "description": "Powerful model for general-purpose tasks with strong reasoning.",
-          "contextWindow": 128000,
-          "capabilities": {
-            "functionCalling": true,
-            "vision": true,
-            "streaming": true,
-            "jsonMode": false,
-            "temperature": false,
-            "hasPriorityTier": false,
-            "reasoning": true,
-            "reasoningEffort": [
-              "minimal",
-              "low",
-              "medium",
-              "high"
-            ]
-          },
-          "pricing": {
-            "inputPer1mTokensMicrocents": 1250000,
-            "outputPer1mTokensMicrocents": 10000000,
-            "inputPer1mTokensDisplay": "$1.25",
-            "outputPer1mTokensDisplay": "$10.00"
-          },
-          "deprecation": {
-            "retiresOn": "2026-12-11",
-            "replacedBy": "gpt-5.6-sol"
-          }
-        },
-        {
-          "modelId": "gpt-5-mini",
-          "name": "GPT-5 Mini",
-          "description": "Fast and cost-effective. Great balance of speed and capability for voice AI.",
-          "contextWindow": 128000,
-          "capabilities": {
-            "functionCalling": true,
-            "vision": true,
-            "streaming": true,
-            "jsonMode": false,
-            "temperature": false,
-            "hasPriorityTier": false,
-            "reasoning": true,
-            "reasoningEffort": [
-              "minimal",
-              "low",
-              "medium",
-              "high"
-            ]
-          },
-          "pricing": {
-            "inputPer1mTokensMicrocents": 250000,
-            "outputPer1mTokensMicrocents": 2000000,
-            "inputPer1mTokensDisplay": "$0.25",
-            "outputPer1mTokensDisplay": "$2.00"
-          },
-          "deprecation": {
-            "retiresOn": "2026-12-11",
-            "replacedBy": "gpt-5.6-terra"
-          }
-        },
-        {
-          "modelId": "gpt-4.1",
-          "name": "GPT-4.1",
-          "description": "Strong general-purpose model. Good for most conversational AI tasks.",
-          "contextWindow": 128000,
-          "capabilities": {
-            "functionCalling": true,
-            "vision": true,
-            "streaming": true,
-            "jsonMode": false,
-            "temperature": true,
-            "hasPriorityTier": false,
-            "reasoning": false,
-            "reasoningEffort": []
-          },
-          "pricing": {
-            "inputPer1mTokensMicrocents": 2000000,
-            "outputPer1mTokensMicrocents": 8000000,
-            "inputPer1mTokensDisplay": "$2.00",
-            "outputPer1mTokensDisplay": "$8.00"
-          }
-        },
-        {
-          "modelId": "gpt-4.1-mini",
-          "name": "GPT-4.1 Mini",
-          "description": "Fast and affordable. Excellent for voice AI with good capability.",
-          "contextWindow": 128000,
-          "capabilities": {
-            "functionCalling": true,
-            "vision": true,
-            "streaming": true,
-            "jsonMode": false,
-            "temperature": true,
-            "hasPriorityTier": false,
-            "reasoning": false,
-            "reasoningEffort": []
-          },
-          "pricing": {
-            "inputPer1mTokensMicrocents": 400000,
-            "outputPer1mTokensMicrocents": 1600000,
-            "inputPer1mTokensDisplay": "$0.40",
-            "outputPer1mTokensDisplay": "$1.60"
-          }
-        },
-        {
-          "modelId": "gpt-4o",
-          "name": "GPT-4o",
-          "description": "Versatile multimodal model. Good for voice AI with vision and function calling.",
-          "contextWindow": 128000,
-          "capabilities": {
-            "functionCalling": true,
-            "vision": true,
-            "streaming": true,
-            "jsonMode": false,
-            "temperature": true,
-            "hasPriorityTier": false,
-            "reasoning": false,
-            "reasoningEffort": []
-          },
-          "pricing": {
-            "inputPer1mTokensMicrocents": 2500000,
-            "outputPer1mTokensMicrocents": 10000000,
-            "inputPer1mTokensDisplay": "$2.50",
-            "outputPer1mTokensDisplay": "$10.00"
-          }
-        },
-        {
-          "modelId": "gpt-4o-mini",
-          "name": "GPT-4o Mini",
-          "description": "Small and fast multimodal model. Cost-effective for voice AI workloads.",
-          "contextWindow": 128000,
-          "capabilities": {
-            "functionCalling": true,
-            "vision": true,
-            "streaming": true,
-            "jsonMode": false,
-            "temperature": true,
-            "hasPriorityTier": false,
-            "reasoning": false,
-            "reasoningEffort": []
-          },
-          "pricing": {
-            "inputPer1mTokensMicrocents": 150000,
-            "outputPer1mTokensMicrocents": 600000,
-            "inputPer1mTokensDisplay": "$0.15",
-            "outputPer1mTokensDisplay": "$0.60"
           }
         }
       ]

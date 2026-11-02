@@ -1,52 +1,85 @@
 ---
 title: Buy a number
-description: Search and buy a phone number inside Talkif — which countries, what it costs, how monthly rental works, what happens when it can't be paid, and how to release a number.
+description: Search and buy a phone number inside Talkif — which number types, what it costs, who can buy and how many, how rental renews, what happens when it can't be paid, and how to release a number.
 ---
 
-The simplest way to get a line is to buy one from Talkif. The number is provisioned on Talkif's own carrier, appears in your account within seconds, and needs no configuration beyond connecting a flow. It can answer inbound calls and place outbound ones, and it renews monthly from your balance until you release it.
+The simplest way to get a line is to buy one from Talkif. The number is provisioned on Talkif's own carrier, appears in your account within seconds, and needs no configuration beyond connecting a flow. It can answer inbound calls and place outbound ones, and it renews from your balance every 30 days until you release it.
 
 ## What you're buying
 
-A **local number** in a supported country, with the capabilities that number type carries — every purchasable number has **voice**; many also have **SMS** and **MMS**, which Talkif shows but doesn't use for calling. The monthly price depends on the country and number type; the search results show it per number before you commit.
+A **local**, **mobile** or **toll-free** number, depending on what the country sells — the dashboard offers only the types a country has. Every Talkif number is a voice line. The rental price depends on the country and number type; the search results show it per number before you commit.
 
 <Markdown src="/docs/snippets/generated/pricing-phone-numbers.mdx" />
 
+The purchase charge is the number's first 30 days of rental; the same amount then renews every 30 days.
+
 Some countries require an address or identity documentation for regulatory reasons; a number's `addressRequirements` says whether it needs one (`none`, `any`, `local`, `foreign`). Where a requirement exists, the carrier needs that documentation on file before the purchase goes through — contact support before buying in that country.
 
-Per-minute call charges are separate from rental and are the same for every Talkif number regardless of country: see [Credits and pricing](/concepts/credits-and-pricing#telephony).
+Per-minute call charges are separate from rental. On Talkif numbers they're the carrier's rate for the number called, so they vary by country: see [Credits and pricing](/concepts/credits-and-pricing#telephony).
+
+## Who can buy, and how many
+
+- **The Owner buys and releases numbers**, signed in to the dashboard. API keys can search for numbers but can't buy them.
+- **The Owner's email and phone number must be verified** first. Until they are, buying is refused with *"The account owner must verify their phone number"* (or email address). See [Security](/account/security#profile).
+- **At most 5 purchases in any 24 hours** — a rolling window, and released numbers count toward it.
+
+How many Talkif numbers an account can hold depends on whether it has paid:
+
+| | Talkif numbers the account can hold |
+|---|---|
+| Before the account's first payment | 2 |
+| After the first payment | 10 |
+
+Every number not yet released counts, suspended ones included; your own Twilio, SIP and WhatsApp numbers don't. Need more? Contact support — the limit can be raised per account.
+
+When a limit stops a purchase, the error says which one: `phone_number_limit_reached`, `phone_purchase_rate_limited` (with when to try again) or `owner_verification_required`.
 
 ## Paying for it
 
 Two rules that surprise people:
 
-- **Purchase and rental come only from purchased or subscription balance.** Bonus and promotional credit — including the welcome credit — never pay for a number. Top up first.
-- **Rental renews monthly, automatically**, from the day of purchase, against the same balance. The number's `monthlyCost` and `billingStatus` are on the record.
+- **Until the account's first payment, numbers are paid only from money you've added.** Bonus and promotional credit — including the welcome credit — can't buy or rent a number on an account that has never paid; the purchase is refused as *Not enough balance* (API: `insufficient_balance` — *"Trial and free credit can be used for phone numbers only after your first payment."*). After your first top-up, any credit pays for numbers, in the [usual order](/concepts/credits-and-pricing#kinds-of-balance).
+- **Rental renews automatically every 30 days**, from the day of purchase (or from the day the number was reactivated), against the same balance. The number's `monthlyCost` and `billingStatus` are on the record.
 
-<AccordionGroup>
-  <Accordion title="What happens when rental can't be paid" defaultOpen>
-    The number's billing status moves to **`past_due`**. Calls keep working. You have a **7-day grace period** to top up; the renewal is retried on each billing run during that window. If it still can't be paid at the end of the grace period, the number is **`suspended`**: it stops taking and placing calls, and you're notified again. Topping up reactivates it — the number stays yours; it isn't released.
-  </Accordion>
-  <Accordion title="Billing statuses">
-    <ParamField path="active" type="billingStatus">Rental is paid up.</ParamField>
-    <ParamField path="processing" type="billingStatus">A renewal charge is in progress.</ParamField>
-    <ParamField path="past_due" type="billingStatus">Renewal failed for insufficient balance; inside the grace period. Calls still work.</ParamField>
-    <ParamField path="suspended" type="billingStatus">Grace period elapsed unpaid. No calls until the balance covers rental.</ParamField>
-  </Accordion>
-</AccordionGroup>
+### What happens when rental can't be paid
+
+<Steps>
+  <Step title="Past due">
+    The renewal couldn't be charged. The number's billing status becomes **`past_due`**, it keeps working, and the charge is retried every hour. You have **7 days** from the renewal date to top up.
+  </Step>
+  <Step title="Suspended">
+    Still unpaid after 7 days, the number is **suspended**: it can't place calls. The Owner and admins are notified that unpaid numbers are released after 14 days.
+  </Step>
+  <Step title="Release notice">
+    At least **3 days** before the release, they're told the date: *"Unless you add funds, it will be released on … and can't be recovered after that."*
+  </Step>
+  <Step title="Released">
+    **14 days** after it was suspended, the number is released and can't be recovered — about three weeks after the missed renewal. A number that's the caller ID for a Meta lead form mapping is kept suspended instead, and you're told once.
+  </Step>
+</Steps>
+
+**Getting it back.** Add money — a card top-up or an auto-recharge — at any point before the release. Each suspended number is reactivated automatically, oldest first, and charged a fresh 30 days of rental from that day; the suspended days aren't charged. Numbers the balance can't cover stay suspended. Free credit, or a balance that already covers the rent, doesn't reactivate a number by itself — it takes a payment.
+
+<Accordion title="Billing statuses">
+  <ParamField path="active" type="billingStatus">Rental is paid up.</ParamField>
+  <ParamField path="processing" type="billingStatus">A renewal charge is in progress.</ParamField>
+  <ParamField path="past_due" type="billingStatus">Renewal failed for insufficient balance; inside the 7-day grace period. Calls still work.</ParamField>
+  <ParamField path="suspended" type="billingStatus">Grace period elapsed unpaid. Reactivated by a payment; released 14 days after suspension.</ParamField>
+</Accordion>
 
 ## Buying
 
 <Tabs>
   <Tab title="Dashboard">
     <Steps>
-      <Step title="Open Phone & WhatsApp → Purchase">
-        Pick a country from the list of those available for purchase.
+      <Step title="Phone & WhatsApp → Add Number → Talkif System Provider">
+        *Purchase new numbers (we handle payment)* opens **Purchase Number**. Pick a country from the list of those available for purchase, and a number type the country sells.
       </Step>
       <Step title="Search">
-        Filter by area code, city, state, ZIP, or a digit pattern (`555%` for a prefix, `%1234` for a suffix). Tick **Exclude address-required numbers** to skip numbers that need regulatory paperwork. Each search returns a fresh random batch from the carrier's inventory; search again to see more. Results show the formatted number, capabilities and monthly price.
+        **Contains Pattern** filters by digits anywhere: `*` matches one digit, `%` any sequence, wildcards only at the start or end (`555%` for a prefix, `%1234` for a suffix). For the US and Canada you can also filter by **Area Code**, and under **Advanced Filters** by **State**, **City** and **ZIP Code**. Tick **Exclude address-required numbers** to skip numbers that need regulatory paperwork, and choose 20, 30 or 50 results. Each search returns a fresh random batch from the carrier's inventory; search again to see more.
       </Step>
-      <Step title="Confirm">
-        Optionally give it a friendly name ("Support line"). The purchase charge is taken immediately and the number is provisioned — it appears in your list as **Active**.
+      <Step title="Purchase">
+        Expand a number to see its recurring charge, then click **Purchase**. The first 30 days are charged immediately, the number is provisioned and named after its city and state, and it appears in your list as **Active**.
       </Step>
       <Step title="Connect a flow">
         Until a published flow is connected, inbound calls are answered busy. See [Inbound and outbound routing](/telephony/inbound-and-outbound-routing).
@@ -54,25 +87,27 @@ Two rules that surprise people:
     </Steps>
   </Tab>
   <Tab title="API">
-    Purchases go through the platform's **system provider** — list providers and take the one with `isSystemProvider: true`.
+    API keys can look up countries, prices and available numbers. Search through the platform's **system provider** — list providers and take the one with `isSystemProvider: true`.
 
     <EndpointRequestSnippet endpoint="GET /api/v1/phone/numbers/twilio/available-countries" />
     <EndpointRequestSnippet endpoint="GET /api/v1/phone/numbers/twilio/pricing" />
     <EndpointRequestSnippet endpoint="GET /api/v1/phone/numbers/twilio/available" />
-    <EndpointRequestSnippet endpoint="POST /api/v1/phone/numbers/twilio/purchase" />
 
-    The response is the new number's record, including its `id` for [`PATCH …/connect-flow`](/api-reference/phone-numbers/connect-flow).
+    Buying is done by the Owner in the dashboard: the purchase endpoint refuses API keys with `403 api_key_not_allowed`. Once the number is in your account, connect it to a flow with [`PATCH …/connect-flow`](/api-reference/phone-numbers/connect-flow).
   </Tab>
 </Tabs>
 
+## What uses a number
+
+Open a number to see **Used by**: the flow its inbound calls go to, Meta lead form mappings that use it as caller ID, and campaigns and schedules that dial from it. *"Nothing uses this number yet."* when it's free. The API has the same list at `GET /phone/numbers/{id}/usage`.
+
 ## Releasing a number
 
-Releasing gives the number back to the carrier and stops rental. It's permanent — a released number can't be recovered by you, and may later be issued to someone else. From the number's page, or [`DELETE /phone/numbers/{id}`](/api-reference/phone-numbers/release-phone-number).
+Releasing gives the number back to the carrier and stops rental. It's permanent — a released number can't be recovered by you, and may later be issued to someone else. Only the Owner can release. From the number's page, **Release Number** opens *Release phone number*, which lists what releasing also stops; confirm with **Release number**, or keep it with **Keep number**. By API: [`DELETE /phone/numbers/{id}`](/api-reference/phone-numbers/release-phone-number).
 
-Two guards:
-
-- A number that's the **caller ID for a Meta Lead Ads form mapping** can't be released while the mapping exists — releasing it would silently stop calling new leads. Remove the mapping first.
-- Releasing is idempotent: releasing an already-released number succeeds without effect.
+- A number that's the **caller ID for a Meta Lead Ads form mapping** can't be released while the mapping exists — releasing it would silently stop calling new leads. The dashboard says *"This number can't be released yet"* and lists the forms; the API answers `409 cannot_delete_has_dependencies` with the same list. Pick another number on each form, or remove the mapping, then release.
+- Releasing a Talkif number twice is harmless: the second request succeeds without effect.
+- **A number in your own Twilio account stays in your Twilio account** when you remove it from Talkif. Talkif only clears the call settings that still point at Talkif; settings you made yourself are left alone.
 
 There's no refund for the remainder of a rental period.
 

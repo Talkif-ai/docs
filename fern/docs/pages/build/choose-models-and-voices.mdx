@@ -39,10 +39,10 @@ The trade is **speed against judgment**. For phone work, speed wins more often t
 The trade is **language coverage and robustness against price**.
 
 - **Language first.** Pick a model that lists the caller's language; multilingual, auto-detecting models (Soniox, xAI) are the safe default for mixed lines.
-- **Numbers and names.** The newer conversational models (Deepgram `nova-3`, for example) handle spelled names and digit strings noticeably better — relevant for reference numbers, postcodes, dates of birth. Test with your own data.
+- **Numbers and names.** The newer conversational models (Deepgram `nova-3-general`, for example) handle spelled names and digit strings noticeably better — relevant for reference numbers, postcodes, dates of birth. Test with your own data.
 - **Telephony audio is 8 kHz.** Every model in the catalogue works with it; the ones that advertise telephony support (xAI, Amazon Transcribe) were tuned on it.
 
-**Settings on the STT nodes** — each takes a **Model** and, where the model supports several, a **Language** (Deepgram, Google, Amazon Transcribe, Cartesia; a language *hint* for ElevenLabs). Soniox and xAI models detect language automatically and expose only the model choice.
+**Settings on the STT nodes** — each takes a **Model** and, where the model supports several, a **Language** (Deepgram, Amazon Transcribe, Cartesia; a language *hint* for ElevenLabs). Soniox and xAI models detect language automatically and expose only the model choice.
 
 ## Choosing TTS
 
@@ -57,14 +57,12 @@ The trade is **naturalness against latency**, and it's the most subjective choic
 | Provider | Settings |
 |---|---|
 | **ElevenLabs** | Voice; Stability 0–1 (higher = steadier, lower = more expressive); Similarity 0–1; Style 0–1; Speaker Boost; Speed 0.7–1.2. On **Eleven v4 Turbo** only Stability applies, and the prompt can use inline delivery tags — see [Write prompts](/build/write-prompts#emotion-and-delivery-with-eleven-v4-turbo) |
-| **Cartesia** | Voice; Emotion (on `sonic-3`); Speed 0.6–1.5; Volume 0.5–2.0 |
-| **Rime** | Voice; Emotion; Speed; Volume |
+| **Cartesia** | Voice; Emotion; Speed 0.6–1.5; Volume 0.5–2.0 |
 | **xAI** | Voice; Speed 0.7–1.5 |
-| **Google** | Voice only |
 
 ## A default that works
 
-If you have no constraints yet: **Deepgram `nova-3-general`** → a small, fast OpenAI model (the templates use `gpt-4o-mini`) at temperature 0.5 → **ElevenLabs `eleven_v4_turbo`** with a voice you've listened to. That's what the built-in [templates](/build/templates) ship with, and it's a good baseline to measure others against: change one provider at a time, run the same test conversation, compare the per-turn latency in the Flow Tester and the cost line on the call.
+If you have no constraints yet: **Deepgram `nova-3-general`** → a small, fast OpenAI model such as `gpt-5.6-luna` (it takes no temperature setting) → **ElevenLabs `eleven_v4_turbo`** with a voice you've listened to. It's a good baseline to measure others against: change one provider at a time, run the same test conversation, compare the per-turn latency in the Flow Tester and the cost line on the call.
 
 ## When a model is retired
 

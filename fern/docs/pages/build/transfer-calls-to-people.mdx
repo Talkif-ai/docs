@@ -30,7 +30,7 @@ The Transfer node attaches to an agent like any other function node. Its **When 
 | **Cold** | The call is connected to your person as soon as they answer; the AI leaves | Callers who asked for "a person", simple routing |
 | **Warm** | When your person answers, the AI briefs them first while the caller waits on hold. Then the caller is connected and the AI leaves | Anything where the person needs context before they speak — complaints, qualified sales leads, escalations |
 
-In a warm transfer the AI tells your colleague who is calling and why, in a couple of sentences, then connects the caller. The briefing is capped at one minute.
+In a warm transfer the AI tells your colleague who is calling and why, in a sentence, then connects the caller. The briefing is capped at one minute.
 
 ## What the caller hears
 
@@ -38,7 +38,7 @@ What the caller hears during a transfer is the same on every node, so you don't 
 
 1. **Before dialling** — a short line in the flow's language, such as *"Connecting you now, please hold."*
 2. **While it rings** — the AI keeps talking with the caller, so a wait never sounds like a dropped line. If nobody answers, the agent is told and continues the conversation.
-3. **During a warm briefing** — the caller hears a hold tone while the AI briefs your colleague.
+3. **During a warm briefing** — when your colleague answers, the caller hears *"I've reached a colleague — please hold."*, then a hold tone while the AI briefs them.
 
 ## The handoff case
 
@@ -51,7 +51,7 @@ Every transfer carries a short case file to the person who picks up, so they sta
 | **Caller name** | optional | Filled in when the caller gave it |
 | Your own fields | — | Up to 8 extra fields you define, e.g. *Order number* or *Contract ID* |
 
-The AI fills the case when it calls the transfer. Mark a field **required** and the AI asks the caller for it before transferring — useful when your team can't do anything without, say, an account number. People taking the call in the dashboard or the app see the case on the incoming-call screen.
+The AI fills the case when it calls the transfer. Mark a field **required** and the AI asks the caller for it before transferring — useful when your team can't do anything without, say, an account number. People taking the call in the dashboard see the case on the incoming-call screen.
 
 ## Where a transfer can go
 
@@ -95,7 +95,7 @@ Groups are the usual target: they let you change who picks up — add a number, 
 
 ### Call from
 
-A transfer to a phone number is a new outgoing call, placed from one of your numbers. **Call from** on the node (or on the phone destination) picks which one; by default it's the number the caller dialled. The number's provider carries that leg. Calls that didn't arrive on one of your numbers — browser test calls, for example — need a **Call from** number to transfer to a phone.
+A transfer to a phone number is a new outgoing call, placed from one of your numbers. **Call from** on the node (or on the phone destination) picks which one; by default it's the number the caller dialled. The number's provider carries that leg. Calls that didn't arrive on one of your phone numbers — browser test calls and WhatsApp calls, for example — need a **Call from** phone number to transfer to a phone; a WhatsApp number can't place that leg.
 
 ### Managing destinations by API
 
@@ -135,7 +135,7 @@ Member tags and available hours have their own endpoints, next to the destinatio
 - [`GET /transfers/member-tags`](/api-reference/transfers/list-member-tags) — the tags in use, with how many members carry each.
 - [`GET`](/api-reference/transfers/get-member-tags) / [`PUT /transfers/members/{memberId}/tags`](/api-reference/transfers/set-member-tags) — read or replace a member's tags.
 - [`GET`](/api-reference/transfers/get-member-hours) / [`PUT`](/api-reference/transfers/set-member-hours) / [`DELETE /transfers/members/{memberId}/hours`](/api-reference/transfers/delete-member-hours) — read, set or remove a member's available hours.
-- [`GET`](/api-reference/transfers/get-member-availability) / [`PUT /transfers/members/{memberId}/availability`](/api-reference/transfers/set-member-availability) — read or set a member's Team status (*available*, *away*, *offline*, optionally until a time).
+- [`GET`](/api-reference/transfers/get-member-availability) / [`PUT /transfers/members/{memberId}/availability`](/api-reference/transfers/set-member-availability) — read or set a member's Team status (*available*, *away*, *offline*, optionally until a time up to 30 days ahead). The reply also says who set it (`source`: `member`, `admin` for an owner or admin, or `auto` when Talkif set it after missed calls) and whether they're on a transferred call (`busy`).
 
 They use the `transfers` API key scope — read for `GET`, write for the rest — and follow the same rules as the dashboard: owners and admins set tags; hours are set by the member or an owner or admin; and an owner or admin can set a member *away* or *offline*, but back to *available* only if the member didn't turn calls off themselves. On a personal account the lists are empty.
 
