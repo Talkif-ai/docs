@@ -15,7 +15,7 @@ A template is a complete, publishable flow you copy instead of starting from an 
 | **Lead Qualification** | outbound | opener → qualification → booking | Qualifies interest, captures needs and timeline, and books a follow-up with a human rep |
 | **Payment Reminder** | outbound | payment | Polite reminder about an overdue invoice that captures a payment commitment or a dispute for human follow-up |
 
-All five ship with the same baseline providers — Deepgram `nova-3-general`, OpenAI `gpt-4o-mini`, ElevenLabs `eleven_v4_turbo` — so they're comparable, and so the first thing you change is the prompts, not the plumbing. You choose the voice when you create the flow.
+All five ship with the same baseline providers — Deepgram `nova-3-general`, OpenAI `gpt-5.6-luna`, ElevenLabs `eleven_v4_turbo` — so they're comparable, and so the first thing you change is the prompts, not the plumbing. You choose the voice when you create the flow.
 
 The outbound templates lean on `{{contact.*}}` variables — the contact's name, the appointment, the invoice — so they only make sense on calls with a contact attached: campaigns, schedules, or `POST /calls` with a `contactId`. [Write prompts](/build/write-prompts#dynamic-prompts) explains the variables.
 
