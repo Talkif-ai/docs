@@ -11,13 +11,13 @@ Every member has one role, and it applies in every account the organization owns
 ## The four roles
 
 <ParamField path="Owner" type="exactly one">
-  Created the organization or was handed it. The only role that touches money and the account's existence: payments, cards and auto-recharge, buying and releasing numbers, connecting carriers, deleting the account or organization, exporting the account's data, transferring ownership, and changing members' roles. Can do everything an Admin can.
+  Created the organization or was handed it. The only role that touches money and the account's existence: payments, cards and auto-recharge, buying and releasing numbers, connecting carriers, deleting the account, exporting the account's data, and changing members' roles. Can do everything an Admin can.
 </ParamField>
 <ParamField path="Admin" type="any number">
-  Runs the account and the team, without the money. Invites, suspends and removes members; manages API keys and the webhook signing secret; changes account settings; configures phone numbers, webhooks and integrations; manages transfer destinations and members' teams. Can do everything a Member can.
+  Runs the account and the team, without the money. Invites, suspends and removes members; manages API keys and the webhook signing secret; changes account settings; configures phone numbers, webhooks, alert rules and integrations; manages transfer destinations and members' teams. Can do everything a Member can.
 </ParamField>
 <ParamField path="Member" type="any number">
-  Does the daily work: flows, prompts, calls, campaigns, schedules, contacts, the Do Not Call list, leads and analytics; reads transcripts, listens to recordings, listens in on and takes over live calls; sees the balance, invoices and costs. Can do everything an Agent can.
+  Does the daily work: flows, prompts, calls, campaigns, schedules, contacts, the Do Not Call list, leads and analytics; reads transcripts, listens to recordings, listens in on and takes over live calls; sees the balance, charges, costs and alerts. Can do everything an Agent can.
 </ParamField>
 <ParamField path="Agent" type="any number">
   Only takes calls. Sets their own availability and answers the calls transferred to them in the dashboard. Agents don't see call history, flows, contacts or billing — the role is for the people on the phone, not for the people building the agent.
@@ -29,33 +29,39 @@ Every member has one role, and it applies in every account the organization owns
 |---|:-:|:-:|:-:|:-:|
 | Set your own availability; answer calls transferred to you; edit your own profile | ✓ | ✓ | ✓ | ✓ |
 | Build, test and publish flows; manage prompts and flow functions | ✓ | ✓ | ✓ | — |
-| Place calls; run campaigns and schedules; read transcripts and insights; listen to recordings | ✓ | ✓ | ✓ | — |
+| Place and end calls; run campaigns and schedules; read transcripts and insights; listen to recordings | ✓ | ✓ | ✓ | — |
 | Listen in on or take over a live call | ✓ | ✓ | ✓ | — |
 | Manage contacts, imports, the Do Not Call list and leads; view analytics | ✓ | ✓ | ✓ | — |
-| View the balance, invoices, costs and per-call cost breakdowns | ✓ | ✓ | ✓ | — |
+| View the balance, charges, costs and per-call cost breakdowns | ✓ | ✓ | ✓ | — |
 | View transfer destinations, members' teams and hours; set your own hours | ✓ | ✓ | ✓ | — |
-| Change account settings (recording, analysis, compliance, notifications) | ✓ | ✓ | — | — |
-| Configure phone numbers (connect a flow, name, recording override); manage webhooks and integrations; web-call access on flows | ✓ | ✓ | — | — |
+| View alert rules and incidents; acknowledge an incident | ✓ | ✓ | ✓ | — |
+| Change account settings (recording, analysis, compliance, the balance warning) | ✓ | ✓ | — | — |
+| Configure phone numbers (connect a flow, name, recording override) and add numbers from a connected SIP carrier; manage webhooks and integrations; web-call access on flows | ✓ | ✓ | — | — |
+| Create, change, test and delete alert rules; resolve incidents; add outside email addresses and alert webhooks | ✓ | ✓ | — | — |
 | Delete call recordings | ✓ | ✓ | — | — |
 | Add, change or delete transfer destinations and destination groups | ✓ | ✓ | — | — |
 | Set members' teams; set another member's hours or availability | ✓ | ✓ | — | — |
 | Create and revoke API keys; create and rotate the webhook signing secret | ✓ | ✓ | — | — |
-| Invite members; suspend, reactivate or remove a member | ✓ | ✓ | — | — |
+| Invite members, resend or cancel invitations; suspend, reactivate or remove a member | ✓ | ✓ | — | — |
 | **Top up; manage cards and auto-recharge; redeem coupons** | ✓ | — | — | — |
 | **Buy or release numbers; add, edit or remove carriers (SIP, Twilio, WhatsApp)** | ✓ | — | — | — |
 | **Change a member's role** | ✓ | — | — | — |
 | **Transfer ownership** | ✓ | — | — | — |
-| **Export the account's data; delete the account or the organization** | ✓ | — | — | — |
+| **Export the account's data; delete the account** | ✓ | — | — | — |
 
-The same table is in the dashboard, under **Team → Roles & permissions**, with your own role marked. Apps can read it with [`GET /roles`](/api-reference/accounts/get-roles) and the caller's own role and permissions with [`GET /permissions`](/api-reference/accounts/get-permissions).
+The same table is in the dashboard, under **Team → Roles & permissions**, with your own role marked. It isn't available to API keys. To read each member's role from your own systems, use [`GET /transfers/members`](/api-reference/transfers/list-members) (`transfers` scope): it lists every member with their role, tags, hours and availability.
 
 ### Who changes roles
 
-Only the **Owner** changes a member's role, between Admin, Member and Agent. Nobody is made Owner by a role change — ownership is [transferred](#transferring-ownership). Admins invite people with any of the three roles but can't change a role afterwards.
+Only the **Owner** changes a member's role, between Admin, Member and Agent, in the **Role** column of **Team → Members**. Nobody is made Owner by a role change — ownership is [transferred](#transferring-ownership). Admins invite people with any of the three roles but can't change a role afterwards.
+
+### Some actions need a verified Owner
+
+Inviting a member (or resending an invitation), creating an API key and buying a phone number need the account Owner's **email and phone number to be verified** — whoever does the inviting. Until then the dashboard says *"The account owner must verify their phone number"* (or email address). The Owner verifies under **User menu → Profile**; see [Security](/account/security#profile).
 
 ### API keys and roles
 
-API keys belong to the account, not to a person: Owners and Admins create and revoke them, and a key acts with the [scopes](/integrate/authentication#scopes) it was given, whoever uses it. Give each integration only the scopes it needs.
+API keys belong to the account: Owners and Admins create and revoke them, and a key can do only what its [scopes](/integrate/authentication#scopes) allow, whoever uses it. A key also never does more than the person who created it may do *right now* — every request is checked against its creator's current role too. If that person is demoted or removed, their keys lose access to match, so create integration keys from an Owner or a long-standing Admin. Give each integration only the scopes it needs.
 
 ### Taking calls
 
@@ -67,20 +73,22 @@ Every role can take calls. Whether a transfer rings someone is decided by the fl
 
 | Tab | What it shows | Who sees it |
 |---|---|---|
-| **Members** | Everyone in the organization with their role, status (*Active*, *Suspended*), availability for transferred calls, and teams and hours. The row menu holds **Tags and available hours**, availability, role, **Suspend** and **Remove** | Owner, Admin, Member |
-| **Invitations** | Invitations not yet accepted or declined, with role and date sent; cancel one from its row | Owner, Admin, Member |
+| **Members** | Everyone in the organization with their role, status (*Active*, *Suspended*), live availability for transferred calls, and teams and hours. The Owner changes a role in the **Role** column. The clock button opens **Tags and available hours**; the row menu holds **Availability**, **Make owner** (for the Owner), **Suspend** (or **Reactivate**) and **Remove** | Owner, Admin, Member |
+| **Invitations** | Invitations not yet accepted or declined, with role and when they were sent. Owners and Admins can **Resend** or **Cancel** each one | Owner, Admin, Member |
 | **Roles & permissions** | The role table above, with your own role marked | Everyone, including Agents |
 
-Your own availability — whether you take transferred calls right now — is the **You** control at the top right of the page.
+Availability updates live, for everyone in the organization: *Available*, *Busy* while someone is on a transferred call, *Away* or *Offline*, with the time they're back when they set one (*Away · back at 14:30*). Hover a status to see who set it — the member, an owner or admin, or Talkif after missed calls.
+
+You set your own availability from the status button in the dashboard's top bar, not from the Team page; your own row is marked *(you)*. See [Take calls in the dashboard](/calls/take-calls-in-the-dashboard#two-switches-decide-whether-you-ring).
 
 ## Inviting someone
 
 <Steps>
-  <Step title="Team → Invite to the team">
-    Enter their email and choose **Admin**, **Member** or **Agent** (no one is invited as Owner — ownership is transferred, not granted). Optionally add a title and department for the member list. The person must already have a Talkif login with that email.
+  <Step title="Team → Invite">
+    In **Invite to the team**, enter their email and choose **Admin**, **Member** or **Agent** (no one is invited as Owner — ownership is transferred, not granted). Optionally add a title and department for the member list. The person must already have a Talkif login with that email.
   </Step>
   <Step title="They accept">
-    An email carries the invitation, and it also appears when they next sign in. Until then it's listed under **Team → Invitations**, where you can cancel it.
+    An email carries the invitation, and it also appears in their notifications when they next sign in. Until then it's listed under **Team → Invitations**, where an Owner or Admin can **Resend** or **Cancel** it. One invitation can be resent 3 times in 24 hours.
   </Step>
   <Step title="They switch to the account">
     Accepting adds the organization's account to their account switcher. Their personal account, if any, is untouched.
@@ -91,12 +99,12 @@ Your own availability — whether you take transferred calls right now — is th
 
 - **Suspend** keeps the member on the list but blocks access until they're reactivated — the right move for a leaver whose work you still need to audit. **Reactivate** reverses it.
 - **Remove** takes them out of the organization and all of its accounts. Their user and personal account continue to exist; anything they created in the organization's account stays there.
-- A member can **leave** on their own. The Owner can't leave without first transferring ownership.
-- The Owner can't be suspended or removed by anyone; transfer ownership first.
+- To **leave** an organization, ask an Owner or Admin to remove you — the dashboard has no leave button yet. [Deleting your login](/account/data-export-and-deletion#deleting-your-login) also removes you from every organization.
+- The Owner can't be suspended or removed by anyone; ownership has to be transferred first.
 
 ## Transferring ownership
 
-The Owner picks an existing active member; that member becomes Owner and the previous Owner becomes an Admin. Do this before an Owner leaves the company — an organization without a reachable Owner can't change its billing or delete itself without support's help.
+Ownership moves to an existing active member of the organization. The Owner opens **Team → Members**, picks **Make owner** in that member's row menu, and confirms *"Make … the owner?"*. The new Owner gets money, deletion and ownership rights; the previous Owner becomes an Admin and can't undo it themselves. Do this before an Owner leaves the company — an organization without a reachable Owner can't change its billing or close its account.
 
 ## Next
 
