@@ -66,7 +66,7 @@ Use at most one tag per reply, only where it changes meaning: [warmly] when gree
 
 Rules that follow from how v4 Turbo works on Talkif:
 
-- **Only on tag-capable voices.** `eleven_v4_turbo` performs tags (and `eleven_v3_conversational` until it retires on 13 October 2026). On every other voice a tag is read aloud as text. If you switch the TTS node, remove the tag instruction from the prompt in the same publish.
+- **Only on tag-capable voices.** `eleven_v4_turbo` performs tags. On every other voice a tag is read aloud as text. If you switch the TTS node, remove the tag instruction from the prompt in the same publish.
 - **Describe the voice, not a sound.** v4 is trained on both vocal delivery and sound effects, so a vague tag can come out as a sound. Prefer tags that clearly describe how to speak — `[softly]`, `[warmly]`, `[calm, low voice]`.
 - **Pauses come from punctuation.** SSML `<break>` tags are not supported on v4; an ellipsis gives a beat, a comma a breath, one word in capitals stresses it.
 - **Pronunciation:** write the IPA between slashes inline, for example `"/ˈtɔːkɪf/"`. Test important names with your voice.

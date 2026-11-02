@@ -485,6 +485,184 @@
         ]
       }
     },
+    "/api/v1/billing/costs/campaigns/{campaignId}": {
+      "get": {
+        "tags": [
+          "Billing"
+        ],
+        "summary": "Get campaign cost breakdown",
+        "description": "Returns the total cost of a campaign's calls with a per-call summary.",
+        "operationId": "get_billing_campaign_cost_breakdown",
+        "parameters": [
+          {
+            "name": "campaignId",
+            "in": "path",
+            "description": "Campaign ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign cost breakdown",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignCostBreakdownResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/billing/costs/phones/{phoneId}": {
+      "get": {
+        "tags": [
+          "Billing"
+        ],
+        "summary": "Get phone cost breakdown",
+        "description": "Returns everything billed for a phone number: the purchase and every\nmonthly rental.",
+        "operationId": "get_phone_cost_breakdown",
+        "parameters": [
+          {
+            "name": "phoneId",
+            "in": "path",
+            "description": "Phone number ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Phone cost breakdown",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhoneCostBreakdownResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/api/v1/billing/invoices": {
       "get": {
         "tags": [
@@ -1104,6 +1282,920 @@
         ]
       }
     },
+    "/api/v1/calls/active": {
+      "get": {
+        "tags": [
+          "Calls"
+        ],
+        "summary": "List active calls",
+        "description": "Returns the account's calls that are still live (queued, ringing or in\nprogress), newest first.",
+        "operationId": "list_active_calls",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Max items to return (1-100, default 10)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Items to skip (default 0)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of active calls",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CallListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/calls/history": {
+      "get": {
+        "tags": [
+          "Calls"
+        ],
+        "summary": "List call history",
+        "description": "Same result as `GET /api/v1/calls`: the account's calls, newest first,\nwith the same filters. Prefer `GET /api/v1/calls` in new integrations.",
+        "operationId": "list_call_history",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of items to return (default: 20, max: 100)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Number of items to skip for pagination (default: 0)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "Only include calls after this timestamp (inclusive)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "Only include calls before this timestamp (inclusive)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by call status",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CallStatus"
+            }
+          },
+          {
+            "name": "direction",
+            "in": "query",
+            "description": "Filter by call direction",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CallDirection"
+            }
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "description": "Filter by call source (direct, scheduled, campaign)",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CallSource"
+            }
+          },
+          {
+            "name": "phoneNumber",
+            "in": "query",
+            "description": "Filter by phone number — matches either the from or to number (E.164)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isLead",
+            "in": "query",
+            "description": "Filter by whether the call was triggered by a Meta lead form (true = lead-driven only)",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "flowId",
+            "in": "query",
+            "description": "Filter by flow ID",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "contactId",
+            "in": "query",
+            "description": "Filter by contact ID",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "scheduleId",
+            "in": "query",
+            "description": "Filter by schedule ID (for scheduled calls)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "campaignId",
+            "in": "query",
+            "description": "Filter by campaign ID (for campaign calls)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "providerType",
+            "in": "query",
+            "description": "Filter by telephony provider type (channel)",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CallProviderType"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Free-text search across the contact name and the raw from/to phone\nnumbers (case-insensitive substring). Matches calls to/from numbers that\nwere never saved as contacts.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Field to sort results by (default: creation time)",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CallSortField"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "description": "Sort direction for `sortBy` (default: desc)",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/SortDirection"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of calls",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CallListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/calls/webrtc": {
+      "post": {
+        "tags": [
+          "Calls"
+        ],
+        "summary": "Create WebRTC call",
+        "description": "Starts a browser call against the published version of a flow and\nassigns an agent to it. Send the SDP offer next with\n`POST /api/v1/calls/webrtc/{callId}/offer`. To try unpublished changes,\nuse `POST /api/v1/calls/webrtc/test`. The call is billed like any other\ncall and needs a positive balance.",
+        "operationId": "create_webrtc_call",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWebRTCCallRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "WebRTC call created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateWebRTCCallResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "`validation_failed`, `bad_request`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "`service_unavailable`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/calls/webrtc/ice-servers": {
+      "get": {
+        "tags": [
+          "Calls"
+        ],
+        "summary": "Get ICE servers for WebRTC",
+        "description": "Returns STUN/TURN servers with short-lived credentials. Fetch them before\ncreating the peer connection, then pass the same list in the offer request\nso both ends use the same servers.",
+        "operationId": "get_ice_servers",
+        "responses": {
+          "200": {
+            "description": "ICE servers with short-lived credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IceServersResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "`service_unavailable`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/calls/webrtc/test": {
+      "post": {
+        "tags": [
+          "Calls"
+        ],
+        "summary": "Create WebRTC test call",
+        "description": "Starts a browser call that runs the flow definition sent in the request\ninstead of the published version, so changes can be tried before\npublishing. The definition is validated first. The call is recorded with\nversion `draft` and billed like any other call.",
+        "operationId": "create_webrtc_test_call",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWebRTCTestCallRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "WebRTC test call created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateWebRTCCallResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "`validation_failed`, `bad_request`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "`service_unavailable`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/calls/webrtc/{callId}": {
+      "get": {
+        "tags": [
+          "Calls"
+        ],
+        "summary": "Get WebRTC call",
+        "description": "Returns the current state of a browser call.",
+        "operationId": "get_webrtc_call",
+        "parameters": [
+          {
+            "name": "callId",
+            "in": "path",
+            "description": "Call ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "WebRTC call details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CallResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Calls"
+        ],
+        "summary": "Cancel WebRTC call",
+        "description": "Gives up a browser call before its SDP offer was sent, for example when\nthe caller leaves the call screen. The agent reserved for the call is\nreleased at once and the call ends as `canceled`; an agent that never\nconnected is not billed. A call that already started is hung up, as with\n`POST /api/v1/calls/{callId}/end`. Canceling an ended call does nothing.",
+        "operationId": "cancel_webrtc_call",
+        "parameters": [
+          {
+            "name": "callId",
+            "in": "path",
+            "description": "Call ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Call canceled (or already ended)"
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "`service_unavailable`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/calls/webrtc/{callId}/offer": {
+      "post": {
+        "tags": [
+          "Calls"
+        ],
+        "summary": "Relay WebRTC offer",
+        "description": "Sends the browser's SDP offer to the call's agent and returns the SDP\nanswer.",
+        "operationId": "relay_webrtc_offer",
+        "parameters": [
+          {
+            "name": "callId",
+            "in": "path",
+            "description": "Call ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebRTCOfferRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "WebRTC offer relayed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebRTCOfferResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "`conflict` — the call has ended or was canceled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "`service_unavailable`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/api/v1/calls/{callId}": {
       "get": {
         "tags": [
@@ -1303,6 +2395,184 @@
           },
           "503": {
             "description": "`service_unavailable`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/calls/{callId}/details": {
+      "get": {
+        "tags": [
+          "Calls"
+        ],
+        "summary": "Get full call details",
+        "description": "Returns comprehensive call information including:\n- Basic call data\n- Contact info (name, phone, email, company)\n- Flow info (name, version)\n- Transcript (structured messages with timestamps)\n- AI Analysis (summary, sentiment, intents, topics, action items, outcome)\n- Cost breakdown (LLM, TTS, STT, Telephony with details)\n- Quality metrics (MOS, jitter, latency, packet loss)\n- Timeline events",
+        "operationId": "get_call_details_full",
+        "parameters": [
+          {
+            "name": "callId",
+            "in": "path",
+            "description": "Call ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Full call details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CallDetailsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/calls/{callId}/end": {
+      "post": {
+        "tags": [
+          "Calls"
+        ],
+        "summary": "End an active call",
+        "description": "Hangs up a live call immediately. Idempotent: a call that has already\nended returns its current state without error. The returned status may\nstill read as in progress for a moment; the final status follows once\nthe carrier confirms the hangup.",
+        "operationId": "end_call",
+        "parameters": [
+          {
+            "name": "callId",
+            "in": "path",
+            "description": "Call ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The call after the hangup request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CallResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
             "content": {
               "application/json": {
                 "schema": {
@@ -1756,6 +3026,73 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/campaigns/counts": {
+      "get": {
+        "tags": [
+          "Campaigns"
+        ],
+        "summary": "Count campaigns by status",
+        "description": "Returns how many of the account's campaigns are in each status.",
+        "operationId": "campaign_status_counts",
+        "responses": {
+          "200": {
+            "description": "Campaign counts per status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignStatusCountsResponse"
                 }
               }
             }
@@ -3728,6 +5065,93 @@
         ]
       }
     },
+    "/api/v1/contacts/import/preview": {
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Preview contact import",
+        "description": "Parses and validates an import exactly like `POST /api/v1/contacts/import`\nand reports what would be created, updated or skipped, without saving\nanything.",
+        "operationId": "preview_import",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Import preview result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "`validation_failed`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/api/v1/contacts/search/phone/{phone}": {
       "get": {
         "tags": [
@@ -5530,6 +6954,194 @@
         }
       }
     },
+    "/api/v1/flow-templates/custom": {
+      "get": {
+        "tags": [
+          "Flow Templates"
+        ],
+        "summary": "List account templates",
+        "description": "Returns the templates saved in this account (system templates are listed\nby `GET /api/v1/flow-templates`).",
+        "operationId": "list_account_templates",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Filter by category",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Page size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Page offset",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of account-specific flow templates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlowTemplateListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/flow-templates/custom/{templateId}": {
+      "delete": {
+        "tags": [
+          "Flow Templates"
+        ],
+        "summary": "Delete account template",
+        "description": "Deletes a template saved in this account. Flows created from it are not\naffected.",
+        "operationId": "delete_account_template",
+        "parameters": [
+          {
+            "name": "templateId",
+            "in": "path",
+            "description": "Template ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Template deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemplateDeletedResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/api/v1/flow-templates/{slug}": {
       "get": {
         "tags": [
@@ -5603,6 +7215,15 @@
               "format": "int32",
               "default": 0,
               "minimum": 0
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Case-insensitive text matched against the flow's name, description and tags (max 100 characters)",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -5868,6 +7489,98 @@
         ]
       }
     },
+    "/api/v1/flows/published": {
+      "get": {
+        "tags": [
+          "Flows"
+        ],
+        "summary": "List published flows",
+        "description": "Returns only the account's published flows (the ones a phone number or\ncall can use), with their connected phone numbers.",
+        "operationId": "list_published_flows",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Max items to return (1-100, default 20)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Items to skip (default 0)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0,
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of published flows",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlowListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/api/v1/flows/{flowId}": {
       "get": {
         "tags": [
@@ -6037,7 +7750,7 @@
             }
           },
           "409": {
-            "description": "`flow_name_already_exists`",
+            "description": "`flow_name_already_exists`, `flow_version_conflict`",
             "content": {
               "application/json": {
                 "schema": {
@@ -6102,6 +7815,95 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/flows/{flowId}/duplicate": {
+      "post": {
+        "tags": [
+          "Flows"
+        ],
+        "summary": "Duplicate flow",
+        "description": "Creates a copy of the flow as a new draft. The copy has no connected\nphone numbers.",
+        "operationId": "duplicate_flow",
+        "parameters": [
+          {
+            "name": "flowId",
+            "in": "path",
+            "description": "Flow ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Flow duplicated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlowDetailResponse"
                 }
               }
             }
@@ -6401,6 +8203,115 @@
         ]
       }
     },
+    "/api/v1/flows/{flowId}/save-as-template": {
+      "post": {
+        "tags": [
+          "Flow Templates"
+        ],
+        "summary": "Save flow as template",
+        "description": "Saves the flow's current definition as a template private to this account.",
+        "operationId": "save_flow_as_template",
+        "parameters": [
+          {
+            "name": "flowId",
+            "in": "path",
+            "description": "Flow ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveAsTemplateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Flow saved as template",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlowTemplate"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "`validation_failed`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/api/v1/flows/{flowId}/stats": {
       "get": {
         "tags": [
@@ -6455,6 +8366,234 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/FlowStatsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/flows/{flowId}/status": {
+      "patch": {
+        "tags": [
+          "Flows"
+        ],
+        "summary": "Change flow status",
+        "description": "Moves the flow to another lifecycle status (for example archiving it).",
+        "operationId": "change_status",
+        "parameters": [
+          {
+            "name": "flowId",
+            "in": "path",
+            "description": "Flow ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeStatusRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Status changed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlowDetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "`validation_failed`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "`business_rule_violation`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/flows/{flowId}/tags": {
+      "patch": {
+        "tags": [
+          "Flows"
+        ],
+        "summary": "Update flow tags",
+        "description": "Replaces the flow's tags with the given list.",
+        "operationId": "update_tags",
+        "parameters": [
+          {
+            "name": "flowId",
+            "in": "path",
+            "description": "Flow ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTagsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Tags updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlowDetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "`validation_failed`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -6917,21 +9056,21 @@
         ]
       }
     },
-    "/api/v1/permissions": {
+    "/api/v1/models/tts/voices/default": {
       "get": {
         "tags": [
-          "Accounts"
+          "AI Models"
         ],
-        "summary": "List your permissions",
-        "description": "Your role in the account and the permissions it grants, for showing or\nhiding actions. The server enforces them regardless.",
-        "operationId": "get_permissions",
+        "summary": "List default TTS voices",
+        "description": "Returns up to 100 premade ElevenLabs voices that every account can use\nwithout adding them first.",
+        "operationId": "list_default_tts_voices",
         "responses": {
           "200": {
-            "description": "Your role and permissions",
+            "description": "Default ElevenLabs TTS voices",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PermissionsResponse"
+                  "$ref": "#/components/schemas/VoicesDto"
                 }
               }
             }
@@ -6947,7 +9086,7 @@
             }
           },
           "403": {
-            "description": "Not a member of this account",
+            "description": "`forbidden`",
             "content": {
               "application/json": {
                 "schema": {
@@ -7018,6 +9157,96 @@
         "responses": {
           "200": {
             "description": "List of phone numbers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhoneNumberListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/phone/numbers/owned": {
+      "get": {
+        "tags": [
+          "Phone Numbers"
+        ],
+        "summary": "List owned phone numbers",
+        "description": "Returns the account's active and pending phone numbers (released numbers\nare excluded), with their connected flows.",
+        "operationId": "get_owned_numbers",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Max items to return",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Items to skip",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of owned phone numbers",
             "content": {
               "application/json": {
                 "schema": {
@@ -7317,6 +9546,16 @@
               }
             }
           },
+          "422": {
+            "description": "`phone_number_type_unavailable`: the country offers no numbers of this type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Rate limit exceeded — retry after the delay in the response",
             "content": {
@@ -7351,7 +9590,6 @@
           "Phone Numbers"
         ],
         "summary": "List available countries for purchase",
-        "description": "GET /api/v1/phone/numbers/twilio/available-countries",
         "operationId": "list_available_countries",
         "parameters": [
           {
@@ -7366,7 +9604,14 @@
         ],
         "responses": {
           "200": {
-            "description": "List of available countries"
+            "description": "Countries where numbers can be bought",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailableCountriesResponse"
+                }
+              }
+            }
           },
           "401": {
             "description": "Authentication required — token is missing, expired, or invalid",
@@ -7422,7 +9667,6 @@
           "Phone Numbers"
         ],
         "summary": "Get phone number pricing",
-        "description": "GET /api/v1/phone/numbers/twilio/pricing",
         "operationId": "get_pricing",
         "parameters": [
           {
@@ -7446,7 +9690,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Pricing information",
+            "description": "Monthly prices for the country, one entry per number type",
             "content": {
               "application/json": {
                 "schema": {
@@ -7509,7 +9753,7 @@
           "Phone Numbers"
         ],
         "summary": "Purchase phone number",
-        "description": "POST /api/v1/phone/numbers/twilio/purchase",
+        "description": "An account can hold a limited number of rented phone numbers\n(`phone_number_limit_reached`, higher once the account has made a payment)\nand buy only a few per 24 hours (`phone_purchase_rate_limited`). Trial and\nother free credit pays for numbers only after the first payment.\n\nPOST /api/v1/phone/numbers/twilio/purchase",
         "operationId": "purchase_phone_number",
         "requestBody": {
           "content": {
@@ -7563,7 +9807,7 @@
             }
           },
           "403": {
-            "description": "`forbidden`",
+            "description": "`forbidden`, `owner_verification_required`, `phone_number_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -7593,7 +9837,7 @@
             }
           },
           "429": {
-            "description": "Rate limit exceeded — retry after the delay in the response",
+            "description": "`phone_purchase_rate_limited`",
             "content": {
               "application/json": {
                 "schema": {
@@ -7827,6 +10071,105 @@
         "responses": {
           "200": {
             "description": "Phone number released"
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "`resource_not_found`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "`cannot_delete_has_dependencies`: a Meta lead form mapping uses the number as caller ID. `meta.usage` lists what uses the number, in the same shape as `GET /api/v1/phone/numbers/{id}/usage`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded — retry after the delay in the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/phone/numbers/{id}/usage": {
+      "get": {
+        "tags": [
+          "Phone Numbers"
+        ],
+        "summary": "List phone number usage",
+        "description": "Returns the flow that answers inbound calls to the number, the Meta lead\nform mappings that use it as caller ID, and the unfinished campaigns and\ncall schedules that dial from it. `canRelease` is `false` while a Meta lead\nform mapping uses the number: delete those mappings or point them at another\nnumber before releasing it.",
+        "operationId": "get_phone_number_usage",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Phone number ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "What uses the phone number",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhoneNumberUsage"
+                }
+              }
+            }
           },
           "401": {
             "description": "Authentication required — token is missing, expired, or invalid",
@@ -8805,73 +11148,6 @@
           },
           "503": {
             "description": "`service_unavailable`",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
-    "/api/v1/roles": {
-      "get": {
-        "tags": [
-          "Accounts"
-        ],
-        "summary": "List the built-in roles",
-        "description": "Every built-in role with the permissions it grants in the selected\naccount, for showing what each role may do.",
-        "operationId": "get_roles",
-        "responses": {
-          "200": {
-            "description": "The built-in roles",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RolesResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required — token is missing, expired, or invalid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Not a member of this account",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Rate limit exceeded — retry after the delay in the response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error — contact support with the requestId",
             "content": {
               "application/json": {
                 "schema": {
@@ -11900,6 +14176,76 @@
           }
         ]
       }
+    },
+    "/api/v1/ws/events": {
+      "get": {
+        "tags": [
+          "Calls"
+        ],
+        "summary": "Stream realtime call events (WebSocket)",
+        "description": "Opens a WebSocket that streams live call events for the account. Send a\nstandard WebSocket upgrade request (`Connection: Upgrade`,\n`Upgrade: websocket`) with your API key in the `Authorization` header; the\nserver answers `101 Switching Protocols`. OpenAPI cannot describe the\nmessages exchanged after the upgrade, so they are listed here.\n\n**Client → server** (JSON text frames, `type` field):\n- `{\"type\":\"subscribe\",\"call_id\":\"<uuid>\",\"replay\":true}` follows one call;\n  `replay` first sends the call's earlier events. Omit `call_id` to follow\n  every call in the account.\n- `{\"type\":\"unsubscribe\",\"call_id\":\"<uuid>\"}` stops following a call (or the\n  account-wide stream when `call_id` is omitted).\n- `{\"type\":\"ping\"}`: the server answers `pong`.\n\n**Server → client**: every frame is an envelope\n`{\"v\":1,\"type\":\"<event>\",\"call_id\":\"<uuid>\",\"seq\":42,\"ts\":1767225600000,\"data\":{...}}`.\n`seq` increases by one per frame on a connection, so a gap means frames were\ndropped. Per-call event types: `status`, `error`, `transcript`, `interim`,\n`tts`, `tts_word`, `speech`, `turn`, `node_transition`, `recording`,\n`voicemail`. Account-wide event types: `call.created`, `call.status`,\n`call.ended`. Under backpressure only `interim`, `tts` and `tts_word` frames\nmay be dropped. Events of one call can arrive out of order across types;\ndo not rely on cross-type ordering.\n\nThe server pings every 25 seconds and closes an idle connection after 5\nminutes without any inbound frame.",
+        "operationId": "stream_call_events",
+        "responses": {
+          "101": {
+            "description": "Switching Protocols: the WebSocket is open"
+          },
+          "401": {
+            "description": "Authentication required — token is missing, expired, or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "`forbidden`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "`rate_limit_exceeded`: too many open connections for the account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error — contact support with the requestId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "`service_unavailable`: realtime events are temporarily unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -11924,16 +14270,6 @@
           }
         },
         "additionalProperties": false
-      },
-      "AccountRole": {
-        "type": "string",
-        "description": "A role level inside an account or organization. Ordered: an owner passes\nevery admin check, an admin every member check, a member every agent\ncheck.",
-        "enum": [
-          "agent",
-          "member",
-          "admin",
-          "owner"
-        ]
       },
       "ActionDefinition": {
         "type": "object",
@@ -12069,7 +14405,7 @@
               "string",
               "null"
             ],
-            "description": "This agent's own instructions — THE canonical task field.\n\nIn force only while the flow sits on this agent. Static and dynamic\ncontent share this one field: text containing `{{handlebars}}` is\nresolved at call time, plain text passes through. There is no prompt\nnode, no edge, and no template indirection.\n\n`taskMessage` is accepted as a deprecated alias.",
+            "description": "This agent's own instructions — THE canonical task field.\n\nIn force only while the flow sits on this agent. Static and dynamic\ncontent share this one field: text containing `{{handlebars}}` is\nresolved at call time, plain text passes through. There is no prompt\nnode, no edge, and no template indirection.\n\n`taskMessage` is accepted as a deprecated alias on input and stored as\n`agentPrompt`.",
             "example": "Remind the customer about their upcoming appointment."
           },
           "functions": {
@@ -12114,7 +14450,7 @@
               "string",
               "null"
             ],
-            "description": "The call's system prompt — set on the entry agent only.\n\nGlobal to the call and persistent across agent transitions, so\nnon-entry agents leave this `None` and inherit it. Validation rejects\na `systemPrompt` on a non-entry agent.\n\n`roleMessage` is accepted as a deprecated alias.",
+            "description": "The call's system prompt — set on the entry agent only.\n\nGlobal to the call and persistent across agent transitions, so\nnon-entry agents leave this `None` and inherit it. Validation rejects\na `systemPrompt` on a non-entry agent.\n\n`roleMessage` is accepted as a deprecated alias on input and stored as\n`systemPrompt`.",
             "example": "You are a friendly appointment reminder assistant."
           },
           "transitions": {
@@ -12355,6 +14691,22 @@
             "format": "double",
             "description": "Percentage of total contacts (0-100)",
             "example": 70
+          }
+        }
+      },
+      "AvailableCountriesResponse": {
+        "type": "object",
+        "description": "Countries where phone numbers can be bought.",
+        "required": [
+          "countries"
+        ],
+        "properties": {
+          "countries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhoneNumberCountry"
+            },
+            "description": "One entry per country."
           }
         }
       },
@@ -12945,6 +15297,35 @@
           }
         }
       },
+      "CallCostSummary": {
+        "type": "object",
+        "description": "Call cost summary for campaign breakdown",
+        "required": [
+          "callId",
+          "totalMicrocents",
+          "totalUsd"
+        ],
+        "properties": {
+          "callId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Call identifier",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "totalMicrocents": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Call cost in microcents",
+            "example": 5000000
+          },
+          "totalUsd": {
+            "type": "number",
+            "format": "double",
+            "description": "Call cost in USD",
+            "example": "0.50"
+          }
+        }
+      },
       "CallCounts": {
         "type": "object",
         "description": "Call count breakdown",
@@ -12985,6 +15366,329 @@
             "format": "int64",
             "description": "Total number of calls in the period",
             "example": 150
+          }
+        }
+      },
+      "CallDetailsResponse": {
+        "type": "object",
+        "description": "Full call details response for the call details page.\nIncludes transcript, cost breakdown, quality metrics, turns, and timeline.",
+        "required": [
+          "id",
+          "accountId",
+          "callSid",
+          "fromNumber",
+          "toNumber",
+          "status",
+          "direction",
+          "source",
+          "providerType",
+          "createdAt",
+          "isRecorded",
+          "isAnalyzed",
+          "timeline"
+        ],
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Account that owns this call",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "callSid": {
+            "type": "string",
+            "description": "Twilio Call SID",
+            "example": "CA1234567890abcdef1234567890abcdef"
+          },
+          "campaignId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid",
+            "description": "Campaign ID if the call is part of a bulk campaign"
+          },
+          "contact": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/ContactSummary",
+                "description": "Contact associated with this call"
+              }
+            ]
+          },
+          "cost": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Total cost in USD (string for decimal precision)",
+            "example": "0.053200"
+          },
+          "costBreakdown": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/CostBreakdown",
+                "description": "Detailed cost breakdown by service (LLM, STT, TTS, telephony)"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the call record was created",
+            "example": "2026-01-15T10:30:00Z"
+          },
+          "direction": {
+            "$ref": "#/components/schemas/CallDirection",
+            "description": "Call direction (inbound or outbound)"
+          },
+          "duration": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "Call duration in seconds",
+            "example": 125
+          },
+          "endReason": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/CallEndReason",
+                "description": "Why the call ended (only present for terminal calls)"
+              }
+            ]
+          },
+          "endedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "When the call ended"
+          },
+          "failureCode": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/CallFailureCode",
+                "description": "Specific failure code if the call failed"
+              }
+            ]
+          },
+          "failureReason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Human-readable failure description",
+            "example": "Recipient did not answer"
+          },
+          "flow": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/FlowSummary",
+                "description": "Flow used for the AI conversation"
+              }
+            ]
+          },
+          "flowId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid",
+            "description": "Flow ID used for the AI conversation"
+          },
+          "fromNumber": {
+            "type": "string",
+            "description": "Caller phone number in E.164 format",
+            "example": "+15559876543"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique call identifier",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "insights": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/CallInsights",
+                "description": "AI-generated call insights (summary, sentiment, intents, action items)"
+              }
+            ]
+          },
+          "isAnalyzed": {
+            "type": "boolean",
+            "description": "Whether AI-powered post-call analysis has been performed"
+          },
+          "isRecorded": {
+            "type": "boolean",
+            "description": "Whether audio recording was enabled for this call"
+          },
+          "performance": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/CallPerformance",
+                "description": "Call performance metrics (latency, conversation, usage)"
+              }
+            ]
+          },
+          "providerType": {
+            "$ref": "#/components/schemas/CallProviderType",
+            "description": "Telephony provider type used for this call"
+          },
+          "quality": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/QualityMetrics",
+                "description": "Call quality metrics from Twilio Voice Insights (MOS, jitter, packet loss)"
+              }
+            ]
+          },
+          "recordingDurationSecs": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "Recording duration in seconds",
+            "example": 120.5
+          },
+          "recordingExpiresAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "When the recording will be automatically deleted from storage"
+          },
+          "recordingFileSizeBytes": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "Recording file size in bytes",
+            "example": 1048576
+          },
+          "recordingStatus": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Recording lifecycle status: \"started\", \"ready\", or \"failed\"",
+            "example": "ready"
+          },
+          "recordingStorageCost": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Upfront recording storage cost in USD",
+            "example": "0.000150"
+          },
+          "scheduleId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid",
+            "description": "Schedule ID if the call was triggered by a recurring schedule"
+          },
+          "source": {
+            "$ref": "#/components/schemas/CallSource",
+            "description": "Where the call originated from"
+          },
+          "startedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "When the call was answered"
+          },
+          "status": {
+            "$ref": "#/components/schemas/CallStatus",
+            "description": "User-facing computed call status"
+          },
+          "timeline": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TimelineEvent"
+            },
+            "description": "Chronological timeline of events during the call"
+          },
+          "toNumber": {
+            "type": "string",
+            "description": "Destination phone number in E.164 format",
+            "example": "+15551234567"
+          },
+          "transcript": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/TranscriptMessage"
+            },
+            "description": "Structured transcript of the conversation (ordered by timestamp)"
+          },
+          "transferCase": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "Handoff case the AI passed when it transferred the call to a person:\n`reason`, `summary`, optional `caller_name`, plus any custom fields\nconfigured on the Transfer node. Present only for transferred calls."
+          },
+          "turns": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/CallTurnResponse"
+            },
+            "description": "Turn-by-turn conversation data with per-turn metrics and function calls"
+          },
+          "voicemailDetectedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "When voicemail detection produced a result (null if none)"
+          },
+          "voicemailStatus": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Voicemail detection outcome (null if detection was off or no result):\n\"voicemail_detected\", \"human_detected\", or \"undetermined\"",
+            "example": "voicemail_detected"
           }
         }
       },
@@ -13201,6 +15905,38 @@
             "type": "string",
             "description": "Outcome classification (e.g., \"lead_qualified\", \"appointment_set\", \"callback_requested\")",
             "example": "appointment_set"
+          }
+        }
+      },
+      "CallPerformance": {
+        "type": "object",
+        "description": "Call performance metrics — latency, conversation, and usage analytics",
+        "required": [
+          "latency",
+          "conversation",
+          "usage"
+        ],
+        "properties": {
+          "conversation": {
+            "$ref": "#/components/schemas/PerformanceConversation",
+            "description": "Conversation quality metrics"
+          },
+          "firstSpeechMs": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "Client connect to first bot audio in milliseconds",
+            "example": 465
+          },
+          "latency": {
+            "$ref": "#/components/schemas/PerformanceLatency",
+            "description": "Latency statistics across all turns"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/PerformanceUsage",
+            "description": "Token and character usage totals"
           }
         }
       },
@@ -13710,6 +16446,220 @@
           }
         }
       },
+      "CallTurn": {
+        "type": "object",
+        "description": "Individual turn data from a call conversation.\nEach turn represents one user-bot interaction cycle (user speaks, bot responds).",
+        "required": [
+          "id",
+          "callId",
+          "accountId",
+          "turnId",
+          "turnStartMs",
+          "userSpeechDurationMs",
+          "botSpeechDurationMs",
+          "userSegments",
+          "botSegments",
+          "idleBeforeTurnMs",
+          "wasInterrupted",
+          "createdAt"
+        ],
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Account that owns the call",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "botSegments": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of bot speech segments in this turn",
+            "example": 2
+          },
+          "botSpeechDurationMs": {
+            "type": "number",
+            "format": "double",
+            "description": "Bot speech duration in milliseconds",
+            "example": 4200
+          },
+          "callId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Call this turn belongs to",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When this turn record was created",
+            "example": "2026-01-15T10:30:00Z"
+          },
+          "estimatedCostMicrocents": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "Estimated cost for this turn in microcents (1 cent = 10,000 microcents)",
+            "example": 1250
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique turn record identifier",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "idleBeforeTurnMs": {
+            "type": "number",
+            "format": "double",
+            "description": "Idle time before this turn started in milliseconds",
+            "example": 200
+          },
+          "llmCompletionTokens": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "LLM completion (output) tokens generated in this turn",
+            "example": 128
+          },
+          "llmLatencyMs": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "LLM time to first token in milliseconds",
+            "example": 350
+          },
+          "llmPromptTokens": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "LLM prompt (input) tokens consumed in this turn",
+            "example": 512
+          },
+          "sttLatencyMs": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "Speech-to-text time to first byte in milliseconds",
+            "example": 120
+          },
+          "ttsCharacters": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "Number of TTS characters synthesized in this turn",
+            "example": 245
+          },
+          "ttsLatencyMs": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "Text-to-speech time to first byte in milliseconds",
+            "example": 180
+          },
+          "turnId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Sequential turn number (1-based)",
+            "example": 1
+          },
+          "turnStartMs": {
+            "type": "integer",
+            "format": "int64",
+            "description": "When the turn started (Unix timestamp in milliseconds)",
+            "example": 1705312200000
+          },
+          "userSegments": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of user speech segments in this turn",
+            "example": 1
+          },
+          "userSpeechDurationMs": {
+            "type": "number",
+            "format": "double",
+            "description": "User speech duration in milliseconds",
+            "example": 2500
+          },
+          "userTurnMs": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "User turn detection cost: VAD + STT + smart turn decision (ms)",
+            "example": 450
+          },
+          "wasInterrupted": {
+            "type": "boolean",
+            "description": "Whether the bot was interrupted by the user mid-response"
+          }
+        }
+      },
+      "CallTurnFunctionCall": {
+        "type": "object",
+        "description": "Function call within a turn (from normalized table).",
+        "required": [
+          "functionName",
+          "durationMs",
+          "turnId"
+        ],
+        "properties": {
+          "durationMs": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Execution duration in milliseconds",
+            "example": 230
+          },
+          "functionName": {
+            "type": "string",
+            "description": "Function name",
+            "example": "lookup_account"
+          },
+          "turnId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Turn this function was called in",
+            "example": 2
+          }
+        }
+      },
+      "CallTurnResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CallTurn",
+            "description": "Turn data"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "functionCalls": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "$ref": "#/components/schemas/CallTurnFunctionCall"
+                },
+                "description": "Function calls executed during this turn"
+              }
+            }
+          }
+        ],
+        "description": "Call turn with function calls attached (for API response)."
+      },
       "CallWindowRequest": {
         "type": "object",
         "description": "Request to create/update a call window",
@@ -13998,6 +16948,51 @@
           "no_answer",
           "skipped"
         ]
+      },
+      "CampaignCostBreakdownResponse": {
+        "type": "object",
+        "description": "Campaign cost breakdown response",
+        "required": [
+          "campaignId",
+          "totalMicrocents",
+          "totalUsd",
+          "byCategory",
+          "calls"
+        ],
+        "properties": {
+          "byCategory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryBreakdown"
+            },
+            "description": "Cost breakdown by service category"
+          },
+          "calls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CallCostSummary"
+            },
+            "description": "Per-call cost summaries"
+          },
+          "campaignId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Campaign identifier",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "totalMicrocents": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total campaign cost in microcents",
+            "example": 250000000
+          },
+          "totalUsd": {
+            "type": "number",
+            "format": "double",
+            "description": "Total campaign cost in USD",
+            "example": "25.00"
+          }
+        }
       },
       "CampaignDurationBucket": {
         "type": "object",
@@ -14566,6 +17561,63 @@
           "canceled"
         ]
       },
+      "CampaignStatusCountsResponse": {
+        "type": "object",
+        "description": "Campaign counts grouped by status\n\nEvery status key is always present, zero-filled, so the client never has to\ndistinguish \"zero\" from \"absent\".",
+        "required": [
+          "total",
+          "draft",
+          "pending",
+          "running",
+          "draining",
+          "paused",
+          "completed",
+          "canceled"
+        ],
+        "properties": {
+          "canceled": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Campaigns stopped manually or by the system"
+          },
+          "completed": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Campaigns that processed every contact"
+          },
+          "draft": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Campaigns being configured"
+          },
+          "draining": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Campaigns waiting for active calls to finish"
+          },
+          "paused": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Campaigns fully stopped"
+          },
+          "pending": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Campaigns whose contacts are being queued"
+          },
+          "running": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Campaigns actively placing calls"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Campaigns across all statuses",
+            "example": 42
+          }
+        }
+      },
       "CampaignVoicemail": {
         "type": "object",
         "description": "Answering-machine detection outcomes.",
@@ -14635,6 +17687,19 @@
             "format": "double",
             "description": "Cost in USD",
             "example": "15.00"
+          }
+        }
+      },
+      "ChangeStatusRequest": {
+        "type": "object",
+        "description": "Request to change flow status",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/FlowStatus",
+            "description": "Target status to transition the flow to"
           }
         }
       },
@@ -15028,6 +18093,7 @@
           "phone_rental",
           "call_analysis",
           "voicemail_classification",
+          "ai_decisions",
           "adjustment",
           "reservation",
           "recording_storage",
@@ -15460,6 +18526,88 @@
           }
         }
       },
+      "ContactSummary": {
+        "type": "object",
+        "description": "Contact summary for the call details page",
+        "required": [
+          "id",
+          "name",
+          "primaryPhone",
+          "tags",
+          "interests"
+        ],
+        "properties": {
+          "company": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Company or organization name",
+            "example": "Acme Corp"
+          },
+          "email": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Contact email address",
+            "example": "jane@example.com"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Contact unique identifier",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "interests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Contact interests or topics of conversation",
+            "example": [
+              "healthcare",
+              "scheduling"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "description": "Contact display name",
+            "example": "Jane Smith"
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Free-text notes about this contact"
+          },
+          "occupation": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Contact job title or occupation",
+            "example": "Product Manager"
+          },
+          "primaryPhone": {
+            "type": "string",
+            "description": "Contact primary phone number in E.164 format",
+            "example": "+15551234567"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tags assigned to this contact",
+            "example": [
+              "vip",
+              "priority"
+            ]
+          }
+        }
+      },
       "ConversationMetrics": {
         "type": "object",
         "description": "Conversation quality metrics",
@@ -15511,6 +18659,41 @@
           }
         }
       },
+      "CostBreakdown": {
+        "type": "object",
+        "description": "Detailed cost breakdown by service",
+        "required": [
+          "totalCostUsd",
+          "durationSeconds",
+          "ratePerMinute",
+          "services"
+        ],
+        "properties": {
+          "durationSeconds": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Billable duration in seconds",
+            "example": 125
+          },
+          "ratePerMinute": {
+            "type": "string",
+            "description": "Effective rate per minute in USD",
+            "example": "0.025000"
+          },
+          "services": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceCost"
+            },
+            "description": "Per-service cost breakdown (LLM, STT, TTS, telephony)"
+          },
+          "totalCostUsd": {
+            "type": "string",
+            "description": "Total call cost in USD (string for decimal precision)",
+            "example": "0.053200"
+          }
+        }
+      },
       "CostCategory": {
         "type": "string",
         "description": "Cost category for line items",
@@ -15523,6 +18706,7 @@
           "function_call",
           "llm_analysis",
           "llm_classification",
+          "ai_decision",
           "assistant_usage",
           "number_fee",
           "rental_fee",
@@ -16281,6 +19465,28 @@
           }
         }
       },
+      "CreateWebRTCCallRequest": {
+        "type": "object",
+        "description": "Request to create a WebRTC call record (before /offer)\n\nUses the published flow version. For test calls with draft definitions,\nuse `POST /webrtc/test` instead.",
+        "required": [
+          "flowId"
+        ],
+        "properties": {
+          "flowId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Flow ID to use for the AI conversation",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "metadata": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "Additional metadata to attach to the call"
+          }
+        }
+      },
       "CreateWebRTCCallResponse": {
         "type": "object",
         "description": "Response after creating a WebRTC call record (includes bot assignment)",
@@ -16295,7 +19501,7 @@
               "string",
               "null"
             ],
-            "description": "Assigned bot ID (null if bot assignment failed non-fatally)",
+            "description": "Identifier of the agent instance serving the call, if one is assigned yet",
             "example": "bot-7f3a9c"
           },
           "callId": {
@@ -16310,9 +19516,44 @@
             "description": "Flow ID used for the AI conversation",
             "example": "550e8400-e29b-41d4-a716-446655440000"
           },
+          "offerDeadlineAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The agent waits for your SDP offer until this time (RFC 3339), then\nreleases itself and the call can no longer start. Send the offer well\nbefore it: connecting still takes a few seconds after the offer.\nAbsent when no agent is assigned or the agent did not report its window.",
+            "example": "2026-01-15T10:30:00Z"
+          },
           "status": {
             "$ref": "#/components/schemas/CallStatus",
             "description": "Current call status"
+          }
+        }
+      },
+      "CreateWebRTCTestCallRequest": {
+        "type": "object",
+        "description": "Request to create a WebRTC test call with a draft flow definition\n\nRequest to start a WebRTC test call with an unpublished flow definition.",
+        "required": [
+          "flowId",
+          "definition"
+        ],
+        "properties": {
+          "definition": {
+            "$ref": "#/components/schemas/FlowDefinition",
+            "description": "Flow definition to run instead of the published version"
+          },
+          "flowId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Flow ID to test with a draft definition",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "metadata": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "Additional metadata to attach to the call"
           }
         }
       },
@@ -16640,6 +19881,11 @@
           "phone_already_exists",
           "contact_phone_already_exists",
           "account_suspended",
+          "account_pending_deletion",
+          "login_pending_deletion",
+          "owns_organization_with_members",
+          "account_deletion_blocked",
+          "client_update_required",
           "account_access_denied",
           "token_expired",
           "token_invalid",
@@ -16653,14 +19899,20 @@
           "email_service_unavailable",
           "phone_already_verified",
           "phone_verification_code_invalid",
+          "bot_check_failed",
           "phone_verification_code_expired",
           "phone_verification_code_used",
           "phone_number_missing",
+          "email_not_verified",
+          "disposable_email_not_allowed",
+          "request_blocked",
+          "phone_verification_refused",
           "sms_service_unavailable",
           "mfa_already_enabled",
           "mfa_not_enabled",
           "mfa_not_setup",
           "mfa_code_invalid",
+          "passkey_not_found",
           "password_reset_token_invalid",
           "password_reset_token_expired",
           "password_reset_token_used",
@@ -16674,11 +19926,15 @@
           "cannot_unlink_only_auth",
           "validation_failed",
           "bad_request",
+          "ring_target_required",
           "invalid_json",
           "resource_not_found",
           "not_found",
           "forbidden",
           "insufficient_permissions",
+          "connectors_consent_required",
+          "already_answered",
+          "expired",
           "conflict",
           "resource_already_exists",
           "insufficient_balance",
@@ -16692,8 +19948,10 @@
           "rate_limit_exceeded",
           "queue_full",
           "assistant_quota_exceeded",
+          "phone_purchase_rate_limited",
           "user_phone_not_verified",
           "account_not_verified",
+          "owner_verification_required",
           "payment_method_required",
           "trial_already_claimed",
           "promotion_not_eligible",
@@ -16720,6 +19978,7 @@
           "byoc_only",
           "phone_already_registered",
           "cannot_delete_system_provider",
+          "phone_number_type_unavailable",
           "flow_name_already_exists",
           "flow_structure_invalid",
           "flow_has_connected_phones",
@@ -16729,8 +19988,12 @@
           "flow_function_not_found",
           "flow_generation_failed",
           "payment_method_card_only",
+          "apple_transaction_invalid",
+          "apple_transaction_account_mismatch",
+          "sandbox_purchase_not_allowed",
           "template_variable_resolution_failed",
           "phone_number_in_use",
+          "phone_number_limit_reached",
           "mfa_token_invalid",
           "invalid_id_format",
           "verification_code_invalid",
@@ -17639,6 +20902,50 @@
           "ARCHIVED"
         ]
       },
+      "FlowSummary": {
+        "type": "object",
+        "description": "Flow summary for the call details page",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "currentVersion": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Current published version of the flow",
+            "example": "1.0.1"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Flow description"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Flow unique identifier",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Flow display name",
+            "example": "Appointment Reminder"
+          },
+          "usedVersion": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Specific version that was used for this call (from flow executions)",
+            "example": "1.0.0"
+          }
+        }
+      },
       "FlowTemplate": {
         "type": "object",
         "description": "Flow template - can be system-wide (account_id = None) or account-specific",
@@ -18469,7 +21776,7 @@
           "model": {
             "type": "string",
             "description": "Model identifier",
-            "example": "gpt-4.1-mini"
+            "example": "gpt-5.6-luna"
           },
           "priorityTier": {
             "type": [
@@ -18558,6 +21865,49 @@
             "format": "int32",
             "description": "95th percentile first speech latency",
             "example": 2100
+          }
+        }
+      },
+      "LatencyStats": {
+        "type": "object",
+        "description": "Latency statistics for a service (avg, p50, p95, max)",
+        "required": [
+          "avgMs",
+          "p50Ms",
+          "p95Ms",
+          "maxMs",
+          "samples"
+        ],
+        "properties": {
+          "avgMs": {
+            "type": "number",
+            "format": "double",
+            "description": "Average latency in milliseconds",
+            "example": 320.5
+          },
+          "maxMs": {
+            "type": "number",
+            "format": "double",
+            "description": "Maximum latency observed in milliseconds",
+            "example": 1200
+          },
+          "p50Ms": {
+            "type": "number",
+            "format": "double",
+            "description": "Median (50th percentile) latency in milliseconds",
+            "example": 280
+          },
+          "p95Ms": {
+            "type": "number",
+            "format": "double",
+            "description": "95th percentile latency in milliseconds",
+            "example": 650
+          },
+          "samples": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of samples used to compute these statistics",
+            "example": 12
           }
         }
       },
@@ -18698,8 +22048,8 @@
           },
           "modelId": {
             "type": "string",
-            "description": "Model identifier (e.g., \"gpt-4o\", \"claude-3-5-sonnet\")",
-            "example": "gpt-4o"
+            "description": "Model identifier (e.g., \"gpt-5.6-luna\", \"claude-sonnet-5-5\")",
+            "example": "gpt-5.6-luna"
           },
           "name": {
             "type": "string",
@@ -19346,6 +22696,98 @@
           }
         }
       },
+      "MosScore": {
+        "type": "object",
+        "description": "Mean Opinion Score (MOS) with rating (1.0-5.0 scale)",
+        "required": [
+          "average",
+          "rating"
+        ],
+        "properties": {
+          "average": {
+            "type": "number",
+            "format": "double",
+            "description": "Average MOS across the call duration",
+            "example": 4.1
+          },
+          "max": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "Maximum MOS observed",
+            "example": 4.5
+          },
+          "min": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "Minimum MOS observed",
+            "example": 3.2
+          },
+          "rating": {
+            "$ref": "#/components/schemas/QualityLevel",
+            "description": "Quality rating derived from the average MOS"
+          }
+        }
+      },
+      "NetworkMetric": {
+        "type": "object",
+        "description": "Network metric measurement (jitter or latency)",
+        "required": [
+          "valueMs",
+          "rating"
+        ],
+        "properties": {
+          "rating": {
+            "$ref": "#/components/schemas/QualityLevel",
+            "description": "Quality rating for this metric"
+          },
+          "valueMs": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Measured value in milliseconds",
+            "example": 15
+          }
+        }
+      },
+      "PacketLossMetric": {
+        "type": "object",
+        "description": "RTP packet loss statistics for the call",
+        "required": [
+          "percentage",
+          "packetsLost",
+          "packetsReceived",
+          "rating"
+        ],
+        "properties": {
+          "packetsLost": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Total number of lost packets",
+            "example": 12
+          },
+          "packetsReceived": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Total number of received packets",
+            "example": 2400
+          },
+          "percentage": {
+            "type": "number",
+            "format": "double",
+            "description": "Packet loss as a percentage (0.0-100.0)",
+            "example": 0.5
+          },
+          "rating": {
+            "$ref": "#/components/schemas/QualityLevel",
+            "description": "Quality rating based on packet loss percentage"
+          }
+        }
+      },
       "PaginatedResponse": {
         "allOf": [
           {
@@ -19396,30 +22838,191 @@
           }
         }
       },
-      "PermissionsResponse": {
+      "PerformanceConversation": {
         "type": "object",
-        "description": "What the caller may do in the selected account.",
+        "description": "Conversation quality metrics",
+        "properties": {
+          "botSpeechSecs": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Bot speech duration in seconds",
+            "example": 78.2
+          },
+          "interruptedTurns": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "Turns where user interrupted the bot",
+            "example": 2
+          },
+          "interruptionRate": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "Ratio of interrupted turns to total (0.0-1.0)",
+            "example": 0.167
+          },
+          "talkRatio": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "Talk ratio: user speech / total speech (0.0-1.0)",
+            "example": 0.38
+          },
+          "turnCount": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "Total conversation turns",
+            "example": 12
+          },
+          "userSpeechSecs": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "User speech duration in seconds",
+            "example": 45.5
+          }
+        }
+      },
+      "PerformanceLatency": {
+        "type": "object",
+        "description": "Latency statistics by service",
+        "properties": {
+          "llm": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/LatencyStats",
+                "description": "LLM response latency statistics"
+              }
+            ]
+          },
+          "stt": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/LatencyStats",
+                "description": "Speech-to-text latency statistics"
+              }
+            ]
+          },
+          "tts": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/LatencyStats",
+                "description": "Text-to-speech latency statistics"
+              }
+            ]
+          }
+        }
+      },
+      "PerformanceUsage": {
+        "type": "object",
+        "description": "Token and character usage",
+        "properties": {
+          "completionTokens": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "LLM completion (output) tokens",
+            "example": 512
+          },
+          "promptTokens": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "LLM prompt (input) tokens",
+            "example": 2048
+          },
+          "ttsCharacters": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "TTS characters synthesized",
+            "example": 3200
+          }
+        }
+      },
+      "PhoneCostBreakdownResponse": {
+        "type": "object",
+        "description": "Phone cost breakdown response",
         "required": [
-          "accountId",
-          "role",
-          "permissions"
+          "phoneId",
+          "totalMicrocents",
+          "totalUsd",
+          "rentals"
         ],
         "properties": {
-          "accountId": {
+          "phoneId": {
             "type": "string",
             "format": "uuid",
-            "description": "The selected account"
+            "description": "Phone number identifier",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
           },
-          "permissions": {
+          "phoneNumber": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Phone number in E.164 format",
+            "example": "+15551234567"
+          },
+          "purchase": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/PhonePurchaseCost",
+                "description": "One-time purchase cost, if applicable"
+              }
+            ]
+          },
+          "rentals": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/PhoneRentalCost"
             },
-            "description": "Permissions you hold, as `resource:read` / `resource:write`"
+            "description": "Monthly rental charges history"
           },
-          "role": {
-            "$ref": "#/components/schemas/AccountRole",
-            "description": "Your role in it: `owner`, `admin`, `member` or `agent`"
+          "totalMicrocents": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total cost in microcents (purchase + all rentals)",
+            "example": 2150000
+          },
+          "totalUsd": {
+            "type": "number",
+            "format": "double",
+            "description": "Total cost in USD",
+            "example": "2.15"
           }
         }
       },
@@ -19460,6 +23063,37 @@
           "WHATSAPP"
         ]
       },
+      "PhoneNumberCountry": {
+        "type": "object",
+        "description": "A country where phone numbers can be bought.",
+        "required": [
+          "country_code",
+          "country"
+        ],
+        "properties": {
+          "country": {
+            "type": "string",
+            "description": "Country name in English.",
+            "example": "United States"
+          },
+          "country_code": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-2 country code. Pass it as `countryCode` when\nsearching for numbers or fetching pricing.",
+            "example": "US"
+          },
+          "number_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Number types that can be searched and bought in this country: any of\n`local`, `mobile`, `toll_free`. Pass one as `numberType` when searching.",
+            "example": [
+              "local",
+              "toll_free"
+            ]
+          }
+        }
+      },
       "PhoneNumberListResponse": {
         "type": "object",
         "description": "Page of phone numbers",
@@ -19483,32 +23117,34 @@
       },
       "PhoneNumberPricing": {
         "type": "object",
-        "description": "Phone number pricing information",
+        "description": "Monthly phone number prices for one country, one entry per number type.",
         "required": [
-          "countryCode",
-          "countryName",
-          "pricePerMonth",
-          "priceUnit"
+          "country",
+          "iso_country",
+          "phone_number_prices",
+          "price_unit"
         ],
         "properties": {
-          "countryCode": {
+          "country": {
             "type": "string",
-            "description": "ISO country code",
-            "example": "US"
-          },
-          "countryName": {
-            "type": "string",
-            "description": "Full country name",
+            "description": "Country name in English.",
             "example": "United States"
           },
-          "pricePerMonth": {
+          "iso_country": {
             "type": "string",
-            "description": "Monthly recurring price as a decimal string",
-            "example": "1.00"
+            "description": "ISO 3166-1 alpha-2 country code.",
+            "example": "US"
           },
-          "priceUnit": {
+          "phone_number_prices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhoneNumberTypePrice"
+            },
+            "description": "Price per number type (for example `local`, `toll free`, `mobile`)."
+          },
+          "price_unit": {
             "type": "string",
-            "description": "Currency code for the price",
+            "description": "ISO 4217 currency code the prices are quoted in.",
             "example": "USD"
           }
         }
@@ -19695,6 +23331,215 @@
           "RELEASED"
         ]
       },
+      "PhoneNumberTypePrice": {
+        "type": "object",
+        "description": "Monthly price for one type of phone number.",
+        "required": [
+          "number_type",
+          "base_price",
+          "current_price"
+        ],
+        "properties": {
+          "base_price": {
+            "type": "string",
+            "description": "List price per month, as a decimal string in `price_unit`.",
+            "example": "1.15"
+          },
+          "current_price": {
+            "type": "string",
+            "description": "Price per month after any discount, as a decimal string in\n`price_unit`. This is the monthly price charged to your balance for a\nnumber of this type.",
+            "example": "1.15"
+          },
+          "number_type": {
+            "type": "string",
+            "description": "Number type, for example `local`, `toll free` or `mobile`.",
+            "example": "local"
+          }
+        }
+      },
+      "PhoneNumberUsage": {
+        "type": "object",
+        "description": "Everything that uses a phone number",
+        "required": [
+          "phoneNumberId",
+          "canRelease",
+          "metaLeadForms",
+          "campaigns",
+          "schedules"
+        ],
+        "properties": {
+          "campaigns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhoneNumberUsageCampaign"
+            },
+            "description": "Campaigns that dial from this number and have not finished"
+          },
+          "canRelease": {
+            "type": "boolean",
+            "description": "Whether the number can be released now. `false` while any Meta lead\nform mapping uses it as caller ID: release answers\n`cannot_delete_has_dependencies` until those mappings are deleted or\nuse another number. The inbound flow, campaigns and schedules never\nblock a release; they stop working once the number is gone.",
+            "example": false
+          },
+          "inboundFlow": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/PhoneNumberUsageFlow",
+                "description": "Flow that answers inbound calls to this number"
+              }
+            ]
+          },
+          "metaLeadForms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhoneNumberUsageMetaLeadForm"
+            },
+            "description": "Meta lead form mappings that call new leads from this number"
+          },
+          "phoneNumberId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Phone number these uses belong to",
+            "example": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+          },
+          "schedules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhoneNumberUsageSchedule"
+            },
+            "description": "Active or paused call schedules that dial from this number"
+          }
+        }
+      },
+      "PhoneNumberUsageCampaign": {
+        "type": "object",
+        "description": "Campaign that dials from a phone number",
+        "required": [
+          "id",
+          "name",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Campaign ID",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Campaign name",
+            "example": "October follow-up"
+          },
+          "status": {
+            "$ref": "#/components/schemas/CampaignStatus",
+            "description": "Campaign status"
+          }
+        }
+      },
+      "PhoneNumberUsageFlow": {
+        "type": "object",
+        "description": "Flow connected to a phone number for inbound calls",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Flow ID",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Flow name",
+            "example": "Receptionist"
+          }
+        }
+      },
+      "PhoneNumberUsageMetaLeadForm": {
+        "type": "object",
+        "description": "Meta lead form mapping that uses a phone number as caller ID",
+        "required": [
+          "mappingId",
+          "formId",
+          "integrationId",
+          "pageName",
+          "pageConnected",
+          "enabled"
+        ],
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether new leads from this form are called",
+            "example": true
+          },
+          "formId": {
+            "type": "string",
+            "description": "Meta lead form ID",
+            "example": "1234567890123456"
+          },
+          "formName": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Lead form name",
+            "example": "Spring campaign"
+          },
+          "integrationId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Meta integration (Facebook Page connection) the mapping belongs to",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "mappingId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Form mapping ID",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "pageConnected": {
+            "type": "boolean",
+            "description": "`false` once the Facebook Page was disconnected. The mapping still\nholds the number until it is deleted.",
+            "example": true
+          },
+          "pageName": {
+            "type": "string",
+            "description": "Facebook Page name",
+            "example": "Talkif"
+          }
+        }
+      },
+      "PhoneNumberUsageSchedule": {
+        "type": "object",
+        "description": "Call schedule that dials from a phone number",
+        "required": [
+          "id",
+          "name",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Schedule ID",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Schedule name",
+            "example": "Weekly check-in"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ScheduleStatus",
+            "description": "Schedule status"
+          }
+        }
+      },
       "PhoneProviderListResponse": {
         "type": "object",
         "description": "Page of phone providers",
@@ -19781,6 +23626,64 @@
             "format": "date-time",
             "description": "Timestamp when the provider was last updated",
             "example": "2026-01-15T10:30:00Z"
+          }
+        }
+      },
+      "PhonePurchaseCost": {
+        "type": "object",
+        "description": "Phone purchase cost details",
+        "required": [
+          "amountMicrocents",
+          "amountUsd",
+          "purchasedAt"
+        ],
+        "properties": {
+          "amountMicrocents": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Purchase cost in microcents",
+            "example": 1150000
+          },
+          "amountUsd": {
+            "type": "number",
+            "format": "double",
+            "description": "Purchase cost in USD",
+            "example": "1.15"
+          },
+          "purchasedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the phone number was purchased",
+            "example": "2026-01-15T10:30:00Z"
+          }
+        }
+      },
+      "PhoneRentalCost": {
+        "type": "object",
+        "description": "Phone rental cost details",
+        "required": [
+          "periodStart",
+          "amountMicrocents",
+          "amountUsd"
+        ],
+        "properties": {
+          "amountMicrocents": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Rental cost in microcents",
+            "example": 1000000
+          },
+          "amountUsd": {
+            "type": "number",
+            "format": "double",
+            "description": "Rental cost in USD",
+            "example": "1.00"
+          },
+          "periodStart": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start of the rental billing period",
+            "example": "2026-02-01T00:00:00Z"
           }
         }
       },
@@ -20026,6 +23929,110 @@
             "type": "string",
             "description": "ID of the provider to purchase through",
             "example": "550e8400-e29b-41d4-a716-446655440000"
+          }
+        }
+      },
+      "QualityLevel": {
+        "type": "string",
+        "description": "Quality level assessment for call metrics",
+        "enum": [
+          "excellent",
+          "good",
+          "fair",
+          "poor",
+          "unknown"
+        ]
+      },
+      "QualityMetrics": {
+        "type": "object",
+        "description": "Call quality metrics derived from Twilio Voice Insights",
+        "required": [
+          "overallQuality",
+          "qualityIssues"
+        ],
+        "properties": {
+          "codec": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Audio codec used for the call",
+            "example": "opus"
+          },
+          "fromCarrier": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Originating carrier name",
+            "example": "AT&T"
+          },
+          "jitter": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/NetworkMetric",
+                "description": "Jitter measurement in milliseconds"
+              }
+            ]
+          },
+          "latency": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/NetworkMetric",
+                "description": "Network latency (round-trip time) in milliseconds"
+              }
+            ]
+          },
+          "mosScore": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/MosScore",
+                "description": "Mean Opinion Score (MOS) with min/max range"
+              }
+            ]
+          },
+          "overallQuality": {
+            "$ref": "#/components/schemas/QualityLevel",
+            "description": "Overall quality assessment for the call"
+          },
+          "packetLoss": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/PacketLossMetric",
+                "description": "Packet loss statistics"
+              }
+            ]
+          },
+          "qualityIssues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of quality issues detected during the call",
+            "example": [
+              "high_jitter",
+              "low_mos"
+            ]
+          },
+          "toCarrier": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Destination carrier name",
+            "example": "Verizon"
           }
         }
       },
@@ -20287,42 +24294,6 @@
           }
         }
       },
-      "RoleDefinition": {
-        "type": "object",
-        "description": "One built-in role and what it may do.",
-        "required": [
-          "role",
-          "permissions"
-        ],
-        "properties": {
-          "permissions": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Permissions the role holds, as `resource:read` / `resource:write`"
-          },
-          "role": {
-            "$ref": "#/components/schemas/AccountRole",
-            "description": "`owner`, `admin`, `member` or `agent`"
-          }
-        }
-      },
-      "RolesResponse": {
-        "type": "object",
-        "description": "The built-in roles, highest first.",
-        "required": [
-          "roles"
-        ],
-        "properties": {
-          "roles": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RoleDefinition"
-            }
-          }
-        }
-      },
       "RollbackResponse": {
         "type": "object",
         "description": "Rollback response",
@@ -20398,12 +24369,59 @@
           "model": {
             "type": "string",
             "description": "Model identifier",
-            "example": "nova-2-conversationalai"
+            "example": "nova-3-general"
           },
           "provider": {
             "type": "string",
             "description": "Provider identifier",
             "example": "deepgram"
+          }
+        }
+      },
+      "SaveAsTemplateRequest": {
+        "type": "object",
+        "description": "Request to save a flow as an account-specific template",
+        "required": [
+          "name",
+          "category"
+        ],
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Template category",
+            "example": "support"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Brief description of the template",
+            "example": "Handles tier-1 support inquiries with escalation"
+          },
+          "icon": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Icon identifier or emoji for display",
+            "example": "headset"
+          },
+          "name": {
+            "type": "string",
+            "description": "Template name",
+            "example": "My Custom Support Flow"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Searchable tags for the template",
+            "example": [
+              "customer-service",
+              "escalation"
+            ]
           }
         }
       },
@@ -20661,6 +24679,138 @@
           }
         }
       },
+      "ServiceCost": {
+        "type": "object",
+        "description": "Individual service cost with typed usage data.\nRate units: LLM per 1K tokens, TTS per 1K chars, STT and telephony per minute.",
+        "required": [
+          "service",
+          "provider",
+          "cost",
+          "percentage"
+        ],
+        "properties": {
+          "audioRate": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "STT rate in USD per minute of audio",
+            "example": 0.006
+          },
+          "audioSeconds": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "STT audio duration processed in seconds",
+            "example": 125
+          },
+          "charRate": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "TTS rate in USD per 1K characters",
+            "example": 0.03
+          },
+          "characters": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "TTS characters synthesized",
+            "example": 1250
+          },
+          "cost": {
+            "type": "number",
+            "format": "double",
+            "description": "Cost in USD for this service",
+            "example": 0.0125
+          },
+          "durationSeconds": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "Telephony call duration in seconds",
+            "example": 125
+          },
+          "inputRate": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "LLM input rate in USD per 1K tokens",
+            "example": 0.001
+          },
+          "inputTokens": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "LLM prompt (input) tokens consumed",
+            "example": 2048
+          },
+          "model": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Model identifier used by the provider",
+            "example": "claude-haiku-5-5"
+          },
+          "outputRate": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "LLM output rate in USD per 1K tokens",
+            "example": 0.005
+          },
+          "outputTokens": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "LLM completion (output) tokens generated",
+            "example": 512
+          },
+          "percentage": {
+            "type": "number",
+            "format": "double",
+            "description": "Percentage of total call cost attributable to this service",
+            "example": 23.5
+          },
+          "provider": {
+            "type": "string",
+            "description": "Provider name (e.g., \"anthropic\", \"deepgram\", \"elevenlabs\", \"twilio\")",
+            "example": "anthropic"
+          },
+          "service": {
+            "type": "string",
+            "description": "Service category: \"llm\", \"stt\", \"tts\", \"telephony\", \"infrastructure\", or \"function_call\"",
+            "example": "llm"
+          },
+          "telephonyRate": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "Telephony rate in USD per minute",
+            "example": 0.014
+          }
+        }
+      },
       "ServiceDefinition": {
         "type": "object",
         "description": "Service provider configuration for LLM, TTS, and STT.\n\nAll fields are optional during draft saves — a flow being built may not\nhave all services configured yet. All three are required at publish time\n(enforced by `FlowDefinitionValidator`).",
@@ -20880,8 +25030,8 @@
           },
           "modelId": {
             "type": "string",
-            "description": "Model identifier (e.g., \"nova-2\")",
-            "example": "nova-2"
+            "description": "Model identifier (e.g., \"nova-3-general\")",
+            "example": "nova-3-general"
           },
           "name": {
             "type": "string",
@@ -20983,7 +25133,7 @@
           "model": {
             "type": "string",
             "description": "Model identifier",
-            "example": "eleven_turbo_v2"
+            "example": "eleven_v4_turbo"
           },
           "provider": {
             "type": "string",
@@ -21107,6 +25257,20 @@
           "canceled"
         ]
       },
+      "TemplateDeletedResponse": {
+        "type": "object",
+        "description": "Confirmation that an account template was deleted",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Human-readable confirmation",
+            "example": "Template deleted successfully"
+          }
+        }
+      },
       "TimePeriod": {
         "type": "string",
         "description": "Time period for stats queries",
@@ -21116,6 +25280,34 @@
           "month",
           "custom"
         ]
+      },
+      "TimelineEvent": {
+        "type": "object",
+        "description": "Chronological event in the call timeline",
+        "required": [
+          "timestamp",
+          "eventType"
+        ],
+        "properties": {
+          "details": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "Structured event details (shape varies by event_type)"
+          },
+          "eventType": {
+            "type": "string",
+            "description": "Event type: \"turn\", \"node_transition\", \"error\", or \"function_call\"",
+            "example": "turn"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When this event occurred (ISO 8601 UTC)",
+            "example": "2026-01-15T10:30:05Z"
+          }
+        }
       },
       "TransactionStatus": {
         "type": "string",
@@ -21173,7 +25365,7 @@
               "null"
             ],
             "description": "LLM model used for this message (assistant only)",
-            "example": "openai/gpt-4.1"
+            "example": "openai/gpt-5.6-luna"
           },
           "metrics": {
             "oneOf": [
@@ -21210,7 +25402,7 @@
               "null"
             ],
             "description": "TTS model used for this message (assistant only)",
-            "example": "elevenlabs/eleven_turbo_v2_5"
+            "example": "elevenlabs/eleven_v4_turbo"
           },
           "turnNumber": {
             "type": [
@@ -21582,6 +25774,25 @@
           "availability": {
             "$ref": "#/components/schemas/MemberAvailabilityStatus",
             "description": "Whether the member takes calls now (their own choice or an admin's;\nan away/offline whose end time passed reads as `available`)"
+          },
+          "availabilitySource": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/MemberAvailabilitySource",
+                "description": "Who set the current `away`/`offline`: the `member`, an `admin`, or\n`auto` after missed calls; absent when available"
+              }
+            ]
+          },
+          "availabilityUntil": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "When `away`/`offline` ends by itself; absent = until changed (or\navailable)"
           },
           "busy": {
             "type": "boolean",
@@ -22092,8 +26303,8 @@
           },
           "modelId": {
             "type": "string",
-            "description": "Model identifier (e.g., \"eleven_turbo_v2_5\")",
-            "example": "eleven_multilingual_v2"
+            "description": "Model identifier (e.g., \"eleven_v4_turbo\")",
+            "example": "eleven_v4_turbo"
           },
           "name": {
             "type": "string",
@@ -22506,6 +26717,15 @@
             "description": "Updated description (max 1000 characters)",
             "example": "Automated appointment reminder calls"
           },
+          "expectedUpdatedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "Save only if the flow has not changed since you read it: send the\n`updatedAt` from your last read. If anyone saved in between, the update\nis rejected with 409 `flow_version_conflict` and nothing changes.\nCompared to the millisecond. Omit to save unconditionally.",
+            "example": "2026-10-12T09:30:00.123Z"
+          },
           "layout": {
             "type": [
               "object",
@@ -22712,6 +26932,26 @@
               "null"
             ],
             "description": "Time of day to execute in HH:MM or HH:MM:SS format"
+          }
+        }
+      },
+      "UpdateTagsRequest": {
+        "type": "object",
+        "description": "Request to update flow tags",
+        "required": [
+          "tags"
+        ],
+        "properties": {
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of tags to assign to the flow (max 10, replaces existing tags)",
+            "example": [
+              "healthcare",
+              "scheduling"
+            ]
           }
         }
       },
@@ -22941,8 +27181,7 @@
             },
             "description": "Recommended model IDs for this voice",
             "example": [
-              "eleven_multilingual_v2",
-              "eleven_turbo_v2_5"
+              "eleven_v4_turbo"
             ]
           },
           "voiceId": {
@@ -22991,7 +27230,7 @@
       },
       "WebRTCOfferRequest": {
         "type": "object",
-        "description": "Request to relay a WebRTC SDP offer to the bot pool",
+        "description": "Request carrying the browser's WebRTC SDP offer",
         "required": [
           "sdp"
         ],
@@ -23004,7 +27243,7 @@
             "items": {
               "$ref": "#/components/schemas/IceServerEntry"
             },
-            "description": "ICE servers to forward to the bot for WebRTC connection"
+            "description": "ICE servers from `GET /api/v1/calls/webrtc/ice-servers`, so both ends use the same servers"
           },
           "sdp": {
             "type": "string",
@@ -23019,7 +27258,7 @@
       },
       "WebRTCOfferResponse": {
         "type": "object",
-        "description": "Response from bot pool containing the WebRTC SDP answer",
+        "description": "The agent's WebRTC SDP answer",
         "required": [
           "sdp",
           "sdpType"
@@ -23030,7 +27269,7 @@
               "string",
               "null"
             ],
-            "description": "Bot ID that will handle this call",
+            "description": "Identifier of the agent instance serving the call",
             "example": "bot-7f3a9c"
           },
           "sdp": {

@@ -17,7 +17,10 @@
 | Code | Status | Description |
 | --- | --- | --- |
 | `account_header_missing` | 400 | **Account Header Missing** — Account-scoped requests authenticated with JWT require the X-Account-Id header. Use GET /accounts to list accessible accounts, or include the header from the frontend client state. |
+| `bot_check_failed` | 400 | **Bot Check Failed** — The security check did not pass or was missing. Complete the check again and retry the request. |
+| `disposable_email_not_allowed` | 400 | **Disposable Email Not Allowed** — This email address belongs to a throwaway inbox service. Sign up with a permanent email address. |
 | `email_already_verified` | 400 | **Email Already Verified** — This email address has already been verified. No further action is needed. |
+| `email_not_verified` | 400 | **Email Not Verified** — Verify your email address first, then request the phone verification code again. Request a new email code if the first one did not arrive. |
 | `email_verification_code_expired` | 400 | **Email Verification Code Expired** — The email verification code has expired (codes are valid for 15 minutes). Request a new verification code. |
 | `email_verification_code_invalid` | 400 | **Email Verification Code Invalid** — The email verification code is incorrect. Check the code and try again, or request a new one. |
 | `email_verification_code_used` | 400 | **Email Verification Code Used** — This email verification code has already been used. Request a new code if you need to verify again. |
@@ -36,7 +39,10 @@
 | `phone_verification_code_expired` | 400 | **Phone Verification Code Expired** — The phone verification code has expired (codes are valid for 10 minutes). Request a new verification code. |
 | `phone_verification_code_invalid` | 400 | **Phone Verification Code Invalid** — The phone verification code is incorrect. Check the code and try again, or request a new one. |
 | `phone_verification_code_used` | 400 | **Phone Verification Code Used** — This phone verification code has already been used. Request a new code if you need to verify again. |
+| `phone_verification_refused` | 400 | **Phone Verification Refused** — We can't send a verification code for this request. If you think this is a mistake, contact support@talkif.ai. |
+| `request_blocked` | 400 | **Request Blocked** — This request can't be accepted. If you think this is a mistake, contact support@talkif.ai. |
 | `invalid_credentials` | 401 | **Invalid Credentials** — The email and password combination does not match any account. Double-check your credentials or use the forgot password flow. |
+| `passkey_not_found` | 401 | **Passkey Not Found** — This passkey is not registered to any account. It was removed or its account was deleted. Delete it from your password manager and sign in another way. |
 | `refresh_token_invalid` | 401 | **Refresh Token Invalid** — The refresh token is invalid, has been revoked, or has expired. Log in again to obtain new tokens. |
 | `token_expired` | 401 | **Token Expired** — Your access token has expired. Use your refresh token to obtain a new access token, or log in again. |
 | `token_invalid` | 401 | **Token Invalid** — The provided token could not be validated. Clear your stored tokens and log in again. |
@@ -49,9 +55,11 @@
 | --- | --- | --- |
 | `account_access_denied` | 403 | **Account Access Denied** — You do not have permission to access this account. Verify the account ID or request access from the account owner. |
 | `account_suspended` | 403 | **Account Suspended** — This account has been suspended by an administrator. Contact support to resolve the suspension. |
+| `connectors_consent_required` | 403 | **Connectors Not Turned On** — Connectors are not turned on for this account. An owner or admin of the account must accept Connectors in the dashboard (Developer > Integrations), then connect again. |
 | `forbidden` | 403 | **Forbidden** — You do not have permission to perform this action. Contact the account owner for access. |
 | `insufficient_permissions` | 403 | **Insufficient Permissions** — Your role does not have sufficient permissions for this action. Contact your organization owner or admin. |
 | `not_invitation_recipient` | 403 | **Not Invitation Recipient** — This invitation was sent to a different user. Only the intended recipient can accept or decline it. |
+| `owner_verification_required` | 403 | **Owner Verification Required** — The account owner must verify both their email address and their phone number before buying phone numbers, creating API keys or inviting team members. meta.missing lists what is still unverified; complete it in profile settings. |
 
 ## Business Rules
 
@@ -59,7 +67,9 @@
 | --- | --- | --- |
 | `business_rule_violation` | 422 | **Business Rule Violation** — The request violates a business rule. Check the error detail for specifics. |
 | `invalid_state_transition` | 422 | **Invalid State Transition** — This state transition is not allowed from the resource's current state. Check the resource status before retrying. |
+| `phone_number_type_unavailable` | 422 | **Phone Number Type Unavailable** — No numbers of this type (meta.numberType) can be bought in this country (meta.countryCode). Pick a type the country lists in number_types, or another country. |
 | `unprocessable_entity` | 422 | **Unprocessable Entity** — The request is well-formed but cannot be processed. Check the error detail for the specific reason. |
+| `client_update_required` | 426 | **App Update Required** — This version of the Talkif app is no longer supported. Update the app, then try again. `meta.minimumVersion` is the oldest supported version. |
 
 ## Calls
 
@@ -81,12 +91,23 @@
 
 | Code | Status | Description |
 | --- | --- | --- |
+| `account_deletion_blocked` | 409 | **Account Deletion Blocked** — A workspace that would be deleted with your login has an unpaid or disputed charge, or a balance hold for a call in progress. Settle it, then try again. `meta.accountId` names the workspace. |
+| `account_pending_deletion` | 409 | **Account Pending Deletion** — This account is scheduled for deletion and is read-only until then. Cancel the deletion to make changes again. `meta.scheduledDeletionAt` says when it runs. |
 | `cannot_delete_has_dependencies` | 409 | **Cannot Delete Has Dependencies** — This resource has dependent resources that must be removed first. Check which resources reference it before deleting. |
 | `conflict` | 409 | **Conflict** — The request conflicts with the current state of the resource. Fetch the latest state and retry. |
 | `contact_phone_already_exists` | 409 | **Contact Phone Already Exists** — A contact with this phone number already exists on this account. Open the existing contact instead, or use a different number. |
 | `email_already_exists` | 409 | **Email Already Exists** — An account with this email address already exists. Try logging in instead, or use a different email to register. |
+| `login_pending_deletion` | 409 | **Login Pending Deletion** — Your login is scheduled for deletion. You can still sign in and cancel it; until then you cannot add sign-in methods, workspaces or organizations. `meta.scheduledDeletionAt` says when it runs. |
+| `owns_organization_with_members` | 409 | **Owns Organization With Members** — You own an organization that other people are members of. Transfer ownership or delete the organization before deleting your login. `meta.organizations` lists them. |
 | `phone_already_exists` | 409 | **Phone Already Exists** — An account with this phone number already exists. Try logging in instead, or use a different number. |
 | `resource_already_exists` | 409 | **Resource Already Exists** — A resource with these properties already exists. Use a different identifier or update the existing resource. |
+
+## Connectors
+
+| Code | Status | Description |
+| --- | --- | --- |
+| `already_answered` | 409 | **Already Answered** — This question or task was already answered. Only the first answer counts; nothing more to send. |
+| `expired` | 410 | **Expired** — This question or task can no longer be answered: its lifetime is over and the sender was told it got no answer. |
 
 ## Flows
 
@@ -145,12 +166,15 @@
 
 | Code | Status | Description |
 | --- | --- | --- |
+| `apple_transaction_invalid` | 400 | **App Store Purchase Invalid** — The App Store purchase could not be verified, or it is not a Talkif credit pack. No credit was added. |
 | `payment_method_card_only` | 400 | **Payment Method Card Only** — Only card payment methods are currently supported. Add a credit or debit card to proceed. |
 | `feature_not_available` | 402 | **Feature Not Available** — This feature is not included in your current plan. Upgrade to a higher tier to access it. |
 | `insufficient_balance` | 402 | **Insufficient Balance** — Your account balance is too low for this operation. Add funds from the billing page to continue. |
 | `payment_failed` | 402 | **Payment Failed** — The payment charge failed (card declined, insufficient funds, or payment processor error). Try a different payment method. |
 | `payment_required` | 402 | **Payment Required** — This feature requires payment. Add a payment method and ensure your account has sufficient balance. |
 | `subscription_required` | 402 | **Subscription Required** — An active subscription is required for this feature. Upgrade your plan to access it. |
+| `apple_transaction_account_mismatch` | 403 | **App Store Purchase For Another Account** — The App Store purchase was made for a different Talkif account. Select that account and send the purchase again. |
+| `sandbox_purchase_not_allowed` | 403 | **Test Purchase Not Allowed** — Test (sandbox) App Store purchases do not add credit to this account. Buy from the App Store version of the app. |
 
 ## Phones
 
@@ -164,6 +188,7 @@
 | `provider_must_be_sip` | 400 | **Provider Must Be SIP** — This operation is only available for SIP-type providers. Verify the provider type before proceeding. |
 | `twilio_credentials_required` | 400 | **Twilio Credentials Required** — Twilio account credentials (Account SID and Auth Token) are required for this provider type. Provide them in the request. |
 | `verification_only_for_sip` | 400 | **Verification Only For SIP** — Caller ID verification is only supported for SIP phone numbers. System Twilio numbers are verified automatically. |
+| `phone_number_limit_reached` | 403 | **Phone Number Limit Reached** — The account already holds the maximum number of rented phone numbers (meta.limit). Release a number you no longer need, or contact support to raise the limit. When meta.topUpRaisesLimit is true, adding funds to the balance raises it. |
 | `phone_already_registered` | 409 | **Phone Already Registered** — This phone number is already registered in the system. Use a different number or check existing phone numbers. |
 | `phone_number_in_use` | 409 | **Phone Number In Use** — This phone number is already in use by another user. Use a different phone number. |
 | `cannot_delete_system_provider` | 422 | **Cannot Delete System Provider** — System-managed providers cannot be deleted. Only user-created SIP and BYOC providers can be removed. |
@@ -185,6 +210,7 @@
 | Code | Status | Description |
 | --- | --- | --- |
 | `assistant_quota_exceeded` | 429 | **Assistant Quota Exceeded** — Your assistant usage allowance for this period is exhausted. It resets at meta.resetsAt; topping up your balance also earns extra assistant allowance. |
+| `phone_purchase_rate_limited` | 429 | **Phone Purchase Rate Limited** — Too many phone numbers were bought in the last 24 hours (meta.limit, released numbers included). Try again after meta.retryAfterSecs seconds. |
 | `queue_full` | 429 | **Queue Full** — The call queue has reached maximum capacity. Wait for active calls to complete before queuing more. |
 | `rate_limit_exceeded` | 429 | **Rate Limit Exceeded** — Too many requests. Wait for the duration specified in meta.retryAfterSecs before retrying. |
 
@@ -239,6 +265,7 @@
 | `invalid_id_format` | 400 | **Invalid ID Format** — The provided ID is not a valid UUID. Use the format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx. |
 | `invalid_json` | 400 | **Invalid JSON** — The request body is not valid JSON. Ensure the body is properly formatted and the Content-Type header is application/json. |
 | `legal_acceptance_required` | 400 | **Legal Acceptance Required** — You must accept the required legal documents (Terms of Service, Privacy Policy) before proceeding. |
+| `ring_target_required` | 400 | **Say Whose Phone Rings** — More than one person in this account can take the call. List them with GET /api/v1/session-bridge/ring-targets and send the chosen person's userId as ringUserId. |
 | `validation_failed` | 400 | **Validation Failed** — One or more request fields failed validation. Check the errors array in the response for field-specific details. |
 | `verification_code_invalid` | 400 | **Verification Code Invalid** — The verification code is incorrect. Check the code and try again, or request a new one. |
 

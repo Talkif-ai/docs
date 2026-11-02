@@ -57,6 +57,10 @@ Then ask in plain language — *"set up Talkif and make a test call to my phone"
 
 Skills track the public API: when an endpoint or SDK method changes, the affected skill changes in the same release. Found one that drifted? Open an issue on the repo.
 
+## Skills and the MCP server
+
+Skills teach an agent how to write code against Talkif. To let an agent act on your account directly — read calls, edit a flow, start a campaign from a chat — connect it to the [MCP server](/integrate/mcp), which offers every API operation as a tool, limited by the API key's scopes. The two work together: the skills explain the concepts and the pitfalls, the tools do the work.
+
 ## These docs, for agents
 
 Every page here is also served as Markdown for agents: append `.md` to any docs URL, or fetch [`/llms.txt`](https://docs.talkif.ai/llms.txt) for the index and [`/llms-full.txt`](https://docs.talkif.ai/llms-full.txt) for the whole site in one file. The API reference is generated from the same OpenAPI definition the SDKs are built from: `https://api.talkif.ai/openapi.json`.
@@ -64,6 +68,9 @@ Every page here is also served as Markdown for agents: append `.md` to any docs 
 ## Next
 
 <CardGroup cols={2}>
+  <Card title="MCP server" href="/integrate/mcp" icon="fa-regular fa-robot">
+    The API as tools for your agent.
+  </Card>
   <Card title="SDKs" href="/sdks/server" icon="fa-regular fa-cube">
     The clients the skills call.
   </Card>

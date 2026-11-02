@@ -13,7 +13,7 @@ The dashboard shows the same five steps as a checklist on your home screen until
 - **Credits.** New accounts receive a **\$5.00 welcome credit**. It's enough to build, test in the browser, and take a few short calls.
 
 <Warning title="The welcome credit can't buy a phone number">
-  Welcome credit is a *bonus* balance. Bonus and promotional balances pay for calls but are never used for phone-number purchases or monthly rental. To buy a number in step 4 you'll add a payment method and top up first — the number itself costs a dollar or two a month, and the top-up minimum is shown on the Billing page. Everything before step 4 works on the welcome credit alone.
+  Welcome credit is a *bonus* balance. Bonus and promotional balances pay for calls, but they aren't used for phone-number purchases or monthly rental until your account's first payment. So to buy a number in step 4 you'll add a payment method and top up first — the number itself costs a dollar or two a month, and the top-up minimum is shown on the Billing page. Everything before step 4 works on the welcome credit alone.
 </Warning>
 
 ## What you're going to build
@@ -144,7 +144,7 @@ A single-agent support line: it greets the caller, asks what they need, answers 
 
     - the **transcript**, turn by turn, with who spoke and when
     - the **recording**, playable in place
-    - the **cost breakdown** — telephony seconds, STT seconds, LLM tokens, TTS characters — each priced, summed to the amount taken from your balance
+    - the **cost breakdown** — telephony seconds, STT seconds, LLM tokens, TTS characters, AI Decisions — each priced, summed to the amount taken from your balance
 
     Costs are where model choice becomes visible: swap the LLM or TTS in the draft, run the same conversation in the Flow Tester, and compare. [Cost breakdown](/account/cost-breakdown) explains every line.
   </Step>

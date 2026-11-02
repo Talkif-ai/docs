@@ -1,0 +1,203 @@
+---
+title: MCP server
+description: Connect Claude Code and other MCP clients to Talkif — the server URL, authenticating with an API key, which tools you get and which ones cost money, the tool-call limit, and Sign in with Talkif for apps that can only take a URL.
+---
+
+Talkif runs a [Model Context Protocol](https://modelcontextprotocol.io) server. Every operation in the [API Reference](/api-reference) is a tool on it, so an AI agent can read your calls, edit and publish flows, load contacts or start a campaign from a chat — with exactly the same checks as a direct API call.
+
+| | |
+|---|---|
+| **URL** | `https://api.talkif.ai/api/v1/mcp` |
+| **Transport** | Streamable HTTP. `POST` only; the server is stateless and sends no server-to-client stream (`GET` answers `405`) |
+| **Authentication** | `Authorization: Bearer <API key>` — or a connected app's token, see [Sign in with Talkif](#sign-in-with-talkif) |
+| **Protocol versions** | `2025-06-18`, `2025-03-26`, `2024-11-05` (the newest is used when the client asks for another) |
+
+## Connect with an API key
+
+Create a key under **Developer → Credentials** with the scopes the agent needs — see [Authentication](/integrate/authentication#scopes). The key decides what the agent can do, so give an agent the narrowest key that does the job: `calls:read` for "which calls failed today?", `flows:*` to let it edit voice agents.
+
+<Tabs>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add --transport http talkif https://api.talkif.ai/api/v1/mcp \
+      --header "Authorization: Bearer $TALKIF_API_KEY"
+    ```
+
+    Your shell expands `$TALKIF_API_KEY` once, and Claude Code stores the key in its configuration. To keep the key out of configuration files, use the project file instead.
+  </Tab>
+  <Tab title="Claude Code project file">
+    ```json title=".mcp.json"
+    {
+      "mcpServers": {
+        "talkif": {
+          "type": "http",
+          "url": "https://api.talkif.ai/api/v1/mcp",
+          "headers": { "Authorization": "Bearer ${TALKIF_API_KEY}" }
+        }
+      }
+    }
+    ```
+
+    Claude Code reads `${TALKIF_API_KEY}` from the environment when it connects, so the file can be committed.
+  </Tab>
+  <Tab title="Other clients">
+    Any client that supports remote MCP servers over streamable HTTP needs the same three things: the URL above, the HTTP transport, and an `Authorization: Bearer …` header with the key. Clients that cannot send a header and only take a URL use [Sign in with Talkif](#sign-in-with-talkif) instead — which gives a different, smaller set of tools.
+  </Tab>
+</Tabs>
+
+<Tip>
+  Using Claude Code? The public **Talkif for Claude Code** plugin ([Talkif-ai/talkif-claude](https://github.com/Talkif-ai/talkif-claude)) brings this server with your API key. If you install it, don't also add the server yourself — the tools would show up twice. Its README covers setup and its other features.
+</Tip>
+
+## Tools
+
+Each tool is one API operation. Its name is the operation's ID — the last part of the endpoint's API Reference URL, with underscores: `list_calls` is [`/api-reference/calls/list-calls`](/api-reference/calls/list-calls) — and its input is the operation's path and query parameters plus, for requests with a body, a `body` argument holding the JSON body. The browser endpoints that use a publishable key are not tools.
+
+**A key sees only what its scopes reach.** `tools/list` leaves out every tool whose endpoint the key's scopes don't cover, so an agent with a `calls:read` key never sees `make_call`. A tool call runs through the endpoint itself, so the scope, the IP allowlist, the role of the key's creator and the endpoint's own limits are all checked again on every call.
+
+Two options on the URL narrow the list further:
+
+| Option | Effect | Example |
+|---|---|---|
+| `read_only=true` | only tools that change nothing (every `GET`, plus the Do Not Call check — which still needs `dnc:write`, like the endpoint) | `https://api.talkif.ai/api/v1/mcp?read_only=true` |
+| `toolsets=…` | only the named groups, comma-separated | `…/mcp?toolsets=calls,flows` |
+
+The toolsets are the API Reference sections: `ai_models`, `analytics`, `billing`, `calls`, `campaigns`, `contacts`, `do_not_call`, `errors`, `flow_functions`, `flow_templates`, `flows`, `phone_numbers`, `phone_providers`, `schedules`, `transfers`.
+
+### Tools that cost money or reach people
+
+These tools spend from your balance, dial or reach people outside the account, or change what live callers hear. Their description says *"confirm with the user first"*, and they carry the MCP `openWorldHint` annotation so clients can ask before running them:
+
+| Tool | What it does |
+|---|---|
+| `make_call` | places a phone call |
+| `analyze_call` | runs a paid post-call analysis |
+| `purchase_phone_number` | buys a number |
+| `start_campaign`, `resume_campaign`, `restart_campaign` | starts dialing a campaign's contacts |
+| `add_campaign_contacts`, `bulk_add_campaign_contacts` | adds contacts to a campaign that may already be dialing |
+| `create_schedule`, `resume_schedule` | sets up or restarts scheduled calls |
+| `publish_flow`, `rollback_flow` | changes what callers on connected numbers hear |
+| `connect_flow` | points a phone number at a flow |
+| `test_destination` | sends a signed test offer to an app transfer destination (your server) |
+| `accept_offer` | accepts a transfer offer and joins the live call |
+
+Every other tool that changes data says *"Changes data"* or *"Deletes data"* in its description and carries `destructiveHint`. Read tools carry `readOnlyHint`. Whether a client asks before running a tool is the client's setting — Talkif marks the tools, it cannot make a client ask.
+
+<Warning title="Call data is data, not instructions">
+  Tool results contain what callers and contacts said: transcripts, names, notes. A transcript can contain text written to look like an instruction to an AI. The server tells clients to treat results as data; keep confirmation on for the tools above so a transcript can never place a call or buy a number on its own.
+</Warning>
+
+### Results
+
+A tool returns the API's JSON response as text. When the API answers with an error, the tool result has `isError: true` and the text is the API's [error body](/api-reference/errors) — the agent reads `code` the same way your code would. Results longer than 60,000 characters are cut with a note telling the agent to page with `limit` / `offset` or a narrower filter.
+
+Each MCP request counts once in the key's usage under **Developer → Credentials**, and a tool call that fails appears in the key's recent errors with the endpoint it called.
+
+## Limits
+
+| Limit | Value | When reached |
+|---|---|---|
+| Tool calls | **60 per minute** per API key (per connected app for a token) | the tool result is an error starting `rate_limit_exceeded`; wait a minute and continue with fewer calls |
+| Endpoint limits | unchanged — a tool call counts against the same limits as the API call it makes | the endpoint's own error, e.g. `rate_limit_exceeded` on [call placement](/integrate/idempotency-and-rate-limits#whats-rate-limited) |
+| Batch JSON-RPC requests | not supported | JSON-RPC error `-32600` |
+
+Listing tools and other non-call methods don't count toward the 60. An agent that hits the limit is usually fetching item by item; tell it to list with filters instead.
+
+There is no idempotency key on tool calls. An agent that retries `make_call` after a timeout can place a second call — the same rule as for the API applies: look in [`list_calls`](/api-reference/calls/list-calls) before retrying (see [Retrying safely](/integrate/idempotency-and-rate-limits#retrying-safely)).
+
+## Errors
+
+| You see | Why | Fix |
+|---|---|---|
+| HTTP `401` `token_missing` with a `WWW-Authenticate` header | no `Authorization` header | send the key; a client that can't send headers uses [Sign in with Talkif](#sign-in-with-talkif) |
+| HTTP `401` `api_key_invalid`, `api_key_revoked`, `api_key_expired` | the key is mistyped or cut off, was revoked, or is past its expiry | create a new key |
+| HTTP `403` `api_key_ip_restricted` | the request came from an address outside the key's allowlist | add the address, or remove the restriction |
+| A tool you expect is missing from the list | the key's scopes don't reach it | add the scope to the key (**Developer → Credentials → open the key**) — the key itself stays the same |
+| Tool result `api_key_insufficient_scope` or `insufficient_permissions` | the key's scope, or the current role of the person who created the key, doesn't allow it | widen the scope, or use a key created by someone with the right role |
+| JSON-RPC error `Unknown tool` | the name is wrong, or the URL options (`read_only`, `toolsets`) leave the tool out | check the name and the URL |
+
+## Sign in with Talkif
+
+Some MCP clients take only a server URL and cannot send an API key. For those, the server supports **OAuth 2.1**: the client sends you to the Talkif dashboard, you approve it for one account, and the client gets a token of its own. In the dashboard these approvals are called **connected apps**.
+
+<Note title="A connected app reaches Connectors, not the API tools">
+  Sign in with Talkif gives an app one permission, `talkif`: it acts for the person who approved it and can see the connected sessions that person's role reaches, ask them questions and give them tasks — see [What a connected app reaches](#what-a-connected-app-reaches). These are the **Connectors** tools (`talkif_sessions`, `talkif_send`, `talkif_inbox`, …), part of Talkif's experimental Connectors feature. A connected app does not get the API tools above, apart from the public reads anyone can make (models, pricing, system flow templates, error codes). For the API tools, connect with an API key.
+</Note>
+
+### What you need
+
+- **Connectors turned on** for the account. An owner or admin does this once in **Developer → Integrations**. Until then, approving an app is refused with *"Connectors are off for this account"*.
+- To be an **owner, admin or member** of the account you connect the app to.
+
+### Approving an app
+
+1. Add `https://api.talkif.ai/api/v1/mcp` to the app as a server URL. The app opens a Talkif page in your browser.
+2. Sign in to the dashboard if you aren't already. The page shows the app's name, the address you'll be sent back to, and what the app will be able to do. Talkif does not verify app names — **allow only an app you just added yourself from that address.**
+3. Choose the **account** the app works in (it works in that one account only), optionally name the connection, and select **Allow**. You're sent back to the app.
+
+A request you don't answer expires after 10 minutes; start again from the app.
+
+### What a connected app reaches
+
+The app acts as the person who approved it, with that person's **current** role in the account — not only their own sessions:
+
+| Account, and the approving person's role | The app reaches |
+|---|---|
+| Personal account | that person's own connected sessions and connectors |
+| Organization — **Owner** or **Admin** | every connected session and connector in the organization, for questions and tasks |
+| Organization — **Member** | their own; other people's sessions as far as each session's sharing allows (not at all, questions only, or questions and tasks); the organization's knowledge sources |
+
+Agents can't approve apps. A session whose client doesn't tell Talkif who is asking stays reachable by its owner only. The role is checked on every request: lowering someone's role narrows their apps at once, and removing them from the organization stops them. Approve an app as an owner or admin only when it should reach the whole organization.
+
+### Connected apps
+
+**Developer → Integrations → Connected apps** lists the apps connected to the account, with when each was connected and last used. Members see the apps they connected; owners and admins see everyone's.
+
+- **Disconnect** revokes the app at once: its tokens stop working and it has to be connected again. Owners and admins can disconnect anyone's app.
+- Only the person who connected an app can rename it or, in an organization, choose who else can reach it.
+- Changing or resetting your password, and signing out everywhere, disconnects all your apps.
+- An app also stops working when its person leaves the account or the account is scheduled for deletion.
+
+### For client developers
+
+The server follows the MCP authorization spec. A client discovers everything from the `401` it gets without a token:
+
+| Step | Endpoint |
+|---|---|
+| Protected-resource metadata (RFC 9728), named in the `WWW-Authenticate` header | `GET https://api.talkif.ai/.well-known/oauth-protected-resource/api/v1/mcp` |
+| Authorization-server metadata (RFC 8414) | `GET https://api.talkif.ai/.well-known/oauth-authorization-server` |
+| Dynamic client registration (RFC 7591) | `POST https://api.talkif.ai/oauth/register` |
+| Authorization (code + PKCE) | `GET https://api.talkif.ai/oauth/authorize` |
+| Token and refresh | `POST https://api.talkif.ai/oauth/token` |
+| Revocation (RFC 7009) | `POST https://api.talkif.ai/oauth/revoke` |
+
+The rules a client must follow:
+
+- **Public clients only.** Register with `token_endpoint_auth_method: "none"`; there is no client secret. Grant types `authorization_code` and `refresh_token`, response type `code`.
+- **PKCE with `S256`** on every authorization request. Plain PKCE and requests without a challenge are refused.
+- **Redirect URIs** are matched exactly: `https://` with a real host name, or `http://localhost` / `127.0.0.1` / `[::1]` with a port. No fragments, no user info, at most 5 per client.
+- **Scope** is `talkif`, the only one; omitting `scope` asks for it. `resource`, when sent, must be `https://api.talkif.ai/api/v1/mcp`.
+- The authorization response carries `iss` (RFC 9207), so a client can check which server answered.
+- `client_name` is what the consent page shows. It may not contain "Talkif".
+
+Tokens:
+
+| Token | Prefix | Lifetime |
+|---|---|---|
+| Access token | `tif_oat_` | 1 hour |
+| Refresh token | `tif_ort_` | 30 days, single use |
+
+Every refresh returns a new pair and retires the old refresh token. Presenting a used refresh token again within 24 hours, or reusing an authorization code, revokes the whole connection — the person has to approve the app again. Send the access token as `Authorization: Bearer tif_oat_…`; it is accepted only by the MCP server and the endpoints an API key could call, never by the dashboard's own endpoints.
+
+The OAuth endpoints answer errors in the OAuth format (`{"error", "error_description"}`), not the API's error body. They are rate-limited: 20 registrations per hour per IP address, 30 authorization requests per 10 minutes per IP address, and 600 token requests per hour per client (30 per connection).
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Authentication" href="/integrate/authentication" icon="fa-regular fa-key">
+    API keys, scopes and what a key can reach.
+  </Card>
+  <Card title="Build with AI agents" href="/skills/agent-skills" icon="fa-regular fa-robot">
+    Agent Skills that teach a coding agent the Talkif API.
+  </Card>
+</CardGroup>
