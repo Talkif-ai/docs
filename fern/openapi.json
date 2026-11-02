@@ -21776,7 +21776,7 @@
           "model": {
             "type": "string",
             "description": "Model identifier",
-            "example": "gpt-4.1-mini"
+            "example": "gpt-5.6-luna"
           },
           "priorityTier": {
             "type": [
@@ -22048,8 +22048,8 @@
           },
           "modelId": {
             "type": "string",
-            "description": "Model identifier (e.g., \"gpt-4o\", \"claude-sonnet-5-5\")",
-            "example": "gpt-4o"
+            "description": "Model identifier (e.g., \"gpt-5.6-luna\", \"claude-sonnet-5-5\")",
+            "example": "gpt-5.6-luna"
           },
           "name": {
             "type": "string",
@@ -24369,7 +24369,7 @@
           "model": {
             "type": "string",
             "description": "Model identifier",
-            "example": "nova-2-conversationalai"
+            "example": "nova-3-general"
           },
           "provider": {
             "type": "string",
@@ -25030,8 +25030,8 @@
           },
           "modelId": {
             "type": "string",
-            "description": "Model identifier (e.g., \"nova-2\")",
-            "example": "nova-2"
+            "description": "Model identifier (e.g., \"nova-3-general\")",
+            "example": "nova-3-general"
           },
           "name": {
             "type": "string",
@@ -25133,7 +25133,7 @@
           "model": {
             "type": "string",
             "description": "Model identifier",
-            "example": "eleven_turbo_v2"
+            "example": "eleven_v4_turbo"
           },
           "provider": {
             "type": "string",
@@ -25365,7 +25365,7 @@
               "null"
             ],
             "description": "LLM model used for this message (assistant only)",
-            "example": "openai/gpt-4.1"
+            "example": "openai/gpt-5.6-luna"
           },
           "metrics": {
             "oneOf": [
@@ -25402,7 +25402,7 @@
               "null"
             ],
             "description": "TTS model used for this message (assistant only)",
-            "example": "elevenlabs/eleven_turbo_v2_5"
+            "example": "elevenlabs/eleven_v4_turbo"
           },
           "turnNumber": {
             "type": [
@@ -26303,8 +26303,8 @@
           },
           "modelId": {
             "type": "string",
-            "description": "Model identifier (e.g., \"eleven_turbo_v2_5\")",
-            "example": "eleven_multilingual_v2"
+            "description": "Model identifier (e.g., \"eleven_v4_turbo\")",
+            "example": "eleven_v4_turbo"
           },
           "name": {
             "type": "string",
@@ -27181,8 +27181,7 @@
             },
             "description": "Recommended model IDs for this voice",
             "example": [
-              "eleven_multilingual_v2",
-              "eleven_turbo_v2_5"
+              "eleven_v4_turbo"
             ]
           },
           "voiceId": {
