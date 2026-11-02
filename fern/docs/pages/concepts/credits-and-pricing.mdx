@@ -14,7 +14,7 @@ A finished call is priced as a set of line items, one per resource, each with it
 | Line item | Unit | How it's measured |
 |---|---|---|
 | **Telephony** | per minute, **rounded up** to the next whole minute | Carrier time for the call. Rate depends on provider (Talkif number, your SIP trunk, WhatsApp) and direction; on Talkif numbers, on the carrier's rate for the number called |
-| **STT** | per minute, prorated to the second | Duration of the call, at the chosen speech-to-text model's rate |
+| **STT** | per minute, prorated to the second | Duration of the call, at the chosen speech-to-text model's rate. A flow that gives Deepgram Nova-3 keywords to listen for also pays Deepgram's per-minute keyterm add-on, included in the STT rate |
 | **LLM** | per token, input and output priced separately | Every turn re-sends the prompts and transcript, so tokens grow with call length and prompt size |
 | **TTS** | per character synthesized | Only what the agent actually said |
 | **Infrastructure** | per minute: prorated to the second for calls that start until November 14, 2026; **rounded up** to the next whole minute for calls that start from November 15, 2026 (UTC) | The agent runtime itself — the platform fee, a flat platform rate |
@@ -147,7 +147,7 @@ Available   $55.00
 
 ## Where the numbers come from
 
-Every line item on a bill records the **rate that applied at the time**, so historical bills don't change when prices do. A call is billed for the models it actually ran with — the version that took the call, or the draft you tested — not whatever the flow uses today. Rates are per account — if you're on negotiated pricing, your rates apply automatically everywhere the public ones are shown here.
+Every line item on a bill records the **rate that applied at the time**, so historical bills don't change when prices do. A call is billed for the models it actually ran with — the version that took the call, or the draft you tested — not whatever the flow uses today. If a model in that version has been retired, the call runs on its replacement and is billed for the replacement. Rates are per account — if you're on negotiated pricing, your rates apply automatically everywhere the public ones are shown here.
 
 ## Next
 

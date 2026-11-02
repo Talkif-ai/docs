@@ -57,7 +57,7 @@ Every balance movement, in order, with balance before and after. Types: `purchas
 | Line item | Quantity | Unit |
 |---|---|---|
 | Telephony | minutes, rounded up | per minute — on Talkif numbers, the carrier's rate for the number called; otherwise by provider and direction |
-| STT | seconds | per minute, prorated |
+| STT | seconds | per minute, prorated; includes Deepgram's keyterm add-on when a Nova-3 flow has keywords |
 | LLM input / output | tokens | per million tokens, by model |
 | TTS | characters | per thousand characters, by model |
 | Infrastructure | seconds | per minute: prorated for calls that start until November 14, 2026; per started minute from November 15, 2026 (UTC) |
@@ -65,7 +65,7 @@ Every balance movement, in order, with balance before and after. Types: `purchas
 
 The same view also lists the call's other charges: post-call analysis, voicemail detection and recording storage.
 
-Every line carries the **rate that applied at the time**, so old charges don't change when prices do. A call is billed for the models it actually ran with — the published version that took the call, or the draft you tested — even if you've changed the flow since.
+Every line carries the **rate that applied at the time**, so old charges don't change when prices do. A call is billed for the models it actually ran with — the published version that took the call, or the draft you tested — even if you've changed the flow since. If a model in that version has been retired, the call runs on its replacement and is billed for the replacement.
 
 ### AI Decisions
 
