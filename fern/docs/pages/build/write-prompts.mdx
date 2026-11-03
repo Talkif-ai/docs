@@ -93,11 +93,20 @@ about their appointment. Today is {{formatDate system.date "long"}}.
 | Namespace | Fields | Available when |
 |---|---|---|
 | `contact.*` | `id`, `name`, `firstName`, `lastName`, `primaryPhone`, `email`, `company`, `occupation`, `notes`, `timezone`, `language`, `interests`, `tags`, `personality`, `communicationStyle`, `preferredTopics`, `address.street` / `.city` / `.state` / `.postalCode` / `.country` | the call has a contact: outbound with a `contactId`, or inbound from a number that matches a contact. Otherwise only `primaryPhone` |
+| `contact.recentCalls` | The caller's last 3 analyzed calls on **this flow**, newest first, one line each: `2026-11-01 (outbound): <summary>`. Dates are in the caller's timezone; each summary is cut at 500 characters | the caller called or was called on this flow before, matched by contact or by phone number, and those calls have an analysis summary. Empty on a first call |
 | `call.*` | `id`, `direction` (`inbound` / `outbound`), `fromNumber`, `toNumber` | always |
 | `account.*` | `id`, `name` | always |
-| `system.*` | `date` (`YYYY-MM-DD`), `time` (`HH:MM:SS`), `timezone`, `timestamp` (ISO 8601) | always |
+| `system.*` | `date` (`YYYY-MM-DD`), `time` (`HH:MM:SS`), `weekday` (in English, e.g. `Monday`), `timezone` (IANA name, e.g. `Europe/Istanbul`), `timestamp` (ISO 8601 with the UTC offset) | always, in the caller's timezone: the contact's `timezone`, else the one the caller's phone number implies, else UTC (for example a browser call with no contact) |
 
 A variable with no value renders as **empty text** — never an error, never the literal `{{…}}`. That's why `default` and `#ifExists` are worth using on every contact field: not every caller is in your contacts.
+
+`contact.recentCalls` gives the agent a memory of earlier calls. Only calls with an analysis summary count: those analysed automatically (auto-analysis on, and longer than the minimum length in **Settings → Hooks**) or on demand.
+
+```handlebars
+{{#ifExists contact.recentCalls}}Earlier calls with this caller:
+{{contact.recentCalls}}
+Pick up where the last call left off.{{/ifExists}}
+```
 
 ### Helpers
 
