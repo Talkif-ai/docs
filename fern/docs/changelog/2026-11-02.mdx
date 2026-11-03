@@ -36,5 +36,5 @@ title: AI turn-taking, the Talkif MCP server, charge history and number usage
 - **API**: an unknown, revoked or expired API key gets `api_key_invalid`, `api_key_revoked` or `api_key_expired` (401) instead of `token_missing`. See [Error codes](/api-reference/errors).
 - **API**: [`GET /flows`](/api-reference/flows/list-flows) takes a `search` parameter: a case-insensitive match on a flow's name, description or any of its tags. The total counts only the matches.
 - **API**: [`GET /calls/history`](/api-reference/calls/list-call-history) (same result as `GET /calls`) and [`GET /calls/active`](/api-reference/calls/list-active-calls) (live calls only) are still served and are back in the public API definition. For new integrations, use [`GET /calls`](/api-reference/calls/list-calls).
-- **API**: [`POST /calls/{callId}/end`](/api-reference/calls/end-call) on a call that has already ended returns the call's state instead of an error.
+- **API**: [`POST /calls/{callId}/end`](/api-reference/calls/end-active-call) on a call that has already ended returns the call's state instead of an error.
 - **API**: the [`POST /calls/webrtc`](/api-reference/calls/create-webrtc-call) response can include `offerDeadlineAt`, the time until which the agent waits for your SDP offer. Send the offer well before it.

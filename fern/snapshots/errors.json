@@ -406,7 +406,7 @@
       "title": "Say Whose Phone Rings",
       "category": "validation",
       "categoryTitle": "Validation",
-      "description": "More than one person in this account can take the call. List them with GET /api/v1/session-bridge/ring-targets and send the chosen person's userId as ringUserId."
+      "description": "More than one person in this account can take the call. Say whose phone rings: send that person's userId as ringUserId."
     },
     {
       "code": "invalid_json",
