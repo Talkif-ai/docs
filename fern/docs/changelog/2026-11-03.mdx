@@ -1,0 +1,24 @@
+---
+title: Retired models upgrade when you edit, local time and earlier calls in prompts
+---
+
+{/* versions: api=0.1.368 app=0.1.113 voice=0.0.133 */}
+
+- **Builder**: a flow that still names a retired model can be edited again. Saving the draft, validating, builder test calls and publishing now switch that node to the model's replacement instead of refusing it with `invalid_model`. This replaces the November 2 note that edits refuse a retired model.
+  - If the new LLM doesn't accept the node's `temperature` or `reasoningEffort`, that setting is dropped.
+  - Validate and publish report each switch as a `model_upgraded` warning, for example *"gpt-4o-mini has been retired; this flow now uses gpt-5.6-luna"*.
+  - When a replacement has itself been retired, calls and edits move on to its replacement.
+
+  See [When a model is retired](/build/choose-models-and-voices#when-a-model-is-retired).
+- **Prompts**: `{{system.date}}`, `{{system.time}}`, `{{system.timezone}}` and `{{system.timestamp}}` are now in the caller's timezone. That is the contact's timezone, else the one the caller's phone number implies, else UTC (for example a browser call with no contact). Before, they were always UTC.
+  - A prompt that converted from UTC itself ("add 3 hours") now gives the wrong time. Remove the conversion.
+  - New: `{{system.weekday}}`, the weekday in English (`Monday`).
+
+  See [Write prompts](/build/write-prompts#variables).
+- **Prompts**: new `{{contact.recentCalls}}`, the caller's last 3 analyzed calls on the same flow, newest first. Each line has the date (in the caller's timezone), the direction and the call summary, cut at 500 characters. It is empty on a first call. See [Write prompts](/build/write-prompts#variables).
+- **Telephony**: the SIP allowlist notice in the provider form and the **Edit provider** dialog names both Talkif addresses, `63.176.211.13` (EU) and `44.218.212.38` (US). Outbound calls come from the address of your provider's region; if you're not sure which, allow both. See [Bring your own SIP trunk](/telephony/bring-your-own-sip-trunk).
+- **Telephony**: deleting a phone provider in the dashboard now says what it takes: first remove its numbers and any campaigns or schedules that use them. The **Keep numbers** / **Release numbers** choice for your own Twilio account is gone; it never changed anything. Numbers in your own Twilio account stay there.
+- **Telephony**: when the number limit stops a purchase, the message says which case applies. Before the first payment the limit is lower and adding funds raises it; after the first payment, contact support to raise it. See [Buy a number](/telephony/buy-a-number).
+- **Billing**: the auto-recharge amount can be set from \$5 to \$500 (it was \$1,000). A recharge never charged more than \$500, so a higher amount meant no recharge at all. If yours is higher, lower it. See [Credits and payment](/account/credits-and-payment).
+- **Assistant**: when the assistant offers to place a call, its card says *"Charged by use after the call"* instead of "Billed per second".
+- **API**: in the API definition, `POST /calls/{callId}/end` is now [`end_active_call`](/api-reference/calls/end-active-call) and `GET /calls/webrtc/ice-servers` is [`get_webrtc_ice_servers`](/api-reference/calls/get-webrtc-ice-servers). They no longer share names with the public-call operations. Paths and behaviour are unchanged. `GET /calls` now gives `inprogress` as its status example; `in_progress` is not a valid status.
