@@ -2,6 +2,15 @@
 
 Notable changes to docs.talkif.ai and the API/SDK definition in this repository.
 
+## 2026-11-03
+
+### Changed
+- API reference synced with production API 0.1.368: `POST /calls/{callId}/end` is `end_active_call` and `GET /calls/webrtc/ice-servers` is `get_webrtc_ice_servers` (reference pages `calls/end-active-call`, `calls/get-webrtc-ice-servers`); the request-name overlay for the old duplicate is removed. Descriptions of phone numbers, public call status, `GET /calls` and `ring_target_required` updated; the unused `AgentRuntime` schema is gone.
+- Choose models and voices, Test and publish: a retired model is switched to its replacement on save, validate, test call and publish, with a `model_upgraded` warning, instead of failing with `invalid_model`.
+- Write prompts: `system.*` follows the caller's timezone; new `system.weekday` and `contact.recentCalls`. Contacts: the timezone also sets the time in `system.*`.
+- Bring your own SIP trunk: the provider delete dialog no longer has a keep/release choice.
+- Changelog: new entry for November 3, 2026; links in the November 2 entry and on Web calls point to the renamed reference pages.
+
 ## 2026-11-02
 
 ### Changed

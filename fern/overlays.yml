@@ -124,16 +124,3 @@ actions:
       format: int32
       default: 0
       minimum: 0
-
-  # ── Duplicate operationId ────────────────────────────────────────────────
-  # POST /calls/{callId}/end and POST /public/calls/{callId}/end share the
-  # operationId `end_call`, so both would generate a request type named
-  # EndCallRequest and `fern check` fails. The public one already ships under
-  # that name in the TypeScript SDK (Talkif.EndCallRequest); name the new one
-  # differently.
-  # TODO(upstream API): give every operation a unique operationId (also
-  # `get_ice_servers`, used by /calls/webrtc/ice-servers and
-  # /public/calls/ice-servers), then delete this block.
-  - target: $.paths["/api/v1/calls/{callId}/end"].post
-    update:
-      x-fern-request-name: EndActiveCallRequest
