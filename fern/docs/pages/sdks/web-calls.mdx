@@ -183,10 +183,10 @@ You can also run a browser call with your own WebRTC code. With an API key (scop
 
 | Step | Request |
 |---|---|
-| 1. Relay servers | [`GET /calls/webrtc/ice-servers`](/api-reference/calls/get-ice-servers) — TURN servers for a relay-only peer connection |
+| 1. Relay servers | [`GET /calls/webrtc/ice-servers`](/api-reference/calls/get-webrtc-ice-servers) — TURN servers for a relay-only peer connection |
 | 2. Create the call | [`POST /calls/webrtc`](/api-reference/calls/create-webrtc-call) for the published flow, or [`POST /calls/webrtc/test`](/api-reference/calls/create-webrtc-test-call) with a draft definition. An agent is reserved for the call |
 | 3. Send the offer | [`POST /calls/webrtc/{callId}/offer`](/api-reference/calls/relay-webrtc-offer) with your SDP offer; the reply is the agent's SDP answer |
-| 4. Hang up | [`POST /calls/{callId}/end`](/api-reference/calls/end-call) |
+| 4. Hang up | [`POST /calls/{callId}/end`](/api-reference/calls/end-active-call) |
 
 Two rules matter when you write this yourself:
 

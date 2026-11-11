@@ -17,7 +17,7 @@ A contact is more than a phone number to dial. It's the context an agent gets ab
 | **Notes** | Free text, up to 5,000 characters | `{{contact.notes}}` — the most useful field for a personalised call |
 | **Tags** | Up to 50 free-form strings | segmentation, campaign filters, `{{#if (includes contact.tags "vip")}}` |
 | **Interests** | List | prompts |
-| **Timezone** | IANA zone; derived from the phone number when not set | campaign call windows, legal calling hours |
+| **Timezone** | IANA zone; derived from the phone number when not set | campaign call windows, legal calling hours; the local date and time in `{{system.*}}` |
 | **Language** | Default `en` | prompts (`{{contact.language}}`) |
 
 Everything here is available to prompts at call time — see [Write prompts](/build/write-prompts#dynamic-prompts). A contact without a value simply renders that variable empty, which is why prompts should use `default` and `#ifExists`.

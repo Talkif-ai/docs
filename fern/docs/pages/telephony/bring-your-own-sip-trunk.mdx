@@ -113,7 +113,7 @@ Registering never moves a number out of your Twilio account, and Talkif never re
 Only the Owner can remove numbers or the provider.
 
 - **Removing a number** (**Release Number** on the number) takes it out of Talkif. **The number stays in your Twilio account**, and Twilio keeps billing you for it. Talkif clears the voice URL and status callback it set, so calls stop reaching Talkif. A URL you changed yourself is left alone. Campaigns and schedules that dial from that number are cancelled.
-- **Deleting the provider** works only once no numbers, campaigns or schedules use it, so remove its numbers first. The **Keep numbers in Twilio** / **Release numbers** choice in its delete dialog changes nothing: by then no numbers are left, and Talkif doesn't release numbers from your Twilio account.
+- **Deleting the provider** works only once no numbers, campaigns or schedules use it, so remove its numbers first. Talkif removes only its own settings; it doesn't release numbers from your Twilio account.
 - **Deleting your Talkif account** removes these numbers the same way: they stay in your Twilio account.
 
 ## Next

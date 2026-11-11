@@ -938,7 +938,7 @@
           "Calls"
         ],
         "summary": "List calls",
-        "description": "Returns the account's calls, newest first, with optional filters. Use `status` to narrow to live calls (for example `in_progress`), `flowId` / `campaignId` / `contactId` to scope by resource, and `startDate` / `endDate` for a time window.",
+        "description": "Returns the account's calls, newest first, with optional filters. Use `status` to narrow to live calls (for example `inprogress`), `flowId` / `campaignId` / `contactId` to scope by resource, and `startDate` / `endDate` for a time window.",
         "operationId": "list_calls",
         "parameters": [
           {
@@ -1721,7 +1721,7 @@
         ],
         "summary": "Get ICE servers for WebRTC",
         "description": "Returns STUN/TURN servers with short-lived credentials. Fetch them before\ncreating the peer connection, then pass the same list in the offer request\nso both ends use the same servers.",
-        "operationId": "get_ice_servers",
+        "operationId": "get_webrtc_ice_servers",
         "responses": {
           "200": {
             "description": "ICE servers with short-lived credentials",
@@ -2507,7 +2507,7 @@
         ],
         "summary": "End an active call",
         "description": "Hangs up a live call immediately. Idempotent: a call that has already\nended returns its current state without error. The returned status may\nstill read as in progress for a moment; the final status follows once\nthe carrier confirms the hangup.",
-        "operationId": "end_call",
+        "operationId": "end_active_call",
         "parameters": [
           {
             "name": "callId",
@@ -14466,14 +14466,6 @@
           }
         }
       },
-      "AgentRuntime": {
-        "type": "string",
-        "description": "Where a flow's conversation runs (spike, staging). Default `cloud`.",
-        "enum": [
-          "cloud",
-          "device"
-        ]
-      },
       "AgentStatus": {
         "type": "string",
         "description": "Status of the AI agent handling the call.",
@@ -23151,7 +23143,7 @@
       },
       "PhoneNumberResponse": {
         "type": "object",
-        "description": "Phone number response for API\n\nNote: `voice_url` and `sms_url` are internal system URLs and not exposed to users\nThey are auto-generated when connecting flows and point to internal webhook endpoints",
+        "description": "A phone number in your account: its status, capabilities, billing and the\nflow connected to it.",
         "required": [
           "id",
           "accountId",
@@ -23753,7 +23745,7 @@
       },
       "PublicCallStatusResponse": {
         "type": "object",
-        "description": "Public status view of a call — deliberately a small subset (no transcript,\nno cost, no internal fields).",
+        "description": "The status of a call started from a public session: its ID, current status\nand, once known, its duration.",
         "required": [
           "callId",
           "status"

@@ -38,7 +38,7 @@ One difference to know: a browser test has no phone number and no caller identit
   </Accordion>
   <Accordion title="Providers">
     - An **LLM**, an **STT** and a **TTS** provider are configured.
-    - Provider names are known and each model exists in the current catalogue. A model that has since been retired fails here — the fix is to pick a current one.
+    - Provider names are known and each model exists in the current catalogue. A model that has since been retired is switched to its replacement, with a `model_upgraded` warning — see [When a model is retired](/build/choose-models-and-voices#when-a-model-is-retired).
     - Numeric settings are in range (temperature 0–2, ElevenLabs stability 0–1, …). Settings a model doesn't support — a temperature on a model that rejects it — are stripped rather than failed, so an old flow keeps publishing when a model's capabilities change.
     - Language codes are valid for the chosen STT model.
   </Accordion>
@@ -49,7 +49,7 @@ One difference to know: a browser test has no phone number and no caller identit
   </Accordion>
 </AccordionGroup>
 
-Errors name the field (`nodes.booking_agent.agentPrompt`) and a code (`required`, `invalid_model`, `out_of_range`, `duplicate_agent_name`, …). The builder shows them in the validation panel and marks the node.
+Errors name the field (`nodes.booking_agent.agentPrompt`) and a code (`required`, `invalid_model`, `out_of_range`, `duplicate_agent_name`, …). The builder shows them in the validation panel and marks the node. Warnings use the same shape but don't block publishing; validate and publish return them in `warnings` (for example `model_upgraded` on `services.llm.model` when a retired model was switched).
 
 ## Publishing
 
