@@ -2,6 +2,11 @@
 
 Notable changes to docs.talkif.ai and the API/SDK definition in this repository.
 
+## 2026-11-11
+
+### Added
+- New page Account → Talkif for iPhone and Mac (`/account/iphone-and-mac-apps`): signing in and signing up in the apps, the AI services consent and how to withdraw it, buying credit and plans with In-App Purchase (monthly and yearly, Pro monthly only, managed and refunded by Apple, not cancelled by deleting the Talkif account), alerts on the iPhone, "Is this you calling?", and answering transferred calls.
+
 ## 2026-11-03
 
 ### Changed
