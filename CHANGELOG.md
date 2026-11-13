@@ -2,6 +2,11 @@
 
 Notable changes to docs.talkif.ai and the API/SDK definition in this repository.
 
+## 2026-11-13
+
+### Added
+- New page Integrate → Use Talkif from Muse (`/integrate/muse`): connecting Muse to a Talkif account as a custom connector to the MCP server with an API key, the setup message to paste into Muse, choosing scopes and `?read_only=true`, keeping approval on for the tools that cost money or reach people, revoking access, and the errors Muse may report. Linked from the Integrate overview.
+
 ## 2026-11-11
 
 ### Added
