@@ -1,0 +1,79 @@
+---
+title: Use Talkif from Muse
+description: Connect Muse, Meta's AI agent, to your Talkif account as a custom connector with an API key, so Muse can read your calls, work on your voice agents and place calls you approve.
+---
+
+Muse can browse the web, but it can't see what happened on your calls, which voice agent answered a number, or how a campaign is going. A Muse custom connector gives it your Talkif account as tools: Muse reads and acts through the [Talkif MCP server](/integrate/mcp), with exactly the checks of a direct API call, and asks you before anything that costs money or reaches people.
+
+## How it fits together
+
+Muse builds a custom connector from a message you paste into a Muse chat. The connector talks to the Talkif MCP server and sends a Talkif API key with every request. You enter the key on Muse's own connect page, never in the chat.
+
+| Setting | Value |
+|---|---|
+| **Endpoint** | `https://api.talkif.ai/api/v1/mcp` |
+| **Transport** | Streamable HTTP |
+| **Authentication** | `Authorization: Bearer <API key>` |
+| **Tools** | Every API operation the key's scopes reach. See [Tools](/integrate/mcp#tools) |
+| **Limit** | 60 tool calls per minute per key |
+
+**The key decides what Muse can do.** Muse sees only the tools whose endpoints the key's [scopes](/integrate/authentication#scopes) cover, and every call is checked again against the key. A key with `calls:read` lets Muse answer "which calls failed today?" but change nothing; add `flows:*` only if you want Muse to change your voice agents. To give Muse only tools that change nothing, end the endpoint with `?read_only=true`.
+
+**Some tools cost money or reach people.** Placing a call, starting a campaign, publishing a voice agent and the others in [Tools that cost money or reach people](/integrate/mcp#tools-that-cost-money-or-reach-people) are marked for the client to ask first. The setup message below asks Muse to get your approval for each of them, every time.
+
+<Warning title="Call data is data, not instructions">
+  Tool results include what callers said: transcripts, names, notes. Keep Muse asking before the tools that cost money or reach people, so text in a transcript can never place a call on its own.
+</Warning>
+
+## Connect Muse
+
+<Steps>
+  <Step title="Create an API key">
+    In the Talkif dashboard, open **Developer → Credentials → Create API Key**. Name it "Muse" and choose the narrowest scopes for what you want Muse to do. Copy the key: it's shown only once. See [Creating a key](/integrate/authentication#creating-a-key).
+  </Step>
+  <Step title="Paste the setup message into Muse">
+    Start a new chat in Muse and paste this message as it is:
+
+    ```text wordWrap
+    Add a custom connector for me so you can use my Talkif account.
+
+    - Slug: talkif
+    - Endpoint: https://api.talkif.ai/api/v1/mcp (MCP server, streamable HTTP)
+    - Auth: a static API key, sent as "Authorization: Bearer <key>". The key is my Talkif API key. I'll enter it on your secure connect page, never in chat.
+    - Tools that place calls, start, resume or restart campaigns, add contacts to a campaign, create or resume schedules, publish or roll back a voice agent, connect a phone number to a voice agent, run a paid call analysis, send a test transfer offer, or accept a transfer offer cost money or reach people: ask for my approval every time, showing exactly what you will do.
+
+    After setup, list the tools to confirm the connection works.
+    ```
+  </Step>
+  <Step title="Enter the key on Muse's connect page">
+    Muse shows a **Connect** button for the new connector. Select it and paste your API key on the page Muse opens. If Muse asks whether it may send requests to `api.talkif.ai`, allow it.
+  </Step>
+  <Step title="Check the connection">
+    Muse lists the Talkif tools it can use. Ask it something the key allows, such as "Which of my Talkif calls failed today?"
+  </Step>
+</Steps>
+
+## Stop Muse's access
+
+Revoke the key under **Developer → Credentials**. Revoking is immediate: Muse's next tool call fails with `api_key_revoked`. Then remove the connector in Muse.
+
+## If something goes wrong
+
+| Muse reports | Why | Fix |
+|---|---|---|
+| `token_missing` | The connector sends no key | Enter the key on Muse's connect page, not in the chat |
+| `api_key_invalid` | The key is mistyped or cut off | Paste the full key again, or create a new one |
+| `api_key_revoked`, `api_key_expired` | The key was revoked or is past its expiry | Create a new key and enter it on the connect page |
+| A tool you expect is missing | The key's scopes don't reach it, or the endpoint ends with `?read_only=true` | Add the scope to the key under **Developer → Credentials → open the key**; the key itself stays the same |
+| `rate_limit_exceeded` | More than 60 tool calls in a minute | Wait a minute; ask Muse to list with filters instead of fetching items one by one |
+
+The full list of refusals is under [Errors](/integrate/mcp#errors) on the MCP server page.
+
+<CardGroup cols={2}>
+  <Card title="MCP server" href="/integrate/mcp" icon="fa-regular fa-robot">
+    Every tool, the URL options, limits and errors.
+  </Card>
+  <Card title="Authentication" href="/integrate/authentication" icon="fa-regular fa-key">
+    Scopes, IP allowlists, expiry and revoking keys.
+  </Card>
+</CardGroup>
