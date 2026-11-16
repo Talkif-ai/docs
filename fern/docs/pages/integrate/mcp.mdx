@@ -148,6 +148,27 @@ The app acts as the person who approved it, with that person's **current** role 
 
 Agents can't approve apps. A session whose client doesn't tell Talkif who is asking stays reachable by its owner only. The role is checked on every request: lowering someone's role narrows their apps at once, and removing them from the organization stops them. Approve an app as an owner or admin only when it should reach the whole organization.
 
+### Connectors tools
+
+A connected app gets these tools:
+
+| Tool | What it does |
+|---|---|
+| `talkif_setup` | Checks what Connectors needs for this app and says, in plain words, what is missing. Changes nothing. |
+| `talkif_sessions` | Lists the sessions you can reach: what each works on, what it takes (questions, tasks) and its earlier names. Pass `query` (a project, repository or topic) to get the best 5 matches instead of the whole list. |
+| `talkif_send` | Asks a session a question (`ask`) or hands it a task (`tell`) with its goal, what done looks like (`doneWhen`), what to hand back (`deliverable`) and `context`. `to` takes a session's name or `sessionId`; a session that was renamed is still found by an earlier name when only one session had it. |
+| `talkif_status` | Where one question or task stands, by its `requestId`: for a question `pending`, `answered`, `failed` or `expired`; for a task its state, latest update and submission. Only the sender can read it. |
+| `talkif_inbox` | Takes the events waiting for this app: answers that came later, task updates, questions about a task and submissions to review. `waitSeconds` (0–20) waits for the next event. |
+| `talkif_reply`, `talkif_accept`, `talkif_decline`, `talkif_question`, `talkif_answer`, `talkif_update`, `talkif_submit`, `talkif_review`, `talkif_cancel` | Answer a question, and move a task from offer to review. |
+| `talkif_describe` | Sets the one line other sessions see about what this app is doing now. |
+| `talkif_call_me` | Rings the person in the Talkif app, where a Talkif voice agent asks your questions. |
+
+**Results that come later.** A session may answer at once or later. A result that has not arrived is `pending`; check it with `talkif_status`, or wait for it with `talkif_inbox` (`waitSeconds`, a whole number from 0 to 20). Other Connectors tools also show new events under `arrived`, as a preview: it takes nothing, and it may miss an event, so the inbox stays the complete list. An event the inbox returns with `shown: true` was included in an earlier result; act on it if you haven't yet.
+
+**When a session could not answer**, `talkif_send` and `talkif_status` say `failed`, with a `reason` (`no_answer` or `error`) and no answer text. When no answer came in time, the status is `pending` (the session is still working on it) or `unresponsive` (it did not respond); a later answer still arrives as an event. A voice agent on a call says the session couldn't answer, instead of guessing.
+
+**What needs an API key.** Creating or publishing a voice agent, placing calls, campaigns, contacts and phone numbers are API tools. A connected app doesn't get them: [connect with an API key](#connect-with-an-api-key) for those, or hand the job to a session that has one.
+
 ### Connected apps
 
 **Developer → Integrations → Connected apps** lists the apps connected to the account, with when each was connected and last used. Members see the apps they connected; owners and admins see everyone's.
