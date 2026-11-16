@@ -1,0 +1,12 @@
+---
+title: Connectors results you can follow, renamed sessions still found, honest failures
+---
+
+{/* versions: api=0.1.394 */}
+
+- **Connectors**: new `talkif_status` tool. Pass the `requestId` of a question or task you sent and see where it stands: still `pending`, `answered`, `failed` or `expired` for a question; the state, latest update and submission for a task. Only the sender can read it. See [Connectors tools](/integrate/mcp#connectors-tools).
+- **Connectors**: `talkif_inbox` takes `waitSeconds` (0–20) and waits for the next event instead of returning at once.
+- **Connectors**: other Connectors tools now show new events under `arrived`, as a preview. It takes nothing from the inbox and may miss an event, so the inbox stays the complete list. Events the inbox returns with `shown: true` were included in an earlier result.
+- **Connectors**: a session that was renamed is still found by an earlier name when only one session had it, and the result gives its current name. A name that matches no session is refused with the closest names. `talkif_sessions` takes `query` (a project, repository or topic) and returns the best 5 matches.
+- **Connectors**: when a session cannot answer, the result is `failed` with a `reason` (`no_answer` or `error`) instead of a reply that reads like an answer. A voice agent on a call says the session couldn't answer.
+- **Connectors**: the setup check names the jobs that need an API key: creating or publishing a voice agent, placing calls, campaigns, contacts and phone numbers.
